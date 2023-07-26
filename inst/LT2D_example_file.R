@@ -1,7 +1,6 @@
 library(devtools)
 
-install_github("penguin-coding/LT2D-work", subdir = "LT2D",
-               ref = "15cc950")
+install_github("david-borchers/LT2Dcal")
 
 library('LT2D')
 
