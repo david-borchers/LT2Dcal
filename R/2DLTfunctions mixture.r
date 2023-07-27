@@ -4241,3 +4241,43 @@ hessianCalcs <- function(par, hessian, corrFlag=0.8, output){
   output$vcov = vcov
   return(output)
 }
+
+
+
+#'@title Calculates perp. dist. detection function approximation
+#'
+#'@description  Uses Simpsons 1/3 rule to integrate the specified hazard function \code{} from
+#'\code{ystart} to 0, at every x-value in \code{xs}, using the y-values in \code{ys} as the 
+#'integration points. Then calculates detection probability at each x as 1 - exp(-h.int), 
+#'where h.int is this integral at each of the given x-values.
+#'
+#'@param y Forward distance integration points
+#'@param x perpendicular distances at which detection probability is to be calculated
+#'@param h.fun The hazard function (either a function or a character variable of the function name)
+#'@param b parameter vector for hazard function \code{h.fun}.
+#'@return probability of detection at each of the \code{xs}.
+#'@examples
+#'xs = seq(0,w,length=100)
+#'ys = seq(0,ystart,length=100)
+#'h.fun.name = "h1"
+#'b=c(-7.3287948, 0.9945317)
+#'h.fun = match.fun(h.fun.name) # make h.fun the function specified via a character variable
+#'p.vals = p.approx(ys,xs,h.fun,b) # detection function values to plot
+#'plot(ys,p.vals,type='l',xlab='Perp. distance, x',ylab=expression(p(x)))
+#'
+#'@export
+p.approx = function(y,x,h.fun,b) {
+  
+  simpson = function(y1,y2,h.fun,x,b) (h.fun(y1,x,b)+4*h.fun((y1+y2)/2,x,b)+h.fun(y1,x,b))*(y2-y1)/6
+  
+  if(is.character(h.fun)) h.fun = match.fun(h.fun)
+  nx = length(x)
+  h.int = rep(0,nx)
+  for(i in 1:length(x)) {
+    for(j in 1:(ny-1)){
+      h.int[i] = h.int[i] + simpson(y[j],y[j+1],h.fun,x[i],b)
+    } 
+  }
+  p = 1 - exp(-h.int)
+  return(p)
+}
