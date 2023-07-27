@@ -48,8 +48,5 @@ po/*~
 # RStudio Connect folder
 rsconnect/
 
-# Roxygen documentation files
-*.Rd
-
 # log files
 *.log
