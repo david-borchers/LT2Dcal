@@ -46,14 +46,26 @@ fit <- LT2D.fit(DataFrameInput = sim.df,
                 w = w,
                 hessian = TRUE)
 
+# plot fitted functions
 par(mfrow=c(1,2))
 plot(fit)
 
+# print table of point estimates
+fit$ests
 
-gof.LT2D(fit)
+# look at goodness of fit
+par(mfrow=c(1,2))
+gof.LT2D(fit, plot=TRUE)
+
+# Look at AIC
+fit$fit$AIC
+
+# bootstrap for variance and interval estimates of total abundance
 boot <- LT2D.bootstrap(fit,r=999,alpha = 0.05)
 boot$ci
-
+# plot bootstrap histogram:
 hist(boot$Ns,main='',xlab='Estimate of Abundance')
-plot(fit)
-fit$fit$AIC
+# add point estimate and CI
+mle.N = fit$ests[nrow(fit$ests),ncol(fit$ests)]
+points(mle.N,0,pch=19,col="red")
+arrows(boot$ci[1],0,boot$ci[2],0,angle=90,code=3,col="red")
