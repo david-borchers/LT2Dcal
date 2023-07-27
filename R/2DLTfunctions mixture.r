@@ -1715,14 +1715,13 @@ fityx = function(y=NULL,x=NULL,b,hr,ystart,pi.x,logphi,w,rmin=0,formulas=NULL,
 #'
 #' @param dat DS data frame. Must have cols "stratum","area","transect","L","size","object","x","y"
 #' (and possibly others).
-#' @param hmltm.fit output from \code{\link{fit.hmltm}}.
-#' @param W perpendicular truncation distance for estimation.
+#' @param LT2d.fit Object of class \code{LT2D.model.fit}, normally obtained as output from \code{\link{fit.hmltm}}.
 #'
 #' @export
-NDest <- function(dat, hmltm.fit){
+NDest <- function(dat, LT2D.fit){
 
-  W = hmltm.fit$w # hmltm.fit should be an LT2D.model.fit object,
-  # which has attribute w
+  W = LT2D.fit$w # LT2D.fit should be an LT2D.model.fit object,
+  # which has element w
 
   # remove the smaller than w observations from the data frame which won't
   # have been used to fit the likelihood, but we musn't remove the NAs:
@@ -1730,7 +1729,7 @@ NDest <- function(dat, hmltm.fit){
 
   # Add 1/p column
   dat$invp <- rep(NA,dim(dat)[1])
-  invp <- invp1_replacement(dat, hmltm.fit)
+  invp <- invp1_replacement(dat, LT2D.fit)
 
   for(i in 1:length(invp$object)){
 
@@ -1898,7 +1897,7 @@ invp1_replacement = function(LT2D.df, LT2D.fit.obj){
 #' @title Top level fitting and abundance estimation function for LT2D user
 #' @description This function is a wrapper for the fityx function. It takes
 #' in a 'Distance' style data frame, type-checks it, finds the MLEs using
-#' \code{\link{fityx}} and then calls an abundance function \code{\link{NDest}}
+#' \code{\link{fityx}} and then calls an abundance estimation function \code{\link{NDest}}
 #' to obtain density and abundance estimates by stratum.
 #' @param DataFrameInput, data.frame ; data frame with required columns
 #'  stratum (stratum number of observation), transect (transect number of
@@ -1909,12 +1908,64 @@ invp1_replacement = function(LT2D.df, LT2D.fit.obj){
 #' @param b numeric; vector of start parameters for hr
 #' @param ystart numeric; furthest possible forwards distance at which we can
 #' detect animals.
-#' @param pi.x character; name of perpendicular density to fit
+#' @param pi.x character; name of perpendicular density function to fit
 #' @param logphi numeric; vector of start parameters for pi.x
 #' @param w numeric; perpendicular truncation distance
+#' @param formulas parameter passed to \code{fityx} (specification of covariate models, maybe?)
+#' @param ipars parameter passed to \code{fityx} (parameters of covariate model for intercept, maybe?)
+#' @param xpars parameter passed to \code{fityx} (parameters of covariate model in x-direction, maybe?)
+#' @param ypars parameter passed to \code{fityx} (parameters of covariate model in y-direction, maybe?)
+#' @param control list passed to \code{optim} to control optimasation (see \code{optim} help)
 #' @param rmin numeric; radial distance below which all values were rounded down to 0
-#' @param hessian boolean
+#' @param hessian boolean indicating whether or not Hessian matrix is to be returned
 #' @param corrFlag numeric; value above which correlation flag is raised
+#' @param debug prints some stuff to help debugging if TRUE
+#' 
+#' @returns An object of class \code{LT2D.fit.function.object}, which is a list containing three objects:
+#' \itemize{
+#'  \item{invp} {A data frame with one row per detection and these columns:
+#'   \itemize{
+#'    \item{x} {The x-coordinate of the detection.}
+#'    \item{y} {The y-coordinate of the detection.}
+#'    \item{stratum} {The stratum in which the detection occurred.}
+#'    \item{transect} {The transect on which the detection occurred.}
+#'    \item{L} {The length of the transect.}
+#'    \item{area} {The area of the stratum.}
+#'    \item{object} {The object ID number.}
+#'    \item{size} {The object group size.}
+#'    \item{invp} {The inverse of the estimated detection probability of the object.}
+#'    }
+#'   }
+#'  \item{ests} {A data frame in which each row contains the density and abundance estimates 
+#'  for a stratum (with last row being for the total across all strata), with these columns:
+#'   \itemize{
+#'    \item{stratum} {The stratum.}
+#'    \item{n} {The number of detections in the stratum.}
+#'    \item{k} {The number of transects in the stratum.}
+#'    \item{L} {The total transect length in the stratum.}
+#'    \item{covered.area} {The covered area (2WL) in the stratum.}
+#'    \item{stratum.Area} {The area of the stratum.}
+#'    \item{Dgroups} {The estimated density of groups.}
+#'    \item{Ngroups} {The estimated abundance of groups.}
+#'    \item{mean.size} {The estimated mean group size.}
+#'    \item{D} {The estimated density of individuals.}
+#'    \item{N} {The estimated abundance of individuals.}
+#'    }
+#'   }
+#'  \item{fit} {The output from the core fitting function \code{fityx}. This has a bunch of 
+#'  input data reflection and input parameter reflection (not detailed here) as well as the following 
+#'  estimates
+#'  \itemize{
+#'   \item{CVpar} {Estimated coefficients of variation of each model parameter.}
+#'   \item{corr} {Parameter estimate correlation matrix.}
+#'   \item{vcov} {Parameter estimate covariance matrix.}
+#'   \item{par} {Parameter estimates.}
+#'   \item{value} {Value of the negative log-likelihood at the MLE.}
+#'   \item{AIC} {Aaike's information criterion value.}
+#'   }
+#'  }
+#' }
+#' 
 #' @export
 LT2D.fit = function(DataFrameInput,hr,b,ystart,pi.x,logphi,w,formulas=NULL,
                     ipars=NULL,xpars=NULL,ypars=NULL,rmin=0,
@@ -4145,7 +4196,7 @@ pi.x.mixt <- function(logphi, x, w, args){
   return(lambda*pi(x,logphi1,w)+(1-lambda)*pi(x,logphi2,w))
 }
 
-#' @title Adsd covariance from Hessian
+#' @title Adds covariance from Hessian
 #' @description Calculates covariance matrix from Hessian, does some checks, and adds it to the 
 #' input object \code{output}.
 #' @param par The fitted parameters
