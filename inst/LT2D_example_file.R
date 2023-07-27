@@ -1,6 +1,6 @@
 library(devtools)
 
-install_github("david-borchers/LT2Dcal")
+install_github("david-borchers/LT2Dcal",force=TRUE)
 
 library('LT2D')
 
