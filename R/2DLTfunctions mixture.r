@@ -4266,24 +4266,27 @@ hessianCalcs <- function(par, hessian, corrFlag=0.8, output){
 #'plot(ys,p.vals,type='l',xlab='Perp. distance, x',ylab=expression(p(x)))
 #'
 #'@export
-p.approx = function(y,x,h.fun,b,xy=FALSE) {
+p.approx = function(y,x,h.fun,b,xy=FALSE,pdf=FALSE) {
   
   simpson = function(y1,y2,h.fun,x,b) (h.fun(y1,x,b)+4*h.fun((y1+y2)/2,x,b)+h.fun(y1,x,b))*(y2-y1)/6
   
   if(is.character(h.fun)) h.fun = match.fun(h.fun)
   nx = length(x)
   ny = length(y)
-  h.int.mat = matrix(rep(0,nx*ny),nrow=nx,
-                     dimnames=list(x=as.character(signif(xs,2)),y=as.character(signif(ys,2))))
+  fxy = h.int.mat = matrix(rep(0,nx*ny),nrow=nx,
+                           dimnames=list(x=as.character(signif(xs,2)),y=as.character(signif(ys,2))))
   h.int = rep(0,nx)
   for(i in 1:length(x)) {
     h.int.mat[i,ny] = simpson(y[ny],y[ny]+(y[ny]-y[ny-1]),h.fun,x[i],b)
+    fxy[i,ny] = exp(-h.int.mat[i,ny]) *  h.fun(y[ny],x[i],b)
     for(j in (ny-1):1){
       h.int.mat[i,j] = h.int.mat[i,(j+1)] + simpson(y[j],y[j+1],h.fun,x[i],b)
+      fxy[i,j] = exp(-h.int.mat[i,j]) *  h.fun(y[j],x[i],b)
     }
   }
   p.mat = 1 - exp(-h.int.mat)
   p = p.mat[,1]
-  if(xy) return(p.mat)
+  if(pdf) return(fxy)
+  else if(xy) return(p.mat)
   else return(p)
 }

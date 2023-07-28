@@ -20,7 +20,7 @@ ys = seq(0,ystart,length=ny)
 h.fun.name = "h1"
 b=c(-3, 0.8)
 h.fun = match.fun(h.fun.name) # make h.fun the function specified via a character variable
-par(mfrow=c(1,2))
+par(mfrow=c(1,3))
 # plot perp dist detection function
 p.vals = p.approx(ys,xs,h.fun,b) # detection function values to plot
 plot(xs,p.vals,type='l',ylim=range(0,p.vals),xlab='Perp. distance, x',ylab=expression(p(x)))
@@ -28,6 +28,10 @@ plot(xs,p.vals,type='l',ylim=range(0,p.vals),xlab='Perp. distance, x',ylab=expre
 pmat = p.approx(ys,xs,h.fun,b,xy=TRUE)
 persp(x=xs,y=ys,z=pmat,theta=120,phi=25, xlab="Perp dist (x)", ylab="Forward dist (y)",
       zlab="p(det by y)")
+# and now the 2D pdf:
+pdfmat = p.approx(ys,xs,h.fun,b,pdf=TRUE)
+persp(x=xs,y=ys,z=pdfmat,theta=45,phi=25, xlab="Perp dist (x)", ylab="Forward dist (y)",
+      zlab="f(y|x)")
 
 # Set up and plot density function 
 pi.fun.name = "pi.chnorm" # specify density function name

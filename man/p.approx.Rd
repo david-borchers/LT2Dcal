@@ -4,7 +4,7 @@
 \alias{p.approx}
 \title{Calculates perp. dist. detection function approximation}
 \usage{
-p.approx(y, x, h.fun, b, xy = FALSE)
+p.approx(y, x, h.fun, b, xy = FALSE, pdf = FALSE)
 }
 \arguments{
 \item{y}{Forward distance integration points}
