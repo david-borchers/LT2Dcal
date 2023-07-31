@@ -4,7 +4,7 @@
 \alias{Sy}
 \title{Calculates survivor function}
 \usage{
-Sy(x, y, ymax, b, hr)
+Sy(x, y, ymax, b, hr, notInf = 10000)
 }
 \arguments{
 \item{x}{perpendicular distance (scalar)}
@@ -14,6 +14,9 @@ Sy(x, y, ymax, b, hr)
 \item{ymax}{largest forward distance}
 
 \item{b}{vector of detection hazard function parameters}
+
+\item{notInf}{Value of hfun evaluation above which the hazard is treated as
+infinite when integrating, and therefore survival is assumed to be zero.}
 
 \item{hfun}{detection hazard function}
 }

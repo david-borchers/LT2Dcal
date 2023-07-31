@@ -3033,6 +3033,8 @@ poisint=function(y,x,ymin,ymax,hfun,b,pi.x,logphi,W,lscale=1){
 #' @param ymax largest forward distance
 #' @param hfun detection hazard function
 #' @param b vector of detection hazard function parameters
+#' @param notInf Value of hfun evaluation above which the hazard is treated as
+#' infinite when integrating, and therefore survival is assumed to be zero.
 #' @details Calculates probability of making it from forward distance
 #' \code{ymax} to \code{y} without being detected.
 #'
@@ -3046,7 +3048,7 @@ poisint=function(y,x,ymin,ymax,hfun,b,pi.x,logphi,W,lscale=1){
 #' Sy(0,0.1,ymax,b,h2)
 #' }
 #' @export
-Sy=function(x,y,ymax,b,hr) {
+Sy=function(x,y,ymax,b,hr,notInf=10000) {
   if (!class(hr)=='character'){stop('hr must be passed as a
                                     character')}
   if (class(b)!='list') stop('b must be a list')
@@ -3075,8 +3077,9 @@ Sy=function(x,y,ymax,b,hr) {
     # still preserved for the b=as.list(b[[i]]) below
     if (class(b)!='list') b = list(b,NULL)
     for(i in 1:n){
-      pS[i]=exp(-integrate(match.fun(hr),y[i],ymax,x=x[i],b=b,
-                           subdivisions = 1000L)$value)
+      if(match.fun(hr)(y=y[i],x=x[i],b=b)>notInf) pS[i] = 0
+      else pS[i]=exp(-integrate(match.fun(hr),y[i],ymax,x=x[i],b=b,
+                                subdivisions = 1000L)$value)
     }
   }
   return(pS)
