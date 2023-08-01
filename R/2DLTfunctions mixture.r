@@ -779,13 +779,18 @@ fyx=function(y,x,b,hr,ystart,nint=100)
 
 #'@title Numerical calculation of perpendicular detection function from a hazard
 #'
-#'@description Calculates the perpendicular detection function, \eqn{p(x)}, for a given hazard.
+#'@description Calculates the perpendicular detection function, \eqn{p(x)}, for a 
+#'given hazard.
 #'
 #'@param x scale or vector; perp. distance
 #'@param b two-element vector of hazard rate parameters, some of whihc may be logged
-#'@param hr hazard rate function
+#'@param hrname hazard rate function
 #'@param ystart max forward distance at which could possibly detect animal (see details).
-#'@param nint number of intervals in numerical integration.
+#'@param notInf Value of hrname function evaluation, above which the hazard is treated as
+#' infinite when integrating, and therefore detection probabiity is assumed to be 1.
+#'@param almostzero Smallest value of forward distance used in integration, expressed 
+#'as a fracton of ystart This is used as an ad-hoc way of avoiding divergent integrals 
+#'due to the hazard being infinite at forward distance zero.
 #'@return probability of detection at x
 #'@examples
 #'gridx=seq(0,1,length=50)
@@ -794,10 +799,16 @@ fyx=function(y,x,b,hr,ystart,nint=100)
 #'plot(gridx,p.x,type="l",ylim=c(0,max(p.x)),
 #' xlab="prep. distance, x",ylab="p(x)")
 #'@export
-px=function(x,b,hrname,ystart){
+px=function(x,b,hrname,ystart,notInf=10000, almostzero=1/1000){
   if (!class(hrname)=='character'){stop('message from px: hr must be supplied as
                                     a character')}
-  return(1-Sy(x,rep(0.0001,length(x)),ystart,b,hrname))
+  nx = length(x)
+  y0 = rep(ystart*almostzero,nx)
+  p = rep(1,nx)
+  ones = which(match.fun(hrname)(y=y0,x=x,b=b)>notInf)
+  if(length(ones)==0) p = 1-Sy(x,y0,ystart,b,hrname)
+  else if(length(ones)<nx) p[-ones] = 1-Sy(x[-ones],y0[-ones],ystart,b,hrname)
+  return(p)
 }
 
 
@@ -2031,7 +2042,7 @@ LT2D.fit = function(DataFrameInput,hr,b,ystart,pi.x,logphi,w,formulas=NULL,
 #' @export
 negloglik.yx=function(pars,y,x,hr,ystart,pi.x,w,rounded.points=0,
                       DesignMatrices=NULL, skeleton=NULL, debug=FALSE,
-                      returnB = FALSE){
+                      returnB = FALSE, almostzero=1/1000){
   # The only work we want to have to redo is make the linear predictors.
   # so we allow design matrices to be passed as arguments, and we make the
   # linear predictors and remake b appropriately
@@ -2094,8 +2105,8 @@ negloglik.yx=function(pars,y,x,hr,ystart,pi.x,w,rounded.points=0,
   # calculate denominator:
   if (is.null(DesignMatrices)){                 # Easy with no covariates:
     b.normal <- as.list(sapply(b, '[[', 1))     # Extract the 'normal' b
-
-    int=integrate(f=p.pi.x,lower=0,upper=w,b=b.normal,hr=hrname,
+    lower = almostzero*ystart
+    int=integrate(f=p.pi.x,lower=lower,upper=w,b=b.normal,hr=hrname,
                   ystart=ystart,pi.x=piname,logphi=logphi,w=w)
 
     denom=n*log(int$value)
