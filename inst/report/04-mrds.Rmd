@@ -1,0 +1,7 @@
+# Mark Recapture Distance Sampling
+
+##Introduction
+
+Mark Recapture Distance Sampling (MRDS) combines the principles of mark-recapture and standard distance sampling. 2 observers each travel along the same transect and record the animals they see and the perpendicular distance. By including the capture history of each animal we have enough information to allow for non-zero detection probability on the line, but we lose the pooling robustness property, so unmodelled heterogeneity will cause biased estimates. This model also assumes that the observers perfectly match which animals they both saw and which ones only one observer saw. If the animals don't have uniquely identifying features and there is any kind of animal movement then this assumption will not hold. We explore the impact of violating the perfect matching assumption in the second simulation.
+
+## Simulation 1
