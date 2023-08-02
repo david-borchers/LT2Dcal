@@ -22,3 +22,9 @@ sharing-your-book
 publishing
 pages
 metadata-for-sharing
+url-your-book-url-like-httpsbookdown.orgyihuibookdown
+mark-recapture-distance-sampling
+simulation-1
+simulation
+introduction
+fig:unnamed-chunk-2

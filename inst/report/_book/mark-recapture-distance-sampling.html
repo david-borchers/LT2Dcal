@@ -4,13 +4,13 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 3 Cross-references | A Minimal Book Example</title>
+  <title>Chapter 6 Mark Recapture Distance Sampling | A Minimal Book Example</title>
   <meta name="description" content="<p>This is a minimal example of using the bookdown package to write a book.
 The HTML output format for this example is bookdown::gitbook,
 set in the _output.yml file.</p>" />
   <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 3 Cross-references | A Minimal Book Example" />
+  <meta property="og:title" content="Chapter 6 Mark Recapture Distance Sampling | A Minimal Book Example" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="<p>This is a minimal example of using the bookdown package to write a book.
@@ -19,7 +19,7 @@ set in the _output.yml file.</p>" />
   <meta name="github-repo" content="rstudio/bookdown-demo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 3 Cross-references | A Minimal Book Example" />
+  <meta name="twitter:title" content="Chapter 6 Mark Recapture Distance Sampling | A Minimal Book Example" />
   
   <meta name="twitter:description" content="<p>This is a minimal example of using the bookdown package to write a book.
 The HTML output format for this example is bookdown::gitbook,
@@ -36,8 +36,8 @@ set in the _output.yml file.</p>" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="hello-bookdown.html"/>
-<link rel="next" href="parts.html"/>
+<link rel="prev" href="footnotes-and-citations.html"/>
+<link rel="next" href="blocks.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -194,7 +194,8 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="6" data-path="mark-recapture-distance-sampling.html"><a href="mark-recapture-distance-sampling.html"><i class="fa fa-check"></i><b>6</b> Mark Recapture Distance Sampling</a>
 <ul>
-<li class="chapter" data-level="6.1" data-path="mark-recapture-distance-sampling.html"><a href="mark-recapture-distance-sampling.html#simulation"><i class="fa fa-check"></i><b>6.1</b> Simulation</a></li>
+<li class="chapter" data-level="6.1" data-path="mark-recapture-distance-sampling.html"><a href="mark-recapture-distance-sampling.html#introduction"><i class="fa fa-check"></i><b>6.1</b> Introduction</a></li>
+<li class="chapter" data-level="6.2" data-path="mark-recapture-distance-sampling.html"><a href="mark-recapture-distance-sampling.html#simulation"><i class="fa fa-check"></i><b>6.2</b> Simulation</a></li>
 </ul></li>
 <li class="chapter" data-level="7" data-path="blocks.html"><a href="blocks.html"><i class="fa fa-check"></i><b>7</b> Blocks</a>
 <ul>
@@ -229,92 +230,28 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="cross" class="section level1 hasAnchor" number="3">
-<h1><span class="header-section-number">Chapter 3</span> Cross-references<a href="cross.html#cross" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>Cross-references make it easier for your readers to find and link to elements in your book.</p>
-<div id="chapters-and-sub-chapters" class="section level2 hasAnchor" number="3.1">
-<h2><span class="header-section-number">3.1</span> Chapters and sub-chapters<a href="cross.html#chapters-and-sub-chapters" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>There are two steps to cross-reference any heading:</p>
-<ol style="list-style-type: decimal">
-<li>Label the heading: <code># Hello world {#nice-label}</code>.
-<ul>
-<li>Leave the label off if you like the automated heading generated based on your heading title: for example, <code># Hello world</code> = <code># Hello world {#hello-world}</code>.</li>
-<li>To label an un-numbered heading, use: <code># Hello world {-#nice-label}</code> or <code>{# Hello world .unnumbered}</code>.</li>
-</ul></li>
-<li>Next, reference the labeled heading anywhere in the text using <code>\@ref(nice-label)</code>; for example, please see Chapter <a href="cross.html#cross">3</a>.
-<ul>
-<li>If you prefer text as the link instead of a numbered reference use: <a href="cross.html#cross">any text you want can go here</a>.</li>
-</ul></li>
-</ol>
+<div id="mark-recapture-distance-sampling" class="section level1 hasAnchor" number="6">
+<h1><span class="header-section-number">Chapter 6</span> Mark Recapture Distance Sampling<a href="mark-recapture-distance-sampling.html#mark-recapture-distance-sampling" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="introduction" class="section level2 hasAnchor" number="6.1">
+<h2><span class="header-section-number">6.1</span> Introduction<a href="mark-recapture-distance-sampling.html#introduction" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Mark Recapture Distance Sampling (MRDS) combines the principles of mark-recapture and standard distance sampling. 2 observers each travel along the same transect and record the animals they see and the perpendicular distance. By including the capture history of each animal we have enough information to allow for non-zero detection probability on the line, but we lose the pooling robustness property, so unmodelled heterogeneity will cause biased estimates. This model also assumes that the observers perfectly match which animals they both saw and which ones only one observer saw. If the animals don’t have uniquely identifying features and there is any kind of animal movement then this assumption will not hold. We explore the impact of violating the perfect matching assumption in this simulation.</p>
 </div>
-<div id="captioned-figures-and-tables" class="section level2 hasAnchor" number="3.2">
-<h2><span class="header-section-number">3.2</span> Captioned figures and tables<a href="cross.html#captioned-figures-and-tables" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Figures and tables <em>with captions</em> can also be cross-referenced from elsewhere in your book using <code>\@ref(fig:chunk-label)</code> and <code>\@ref(tab:chunk-label)</code>, respectively.</p>
-<p>See Figure <a href="cross.html#fig:nice-fig">3.1</a>.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="cross.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">4</span>, .<span class="dv">1</span>, .<span class="dv">1</span>))</span>
-<span id="cb1-2"><a href="cross.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(pressure, <span class="at">type =</span> <span class="st">&#39;b&#39;</span>, <span class="at">pch =</span> <span class="dv">19</span>)</span></code></pre></div>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:nice-fig"></span>
-<img src="_main_files/figure-html/nice-fig-1.png" alt="Plot with connected points showing that vapor pressure of mercury increases exponentially as temperature increases." width="80%" />
+<div id="simulation" class="section level2 hasAnchor" number="6.2">
+<h2><span class="header-section-number">6.2</span> Simulation<a href="mark-recapture-distance-sampling.html#simulation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>To see the affect of imperfect matching, we simulated 200 animals with a uniform distribution across the study area and simulated an observer detecting animals with a hazard rate detection function with sigma = 0.8, beta = 6. We then had the animals move away in response to the observer with three levels of avoidance, and simulated the second observer detecting the animals in their new positions with the same detection function as the first observer.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="mark-recapture-distance-sampling.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">avoidance_demo</span>(Nanimals, <span class="dv">1</span>)</span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-2"></span>
+<img src="_main_files/figure-html/unnamed-chunk-2-1.png" alt="Demonstration of different avoidance levels" width="50%" />
 <p class="caption">
-Figure 3.1: Here is a nice figure!
+Figure 6.1: Demonstration of different avoidance levels
 </p>
 </div>
-<p>Don’t miss Table <a href="cross.html#tab:nice-tab">3.1</a>.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="cross.html#cb2-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(</span>
-<span id="cb2-2"><a href="cross.html#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(pressure, <span class="dv">10</span>), <span class="at">caption =</span> <span class="st">&#39;Here is a nice table!&#39;</span>,</span>
-<span id="cb2-3"><a href="cross.html#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">booktabs =</span> <span class="cn">TRUE</span></span>
-<span id="cb2-4"><a href="cross.html#cb2-4" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
-<table>
-<caption><span id="tab:nice-tab">Table 3.1: </span>Here is a nice table!</caption>
-<thead>
-<tr class="header">
-<th align="right">temperature</th>
-<th align="right">pressure</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="right">0</td>
-<td align="right">0.0002</td>
-</tr>
-<tr class="even">
-<td align="right">20</td>
-<td align="right">0.0012</td>
-</tr>
-<tr class="odd">
-<td align="right">40</td>
-<td align="right">0.0060</td>
-</tr>
-<tr class="even">
-<td align="right">60</td>
-<td align="right">0.0300</td>
-</tr>
-<tr class="odd">
-<td align="right">80</td>
-<td align="right">0.0900</td>
-</tr>
-<tr class="even">
-<td align="right">100</td>
-<td align="right">0.2700</td>
-</tr>
-<tr class="odd">
-<td align="right">120</td>
-<td align="right">0.7500</td>
-</tr>
-<tr class="even">
-<td align="right">140</td>
-<td align="right">1.8500</td>
-</tr>
-<tr class="odd">
-<td align="right">160</td>
-<td align="right">4.2000</td>
-</tr>
-<tr class="even">
-<td align="right">180</td>
-<td align="right">8.8000</td>
-</tr>
-</tbody>
-</table>
+<p>To account for the imperfect matching we set that any animals detected on the second occasion within 0.1 of an animal detected on the first animal were recorded as the same animal, taking the closest as the match if there were multiple within this range. Any animals further than 0.5 were recorded as different, and generated the probability of matching animals within the range using a hazard rate with parameters 0.15, 2.5.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="mark-recapture-distance-sampling.html#cb2-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">seq</span>(match_limits[<span class="dv">1</span>],match_limits[<span class="dv">2</span>],<span class="fl">0.01</span>)</span>
+<span id="cb2-2"><a href="mark-recapture-distance-sampling.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(x, <span class="fu">hazard_rate</span>(x<span class="sc">-</span>match_limits[<span class="dv">1</span>],match_param[<span class="dv">1</span>],match_param[<span class="dv">2</span>]), <span class="at">xlab =</span> <span class="st">&quot;Distance from 1st animal&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Probability of Match&quot;</span>, <span class="at">main =</span> <span class="st">&quot;Match Probability&quot;</span>, <span class="at">type =</span> <span class="st">&quot;l&quot;</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-3-1.png" width="50%" /></p>
+<p>Explain bias results
+Bias plot</p>
 
 </div>
 </div>
@@ -323,8 +260,8 @@ Figure 3.1: Here is a nice figure!
           </div>
         </div>
       </div>
-<a href="hello-bookdown.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="parts.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="footnotes-and-citations.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="blocks.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -355,7 +292,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/USERNAME/REPO/edit/BRANCH/02-cross-refs.Rmd",
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/04-mrds.Rmd",
 "text": "Edit"
 },
 "history": {
