@@ -1134,8 +1134,8 @@ round.lik = function(rounded,pi.x,logphi,rmin,ymax,hr,b,w){
 #'
 simXY=function(N,pi.x,logphi,hr,b,w,ystart,xSampL=5*N,discardNotSeen=TRUE,...)
 {
-  if (class(hr)!='character'|class(pi.x)!='character'){
-    stop('SimXY: hr and pi.x must be supplied as characters')}
+#  if (class(hr)!='character'|class(pi.x)!='character'){
+#    stop('SimXY: hr and pi.x must be supplied as characters')}
 
   xV=seq(0,w,length=xSampL)
 
@@ -2213,7 +2213,7 @@ Eyx=function(y,x,b,hr,ystart)
 #-------------------------------------------------------------------------------
 {
   if(length(y)!=length(x)) stop("Lengths of x and y must be the same.")
-  if (class(hr)!='character'){stop('Eyx: hr must be supplied as character')}
+#  if (class(hr)!='character'){stop('Eyx: hr must be supplied as character')}
   n=length(x)
   int=rep(NA,n)
   hr=match.fun(hr)
@@ -2271,7 +2271,7 @@ simnhPP=function(x,b,ystart,hr,miss=TRUE,ylo=1e-5)
 #            Misses are indicated by y==-999.
 #-------------------------------------------------------------------------------
 {
-  if (class(hr)!='character'){stop('simnhPP: hr must be supplied as character')}
+#  if (class(hr)!='character'){stop('simnhPP: hr must be supplied as character')}
   obj=function(y,x,b,hr,ystart,u) return(((1-exp(-Eyx(y,x,b,hr,ystart)))-u)^2)
   n=length(x)
   u=runif(n)
@@ -3015,8 +3015,8 @@ calc.lpars=function(n,ymin,ymax,W,hfun,b,pi.x,logphi,nx=100,ny=100,inflate=1.05)
 #' }
 #' @export
 poisint=function(y,x,ymin,ymax,hfun,b,pi.x,logphi,W,lscale=1){
-  if (!class(hfun)=="character"){stop('Message from poisint:
-                                      hfun must be supplied as character')}
+#  if (!class(hfun)=="character"){stop('Message from poisint:
+#                                      hfun must be supplied as character')}
   h=match.fun(hfun)
   pix=match.fun(pi.x)
   nx=length(x)
@@ -4269,7 +4269,15 @@ hessianCalcs <- function(par, hessian, corrFlag=0.8, output){
 #'@param x perpendicular distances at which detection probability is to be calculated
 #'@param h.fun The hazard function (either a function or a character variable of the function name)
 #'@param b parameter vector for hazard function \code{h.fun}.
-#'@return probability of detection at each of the \code{xs}.
+#'@param what Determines what is returned: 'fxy' results in the pdf of y, given x being returned, 
+#''pxy' results in the probability of detection by each y being returned, 'px' results in the 
+#'probability of detection at all for each x being returned. Anything else results in 
+#'all three of these being returned.
+#'@return If \code{what} is 'fxy', a matrix containing the pdf of y, for each x (matrix row) is 
+#'returned. If 'pxy' a matrix with the probability of detection by each y for each x (matrix row) 
+#'is returned. If 'px' a vector comprising the probability of detection at all for each x is 
+#'returned. Anything else results in a list with all three of these being returned, in elements 
+#'\code{$fmat}, \code{$pmat}, and \code{p}, respectively .
 #'@examples
 #'xs = seq(0,w,length=100)
 #'ys = seq(0,ystart,length=100)
@@ -4280,27 +4288,30 @@ hessianCalcs <- function(par, hessian, corrFlag=0.8, output){
 #'plot(ys,p.vals,type='l',xlab='Perp. distance, x',ylab=expression(p(x)))
 #'
 #'@export
-p.approx = function(y,x,h.fun,b,xy=FALSE,pdf=FALSE) {
+p.approx = function(y,x,h.fun,b,what="p") {
   
   simpson = function(y1,y2,h.fun,x,b) (h.fun(y1,x,b)+4*h.fun((y1+y2)/2,x,b)+h.fun(y1,x,b))*(y2-y1)/6
   
-  if(is.character(h.fun)) h.fun = match.fun(h.fun)
+  almostInf = 1000 # value of hazard at which detection probability is effectively 1
+  h.fun = match.fun(h.fun)
   nx = length(x)
   ny = length(y)
   fxy = h.int.mat = matrix(rep(0,nx*ny),nrow=nx,
-                           dimnames=list(x=as.character(signif(xs,2)),y=as.character(signif(ys,2))))
+                           dimnames=list(x=as.character(signif(x,5)),y=as.character(signif(y,5))))
   h.int = rep(0,nx)
   for(i in 1:length(x)) {
     h.int.mat[i,ny] = simpson(y[ny],y[ny]+(y[ny]-y[ny-1]),h.fun,x[i],b)
     fxy[i,ny] = exp(-h.int.mat[i,ny]) *  h.fun(y[ny],x[i],b)
     for(j in (ny-1):1){
       h.int.mat[i,j] = h.int.mat[i,(j+1)] + simpson(y[j],y[j+1],h.fun,x[i],b)
-      fxy[i,j] = exp(-h.int.mat[i,j]) *  h.fun(y[j],x[i],b)
+      if(h.int.mat[i,j]>almostInf) fxy[i,j] = 0
+      else fxy[i,j] = exp(-h.int.mat[i,j]) *  h.fun(y[j],x[i],b)
     }
   }
   p.mat = 1 - exp(-h.int.mat)
   p = p.mat[,1]
-  if(pdf) return(fxy)
-  else if(xy) return(p.mat)
-  else return(p)
+  if(what=="fxy") return(fxy)
+  else if(what=="pxy") return(p.mat)
+  else if(what=="px") return(p)
+  else return(list(p=p,fmat=fxy,pmat=pmat))
 }
