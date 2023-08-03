@@ -32,7 +32,7 @@ yDistForg=function(gy,ymax,b,hr,tolerance=0.0001,...){
   gOPT=function(y,ymax,b,hr,gy) {
     g=1-Sy(y=y,x=0,ymax=ymax,b=b,hr=hr)
     return(abs(g-gy))}
-  opt=optimise(f = gOPT,interval=c(0,ystart),ymax=ymax,b=b,hfun=hfun,gy=gy,tol=tolerance)
+  opt=optimise(f = gOPT,interval=c(0,ystart),ymax=ymax,b=b,hr=hr,gy=gy,tol=tolerance)
   return(opt$minimum)
 }
 
@@ -45,6 +45,7 @@ yDistForg=function(gy,ymax,b,hr,tolerance=0.0001,...){
 #'@details  If n=NULL and ymin=NULL then use \link{\code{simXY}}.  When n!=NULL this function iteratively calls \link{\code{simXY}} until n simulated observations are reached.
 #'When ymin!=NULL this function discards simulated data with Y-coordinates <ymin.  It is intended that \code{ymin}
 #' is calculated by a call of \code{yDistForg} to determine the y distance at which g(y)= a required detection probability
+#' @export
 #' @examples 
 #' \dontrun{
 #'minY=yDistForg(gy=0.8,ymax=dfit.hn$ystart,b=dfit.hn$b,hfun=dfit.hn$hr)
