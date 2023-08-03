@@ -296,47 +296,10 @@ get_bias <- function(Nrep, Nanimals){
 # 2D Distance -------------------------------------------------------------
 #default params are best model for real data
 library(LT2D)
-get_2d_bias <- function(Nrep,Nanimals,b = c(4.945767, 0.714222), logphi = c(6.520254,4.754897), w = 1500, ystart = 1300){
-  mle.N <- c()
-  h.fun.name = "h1"
-  h.fun = match.fun(h.fun.name) # make h.fun the function specified via a character variable
-  
-  pi.fun.name = "pi.hnorm" # specify density function name
-  pi.fun = match.fun(pi.fun.name) # make Dfun the function specified via a character variable
-  for(i in 1:Nrep){
-    
-    simDat = simXY(200, pi.fun.name,
-                   logphi, 'h1', 
-                   b, w, 
-                   ystart)
-    all.1s <- rep(1,length(simDat$locs$x))
-    obj <- 1:length(simDat$locs$x)
-    sim.df <- data.frame(x = simDat$locs$x,
-                         y = simDat$locs$y,
-                         stratum = all.1s,
-                         transect = all.1s,
-                         L = 10,
-                         area = 2*w*10,
-                         object = obj,
-                         size = all.1s)
-    fit <- LT2D.fit(DataFrameInput = sim.df,
-                    hr = 'h1',
-                    b = b,
-                    ystart = ystart,
-                    pi.x = 'pi.hnorm',
-                    logphi = logphi,
-                    w = w,
-                    hessian = TRUE)
-    mle.N[i] <- fit$ests[nrow(fit$ests),ncol(fit$ests)]
-  }
-  return(((mle.N-Nanimals)/Nanimals)*100)
-}
-
-# 2d vs MCR ---------------------------------------------------------------
-
 #Fits 2D model and no movment,random movement and random movement w/ imperfect matching
-MCR_2D <- function(Nrep, Nanimals, b= b1, 
-                      logphi = logphi1, w = w1, ystart = ystart1,
+MCR_2D <- function(Nrep, Nanimals, 
+                   b = c(4.945767, 0.714222), logphi = c(6.520254,4.754897),
+                   w = 1500, ystart = 1300,
                    match_limits = c(200,500), match_params = c(250,3)){
   ests_2d <- c()
   chapman.nomvmnt <- c()
