@@ -1,0 +1,40 @@
+# 2D Distance Sampling
+```{r, include=FALSE}
+source("code.R")
+b1 = c(4.945767, 0.714222); logphi1 = c(6.520254,4.754897) 
+w1 = 1500; ystart1 = 1300
+```
+## Introduction
+2D Distance Sampling builds on standard distance sampling by including the forward distance to the detected animal as well as the perpendicular distance. This removes the assumptions that the animals are uniformly distributed and that p(0) = 1, so this method is useful for situations where the other methods covered previously are not suitable. 
+
+##Simulation - Non Uniform Distribution
+We start by simulating attraction to the line by generating 200 animals using a half normal distribution with parameters `r exp(logphi)`. We used a hazard rate detection function with parameters `r b`. The parameters chosen are the best model for our real data.  
+```{r, echo = F, warnings = F}
+suppressWarnings(simdata <- MCR_2D(99,200))
+bias_2d <- 100*(simdata$X2D - 200)/200
+```
+We then fitted a model using a half normal distribution for animal density and hazard detection function. We did not fit any other models for efficiency purposes. This gives a bias of `r mean(bias_2d)` \pm `r 1.96*sqrt(var(bias_2d)/length(bias_2d))`, so we can confirm it is unbiased. 
+## Simulation - Comparison to Mark Recapture
+Double Observer mark recapture methods are the current standard for estimating abundance of snow leopard prey. Our previous simulations have shown these have serious flaws, so we used both a 2D distance model and the Chapman estimator to estimate the abundance from the same data (simulated using the same parameters as above).
+```{r, echo = F, fig.cap="Histograms of abundance estimates using 2D distance sampling and the Chapman estimator"}
+par(mfrow = c(1,2))
+hist(simdata$X2D, main = "2D Distance", xlab = "Estimate of N")
+abline(v = 200, col = "blue")
+hist(simdata$MCR.nomvmnt, main = "Chapman", xlab = "Estimate of N", xlim = c(min(simdata$MCR.nomvmnt),max(c(max(simdata$MCR.nomvmnt),200))))
+abline(v = 200, col = "blue")
+```
+The Chapman estimator was significantly negatively biased due to the unmodelled heterogeneity in the population. Adding random animal movement and imperfect matching gives a similar problem.  
+```{r, echo = F, fig.cap = "Histograms of abundance estimates using the Chapman estimator with random movment"}
+par(mfrow = c(1,2))
+hist(simdata$MCR.move, main = "Perfect Matching", xlab = "Estimate of N", xlim = c(min(simdata$MCR.move),max(c(max(simdata$MCR.move),200))))
+abline(v = 200, col = "blue")
+hist(simdata$MCR.imperf, main = "Imperfect Matching", xlab = "Estimate of N", xlim = c(min(simdata$MCR.imperf), max(c(max(simdata$MCR.imperf)+10,200))))
+abline(v = 200, col = "blue")
+```
+From this it is clear that double-observer mark-recapture will yield significantly biased estimates of abundance of snow leopard prey, even if the animals do not move and the observers can perfectly match the individuals seen. We recommend instead using 2D distance sampling, as it accounts for the non uniform animal distribution as well as the declining detectability with distance. It is also requires less time to be spent surveying, as each transect only need to be walked once. 
+
+
+##Further Reading
+Borchers, D.L. and Cox, M.J. (2016). Distance sampling detection functions: 2D or not 2D? Biometrics, 73(2), pp.593–602. doi:https://doi.org/10.1111/biom.12581.
+
+Suryawanshi, K.R., Bhatnagar, Y.V. and Mishra, C. (2012). Standardizing the double-observer survey method for estimating mountain ungulate prey of the endangered snow leopard. Oecologia, 169(3), pp.581–590. doi:https://doi.org/10.1007/s00442-011-2237-0.
