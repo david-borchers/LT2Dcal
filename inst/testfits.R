@@ -57,8 +57,8 @@ dev.off()
 
 # Try fit a model
 # fabricate some survey specification objects
-L= 100
-A = 1000
+L= sum(unique(dat1$Transect_Length))
+A = 2*w*L
 all.1s <- rep(1,length(xobs))
 obj <- 1:length(xobs)
 sim.df <- data.frame(x = xobs,
@@ -163,6 +163,8 @@ adj.df <- data.frame(x = xjitter,
                      area = A,
                      object = obj,
                      size = all.1s)
+
+# half-normal
 fitadj <- LT2D.fit(DataFrameInput = adj.df,
                 hr = h.fun.name,
                 # start values for b:
@@ -173,6 +175,17 @@ fitadj <- LT2D.fit(DataFrameInput = adj.df,
                 logphi = logphi,
                 w = w,
                 hessian = TRUE)
+fitadj$ests
+fit$ests
+
+sigma.cv = exp(fitadj$fit$par[3] + c(-1,1)*1.96*sqrt(fitadj$fit$vcov[3,3]))
+pi.est = match.fun(pi.fun.name)(xs,fitadj$fit$par[3],w)/match.fun(pi.fun.name)(0,fitadj$fit$par[3],w)
+pi.lcl = match.fun(pi.fun.name)(xs,log(sigma.cv[1]),w)/match.fun(pi.fun.name)(0,log(sigma.cv[1]),w)
+pi.ucl = match.fun(pi.fun.name)(xs,log(sigma.cv[2]),w)/match.fun(pi.fun.name)(0,log(sigma.cv[2]),w)
+plot(xs,pi.est,type="l",ylim=c(0,1))
+lines(xs,pi.lcl,lty=2)
+lines(xs,pi.ucl,lty=2)
+
 b.est = fitadj$fit$par[1:2]
 p.vals = p.approx(ys,xs,h.fun,b.est) # detection function values to plot
 plot(xs,p.vals,type='l',ylim=range(0,p.vals),xlab='Perp. distance, x',ylab=expression(p(x)))
@@ -196,3 +209,45 @@ par(mfrow=c(1,2))
 gof.LT2D(fitadj, plot=TRUE)
 par(mfrow=c(1,2))
 plot(fitadj)
+
+
+# Complimentary half-normal
+pi.fun.name = "pi.chnorm"
+logphi = c(0,log(2000))
+fitadj.chn <- LT2D.fit(DataFrameInput = adj.df,
+                   hr = h.fun.name,
+                   # start values for b:
+                   b = b,
+                   ystart = ystart,
+                   pi.x = pi.fun.name,
+                   # start values for logphi:
+                   logphi = logphi,
+                   w = w,
+                   hessian = TRUE)
+fitadj.chn$ests
+fitadj$ests
+fit$ests
+
+b.est = fitadj.chn$fit$par[1:2]
+p.vals = p.approx(ys,xs,h.fun,b.est) # detection function values to plot
+plot(xs,p.vals,type='l',ylim=range(0,p.vals),xlab='Perp. distance, x',ylab=expression(p(x)))
+# and now the 2D detection function:
+pmat = p.approx(ys,xs,h.fun,b.est,xy=TRUE)
+persp(x=xs,y=ys,z=pmat,theta=120,phi=25, xlab="Perp dist (x)", ylab="Forward dist (y)",
+      zlab="p(det by y)")
+# and now the 2D pdf:
+pdfmat = p.approx(ys,xs,h.fun,b.est,pdf=TRUE)
+persp(x=xs,y=ys,z=pdfmat,theta=45,phi=25, xlab="Perp dist (x)", ylab="Forward dist (y)",
+      zlab="f(y|x)")
+
+# plot perp dist distribution 
+logphi.est = fitadj.chn$fit$par[3:length(fitadj.chn$fit$par)]
+D.pdf = match.fun(pi.fun.name)(xs,logphi.est,w) # density pdf values to plot
+plot(xs,D.pdf,type='l',ylim=range(0,D.pdf),xlab='Perp distance, x',ylab=expression(pi(x)))
+
+
+fitadj.chn$fit$AIC
+par(mfrow=c(1,2))
+gof.LT2D(fitadj.chn, plot=TRUE)
+par(mfrow=c(1,2))
+plot(fitadj.chn)
