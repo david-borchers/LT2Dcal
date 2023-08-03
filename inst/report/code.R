@@ -55,6 +55,69 @@ hazard_rate <- function(x,sigma, beta){
   return(1-exp(-(x/sigma)**-beta))
 }
 
+# p(0) < 1 ----------------------------------------------------------------
+recapture_p0 <- function(animals,transect = 1,
+                                detectfn = "hr", hn_param = 5, hr_param = c(0.8,6),
+                                p0 = 0.8){
+  animals$distance<- abs(animals$x-transect)
+  animals$newdistance <- abs(animals$newx-transect)
+  if(detectfn =="hn"){
+    detect_prob1 <- p0*half_normal(animals$distance,hn_param)
+    detect_prob2 <- p0*half_normal(animals$newdistance,hn_param)
+  }
+  if(detectfn =="hr"){
+    detect_prob1 <- p0*hazard_rate(animals$distance, hr_param[1], hr_param[2])
+    detect_prob2 <- p0*hazard_rate(animals$newdistance, hr_param[1], hr_param[2])
+  }
+  animals$obs1 <- rbinom(length(animals$id),1,detect_prob1)
+  animals$obs2 <- rbinom(length(animals$id),1,detect_prob2)
+  return(animals)
+}
+get_p0_model <- function(animals){
+  seen_animals <- animals[animals$obs1 == 1 |animals$obs2 == 1,]
+  data <- data.frame("object" = rep(seen_animals$id, each = 2),
+                     "observer" = rep(c(1,2), times = length(seen_animals$id)),
+                     "detected" = rep(0, 2*length(seen_animals$id)),
+                     "distance" = rep(0, 2*length(seen_animals$id)))
+  
+  data$detected[data$observer == 1] <- seen_animals$obs1
+  data$detected[data$observer == 2] <- seen_animals$obs2
+  
+  data$distance[data$observer == 1] <- seen_animals$distance
+  data$distance[data$observer == 2] <- seen_animals$newdistance
+  data$distance[data$observer == 1][seen_animals$obs1 == 0 & seen_animals$obs2 == 1] <- seen_animals$newdistance[seen_animals$obs1 == 0 & seen_animals$obs2 == 1]
+  data$distance[data$distance > 1] <- 1
+  model <- fit_mrds_model(data)
+  return(model)
+}
+
+get_p0_bias <- function(Nrep, Nanimals){
+  estimates <- matrix(nrow = Nrep, ncol = 4, 
+                      dimnames = list(1:Nrep, c("No","Low","Med","High")))
+  for(i in 1:Nrep){
+    for(j in 1:4){
+      if(j == 1){
+        sim <- animals <- data.frame("id" = 1:Nanimals, "x" = runif(Nanimals,0,2), "y" = runif(Nanimals,0,2))
+        sim$newx <- sim$x
+        sim$newy <- sim$y
+        animals <- recapture_p0(sim,hr_param = hr_param,p0 = 0.8)
+        model <- get_p0_model(animals)
+        estimates[i,j] <- model$Nhat
+      }else{
+        if(j == 2){avoid = low}
+        if(j == 3){avoid = med}
+        if(j == 4){avoid = high}
+        sim <- reaction(Nanimals,1,avoid)
+        animals <- recapture_p0(sim,hr_param = hr_param,p0 = p0)
+        model <- get_p0_model(animals)
+        estimates[i,j] <- model$Nhat
+      }
+    }
+  }
+  bias <- (colMeans(estimates, na.rm = T) - Nanimals)/(Nanimals/100)
+  return(bias)
+}
+
 # Imperfect Matching ------------------------------------------------------
 recapture_imperfect <- function(animals,transect = 1,
                                 detectfn = "hr", hn_param = 5, hr_param = c(0.8,6),
@@ -124,6 +187,22 @@ recapture_imperfect <- function(animals,transect = 1,
   }
   animals <- arrange(animals, id)
   return(animals)
+}
+fit_mrds_model <- function(data){
+  modelaics <- c()
+  model1 <- ddf(method = "io", dsmodel =~cds(key ="hn"),
+                mrmodel =~glm(link = "logit", formula = ~distance),
+                data = data, meta.data = list(width = 1), control = list(refit = T, nrefit = 2, debug = T))
+  modelaics[1] <- model1$criterion
+  model2 <- ddf(method = "io", dsmodel =~cds(key ="hr"),
+                mrmodel =~glm(link = "logit", formula = ~distance),
+                data = data, meta.data = list(width = 1), control = list(refit = T, nrefit = 2, debug = T))
+  modelaics[2] <- model2$criterion
+  if(which.min(modelaics) == 1){
+    return(model1)
+  }else{
+    return(model2)
+  }
 }
 
 
@@ -201,7 +280,8 @@ get_bias <- function(Nrep, Nanimals){
       if(j == 3){avoid = med}
       if(j == 4){avoid = high}
       sim <- reaction(Nanimals,1,avoid)
-      animals <- recapture_imperfect(sim)
+      animals <- recapture_imperfect(sim, hr_param = hr_param,
+                                     match_limits =  match_limits,match_param = match_param)
       perf_model <- get_perfect_model(animals)
       imperf_model <- get_imperfect_model(animals)
       estimates[i,2*j -1] <- perf_model$Nhat
@@ -210,6 +290,88 @@ get_bias <- function(Nrep, Nanimals){
     }
   }
   bias <- (colMeans(estimates, na.rm = T) - Nanimals)/(Nanimals/100)
-  par(xpd = T)
   return(bias)
+}
+
+# 2D Distance -------------------------------------------------------------
+#default params are best model for real data
+library(LT2D)
+get_2d_bias <- function(Nrep,Nanimals,b = c(4.945767, 0.714222), logphi = c(6.520254,4.754897), w = 1500, ystart = 1300){
+  mle.N <- c()
+  h.fun.name = "h1"
+  h.fun = match.fun(h.fun.name) # make h.fun the function specified via a character variable
+  
+  pi.fun.name = "pi.hnorm" # specify density function name
+  pi.fun = match.fun(pi.fun.name) # make Dfun the function specified via a character variable
+  for(i in 1:Nrep){
+    
+    simDat = simXY(200, pi.fun.name,
+                   logphi, 'h1', 
+                   b, w, 
+                   ystart)
+    all.1s <- rep(1,length(simDat$locs$x))
+    obj <- 1:length(simDat$locs$x)
+    sim.df <- data.frame(x = simDat$locs$x,
+                         y = simDat$locs$y,
+                         stratum = all.1s,
+                         transect = all.1s,
+                         L = 10,
+                         area = 2*w*10,
+                         object = obj,
+                         size = all.1s)
+    fit <- LT2D.fit(DataFrameInput = sim.df,
+                    hr = 'h1',
+                    b = b,
+                    ystart = ystart,
+                    pi.x = 'pi.hnorm',
+                    logphi = logphi,
+                    w = w,
+                    hessian = TRUE)
+    mle.N[i] <- fit$ests[nrow(fit$ests),ncol(fit$ests)]
+  }
+  return(((mle.N-Nanimals)/Nanimals)*100)
+}
+
+# 2d vs MCR ---------------------------------------------------------------
+MCR_2D <- function(Nrep, Nanimals, b= b1, 
+                      logphi = logphi1, w = w1, ystart = ystart1){
+  ests_2d <- c()
+  chapman <- c()
+  for(i in 1:Nrep){
+    #simulate animals
+    simDat = simXY(Nanimals, 'pi.hnorm',
+                   logphi, 'h1', 
+                   b, w, 
+                   ystart, discardNotSeen = FALSE)
+    seen <- simDat$locs[simDat$locs$y >= 0,]
+    all.1s <- rep(1,length(seen$x))
+    obj <- 1:length(seen$x)
+    sim.df <- data.frame(x = seen$x,
+                         y = seen$y,
+                         stratum = all.1s,
+                         transect = all.1s,
+                         L = 10,
+                         area = 2*w*10,
+                         object = obj,
+                         size = all.1s)
+    fit <- LT2D.fit(DataFrameInput = sim.df,
+                    hr = 'h1',
+                    b = b,
+                    ystart = ystart,
+                    pi.x = 'pi.hnorm',
+                    logphi = logphi,
+                    w = w,
+                    hessian = TRUE)
+    ests_2d[i] <- fit$ests[nrow(fit$ests),ncol(fit$ests)]
+    #MCR
+    
+    ##get detection probabilities for second observer
+    xs <- simDat$locs$x
+    ys <- seq(0,ystart, by = 10)
+    detect_probs <- p.approx(ys, xs, h1, b, xy=TRUE)
+    secondobs <- rbinom(Nanimals, 1, detect_probs)
+    both <- simDat$locs$x[simDat$locs$y>0 & secondobs == 1]
+    chapman[i] <- (dim(seen)[1]+1)*(sum(secondobs)+ 1)/(length(both)+1)
+  }
+  return(data.frame("2D" = ests_2d, "MCR" = chapman))
 }
