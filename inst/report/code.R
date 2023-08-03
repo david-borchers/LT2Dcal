@@ -333,11 +333,16 @@ get_2d_bias <- function(Nrep,Nanimals,b = c(4.945767, 0.714222), logphi = c(6.52
 }
 
 # 2d vs MCR ---------------------------------------------------------------
+
+#Fits 2D model and no movment,random movement and random movement w/ imperfect matching
 MCR_2D <- function(Nrep, Nanimals, b= b1, 
-                      logphi = logphi1, w = w1, ystart = ystart1){
+                      logphi = logphi1, w = w1, ystart = ystart1,
+                   match_limits = c(200,500), match_params = c(250,3)){
   ests_2d <- c()
-  chapman <- c()
-  for(i in 1:Nrep){
+  chapman.nomvmnt <- c()
+  chapman.mvmnt <- c()
+  chapman.imperf <- c()
+  for(j in 1:Nrep){
     #simulate animals
     simDat = simXY(Nanimals, 'pi.hnorm',
                    logphi, 'h1', 
@@ -362,16 +367,77 @@ MCR_2D <- function(Nrep, Nanimals, b= b1,
                     logphi = logphi,
                     w = w,
                     hessian = TRUE)
-    ests_2d[i] <- fit$ests[nrow(fit$ests),ncol(fit$ests)]
+    ests_2d[j] <- fit$ests[nrow(fit$ests),ncol(fit$ests)]
     #MCR
-    
+    ##format data
+    mcr.df <- data.frame("id" =1:Nanimals, "x" = simDat$locs$x, "y" = runif(length(simDat$locs$x),0,10000),
+                         "obs1" = rep(0, length(simDat$locs$x)),
+                         "obs2" = rep(0, length(simDat$locs$x)),
+                         "both" = rep(0, length(simDat$locs$x)))
+    #y in simdat represents distance from observer, we need y co ordinate in space
+    #assumes animals are uniform in y direction 
+    mcr.df$obs1[simDat$locs$y >= 0] <- 1
     ##get detection probabilities for second observer
-    xs <- simDat$locs$x
-    ys <- seq(0,ystart, by = 10)
+    xs <- mcr.df$x
+    ys <- seq(0,10000, length.out = 200)
     detect_probs <- p.approx(ys, xs, h1, b, xy=TRUE)
-    secondobs <- rbinom(Nanimals, 1, detect_probs)
-    both <- simDat$locs$x[simDat$locs$y>0 & secondobs == 1]
-    chapman[i] <- (dim(seen)[1]+1)*(sum(secondobs)+ 1)/(length(both)+1)
+    mcr.df$obs2 <- rbinom(Nanimals, 1, detect_probs)
+    mcr.df$both[mcr.df$obs1 == 1 & mcr.df$obs2 == 1] <- 1
+    chapman.nomvmnt[j] <- (sum(mcr.df$obs1)+1)*(sum(mcr.df$obs2)+ 1)/(sum(mcr.df$both)+1)
+    
+    #add movement and imperfect matching
+    angle <- rwrappedcauchy(Nanimals, mu = circular(0),rho = 0)
+    distance <- abs(rnorm(Nanimals, 100, 50))
+    mcr.df$newx <- as.numeric(mcr.df$x + distance*cos(angle))
+    mcr.df$newy <- as.numeric(mcr.df$y + distance*sin(angle))
+    
+    xs <- mcr.df$newx
+    ys <- seq(0,10000, length.out = 200)
+    detect_probs <- p.approx(ys, xs, h1, b, xy=TRUE)
+    mcr.df$obs2.mvmnt <- rbinom(Nanimals, 1, detect_probs)
+    mcr.df$both.mvmnt[mcr.df$obs1 == 1 & mcr.df$obs2.mvmnt == 1] <- 1
+    chapman.mvmnt[j] <- (sum(mcr.df$obs1)+1)*(sum(mcr.df$obs2.mvmnt)+ 1)/(sum(mcr.df$both.mvmnt, na.rm = T)+1)
+    
+    #imperfect matching
+    distances <- edist(cbind(mcr.df$x, mcr.df$y), cbind(mcr.df$newx[mcr.df$obs2.mvmnt == 1], mcr.df$newy[mcr.df$obs2.mvmnt == 1]))
+    firstobs <- mcr.df$id[mcr.df$obs1 == 1]
+    mcr.df$imperfect.obs1 <- mcr.df$obs1
+    mcr.df$imperfect.obs2 <- rep(0,length(mcr.df$id))
+    for(i in 1:dim(mcr.df[mcr.df$obs2.mvmnt == 1,])[1]){
+      closest <- which.min(distances[firstobs,i])
+      closest <- firstobs[closest]
+      if(is.na(closest)|length(closest)!= 1){next}
+      if(distances[closest,i] > match_limits[2]){ #animal is too far away, observers think two different mcr.df
+        mcr.df <- add_row(mcr.df, id = mcr.df$id[mcr.df$obs2.mvmnt == 1][i] + 1000,
+                           x = mcr.df$x[mcr.df$obs2.mvmnt == 1][i], y = mcr.df$y[mcr.df$obs2.mvmnt == 1][i],
+                           newx = mcr.df$newx[mcr.df$obs2.mvmnt == 1][i], newy = mcr.df$newy[mcr.df$obs2.mvmnt == 1][i],
+                           obs1 = 0, obs2.mvmnt = 0,
+                           imperfect.obs1 = 0, imperfect.obs2 = 1)
+      }else{
+        if(distances[closest,i] <= match_limits[1]){
+          mcr.df$imperfect.obs2[mcr.df$id == closest][1] <- 1
+        }else{
+          match_prob <- hazard_rate(distances[closest,i],match_param[1],match_param[2])
+          mcr.df$imperfect.obs2[mcr.df$id == closest][1] <- rbinom(1,1, match_prob)
+        }
+        #if not matched add new observation
+        if(mcr.df$imperfect.obs2[mcr.df$id == closest][1] == 0){
+          mcr.df <- add_row(mcr.df, id = mcr.df$id[mcr.df$obs2.mvmnt == 1][i] + 1000,
+                             x = mcr.df$x[mcr.df$obs2.mvmnt == 1][i], y = mcr.df$y[mcr.df$obs2.mvmnt == 1][i],
+                             newx = mcr.df$newx[mcr.df$obs2.mvmnt == 1][i], newy = mcr.df$newy[mcr.df$obs2.mvmnt == 1][i],
+                             obs1 = 0, obs2.mvmnt = 0,
+                             imperfect.obs1 = 0, imperfect.obs2 = 1)
+        } 
+        #remove closest from future checks
+        firstobs <- firstobs[!firstobs == closest]
+      }
+    } 
+    mcr.df$imperf.both <- rep(0, dim(mcr.df)[1])
+    mcr.df$imperf.both[mcr.df$imperfect.obs1 == 1 & mcr.df$imperfect.obs2 == 1] <- 1
+    chapman.imperf[j] <- (sum(mcr.df$imperfect.obs1)+1)*(sum(mcr.df$imperfect.obs2, na.rm = T)+ 1)/(sum(mcr.df$imperf.both, na.rm = T)+1)
   }
-  return(data.frame("2D" = ests_2d, "MCR" = chapman))
+  return(data.frame("2D" = ests_2d, "MCR.nomvmnt" = chapman.nomvmnt, 
+                    "MCR.move" = chapman.mvmnt, "MCR.imperf" = chapman.imperf))
 }
+
+
