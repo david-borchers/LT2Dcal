@@ -22,7 +22,7 @@ of objects is simulated, with expected valuue \code{En}.}
 }
 \value{
 A data frame with elements \code{$x} and  \code{$y} being the perpendicular and 
-forward distances of objects.
+along-transect distances of objects.
 }
 \description{
 Generates locations of a population with perpendicular distance
