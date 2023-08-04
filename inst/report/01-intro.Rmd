@@ -1,11 +1,9 @@
-# Hello bookdown 
+# Introduction
 
-All chapters start with a first-level heading followed by your chapter title, like the line above. There should be only one first-level heading (`#`) per .Rmd file.
+Accurate estimation of animal abundance is a fundamental aspect of ecological research and wildlife conservation. Since total enumeration are rarely possible for natural populations of animals, robust estimation methods have to be used. Commonly used approaches for estimating animal abundance include mark-recapture, distance sampling, and mark-recapture distance sampling (MRDS). Each of these methods relies on different principles and assumptions to estimate population sizes.
 
-## A section
+The mark-recapture method is based on capturing and marking individuals, followed by subsequent recapture efforts to estimate the total population size. Distance sampling, on the other hand, involves estimating the detection probability of individuals at different distances from the observer, allowing for the extrapolation of population size based on detection functions. MRDS is an extension that accounts for both the detection probabilities of individuals at different distances and the potential for recapture of marked individuals, providing more precise estimates, even when assumptions of closed populations and uniform detection probabilities are not fully met.
 
-All chapter sections start with a second-level (`##`) or higher heading followed by your section title, like the sections above and below here. You can have as many as you want within a chapter.
+However, the accuracy and reliability of these estimation methods depend heavily on how well their underlying assumptions are met. Assumptions such as closed population, random sampling, and homogeneous detection probabilities play a crucial role in determining the performance of the models. When these assumptions are violated, the estimates obtained from the methods can be biased and lead to misleading conclusions.
 
-### An unnumbered section {-}
-
-Chapters and sections are numbered by default. To un-number a heading, add a `{.unnumbered}` or the shorter `{-}` at the end of the heading, like in this section.
+In this study, we systematically tested the three methods using a range of scenarios with varying degrees of assumption compliance and violations. By simulating populations with known abundance and detectability patterns, we aimed to assess how each method performed under different conditions. In the following sections of this report, we will present the methodology of our simulation study and the results obtained from the simulations.
