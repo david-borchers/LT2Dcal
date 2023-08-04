@@ -48,7 +48,7 @@ For each scenario we simulate 999 surveys, with each survey having a simulated s
 
 #### Scenario 1: When the underlying assumptions are met
 
-We first looked into the performance of mark-recapture estimator when all the above assumptions are met. Specifically, we will create artificial datasets to mimic a closed population, equal probability of detection of marked and unmarked individuals ($p$ = 0.4), and random sampling. For each replication, we will compare the estimated population size to the true population size ($N$ = 500). We then calculate the mean estimate and the variance of the estimates across replications and thus check if true population size is within the confidence interval of the estimates.
+We first looked into the performance of mark-recapture estimator when all the above assumptions are met. Specifically, we will create artificial datasets to mimic a closed population, equal probability of detection of marked and unmarked individuals ($p$ = 0.4), and random sampling. For each replication, we will compare the estimated population size to the true population size ($N$ = 500). We then calculate the mean estimate and the variance of the estimates across replications and thus check if true population size is within the confidence interval of the estimates. The result below shows that Chapman estimator of abundance is nearly unbiased, i.e. the mean percentage relative bias is very close to 0.
 
 ```{r MR1}
 sim.mr <- function(n, equal.p, param){
@@ -61,8 +61,13 @@ sim.mr <- function(n, equal.p, param){
   df$y[df$obs==1] <- runif(n, 0, 2)
   df$distance[df$obs==1] <- df$x[df$obs==1] - 1
   
-  df$x[df$obs==2] <- runif(n, 0, 2)
-  df$y[df$obs==2] <- runif(n, 0, 2)
+  angle <- rwrappedcauchy(n, mu = circular(0),rho = 0)
+  distance <- abs(rnorm(n, 0.1, 0.1))
+  df$x[df$obs==2] <- as.numeric(df$x[df$obs==1] + distance*cos(angle))
+  df$y[df$obs==2] <- as.numeric(df$y[df$obs==1] + distance*sin(angle))
+  
+  #df$x[df$obs==2] <- runif(n, 0, 2)
+  #df$y[df$obs==2] <- runif(n, 0, 2)
   df$distance[df$obs==2] <- df$x[df$obs==2] - 1
   
   
@@ -102,8 +107,6 @@ ci <- mean(est.N) + c(-1, 1)*1.96*sqrt(var(est.N)/999)  # confidence interval
 bias <- mean((est.N-500)/500*100)  # mean percentage relative bias
 ci; bias
 ```
-
-The result shows that Chapman estimator of abundance is nearly unbiased with confidence interval of estimates being [498, 502] and mean percentage relative bias equals to -0.027%.
 
 #### Scenario 2: when inherent capture probabilities are different
 
@@ -157,7 +160,7 @@ plot1.1 <- function(n){
 ```{r}
 # I may change the second plot to box plot
 # or add a table presenting bias&coverage prob for each sigma
-plot1.1(chapman.mr, 500)  # Chapman MR estimator, N
+plot1.1(500)  # Chapman MR estimator, N
 ```
 
 #### Limitations of mark-recapture
