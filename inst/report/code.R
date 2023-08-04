@@ -295,11 +295,11 @@ get_bias <- function(Nrep, Nanimals){
 }
 
 # 2D Distance -------------------------------------------------------------
-#real parameters don't work?
+#won't work with real params?
 library(LT2D)
 #Fits 2D model and no movement,random movement and random movement w/ imperfect matching
 MCR_2D <- function(Nrep, Nanimals, 
-                   b = c(5,0.75), logphi = c(0,5),
+                   b = c(5, 0.7), logphi = c(6.5,4.5),
                    w = 1600, ystart = 1300, L = 100,
                    match_limits = c(300,1000), match_params = c(250,3)){
   ests_2d <- c()
@@ -308,9 +308,10 @@ MCR_2D <- function(Nrep, Nanimals,
   chapman.imperf <- c()
   for(j in 1:Nrep){
     #simulate animals
-    positions <- simpop2DLT(L,w = w, pi.x = pi.norm, logphi = logphi, 
+    positions <- simpop2DLT(L,w = w, pi.x = pi.hnorm, logphi = logphi, 
                          En = 200, fixed.n = T) 
     simDat <- detect2DLT(positions$x, hr = h1, b= b, ystart = ystart, ny = 1000)
+    
     
     all.1s <- rep(1,length(simDat$x))
     obj <- 1:length(simDat$x)
@@ -326,7 +327,7 @@ MCR_2D <- function(Nrep, Nanimals,
                     hr = 'h1',
                     b = b,
                     ystart = ystart,
-                    pi.x = 'pi.norm',
+                    pi.x = 'pi.hnorm',
                     logphi = logphi,
                     w = w,
                     hessian = TRUE)
@@ -403,8 +404,8 @@ MCR_2D <- function(Nrep, Nanimals,
   return(data.frame("2D" = ests_2d, "MCR.nomvmnt" = chapman.nomvmnt, 
                     "MCR.move" = chapman.mvmnt, "MCR.imperf" = chapman.imperf))
 }
+MCR_2D(1,20)
 
-MCR_2D(1,200)
 # Gobi Analysis -----------------------------------------------------------
 Gobi <- read.csv("Gobi.csv")
 
