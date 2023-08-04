@@ -42,7 +42,7 @@ L=1000
 En = 100 # expected population size
 dat = simpop2DLT(L,w,pi.x,logphi,En,fixed.n=TRUE) # fixed.n=TRUE fixes popn size a En
 par(mfrow=c(1,2))
-plot(dat,pch="+",main="population")
+plot(dat,pch="+",main=paste("Population (N=",nrow(dat),")"))
 abline(v=0,lty=2)
 hist(dat$x,breaks=seq(-w,w,length=21),xlab="Perp. distance",main="")
 

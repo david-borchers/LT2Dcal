@@ -40,13 +40,13 @@ L=1000
 En = 100 # expected population size
 dat = simpop2DLT(L,w,pi.x,logphi,En,fixed.n=TRUE) # fixed.n=TRUE fixes popn size a En
 par(mfrow=c(1,2))
-plot(dat,pch="+",main="population")
+plot(dat,pch="+",main=paste("Population (N=",nrow(dat),")"))
 abline(v=0,lty=2)
 hist(dat$x,breaks=seq(-w,w,length=21),xlab="Perp. distance",main="")
 # now do LT2D survey of these points (only need their x-values for that)
 seen = detect2DLT(dat$x,hr,b,ystart,ny=1000)
 layout(matrix(c(1,1,2,3),nrow=2))
-plot(seen,xlim=c(-w,w),pch="+",main=paste(nrow(seen),"Detectons"))
+plot(seen,xlim=c(-w,w),pch="+",main=paste(nrow(seen),"Detections"))
 abline(v=0,lty=2)
 hist(seen$x,breaks=seq(-w,w,length=21),xlab="Perp. distance",main="")
 hist(seen$y,breaks=seq(0,ystart,length=21),xlab="Forward distance",main="")

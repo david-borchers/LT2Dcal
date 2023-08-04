@@ -4313,5 +4313,5 @@ p.approx = function(y,x,h.fun,b,what="p") {
   if(what=="fxy") return(fxy)
   else if(what=="pxy") return(p.mat)
   else if(what=="px") return(p)
-  else return(list(p=p,fmat=fxy,pmat=pmat))
+  else return(list(p=p,fmat=fxy,pmat=p.mat))
 }
