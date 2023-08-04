@@ -1,0 +1,262 @@
+---
+title: "A Minimal Book Example"
+author: "John Doe"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+documentclass: book
+bibliography: [book.bib, packages.bib]
+# url: your book url like https://bookdown.org/yihui/bookdown
+# cover-image: path to the social sharing image like images/cover.jpg
+description: |
+  This is a minimal example of using the bookdown package to write a book.
+  The HTML output format for this example is bookdown::gitbook,
+  set in the _output.yml file.
+link-citations: yes
+github-repo: rstudio/bookdown-demo
+---
+
+# url: your book url like https://bookdown.org/yihui/bookdown
+
+Placeholder
+
+
+## Usage
+## Render book
+## Preview book
+## A section
+### An unnumbered section {.unnumbered}
+## Chapters and sub-chapters
+## Captioned figures and tables
+## Footnotes
+## Citations
+## Equations
+## Theorems and proofs
+## Callout blocks
+## Publishing
+## 404 pages
+## Metadata for sharing
+
+<!--chapter:end:index.Rmd-->
+
+# Introduction
+
+Accurate estimation of animal abundance is a fundamental aspect of ecological research and wildlife conservation. Since total enumeration are rarely possible for natural populations of animals, robust estimation methods have to be used. Commonly used approaches for estimating animal abundance include mark-recapture, distance sampling, and mark-recapture distance sampling (MRDS). Each of these methods relies on different principles and assumptions to estimate population sizes.
+
+The mark-recapture method is based on capturing and marking individuals, followed by subsequent recapture efforts to estimate the total population size. Distance sampling, on the other hand, involves estimating the detection probability of individuals at different distances from the observer, allowing for the extrapolation of population size based on detection functions. MRDS is an extension that accounts for both the detection probabilities of individuals at different distances and the potential for recapture of marked individuals, providing more precise estimates, even when assumptions of closed populations and uniform detection probabilities are not fully met.
+
+However, the accuracy and reliability of these estimation methods depend heavily on how well their underlying assumptions are met. Assumptions such as closed population, random sampling, and homogeneous detection probabilities play a crucial role in determining the performance of the models. When these assumptions are violated, the estimates obtained from the methods can be biased and lead to misleading conclusions.
+
+In this study, we systematically tested the three methods using a range of scenarios with varying degrees of assumption compliance and violations. By simulating populations with known abundance and detectability patterns, we aimed to assess how each method performed under different conditions. In the following sections of this report, we will present the methodology of our simulation study and the results obtained from the simulations.
+
+<!--chapter:end:01-intro.Rmd-->
+
+
+# Mark-recapture {#cross}
+
+Placeholder
+
+
+## 2.1 Closed populations
+## 2.2 Simulation study
+#### Scenario 1: When the underlying assumptions are met
+#### Scenario 2: when inherent capture probabilities are different
+#### Limitations of mark-recapture
+
+<!--chapter:end:02-mark-recapture.Rmd-->
+
+# Parts
+
+You can add parts to organize one or more book chapters together. Parts can be inserted at the top of an .Rmd file, before the first-level chapter heading in that same file. 
+
+Add a numbered part: `# (PART) Act one {-}` (followed by `# A chapter`)
+
+Add an unnumbered part: `# (PART\*) Act one {-}` (followed by `# A chapter`)
+
+Add an appendix as a special kind of un-numbered part: `# (APPENDIX) Other stuff {-}` (followed by `# A chapter`). Chapters in an appendix are prepended with letters instead of numbers.
+
+
+
+
+<!--chapter:end:03-parts.Rmd-->
+
+
+# Mark Recapture Distance Sampling
+
+Placeholder
+
+
+## Introduction
+## Simulation - p(0) \< 1 and animal movement
+### Methods
+### Results
+## Simulation - Imperfect Matching
+### Results
+## Futher Reading
+
+<!--chapter:end:04-mrds.Rmd-->
+
+---
+output:
+  pdf_document: default
+  html_document: default
+---
+
+# 2D Distance Sampling
+
+```{r 2D-setup, include=FALSE, warnings = F}
+source("code.R")
+b = c(5.0174523,0.7224735); logphi = c(-0.3275344,6.6302135)
+w = 1600; ystart = 1300
+Nanimals = 200
+match_limits = c(300,1000); match_param = c(450,5)
+```
+
+## Introduction
+
+2D Distance Sampling builds on standard distance sampling by including the forward distance to the detected animal as well as the perpendicular distance. This removes the assumptions that the animals are uniformly distributed and that p(0) = 1, so this method is useful for situations where the other methods covered previously are not suitable.
+
+## Simulation: Non Uniform Distribution
+
+We start by simulating attraction to the line by generating 200 animals using a half normal distribution with parameters `r exp(logphi)`. We used a hazard rate detection function with parameters `r b`. The parameters chosen are the best model for our real data.
+
+```{r 2D-simulation, echo = F, warnings = F}
+suppressWarnings(simdata <- MCR_2D(10,Nanimals))
+bias_2d <- 100*(simdata$X2D - Nanimals)/Nanimals
+```
+
+We then fitted a model using a half normal distribution for animal density and hazard detection function. We did not fit any other models for efficiency purposes. This gives a bias of `r mean(bias_2d)` \pm `r 1.96*sqrt(var(bias_2d)/length(bias_2d))`, so we can confirm it is unbiased.
+
+## Simulation: Comparison to Mark Recapture
+
+Double Observer mark recapture methods are the current standard for estimating abundance of snow leopard prey. Our previous simulations have shown these have serious flaws, so we used both a 2D distance model and the Chapman estimator to estimate the abundance from the same data (simulated using the same parameters as above).
+
+```{r 2D-histograms, echo = F, fig.cap="Histograms of abundance estimates using 2D distance sampling and the Chapman estimator"}
+par(mfrow = c(1,2))
+hist(simdata$X2D, main = "2D Distance", xlab = "Estimate of N")
+abline(v = Nanimals, col = "blue")
+hist(simdata$MCR.nomvmnt, main = "Chapman", xlab = "Estimate of N", xlim = c(min(simdata$MCR.nomvmnt),max(c(max(simdata$MCR.nomvmnt),Nanimals))))
+abline(v = Nanimals, col = "blue")
+```
+
+The Chapman estimator was significantly negatively biased due to the unmodelled heterogeneity in the population. Adding random animal movement and imperfect matching gives a similar problem.
+
+```{r imperfect-matching-histograms, echo = F, fig.cap = "Histograms of abundance estimates using the Chapman estimator with random movment"}
+par(mfrow = c(1,2))
+hist(simdata$MCR.move, main = "Perfect Matching", xlab = "Estimate of N", xlim = c(min(simdata$MCR.move),max(c(max(simdata$MCR.move),Nanimals))))
+abline(v = Nanimals, col = "blue")
+hist(simdata$MCR.imperf, main = "Imperfect Matching", xlab = "Estimate of N", xlim = c(min(simdata$MCR.imperf), max(c(max(simdata$MCR.imperf)+10,Nanimals))))
+abline(v = Nanimals, col = "blue")
+```
+
+From this it is clear that double-observer mark-recapture will yield significantly biased estimates of abundance of snow leopard prey, even if the animals do not move and the observers can perfectly match the individuals seen. We recommend instead using 2D distance sampling, as it accounts for the non uniform animal distribution as well as the declining detectability with distance. It is also requires less time to be spent surveying, as each transect only need to be walked once.
+
+## Real Data Analysis
+
+### Methods
+
+We will now use the 2D distance framework to analyse the real snow leopard prey data. The observers surveyed 48 transects in 10 blocks and recorded the bearing of the path, the bearing of the group they saw and radial distance to the group where possible. There were 2 species included in the survey: ibex and argali. The observers had limited rangefinders so 49 of these observations had no distance data; 61 groups were behind the observers so did not have a valid "forward" distance. This left 132 usable observations.
+
+Upon closer inspection, many detection distances (both perpendicular and forward) appeared to be rounded to zero, likely as a result of the bearings being rounded to the nearest 5 degrees. To prevent this from impacting the model fit we simply added a small random number to each zero observation.
+
+```{r, distance-histograms, fig.cap = "Histograms of forward and perpendicular distances"}
+hist(DistData$distance, main = "Perpendicular Distance")
+hist(DistData$forward, main = "Forward Distance")
+```
+
+From looking at the histograms of observed data we set the perpendicular truncation distance at `r w1` and the forward truncation distance at `r ystart1`. This excluded 2 outlier observations.\
+We then fitted a series of model with different detection functions and animal distributions, and picked the one with the lowest AIC.
+
+### Results
+
+```{r fit-model, include = FALSE, warning=FALSE }
+jitter.h1.norm <- LT2D.fit(DataFrameInput = jitterdf, 
+                           hr = 'h1',
+                           b = c(log(100),log(2)),
+                           ystart = ystart,      
+                           pi.x = 'pi.norm',   
+                           logphi = c(0,5),
+                           w = w,
+                           hessian = TRUE)
+ibexjitter.h1.norm <- LT2D.fit(DataFrameInput = ibexjitter, 
+                               hr = 'h1',
+                               b = c(log(100),log(2)),
+                               ystart = ystart,      
+                               pi.x = 'pi.norm',   
+                               logphi = c(0,5),
+                               w = w,
+                               hessian = TRUE)
+argalijitter.h1 <- LT2D.fit(DataFrameInput = argalijitter,
+                            hr = 'h1',
+                            b = c(4.5, 0.75),
+                            ystart = ystart,
+                            pi.x = 'pi.const',
+                            w = w,
+                            hessian = TRUE)
+boot <- LT2D.bootstrap(jitter.h1.norm, r = 999, alpha = 0.05)
+ibexboot <- LT2D.bootstrap(ibexjitter.h1.norm, r = 999, alpha = 0.05)
+argaliboot <- LT2D.bootstrap(argalijitter.h1, r = 999, alpha = 0.05)
+total.N <- jitter.h1.norm$ests[nrow(jitter.h1.norm$ests),ncol(jitter.h1.norm$ests)]
+total.ibex <- ibexjitter.h1.norm$ests[nrow(ibexjitter.h1.hnorm$ests),ncol(ibexjitter.h1.norm$ests)]
+total.argali <- argalijitter.h1$ests[nrow(argalijitter.h1$ests),ncol(argalijitter.h1$ests)]
+```
+
+Our best fitting model used the h1 hazard detection function and a normal distribution for the animal density. All of the best fitting models used a normal animal distribution, which implies that the animals are attracted to the line rather than avoiding it as initially thought. This could be due to the non random line placement, as the observers travel along valleys or ridges that are easier to walk along so the animals could also favour the easier terrain.
+
+```{r real-results-plot,echo = F, fig.cap = "Detection and distribution functions for best model (h1 and normal)"}
+par(mfrow = c(2,2))
+plot(jitter.h1.norm)
+test.results <- gof.LT2D(jitter.h1.norm, plot = T)
+```
+
+We tried fitting different models to each species in the survey, but this had a higher AIC than the combined model (`r ibexjitter.h1.norm$fit$AIC + argalijitter.h1$fit$AIC` vs `r jitter.h1.norm$fit$AIC` for combined model). Interestingly, the argali appear to be uniformly distributed across the area whereas the ibex exhibit line attraction. However, there are only 37 argali groups recorded so further investigation is needed before drawing any conclusions.
+
+The best combined model estimates there are `r total.N` individual animals in total.
+
+```{r confidence-tables, echo = F, fig.margin = T}
+ci.tabs <- data.frame("N" = c(total.N, total.ibex, total.argali), "95% CI L" = c(boot$ci[1], ibexboot$ci[1], argaliboot$ci[1]), "95%  CI U"= c(boot$ci[2], ibexboot$ci[2], argaliboot$ci[2]), row.names = c("Combined model", "Ibex only model", "Argali only model"))
+kable(ci.tabs, col.names = c("Point Estimate","95% Bootstrap", "Confidence Interval"))
+```
+
+```{r estimate-by-block, echo = F}
+ests <- jitter.h1.norm$ests[,c(1,2,4,5,7:11)]
+rownames(ests) <- NULL
+kable(ests, col.names = c("Stratum", "Groups Seen", "Total Transect Length (km)", "Covered Area (m^2)", "Estimated Group Denisty", "Number of Groups", "Mean Size", "Individual Density", "Abundance Estimate" ))
+```
+
+## Further Reading
+
+Borchers, D.L. and Cox, M.J. (2016). Distance sampling detection functions: 2D or not 2D? Biometrics, 73(2), pp.593--602. <doi:https://doi.org/10.1111/biom.12581>.
+
+Suryawanshi, K.R., Bhatnagar, Y.V. and Mishra, C. (2012). Standardizing the double-observer survey method for estimating mountain ungulate prey of the endangered snow leopard. Oecologia, 169(3), pp.581--590. <doi:https://doi.org/10.1007/s00442-011-2237-0>.
+
+<!--chapter:end:05-2d-distance.Rmd-->
+
+
+# Sharing your book
+
+Placeholder
+
+
+## Publishing
+## 404 pages
+## Metadata for sharing
+
+<!--chapter:end:06-share.Rmd-->
+
+`r if (knitr::is_html_output()) '
+# References {-}
+'`
+
+<!--chapter:end:07-references.Rmd-->
+
+
+# 2D Distance Sampling
+
+Placeholder
+
+
+## Introduction
+## Simulation - Comparison to Mark Recapture
+
+<!--chapter:end:2d-distance.Rmd-->
+

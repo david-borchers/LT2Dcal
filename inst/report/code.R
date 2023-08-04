@@ -5,17 +5,18 @@ library(dplyr)
 library(mrds)
 library(secr)
 library(Distance)
+
 movement <- function(N){ #random movement
-  animals <- data.frame("id" = 1:N, "x" = runif(N,0,2), "y" = runif(N,0,2))
+  animals <- data.frame("id" = 1:N, "x" = runif(N,0,3), "y" = runif(N,0,3))
   angle <- rwrappedcauchy(N, mu = circular(0),rho = 0)
-  distance <- abs(rnorm(N, 0.05, 0.05))
+  distance <- abs(rnorm(N, 0.3, 0.1))
   animals$newx <- as.numeric(animals$x + distance*cos(angle))
   animals$newy <- as.numeric(animals$y + distance*sin(angle))
   return(animals)
 }
 
 reaction <- function(N, transect,theta){
-  animals <- data.frame("id" = 1:N, "x" = runif(N,0,2), "y" = runif(N,0,2))
+  animals <- data.frame("id" = 1:N, "x" = runif(N,0,3), "y" = runif(N,0,3))
   animals$angle <- rep(0,N)
   rho <- invlogit(theta[1] - theta[2]*abs(animals$x-transect))
   dist <- exp(theta[3] - theta[4]*abs(animals$x-transect))
@@ -31,22 +32,22 @@ reaction <- function(N, transect,theta){
   return(animals)
 } 
 #parameters for different avoidance levels
-low <- c(logit(0.6),0.4,log(0.1),1, 0.05)
-med <- c(logit(0.75),0.6,log(0.2),1.25, 0.05)
-high <- c(logit(0.9),0.8,log(0.25),1.5, 0.05)
+low <- c(logit(0.6),0.4,log(0.3),1, 0.05)
+med <- c(logit(0.75),0.6,log(0.4),1.25, 0.05)
+high <- c(logit(0.9),0.8,log(0.5),1.5, 0.05)
 
-avoidance_demo <- function(Nanimals, transect){
+avoidance_demo <- function(Nanimals, transect = 1.5){
   par(mfrow = c(2,2))
   low_avoid <- reaction(Nanimals, transect,low)
   med_avoid <- reaction(Nanimals, transect,med)
   high_avoid <- reaction(Nanimals, transect,high)
   plot(low_avoid$x, low_avoid$y, xlab = "x", ylab = "y", main = "Original Animal Positions")
   plot(low_avoid$newx, low_avoid$newy,xlab = "x", ylab = "y", main = "Low Avoidance Movement")
-  abline(v = 1, col = "blue", lty = "dashed")
+  abline(v = transect, col = "blue", lty = "dashed")
   plot(med_avoid$newx, med_avoid$newy,xlab = "x", ylab = "y", main = "Medium Avoidance Movement")
-  abline(v = 1, col = "blue", lty = "dashed")
+  abline(v = transect, col = "blue", lty = "dashed")
   plot(high_avoid$newx, high_avoid$newy,xlab = "x", ylab = "y", main = "High Avoidance Movement")
-  abline(v = 1, col = "blue", lty = "dashed")
+  abline(v = transect, col = "blue", lty = "dashed")
 }
 half_normal <- function(x,sigma){
   return(exp(-(x**2)/2*sigma**2))
@@ -56,7 +57,7 @@ hazard_rate <- function(x,sigma, beta){
 }
 
 # p(0) < 1 ----------------------------------------------------------------
-recapture_p0 <- function(animals,transect = 1,
+recapture_p0 <- function(animals,transect = 1.5,
                                 detectfn = "hr", hn_param = 5, hr_param = c(0.8,6),
                                 p0 = 0.8){
   animals$distance<- abs(animals$x-transect)
@@ -119,9 +120,9 @@ get_p0_bias <- function(Nrep, Nanimals){
 }
 
 # Imperfect Matching ------------------------------------------------------
-recapture_imperfect <- function(animals,transect = 1,
+recapture_imperfect <- function(animals,transect = 1.5,
                                 detectfn = "hr", hn_param = 5, hr_param = c(0.8,6),
-                                match_limits = c(0.1,0.5), match_param = c(0.04,4)){
+                                match_limits = c(0.3,1), match_param = c(0.04,4)){
   animals$distance<- abs(animals$x-transect)
   animals$newdistance <- abs(animals$newx-transect)
   if(detectfn =="hn"){
@@ -135,7 +136,7 @@ recapture_imperfect <- function(animals,transect = 1,
   animals$true.obs1 <- rbinom(length(animals$id),1,detect_prob1)
   animals$true.obs2 <- rbinom(length(animals$id),1,detect_prob2)
   #observers can't see animals that moved outside region
-  animals$true.obs2[animals$newdistance > 1] <- 0
+  animals$true.obs2[animals$newdistance > 1.5] <- 0
   
   animals$imperfect.obs1 <- animals$true.obs1
   animals$imperfect.obs2 <- rep(0,length(animals$id))
@@ -294,69 +295,69 @@ get_bias <- function(Nrep, Nanimals){
 }
 
 # 2D Distance -------------------------------------------------------------
-#default params are best model for real data
+#real parameters don't work?
 library(LT2D)
-#Fits 2D model and no movment,random movement and random movement w/ imperfect matching
+#Fits 2D model and no movement,random movement and random movement w/ imperfect matching
 MCR_2D <- function(Nrep, Nanimals, 
-                   b = c(4.945767, 0.714222), logphi = c(6.520254,4.754897),
-                   w = 1500, ystart = 1300,
-                   match_limits = c(200,500), match_params = c(250,3)){
+                   b = c(5,0.75), logphi = c(0,5),
+                   w = 1600, ystart = 1300, L = 100,
+                   match_limits = c(300,1000), match_params = c(250,3)){
   ests_2d <- c()
   chapman.nomvmnt <- c()
   chapman.mvmnt <- c()
   chapman.imperf <- c()
   for(j in 1:Nrep){
     #simulate animals
-    simDat = simXY(Nanimals, 'pi.hnorm',
-                   logphi, 'h1', 
-                   b, w, 
-                   ystart, discardNotSeen = FALSE)
-    seen <- simDat$locs[simDat$locs$y >= 0,]
-    all.1s <- rep(1,length(seen$x))
-    obj <- 1:length(seen$x)
-    sim.df <- data.frame(x = seen$x,
-                         y = seen$y,
+    positions <- simpop2DLT(L,w = w, pi.x = pi.norm, logphi = logphi, 
+                         En = 200, fixed.n = T) 
+    simDat <- detect2DLT(positions$x, hr = h1, b= b, ystart = ystart, ny = 1000)
+    
+    all.1s <- rep(1,length(simDat$x))
+    obj <- 1:length(simDat$x)
+    sim.df <- data.frame(x = simDat$x,
+                         y = simDat$y,
                          stratum = all.1s,
                          transect = all.1s,
-                         L = 10,
-                         area = 2*w*10,
+                         L = L,
+                         area = 2*w*L,
                          object = obj,
                          size = all.1s)
     fit <- LT2D.fit(DataFrameInput = sim.df,
                     hr = 'h1',
                     b = b,
                     ystart = ystart,
-                    pi.x = 'pi.hnorm',
+                    pi.x = 'pi.norm',
                     logphi = logphi,
                     w = w,
                     hessian = TRUE)
     ests_2d[j] <- fit$ests[nrow(fit$ests),ncol(fit$ests)]
     #MCR
     ##format data
-    mcr.df <- data.frame("id" =1:Nanimals, "x" = simDat$locs$x, "y" = runif(length(simDat$locs$x),0,10000),
-                         "obs1" = rep(0, length(simDat$locs$x)),
-                         "obs2" = rep(0, length(simDat$locs$x)),
-                         "both" = rep(0, length(simDat$locs$x)))
-    #y in simdat represents distance from observer, we need y co ordinate in space
+    mcr.df <- data.frame("id" =1:Nanimals, "x" = positions$x, "y" = positions$y,
+                         "obs1" = rep(0, Nanimals),
+                         "obs2" = rep(0, Nanimals),
+                         "both" = rep(0, Nanimals))
+    
     #assumes animals are uniform in y direction 
-    mcr.df$obs1[simDat$locs$y >= 0] <- 1
+    mcr.df$obs1[mcr.df$x %in% simDat$x] <- 1
     ##get detection probabilities for second observer
     xs <- mcr.df$x
     ys <- seq(0,10000, length.out = 200)
-    detect_probs <- p.approx(ys, xs, h1, b, xy=TRUE)
+    detect_probs <- p.approx(ys, xs, h1, b, what = "px")
     mcr.df$obs2 <- rbinom(Nanimals, 1, detect_probs)
     mcr.df$both[mcr.df$obs1 == 1 & mcr.df$obs2 == 1] <- 1
     chapman.nomvmnt[j] <- (sum(mcr.df$obs1)+1)*(sum(mcr.df$obs2)+ 1)/(sum(mcr.df$both)+1)
     
-    #add movement and imperfect matching
+    #add movement
     angle <- rwrappedcauchy(Nanimals, mu = circular(0),rho = 0)
-    distance <- abs(rnorm(Nanimals, 100, 50))
+    distance <- abs(rnorm(Nanimals, 300, 100))
     mcr.df$newx <- as.numeric(mcr.df$x + distance*cos(angle))
     mcr.df$newy <- as.numeric(mcr.df$y + distance*sin(angle))
     
+    #get observations after movement with perfect matching
     xs <- mcr.df$newx
     ys <- seq(0,10000, length.out = 200)
-    detect_probs <- p.approx(ys, xs, h1, b, xy=TRUE)
+    detect_probs <- p.approx(ys, xs, h1, b, what = "px")
     mcr.df$obs2.mvmnt <- rbinom(Nanimals, 1, detect_probs)
     mcr.df$both.mvmnt[mcr.df$obs1 == 1 & mcr.df$obs2.mvmnt == 1] <- 1
     chapman.mvmnt[j] <- (sum(mcr.df$obs1)+1)*(sum(mcr.df$obs2.mvmnt)+ 1)/(sum(mcr.df$both.mvmnt, na.rm = T)+1)
@@ -369,8 +370,8 @@ MCR_2D <- function(Nrep, Nanimals,
     for(i in 1:dim(mcr.df[mcr.df$obs2.mvmnt == 1,])[1]){
       closest <- which.min(distances[firstobs,i])
       closest <- firstobs[closest]
-      if(is.na(closest)|length(closest)!= 1){next}
-      if(distances[closest,i] > match_limits[2]){ #animal is too far away, observers think two different mcr.df
+      if(length(closest)!= 1){next}
+      if(distances[closest,i] > match_limits[2]){ #moved too far away, observers think two different animals
         mcr.df <- add_row(mcr.df, id = mcr.df$id[mcr.df$obs2.mvmnt == 1][i] + 1000,
                            x = mcr.df$x[mcr.df$obs2.mvmnt == 1][i], y = mcr.df$y[mcr.df$obs2.mvmnt == 1][i],
                            newx = mcr.df$newx[mcr.df$obs2.mvmnt == 1][i], newy = mcr.df$newy[mcr.df$obs2.mvmnt == 1][i],
@@ -403,4 +404,90 @@ MCR_2D <- function(Nrep, Nanimals,
                     "MCR.move" = chapman.mvmnt, "MCR.imperf" = chapman.imperf))
 }
 
+MCR_2D(1,200)
+# Gobi Analysis -----------------------------------------------------------
+Gobi <- read.csv("Gobi.csv")
 
+DistData <- Gobi[Gobi$Obs1 == 1,]
+DistData$AngleDiff <- DistData$Obs1.AngleDetection-DistData$Obs1.AnglePath 
+#convert to radians
+DistData$AngleDiff <- DistData$AngleDiff * pi/180
+#calculate distances
+DistData$distance <- abs(DistData$Obs1.Distance*sin(DistData$AngleDiff)) 
+DistData$forward <- DistData$Obs1.Distance*cos(DistData$AngleDiff)
+#remove NAs and negative y
+DistData <- DistData[!is.na(DistData$forward)&DistData$forward>=0,]
+w = 1600; ystart = 1300
+truncdata <- DistData[DistData$distance<=w& DistData$forward <= ystart,]
+xobs <- truncdata$distance
+yobs <- truncdata$forward
+jitterdat = jitterzeros(xobs,yobs,xcut=10,ycut=10,anground.degree=5)
+xjitter = jitterdat$x
+yjitter = jitterdat$y
+
+L <- rep(0, length(xjitter)) 
+#there's probably a way to do this without for loops
+#but it would take longer for me to figure out than just running the loops
+for(t in unique(truncdata$Site)){
+  L[truncdata$Site == t][1] <- truncdata$Transect_Length[truncdata$Site == t][1]
+}
+A <- rep(0, length(xjitter))
+for(b in unique(truncdata$Block)){
+  A[truncdata$Block == b][1] <- 2*w*sum(L[truncdata$Block == b])
+}
+jitterdf <- data.frame(x = xjitter, y = yjitter,
+                       stratum = truncdata$Block,
+                       transect = truncdata$Site,
+                       L = L,
+                       area = A,
+                       object = 1:dim(truncdata)[1],
+                       size = truncdata$Group.size)
+
+# Ibex --------------------------------------------------------------------
+ibex <- truncdata[truncdata$Sightings == "ibex",]
+xobs <- ibex$distance
+yobs <- ibex$forward
+jitterdat = jitterzeros(xobs,yobs,xcut=10,ycut=10,anground.degree=5)
+xjitter = jitterdat$x
+yjitter = jitterdat$y
+Li <- rep(0, length(xjitter)) 
+for(t in unique(ibex$Site)){
+  Li[ibex$Site == t][1] <- ibex$Transect_Length[ibex$Site == t][1]
+}
+Ai <- rep(0, length(xjitter))
+for(b in unique(ibex$Block)){
+  Ai[ibex$Block == b][1] <- 2*w*sum(Li[ibex$Block == b])
+}
+
+ibexjitter <- data.frame(x = xjitter, y = yjitter,
+                         stratum = ibex$Block,
+                         transect = ibex$Site,
+                         L = Li,
+                         area = Ai,
+                         object = 1:dim(ibex)[1],
+                         size = ibex$Group.size)
+
+
+# Argali ------------------------------------------------------------------
+argali <- truncdata[truncdata$Sightings == "argali",]
+xobs <- argali$distance
+yobs <- argali$forward
+jitterdat = jitterzeros(xobs,yobs,xcut=10,ycut=10,anground.degree=5)
+xjitter = jitterdat$x
+yjitter = jitterdat$y
+La <- rep(0, length(xjitter)) 
+for(t in unique(argali$Site)){
+  La[argali$Site == t][1] <- argali$Transect_Length[argali$Site == t][1]
+}
+Aa <- rep(0, length(xjitter))
+for(b in unique(argali$Block)){
+  Aa[argali$Block == b][1] <- 2*w*sum(La[argali$Block == b])
+}
+
+argalijitter <- data.frame(x = xjitter, y = yjitter,
+                           stratum = argali$Block,
+                           transect = argali$Site,
+                           L = La,
+                           area = Aa,
+                           object = 1:dim(argali)[1],
+                           size = argali$Group.size)
