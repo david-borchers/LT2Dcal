@@ -51,6 +51,9 @@ For each scenario we simulate 999 surveys, with each survey having a simulated s
 We first looked into the performance of mark-recapture estimator when all the above assumptions are met. Specifically, we will create artificial datasets to mimic a closed population, equal probability of detection of marked and unmarked individuals ($p$ = 0.4), and random sampling. For each replication, we will compare the estimated population size to the true population size ($N$ = 500). We then calculate the mean estimate and the variance of the estimates across replications and thus check if true population size is within the confidence interval of the estimates. The result below shows that Chapman estimator of abundance is nearly unbiased, i.e. the mean percentage relative bias is very close to 0.
 
 ```{r MR1}
+library(circular)
+library(Distance)
+
 sim.mr <- function(n, equal.p, param){
   #browser()
   ## 1. generate n uniform points 
@@ -108,9 +111,9 @@ bias <- mean((est.N-500)/500*100)  # mean percentage relative bias
 ci; bias
 ```
 
-#### Scenario 2: when inherent capture probabilities are different
+#### Scenario 2: When inherent capture probabilities are different
 
-In this scenario, we aim to examine the impact of deviations from equal detectability assumption on the accuracy and bias of mark-recapture method. We make probability of detection falls off with distance from the transect line following half-normal distribution in both occasion. Different half-normal parameters are fitted to investigate how they affect the estimate. As shown in the graph below, when detectability decreases more rapidly with increasing distance ($\sigma$ = 0.3), the estimate are more negatively biased. In contrast, if there has less difference between detection probability on the transect and deetction probability on the truncation ($\sigma$ = 0.7), then abundance estimate are less negatively biased.
+In this scenario, we aim to examine the impact of deviations from equal detectability assumption on the accuracy and bias of mark-recapture method. We make probability of detection falls off with distance from the transect line following half-normal distribution in both occasion. Different half-normal parameters are fitted to investigate how they affect the estimate. As shown in the graph below, when detectability decreases more rapidly with increasing distance ($\sigma = 0.3$), the estimate are more negatively biased. In contrast, if there has less difference between detection probability on the transect and deetction probability on the truncation ($\sigma = 0.7$), then abundance estimate are less negatively biased.
 
 ```{r MR2}
 
