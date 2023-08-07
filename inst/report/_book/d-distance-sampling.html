@@ -29,7 +29,7 @@ set in the _output.yml file.</p>" />
 <meta name="author" content="John Doe" />
 
 
-<meta name="date" content="2023-08-03" />
+<meta name="date" content="2023-08-07" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -60,6 +60,70 @@ set in the _output.yml file.</p>" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
 
 
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
 
 <style type="text/css">
   
@@ -87,44 +151,71 @@ set in the _output.yml file.</p>" />
 <li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#usage"><i class="fa fa-check"></i><b>1.1</b> Usage</a></li>
 <li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#render-book"><i class="fa fa-check"></i><b>1.2</b> Render book</a></li>
 <li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#preview-book"><i class="fa fa-check"></i><b>1.3</b> Preview book</a></li>
-</ul></li>
-<li class="chapter" data-level="2" data-path="hello-bookdown.html"><a href="hello-bookdown.html"><i class="fa fa-check"></i><b>2</b> Hello bookdown</a>
+<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#a-section"><i class="fa fa-check"></i><b>1.4</b> A section</a>
 <ul>
-<li class="chapter" data-level="2.1" data-path="hello-bookdown.html"><a href="hello-bookdown.html#a-section"><i class="fa fa-check"></i><b>2.1</b> A section</a>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#an-unnumbered-section"><i class="fa fa-check"></i>An unnumbered section</a></li>
+</ul></li>
+<li class="chapter" data-level="1.5" data-path="index.html"><a href="index.html#chapters-and-sub-chapters"><i class="fa fa-check"></i><b>1.5</b> Chapters and sub-chapters</a></li>
+<li class="chapter" data-level="1.6" data-path="index.html"><a href="index.html#captioned-figures-and-tables"><i class="fa fa-check"></i><b>1.6</b> Captioned figures and tables</a></li>
+<li class="chapter" data-level="1.7" data-path="index.html"><a href="index.html#footnotes"><i class="fa fa-check"></i><b>1.7</b> Footnotes</a></li>
+<li class="chapter" data-level="1.8" data-path="index.html"><a href="index.html#citations"><i class="fa fa-check"></i><b>1.8</b> Citations</a></li>
+<li class="chapter" data-level="1.9" data-path="index.html"><a href="index.html#equations"><i class="fa fa-check"></i><b>1.9</b> Equations</a></li>
+<li class="chapter" data-level="1.10" data-path="index.html"><a href="index.html#theorems-and-proofs"><i class="fa fa-check"></i><b>1.10</b> Theorems and proofs</a></li>
+<li class="chapter" data-level="1.11" data-path="index.html"><a href="index.html#callout-blocks"><i class="fa fa-check"></i><b>1.11</b> Callout blocks</a></li>
+<li class="chapter" data-level="1.12" data-path="index.html"><a href="index.html#publishing"><i class="fa fa-check"></i><b>1.12</b> Publishing</a></li>
+<li class="chapter" data-level="1.13" data-path="index.html"><a href="index.html#pages"><i class="fa fa-check"></i><b>1.13</b> 404 pages</a></li>
+<li class="chapter" data-level="1.14" data-path="index.html"><a href="index.html#metadata-for-sharing"><i class="fa fa-check"></i><b>1.14</b> Metadata for sharing</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>2</b> Introduction</a></li>
+<li class="chapter" data-level="3" data-path="cross.html"><a href="cross.html"><i class="fa fa-check"></i><b>3</b> Mark-recapture</a>
 <ul>
-<li class="chapter" data-level="" data-path="hello-bookdown.html"><a href="hello-bookdown.html#an-unnumbered-section"><i class="fa fa-check"></i>An unnumbered section</a></li>
+<li class="chapter" data-level="3.1" data-path="cross.html"><a href="cross.html#closed-populations"><i class="fa fa-check"></i><b>3.1</b> 2.1 Closed populations</a></li>
+<li class="chapter" data-level="3.2" data-path="cross.html"><a href="cross.html#simulation-study"><i class="fa fa-check"></i><b>3.2</b> 2.2 Simulation study</a></li>
 </ul></li>
-</ul></li>
-<li class="chapter" data-level="3" data-path="cross.html"><a href="cross.html"><i class="fa fa-check"></i><b>3</b> Cross-references</a>
+<li class="chapter" data-level="4" data-path="distance-sampling.html"><a href="distance-sampling.html"><i class="fa fa-check"></i><b>4</b> Distance sampling</a>
 <ul>
-<li class="chapter" data-level="3.1" data-path="cross.html"><a href="cross.html#chapters-and-sub-chapters"><i class="fa fa-check"></i><b>3.1</b> Chapters and sub-chapters</a></li>
-<li class="chapter" data-level="3.2" data-path="cross.html"><a href="cross.html#captioned-figures-and-tables"><i class="fa fa-check"></i><b>3.2</b> Captioned figures and tables</a></li>
+<li class="chapter" data-level="4.1" data-path="distance-sampling.html"><a href="distance-sampling.html#line-transect-sampling"><i class="fa fa-check"></i><b>4.1</b> 3.1 Line transect sampling</a></li>
+<li class="chapter" data-level="4.2" data-path="distance-sampling.html"><a href="distance-sampling.html#simulation-study-1"><i class="fa fa-check"></i><b>4.2</b> 3.2 Simulation study</a></li>
+<li class="chapter" data-level="4.3" data-path="distance-sampling.html"><a href="distance-sampling.html#further-reading"><i class="fa fa-check"></i><b>4.3</b> Further Reading</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="parts.html"><a href="parts.html"><i class="fa fa-check"></i><b>4</b> Parts</a></li>
 <li class="chapter" data-level="5" data-path="mark-recapture-distance-sampling.html"><a href="mark-recapture-distance-sampling.html"><i class="fa fa-check"></i><b>5</b> Mark Recapture Distance Sampling</a>
 <ul>
-<li class="chapter" data-level="5.1" data-path="mark-recapture-distance-sampling.html"><a href="mark-recapture-distance-sampling.html#introduction"><i class="fa fa-check"></i><b>5.1</b> Introduction</a>
+<li class="chapter" data-level="5.1" data-path="mark-recapture-distance-sampling.html"><a href="mark-recapture-distance-sampling.html#introduction-1"><i class="fa fa-check"></i><b>5.1</b> Introduction</a></li>
+<li class="chapter" data-level="5.2" data-path="mark-recapture-distance-sampling.html"><a href="mark-recapture-distance-sampling.html#simulation---p0-1-and-animal-movement"><i class="fa fa-check"></i><b>5.2</b> Simulation - p(0) &lt; 1 and animal movement</a>
 <ul>
-<li class="chapter" data-level="5.1.1" data-path="mark-recapture-distance-sampling.html"><a href="mark-recapture-distance-sampling.html#methods"><i class="fa fa-check"></i><b>5.1.1</b> Methods</a></li>
-<li class="chapter" data-level="5.1.2" data-path="mark-recapture-distance-sampling.html"><a href="mark-recapture-distance-sampling.html#results"><i class="fa fa-check"></i><b>5.1.2</b> Results</a></li>
+<li class="chapter" data-level="5.2.1" data-path="mark-recapture-distance-sampling.html"><a href="mark-recapture-distance-sampling.html#methods"><i class="fa fa-check"></i><b>5.2.1</b> Methods</a></li>
+<li class="chapter" data-level="5.2.2" data-path="mark-recapture-distance-sampling.html"><a href="mark-recapture-distance-sampling.html#results"><i class="fa fa-check"></i><b>5.2.2</b> Results</a></li>
 </ul></li>
-<li class="chapter" data-level="5.2" data-path="mark-recapture-distance-sampling.html"><a href="mark-recapture-distance-sampling.html#simulation---imperfect-matching"><i class="fa fa-check"></i><b>5.2</b> Simulation - Imperfect Matching</a>
+<li class="chapter" data-level="5.3" data-path="mark-recapture-distance-sampling.html"><a href="mark-recapture-distance-sampling.html#simulation---imperfect-matching"><i class="fa fa-check"></i><b>5.3</b> Simulation - Imperfect Matching</a>
 <ul>
-<li class="chapter" data-level="5.2.1" data-path="mark-recapture-distance-sampling.html"><a href="mark-recapture-distance-sampling.html#results-1"><i class="fa fa-check"></i><b>5.2.1</b> Results</a></li>
+<li class="chapter" data-level="5.3.1" data-path="mark-recapture-distance-sampling.html"><a href="mark-recapture-distance-sampling.html#results-1"><i class="fa fa-check"></i><b>5.3.1</b> Results</a></li>
 </ul></li>
-<li class="chapter" data-level="5.3" data-path="mark-recapture-distance-sampling.html"><a href="mark-recapture-distance-sampling.html#futher-reading"><i class="fa fa-check"></i><b>5.3</b> Futher Reading</a></li>
+<li class="chapter" data-level="5.4" data-path="mark-recapture-distance-sampling.html"><a href="mark-recapture-distance-sampling.html#futher-reading"><i class="fa fa-check"></i><b>5.4</b> Futher Reading</a></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="d-distance-sampling.html"><a href="d-distance-sampling.html"><i class="fa fa-check"></i><b>6</b> 2D Distance Sampling</a>
 <ul>
-<li class="chapter" data-level="6.1" data-path="d-distance-sampling.html"><a href="d-distance-sampling.html#introduction-1"><i class="fa fa-check"></i><b>6.1</b> Introduction</a></li>
+<li class="chapter" data-level="6.1" data-path="d-distance-sampling.html"><a href="d-distance-sampling.html#introduction-2"><i class="fa fa-check"></i><b>6.1</b> Introduction</a></li>
+<li class="chapter" data-level="6.2" data-path="d-distance-sampling.html"><a href="d-distance-sampling.html#simulation-non-uniform-distribution"><i class="fa fa-check"></i><b>6.2</b> Simulation: Non Uniform Distribution</a></li>
+<li class="chapter" data-level="6.3" data-path="d-distance-sampling.html"><a href="d-distance-sampling.html#simulation-comparison-to-mark-recapture"><i class="fa fa-check"></i><b>6.3</b> Simulation: Comparison to Mark Recapture</a></li>
+<li class="chapter" data-level="6.4" data-path="d-distance-sampling.html"><a href="d-distance-sampling.html#real-data-analysis"><i class="fa fa-check"></i><b>6.4</b> Real Data Analysis</a>
+<ul>
+<li class="chapter" data-level="6.4.1" data-path="d-distance-sampling.html"><a href="d-distance-sampling.html#methods-1"><i class="fa fa-check"></i><b>6.4.1</b> Methods</a></li>
+<li class="chapter" data-level="6.4.2" data-path="d-distance-sampling.html"><a href="d-distance-sampling.html#results-2"><i class="fa fa-check"></i><b>6.4.2</b> Results</a></li>
+</ul></li>
+<li class="chapter" data-level="6.5" data-path="d-distance-sampling.html"><a href="d-distance-sampling.html#further-reading-1"><i class="fa fa-check"></i><b>6.5</b> Further Reading</a></li>
 </ul></li>
 <li class="chapter" data-level="7" data-path="sharing-your-book.html"><a href="sharing-your-book.html"><i class="fa fa-check"></i><b>7</b> Sharing your book</a>
 <ul>
-<li class="chapter" data-level="7.1" data-path="sharing-your-book.html"><a href="sharing-your-book.html#publishing"><i class="fa fa-check"></i><b>7.1</b> Publishing</a></li>
-<li class="chapter" data-level="7.2" data-path="sharing-your-book.html"><a href="sharing-your-book.html#pages"><i class="fa fa-check"></i><b>7.2</b> 404 pages</a></li>
-<li class="chapter" data-level="7.3" data-path="sharing-your-book.html"><a href="sharing-your-book.html#metadata-for-sharing"><i class="fa fa-check"></i><b>7.3</b> Metadata for sharing</a></li>
+<li class="chapter" data-level="7.1" data-path="sharing-your-book.html"><a href="sharing-your-book.html#publishing-1"><i class="fa fa-check"></i><b>7.1</b> Publishing</a></li>
+<li class="chapter" data-level="7.2" data-path="sharing-your-book.html"><a href="sharing-your-book.html#pages-1"><i class="fa fa-check"></i><b>7.2</b> 404 pages</a></li>
+<li class="chapter" data-level="7.3" data-path="sharing-your-book.html"><a href="sharing-your-book.html#metadata-for-sharing-1"><i class="fa fa-check"></i><b>7.3</b> Metadata for sharing</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="chapter" data-level="8" data-path="d-distance-sampling-1.html"><a href="d-distance-sampling-1.html"><i class="fa fa-check"></i><b>8</b> 2D Distance Sampling</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="d-distance-sampling-1.html"><a href="d-distance-sampling-1.html#introduction-3"><i class="fa fa-check"></i><b>8.1</b> Introduction</a></li>
+<li class="chapter" data-level="8.2" data-path="d-distance-sampling-1.html"><a href="d-distance-sampling-1.html#simulation---comparison-to-mark-recapture"><i class="fa fa-check"></i><b>8.2</b> Simulation - Comparison to Mark Recapture</a></li>
+</ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -147,31 +238,277 @@ set in the _output.yml file.</p>" />
             <section class="normal" id="section-">
 <div id="d-distance-sampling" class="section level1 hasAnchor" number="6">
 <h1><span class="header-section-number">Chapter 6</span> 2D Distance Sampling<a href="d-distance-sampling.html#d-distance-sampling" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<div id="introduction-1" class="section level2 hasAnchor" number="6.1">
-<h2><span class="header-section-number">6.1</span> Introduction<a href="d-distance-sampling.html#introduction-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="introduction-2" class="section level2 hasAnchor" number="6.1">
+<h2><span class="header-section-number">6.1</span> Introduction<a href="d-distance-sampling.html#introduction-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>2D Distance Sampling builds on standard distance sampling by including the forward distance to the detected animal as well as the perpendicular distance. This removes the assumptions that the animals are uniformly distributed and that p(0) = 1, so this method is useful for situations where the other methods covered previously are not suitable.</p>
-<p>##Simulation - Non Uniform Distribution
-We start by simulating attraction to the line by generating 200 animals using a half normal distribution with parameters 678.7507661, 116.1516889. We used a hazard rate detection function with parameters 4.945767, 0.714222. The parameters chosen are the best model for our real data.</p>
-We then fitted a model using a half normal distribution for animal density and hazard detection function. We did not fit any other models for efficiency purposes. This gives a bias of 6.409596 , so we can confirm it is unbiased.
-## Simulation - Comparison to Mark Recapture
-Double Observer mark recapture methods are the current standard for estimating abundance of snow leopard prey. Our previous simulations have shown these have serious flaws, so we used both a 2D distance model and the Chapman estimator to estimate the abundance from the same data (simulated using the same parameters as above).
+</div>
+<div id="simulation-non-uniform-distribution" class="section level2 hasAnchor" number="6.2">
+<h2><span class="header-section-number">6.2</span> Simulation: Non Uniform Distribution<a href="d-distance-sampling.html#simulation-non-uniform-distribution" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>We start by simulating attraction to the line by generating 200 animals using a half normal distribution with parameters 0.7206985, 757.6439104. We used a hazard rate detection function with parameters 5.0174523, 0.7224735. The parameters chosen are the best model for our real data.</p>
+<p>We then fitted a model using a half normal distribution for animal density and hazard detection function. We did not fit any other models for efficiency purposes. This gives a bias of -0.14 , so we can confirm it is unbiased.</p>
+</div>
+<div id="simulation-comparison-to-mark-recapture" class="section level2 hasAnchor" number="6.3">
+<h2><span class="header-section-number">6.3</span> Simulation: Comparison to Mark Recapture<a href="d-distance-sampling.html#simulation-comparison-to-mark-recapture" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Double Observer mark recapture methods are the current standard for estimating abundance of snow leopard prey. Our previous simulations have shown these have serious flaws, so we used both a 2D distance model and the Chapman estimator to estimate the abundance from the same data (simulated using the same parameters as above).</p>
 <div class="figure"><span style="display:block;" id="fig:2D-histograms"></span>
 <img src="_main_files/figure-html/2D-histograms-1.png" alt="Histograms of abundance estimates using 2D distance sampling and the Chapman estimator" width="672" />
 <p class="caption">
 Figure 6.1: Histograms of abundance estimates using 2D distance sampling and the Chapman estimator
 </p>
 </div>
-The Chapman estimator was significantly negatively biased due to the unmodelled heterogeneity in the population. Adding random animal movement and imperfect matching gives a similar problem.<br />
-
+<p>The Chapman estimator was significantly negatively biased due to the unmodelled heterogeneity in the population. Adding random animal movement and imperfect matching gives a similar problem.</p>
 <div class="figure"><span style="display:block;" id="fig:imperfect-matching-histograms"></span>
 <img src="_main_files/figure-html/imperfect-matching-histograms-1.png" alt="Histograms of abundance estimates using the Chapman estimator with random movment" width="672" />
 <p class="caption">
 Figure 6.2: Histograms of abundance estimates using the Chapman estimator with random movment
 </p>
 </div>
+<pre><code>## [1] &quot;Hessian matrices could not be computed for any 2D models&quot;</code></pre>
+<table>
+<caption><span id="tab:coverage-probabilities">Table 6.1: </span>Coverage Probabilities</caption>
+<colgroup>
+<col width="3%" />
+<col width="30%" />
+<col width="26%" />
+<col width="39%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">2D</th>
+<th align="right">Chapman without movement</th>
+<th align="right">Chapman with movement</th>
+<th align="right">Chapman with imperfect matching</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">NA</td>
+<td align="right">0</td>
+<td align="right">NaN</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
 <p>From this it is clear that double-observer mark-recapture will yield significantly biased estimates of abundance of snow leopard prey, even if the animals do not move and the observers can perfectly match the individuals seen. We recommend instead using 2D distance sampling, as it accounts for the non uniform animal distribution as well as the declining detectability with distance. It is also requires less time to be spent surveying, as each transect only need to be walked once.</p>
-<p>##Further Reading
-Borchers, D.L. and Cox, M.J. (2016). Distance sampling detection functions: 2D or not 2D? Biometrics, 73(2), pp.593–602. <a href="doi:https://doi.org/10.1111/biom.12581" class="uri">doi:https://doi.org/10.1111/biom.12581</a>.</p>
+</div>
+<div id="real-data-analysis" class="section level2 hasAnchor" number="6.4">
+<h2><span class="header-section-number">6.4</span> Real Data Analysis<a href="d-distance-sampling.html#real-data-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="methods-1" class="section level3 hasAnchor" number="6.4.1">
+<h3><span class="header-section-number">6.4.1</span> Methods<a href="d-distance-sampling.html#methods-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>We will now use the 2D distance framework to analyse the real snow leopard prey data. The observers surveyed 48 transects in 10 blocks and recorded the bearing of the path, the bearing of the group they saw and radial distance to the group where possible. There were 2 species included in the survey: ibex and argali. The observers had limited rangefinders so 49 of these observations had no distance data; 61 groups were behind the observers so did not have a valid “forward” distance. This left 132 usable observations.</p>
+<p>Upon closer inspection, many detection distances (both perpendicular and forward) appeared to be rounded to zero, likely as a result of the bearings being rounded to the nearest 5 degrees. To prevent this from impacting the model fit we simply added a small random number to each zero observation.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="d-distance-sampling.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(DistData<span class="sc">$</span>distance, <span class="at">main =</span> <span class="st">&quot;Perpendicular Distance&quot;</span>)</span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:distance-histograms-1"></span>
+<img src="_main_files/figure-html/distance-histograms-1.png" alt="Histograms of forward and perpendicular distances" width="672" />
+<p class="caption">
+Figure 6.3: Histograms of forward and perpendicular distances
+</p>
+</div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="d-distance-sampling.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(DistData<span class="sc">$</span>forward, <span class="at">main =</span> <span class="st">&quot;Forward Distance&quot;</span>)</span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:distance-histograms-2"></span>
+<img src="_main_files/figure-html/distance-histograms-2.png" alt="Histograms of forward and perpendicular distances" width="672" />
+<p class="caption">
+Figure 6.4: Histograms of forward and perpendicular distances
+</p>
+</div>
+<p>From looking at the histograms of observed data we set the perpendicular truncation distance at 1600 and the forward truncation distance at 1300. This excluded 2 outlier observations.<br />
+We then fitted a series of model with different detection functions and animal distributions, and picked the one with the lowest AIC.</p>
+</div>
+<div id="results-2" class="section level3 hasAnchor" number="6.4.2">
+<h3><span class="header-section-number">6.4.2</span> Results<a href="d-distance-sampling.html#results-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Our best fitting model used the h1 hazard detection function and a normal distribution for the animal density. All of the best fitting models used a normal animal distribution, which implies that the animals are attracted to the line rather than avoiding it as initially thought. This could be due to the non random line placement, as the observers travel along valleys or ridges that are easier to walk along so the animals could also favour the easier terrain.</p>
+<div class="figure"><span style="display:block;" id="fig:real-results-plot"></span>
+<img src="_main_files/figure-html/real-results-plot-1.png" alt="Detection and distribution functions for best model (h1 and normal)" width="672" />
+<p class="caption">
+Figure 6.5: Detection and distribution functions for best model (h1 and normal)
+</p>
+</div>
+<p>We tried fitting different models to each species in the survey, but this had a higher AIC than the combined model (3474.1536415 vs 3470.4359357 for combined model). Interestingly, the argali appear to be uniformly distributed across the area whereas the ibex exhibit line attraction. However, there are only 37 argali groups recorded so further investigation is needed before drawing any conclusions.</p>
+<p>The best combined model estimates there are 2460.5 individual animals in total.</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="right">Point Estimate</th>
+<th align="right">95% Bootstrap</th>
+<th align="right">Confidence Interval</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Combined model</td>
+<td align="right">2460.5</td>
+<td align="right">2119.59</td>
+<td align="right">2969.85</td>
+</tr>
+<tr class="even">
+<td align="left">Ibex only model</td>
+<td align="right">1845.3</td>
+<td align="right">1585.30</td>
+<td align="right">2286.66</td>
+</tr>
+<tr class="odd">
+<td align="left">Argali only model</td>
+<td align="right">935.8</td>
+<td align="right">682.30</td>
+<td align="right">1345.30</td>
+</tr>
+</tbody>
+</table>
+<table style="width:100%;">
+<colgroup>
+<col width="5%" />
+<col width="7%" />
+<col width="17%" />
+<col width="12%" />
+<col width="15%" />
+<col width="10%" />
+<col width="6%" />
+<col width="12%" />
+<col width="12%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Stratum</th>
+<th align="right">Groups Seen</th>
+<th align="right">Total Transect Length (km)</th>
+<th align="right">Covered Area (m^2)</th>
+<th align="right">Estimated Group Denisty</th>
+<th align="right">Number of Groups</th>
+<th align="right">Mean Size</th>
+<th align="right">Individual Density</th>
+<th align="right">Abundance Estimate</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">1</td>
+<td align="right">26</td>
+<td align="right">42.01903</td>
+<td align="right">134460.9</td>
+<td align="right">0.000583</td>
+<td align="right">78.4</td>
+<td align="right">6.6</td>
+<td align="right">0.0038347</td>
+<td align="right">515.6</td>
+</tr>
+<tr class="even">
+<td align="left">2</td>
+<td align="right">9</td>
+<td align="right">42.74643</td>
+<td align="right">136788.6</td>
+<td align="right">0.000198</td>
+<td align="right">27.1</td>
+<td align="right">6.9</td>
+<td align="right">0.0013667</td>
+<td align="right">186.9</td>
+</tr>
+<tr class="odd">
+<td align="left">3</td>
+<td align="right">19</td>
+<td align="right">72.73841</td>
+<td align="right">232762.9</td>
+<td align="right">0.000246</td>
+<td align="right">57.3</td>
+<td align="right">6.8</td>
+<td align="right">0.0016841</td>
+<td align="right">392.0</td>
+</tr>
+<tr class="even">
+<td align="left">4</td>
+<td align="right">14</td>
+<td align="right">52.46526</td>
+<td align="right">167888.8</td>
+<td align="right">0.000251</td>
+<td align="right">42.2</td>
+<td align="right">4.2</td>
+<td align="right">0.0010596</td>
+<td align="right">177.9</td>
+</tr>
+<tr class="odd">
+<td align="left">5</td>
+<td align="right">12</td>
+<td align="right">71.05180</td>
+<td align="right">227365.7</td>
+<td align="right">0.000159</td>
+<td align="right">36.2</td>
+<td align="right">4.5</td>
+<td align="right">0.0007161</td>
+<td align="right">162.8</td>
+</tr>
+<tr class="even">
+<td align="left">6</td>
+<td align="right">12</td>
+<td align="right">64.20931</td>
+<td align="right">205469.8</td>
+<td align="right">0.000176</td>
+<td align="right">36.2</td>
+<td align="right">9.1</td>
+<td align="right">0.0015996</td>
+<td align="right">328.7</td>
+</tr>
+<tr class="odd">
+<td align="left">7</td>
+<td align="right">13</td>
+<td align="right">75.91028</td>
+<td align="right">242912.9</td>
+<td align="right">0.000161</td>
+<td align="right">39.2</td>
+<td align="right">4.4</td>
+<td align="right">0.0007075</td>
+<td align="right">171.9</td>
+</tr>
+<tr class="even">
+<td align="left">8</td>
+<td align="right">7</td>
+<td align="right">37.26444</td>
+<td align="right">119246.2</td>
+<td align="right">0.000177</td>
+<td align="right">21.1</td>
+<td align="right">4.1</td>
+<td align="right">0.0007333</td>
+<td align="right">87.4</td>
+</tr>
+<tr class="odd">
+<td align="left">9</td>
+<td align="right">6</td>
+<td align="right">33.30515</td>
+<td align="right">106576.5</td>
+<td align="right">0.000170</td>
+<td align="right">18.1</td>
+<td align="right">4.0</td>
+<td align="right">0.0006790</td>
+<td align="right">72.4</td>
+</tr>
+<tr class="even">
+<td align="left">10</td>
+<td align="right">12</td>
+<td align="right">37.72042</td>
+<td align="right">120705.4</td>
+<td align="right">0.000300</td>
+<td align="right">36.2</td>
+<td align="right">10.1</td>
+<td align="right">0.0030227</td>
+<td align="right">364.9</td>
+</tr>
+<tr class="odd">
+<td align="left">Total</td>
+<td align="right">130</td>
+<td align="right">529.43052</td>
+<td align="right">1694177.7</td>
+<td align="right">0.000231</td>
+<td align="right">392.0</td>
+<td align="right">6.3</td>
+<td align="right">0.0014523</td>
+<td align="right">2460.5</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="further-reading-1" class="section level2 hasAnchor" number="6.5">
+<h2><span class="header-section-number">6.5</span> Further Reading<a href="d-distance-sampling.html#further-reading-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Borchers, D.L. and Cox, M.J. (2016). Distance sampling detection functions: 2D or not 2D? Biometrics, 73(2), pp.593–602. <a href="doi:https://doi.org/10.1111/biom.12581" class="uri">doi:https://doi.org/10.1111/biom.12581</a>.</p>
 <p>Suryawanshi, K.R., Bhatnagar, Y.V. and Mishra, C. (2012). Standardizing the double-observer survey method for estimating mountain ungulate prey of the endangered snow leopard. Oecologia, 169(3), pp.581–590. <a href="doi:https://doi.org/10.1007/s00442-011-2237-0" class="uri">doi:https://doi.org/10.1007/s00442-011-2237-0</a>.</p>
 
 </div>

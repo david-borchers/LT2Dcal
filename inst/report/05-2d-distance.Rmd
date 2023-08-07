@@ -6,9 +6,9 @@ output:
 
 # 2D Distance Sampling
 
-```{r 2D-setup, include=FALSE, warnings = F}
+```{r 2D-setup, include=FALSE}
 source("code.R")
-b = c(5.0174523,0.7224735); logphi = c(-0.3275344,6.6302135)
+b = c(5.0174523,0.7224735); logphi = c(6.630331,4.537701)
 w = 1600; ystart = 1300
 Nanimals = 200
 match_limits = c(300,1000); match_param = c(450,5)
@@ -16,14 +16,30 @@ match_limits = c(300,1000); match_param = c(450,5)
 
 ## Introduction
 
-2D Distance Sampling builds on standard distance sampling by including the forward distance to the detected animal as well as the perpendicular distance. This removes the assumptions that the animals are uniformly distributed and that p(0) = 1, so this method is useful for situations where the other methods covered previously are not suitable.
+2D Distance Sampling builds on standard distance sampling by including the forward distance to the detected animal as well as the perpendicular distance. This removes the assumptions that the animals are uniformly distributed and that p(0) = 1, so this method is useful for situations where the other methods covered previously are not suitable. In particular, 2D distance sampling only requires the transect to be surveyed by one observer. This is not only more efficient but removes the issue of imperfect matching in mark-recapture methods.
+
+Animal movement is also less problematic for 2d distance sampling. Like in standard distance sampling, as long as the movement is slow relative to the speed of the observers it will only cause a small amount of bias. Responsive movement can be accounted for in the animal distribution model so does not cause bias.
+
+The likelihood equation for this model is: $$
+L(N, \boldsymbol{\beta}) = {N\choose n}[1-p.(\boldsymbol{\beta},\boldsymbol{\phi})]^{N-n}\prod_{i = 1}^{n}\pi(x_i; \boldsymbol{\phi})S(t_i, x_i; \boldsymbol{\beta}) h(t_i, x_i; \boldsymbol{\beta}) 
+$$ where:
+
+\- $n$ is the number of animals observed and $N$ is the total in the population
+
+\- $\pi(x_i; \boldsymbol{\phi})$ is the probability animal i is at perpendicular distance $x_i$. We will refer to $\pi(x_i; \boldsymbol{\phi})$ as the animal distribution function.
+
+\- $h(t_i, x_i; \boldsymbol{\beta})$ is the probability animal i is detected at forward distance $y_i$ and perpendicular distance $x_i$. We will refer to $h(t_i, x_i; \boldsymbol{\beta})$ as the detection function.
+
+ - $S(t_i, x_i; \boldsymbol{\beta}) = e^{-\int_{0}^{t_i}h(u,x;\boldsymbol{\beta})du}$ is the survivor function, i.e. the probability that animal i was undetected until time $t_i$ - $p.(\boldsymbol{\beta},\boldsymbol{\phi})]$ is the average probability of being detected in the region
+
+In practice the conditional likelihood $L(\boldsymbol{\beta}|n)$ is used to calculate the maximum likelihood estimators. It is the same as the equation above, but without the leading binomial term, and so avoids considering the unseen animals. The forward distance to the detected animal $y_i$ is used instead of the time $t_i$.
 
 ## Simulation: Non Uniform Distribution
 
-We start by simulating attraction to the line by generating 200 animals using a half normal distribution with parameters `r exp(logphi)`. We used a hazard rate detection function with parameters `r b`. The parameters chosen are the best model for our real data.
+We start by simulating attraction to the line by generating 200 animals using a half normal distribution with parameters `r exp(logphi)`. We used a hazard rate detection function with parameters `r b`. The parameters chosen are the best model for the real snow leopard prey data.
 
 ```{r 2D-simulation, echo = F, warnings = F}
-suppressWarnings(simdata <- MCR_2D(10,Nanimals))
+suppressWarnings(simdata <- MCR_2D(10,Nanimals, b=b, logphi = logphi, w= w, ystart = ystart, match_limits = match_limits, match_params = match_param))
 bias_2d <- 100*(simdata$X2D - Nanimals)/Nanimals
 ```
 
@@ -31,7 +47,7 @@ We then fitted a model using a half normal distribution for animal density and h
 
 ## Simulation: Comparison to Mark Recapture
 
-Double Observer mark recapture methods are the current standard for estimating abundance of snow leopard prey. Our previous simulations have shown these have serious flaws, so we used both a 2D distance model and the Chapman estimator to estimate the abundance from the same data (simulated using the same parameters as above).
+Double observer mark recapture methods using the Chapman estimator are the current standard for estimating abundance of snow leopard prey. Our previous simulations have shown these have serious flaws, so we used both a 2D distance model and the Chapman estimator to estimate the abundance from the same data (simulated using the same parameters as above).
 
 ```{r 2D-histograms, echo = F, fig.cap="Histograms of abundance estimates using 2D distance sampling and the Chapman estimator"}
 par(mfrow = c(1,2))
@@ -51,6 +67,18 @@ hist(simdata$MCR.imperf, main = "Imperfect Matching", xlab = "Estimate of N", xl
 abline(v = Nanimals, col = "blue")
 ```
 
+```{r coverage-probabilities, echo = FALSE}
+cis_2D <- simdata[!is.na(simdata$X2D.lower)&!is.na(simdata$X2D.lower), 2:3]
+covprob2D <- 100*length(cis_2D[cis_2D$X2D.lower <= Nanimals &cis_2D$X2D.upper >= Nanimals])/length(cis_2D)
+cp.nomvmnt <- 100*length(simdata[simdata$nomvmnt.lower <= Nanimals & simdata$nomvmnt.upper >= Nanimals])/length(simdata$MCR.nomvmnt)
+if(length(dim(cis_2D)[1] == 0)){
+  print("Hessian matrices could not be computed for any 2D models")
+  covprob2D <- NA}
+cp.mvmnt <- 100*length(simdata[simdata$mvmnt.lower <= Nanimals & simdata$mvmnt.upper >= Nanimals])/length(simdata$MCR.mvmnt)
+cp.imperf <- 100*length(simdata[simdata$imperf.lower <= Nanimals & simdata$nimperf.upper >= Nanimals])/length(simdata$MCR.imperf)
+kable(data.frame("2D" = covprob2D,"nm" = cp.nomvmnt, "m" = cp.mvmnt,"i" = cp.imperf), col.names = c("2D", "Chapman without movement", "Chapman with movement", "Chapman with imperfect matching"), caption = "Coverage Probabilities")
+```
+
 From this it is clear that double-observer mark-recapture will yield significantly biased estimates of abundance of snow leopard prey, even if the animals do not move and the observers can perfectly match the individuals seen. We recommend instead using 2D distance sampling, as it accounts for the non uniform animal distribution as well as the declining detectability with distance. It is also requires less time to be spent surveying, as each transect only need to be walked once.
 
 ## Real Data Analysis
@@ -61,7 +89,7 @@ We will now use the 2D distance framework to analyse the real snow leopard prey 
 
 Upon closer inspection, many detection distances (both perpendicular and forward) appeared to be rounded to zero, likely as a result of the bearings being rounded to the nearest 5 degrees. To prevent this from impacting the model fit we simply added a small random number to each zero observation.
 
-```{r, distance-histograms, fig.cap = "Histograms of forward and perpendicular distances"}
+```{r distance-histograms, fig.cap = "Histograms of forward and perpendicular distances"}
 hist(DistData$distance, main = "Perpendicular Distance")
 hist(DistData$forward, main = "Forward Distance")
 ```
@@ -121,13 +149,15 @@ kable(ci.tabs, col.names = c("Point Estimate","95% Bootstrap", "Confidence Inter
 ```
 
 ```{r estimate-by-block, echo = F}
-ests <- jitter.h1.norm$ests[,c(1,2,4,5,7:11)]
+ests <- jitter.h1.norm$ests[,c(1,2,4,6,7:11)]
 rownames(ests) <- NULL
-kable(ests, col.names = c("Stratum", "Groups Seen", "Total Transect Length (km)", "Covered Area (m^2)", "Estimated Group Denisty", "Number of Groups", "Mean Size", "Individual Density", "Abundance Estimate" ))
+kable(ests, col.names = c("Stratum", "Groups Seen", "Total Transect Length ($km$)", "Stratum Area ($m^2$)", "Estimated Group Denisty", "Number of Groups", "Mean Size", "Individual Density", "Abundance Estimate" ), escape = FALSE)
 ```
 
 ## Further Reading
 
 Borchers, D.L. and Cox, M.J. (2016). Distance sampling detection functions: 2D or not 2D? Biometrics, 73(2), pp.593--602. <doi:https://doi.org/10.1111/biom.12581>.
+
+Borchers, D.L., Buckland, S.T. and Zucchini, W. (2002). Estimating Animal Abundance. [online] Springer Science & Business Media.
 
 Suryawanshi, K.R., Bhatnagar, Y.V. and Mishra, C. (2012). Standardizing the double-observer survey method for estimating mountain ungulate prey of the endangered snow leopard. Oecologia, 169(3), pp.581--590. <doi:https://doi.org/10.1007/s00442-011-2237-0>.

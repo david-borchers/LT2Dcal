@@ -295,17 +295,16 @@ get_bias <- function(Nrep, Nanimals){
 }
 
 # 2D Distance -------------------------------------------------------------
-#won't work with real params?
 library(LT2D)
 #Fits 2D model and no movement,random movement and random movement w/ imperfect matching
 MCR_2D <- function(Nrep, Nanimals, 
                    b = c(5, 0.7), logphi = c(6.5,4.5),
                    w = 1600, ystart = 1300, L = 100,
                    match_limits = c(300,1000), match_params = c(250,3)){
-  ests_2d <- c()
-  chapman.nomvmnt <- c()
-  chapman.mvmnt <- c()
-  chapman.imperf <- c()
+  ests_2d <- c();ci_l <- rep(NA, Nrep);ci_u <- rep(NA, Nrep)
+  chapman.nomvmnt <- c();nomvmnt_l <- c();nomvmnt_u <- c()
+  chapman.mvmnt <- c();mvmnt_l <- c(); mvmnt_u <- c()
+  chapman.imperf <- c(); imperf_l <- c(); imperf_u <- c()
   for(j in 1:Nrep){
     #simulate animals
     positions <- simpop2DLT(L,w = w, pi.x = pi.hnorm, logphi = logphi, 
@@ -332,6 +331,10 @@ MCR_2D <- function(Nrep, Nanimals,
                     w = w,
                     hessian = TRUE)
     ests_2d[j] <- fit$ests[nrow(fit$ests),ncol(fit$ests)]
+    try({boot <- LT2D.bootstrap(fit)
+    ci_l[j] <- boot$ci[1]
+    ci_u[j] <- boot$ci[2]
+    }, silent = TRUE)
     #MCR
     ##format data
     mcr.df <- data.frame("id" =1:Nanimals, "x" = positions$x, "y" = positions$y,
@@ -343,11 +346,16 @@ MCR_2D <- function(Nrep, Nanimals,
     mcr.df$obs1[mcr.df$x %in% simDat$x] <- 1
     ##get detection probabilities for second observer
     xs <- mcr.df$x
-    ys <- seq(0,10000, length.out = 200)
+    ys <- seq(0,ystart, length.out = 200)
     detect_probs <- p.approx(ys, xs, h1, b, what = "px")
     mcr.df$obs2 <- rbinom(Nanimals, 1, detect_probs)
     mcr.df$both[mcr.df$obs1 == 1 & mcr.df$obs2 == 1] <- 1
-    chapman.nomvmnt[j] <- (sum(mcr.df$obs1)+1)*(sum(mcr.df$obs2)+ 1)/(sum(mcr.df$both)+1)
+    n1 = sum(mcr.df$obs1); n2 = sum(mcr.df$obs2); m2 = sum(mcr.df$both)
+    chapman.nomvmnt[j] <- (n1+1)*(n2+ 1)/(m2+1)
+    varNhat <- (n1+1)*(n2+ 1)*(n1-m2)*(n2-m2)/((m2+2)*(m2+1)**2)
+    d <- exp(1.96*sqrt(log(1 + varNhat/chapman.nomvmnt[j]**2)))
+    nomvmnt_l[j] <- chapman.nomvmnt[j]/d
+    nomvmnt_u[j] <- chapman.nomvmnt[j]*d
     
     #add movement
     angle <- rwrappedcauchy(Nanimals, mu = circular(0),rho = 0)
@@ -361,7 +369,13 @@ MCR_2D <- function(Nrep, Nanimals,
     detect_probs <- p.approx(ys, xs, h1, b, what = "px")
     mcr.df$obs2.mvmnt <- rbinom(Nanimals, 1, detect_probs)
     mcr.df$both.mvmnt[mcr.df$obs1 == 1 & mcr.df$obs2.mvmnt == 1] <- 1
-    chapman.mvmnt[j] <- (sum(mcr.df$obs1)+1)*(sum(mcr.df$obs2.mvmnt)+ 1)/(sum(mcr.df$both.mvmnt, na.rm = T)+1)
+    
+    n1 = sum(mcr.df$obs1); n2 = sum(mcr.df$obs2.mvmnt, na.rm = T); m2 = sum(mcr.df$both.mvmnt, na.rm = T)
+    chapman.mvmnt[j] <- (n1+1)*(n2+ 1)/(m2+1)
+    varNhat <- (n1+1)*(n2+ 1)*(n1-m2)*(n2-m2)/((m2+2)*(m2+1)**2)
+    d <- exp(1.96*sqrt(log(1 + varNhat/chapman.mvmnt[j]**2)))
+    mvmnt_l[j] <- chapman.mvmnt[j]/d
+    mvmnt_u[j] <- chapman.mvmnt[j]*d
     
     #imperfect matching
     distances <- edist(cbind(mcr.df$x, mcr.df$y), cbind(mcr.df$newx[mcr.df$obs2.mvmnt == 1], mcr.df$newy[mcr.df$obs2.mvmnt == 1]))
@@ -399,17 +413,28 @@ MCR_2D <- function(Nrep, Nanimals,
     } 
     mcr.df$imperf.both <- rep(0, dim(mcr.df)[1])
     mcr.df$imperf.both[mcr.df$imperfect.obs1 == 1 & mcr.df$imperfect.obs2 == 1] <- 1
-    chapman.imperf[j] <- (sum(mcr.df$imperfect.obs1)+1)*(sum(mcr.df$imperfect.obs2, na.rm = T)+ 1)/(sum(mcr.df$imperf.both, na.rm = T)+1)
-  }
-  return(data.frame("2D" = ests_2d, "MCR.nomvmnt" = chapman.nomvmnt, 
-                    "MCR.move" = chapman.mvmnt, "MCR.imperf" = chapman.imperf))
+    
+    n1 = sum(mcr.df$imperfect.obs1, na.rm = T); n2 = sum(mcr.df$imperfect.obs2, na.rm = T); m2 = sum(mcr.df$imperf.both, na.rm = T)
+    chapman.imperf[j] <- (n1+1)*(n2+ 1)/(m2+1)
+    varNhat <- (n1+1)*(n2+ 1)*(n1-m2)*(n2-m2)/((m2+2)*(m2+1)**2)
+    d <- exp(1.96*sqrt(log(1 + varNhat/chapman.imperf[j]**2)))
+    imperf_l[j] <- chapman.imperf[j]/d
+    imperf_u[j] <- chapman.imperf[j]*d
 }
-MCR_2D(1,20)
+  return(data.frame("2D" = ests_2d, "2D.lower" = ci_l,
+                    "2D.upper" = ci_u, "MCR.nomvmnt" = chapman.nomvmnt,
+                    "nomvmnt.lower" = nomvmnt_l, "nomvmnt.upper" = nomvmnt_u,
+                    "MCR.move" = chapman.mvmnt, "mvmnt.lower" = mvmnt_l,
+                    "mvmnt.upper" = mvmnt_u, "MCR.imperf" = chapman.imperf,
+                    "imperf.lower" = imperf_l, "imperf.upper" = imperf_u))
+}
+
 
 # Gobi Analysis -----------------------------------------------------------
+
 Gobi <- read.csv("Gobi.csv")
 
-DistData <- Gobi[Gobi$Obs1 == 1,]
+DistData <- Gobi[Gobi$Obs1 == 1,c(1,3,9,11,16:18,35,45)]
 DistData$AngleDiff <- DistData$Obs1.AngleDetection-DistData$Obs1.AnglePath 
 #convert to radians
 DistData$AngleDiff <- DistData$AngleDiff * pi/180
@@ -418,10 +443,9 @@ DistData$distance <- abs(DistData$Obs1.Distance*sin(DistData$AngleDiff))
 DistData$forward <- DistData$Obs1.Distance*cos(DistData$AngleDiff)
 #remove NAs and negative y
 DistData <- DistData[!is.na(DistData$forward)&DistData$forward>=0,]
-w = 1600; ystart = 1300
-truncdata <- DistData[DistData$distance<=w& DistData$forward <= ystart,]
-xobs <- truncdata$distance
-yobs <- truncdata$forward
+
+xobs <- DistData$distance
+yobs <- DistData$forward
 jitterdat = jitterzeros(xobs,yobs,xcut=10,ycut=10,anground.degree=5)
 xjitter = jitterdat$x
 yjitter = jitterdat$y
@@ -429,23 +453,28 @@ yjitter = jitterdat$y
 L <- rep(0, length(xjitter)) 
 #there's probably a way to do this without for loops
 #but it would take longer for me to figure out than just running the loops
-for(t in unique(truncdata$Site)){
-  L[truncdata$Site == t][1] <- truncdata$Transect_Length[truncdata$Site == t][1]
+for(t in unique(DistData$Site)){
+  L[DistData$Site == t][1] <- DistData$Transect_Length[DistData$Site == t][1]
+}
+for(t in unique(Gobi$Site[!Gobi$Site %in% DistData$Site])){
+  L[which(L == 0 & DistData$Block == Gobi$Block[Gobi$Site == t])][1] <- Gobi$Transect_Length[Gobi$Site == t][1]
 }
 A <- rep(0, length(xjitter))
-for(b in unique(truncdata$Block)){
-  A[truncdata$Block == b][1] <- 2*w*sum(L[truncdata$Block == b])
+for(b in unique(DistData$Block)){
+  A[DistData$Block == b][1] <- 2*w*sum(unique(Gobi$Transect_Length[DistData$Block == b]))
 }
-jitterdf <- data.frame(x = xjitter, y = yjitter,
-                       stratum = truncdata$Block,
-                       transect = truncdata$Site,
+
+
+jitterdf <- data.frame(x = xjitter[1:dim(DistData)[1]], y = yjitter[1:dim(DistData)[1]],
+                       stratum = DistData$Block,
+                       transect = DistData$Site,
                        L = L,
                        area = A,
-                       object = 1:dim(truncdata)[1],
-                       size = truncdata$Group.size)
+                       object = 1:dim(DistData)[1],
+                       size = DistData$Group.size)
 
 # Ibex --------------------------------------------------------------------
-ibex <- truncdata[truncdata$Sightings == "ibex",]
+ibex <- DistData[DistData$Sightings == "ibex",]
 xobs <- ibex$distance
 yobs <- ibex$forward
 jitterdat = jitterzeros(xobs,yobs,xcut=10,ycut=10,anground.degree=5)
@@ -455,11 +484,13 @@ Li <- rep(0, length(xjitter))
 for(t in unique(ibex$Site)){
   Li[ibex$Site == t][1] <- ibex$Transect_Length[ibex$Site == t][1]
 }
+for(t in unique(Gobi$Site[!Gobi$Site %in% ibex$Site])){
+  Li[which(Li == 0 & ibex$Block == Gobi$Block[Gobi$Site == t][1])][1] <- Gobi$Transect_Length[Gobi$Site == t][1]
+}
 Ai <- rep(0, length(xjitter))
 for(b in unique(ibex$Block)){
-  Ai[ibex$Block == b][1] <- 2*w*sum(Li[ibex$Block == b])
+  Ai[ibex$Block == b][1] <- 2*w*sum(unique(Gobi$Transect_Length[Gobi$Block == b]))
 }
-
 ibexjitter <- data.frame(x = xjitter, y = yjitter,
                          stratum = ibex$Block,
                          transect = ibex$Site,
@@ -468,9 +499,8 @@ ibexjitter <- data.frame(x = xjitter, y = yjitter,
                          object = 1:dim(ibex)[1],
                          size = ibex$Group.size)
 
-
 # Argali ------------------------------------------------------------------
-argali <- truncdata[truncdata$Sightings == "argali",]
+argali <- DistData[DistData$Sightings == "argali",]
 xobs <- argali$distance
 yobs <- argali$forward
 jitterdat = jitterzeros(xobs,yobs,xcut=10,ycut=10,anground.degree=5)
@@ -480,9 +510,12 @@ La <- rep(0, length(xjitter))
 for(t in unique(argali$Site)){
   La[argali$Site == t][1] <- argali$Transect_Length[argali$Site == t][1]
 }
+for(t in unique(Gobi$Site[!Gobi$Site %in% argali$Site])){
+  La[which(La == 0 & argali$Block == Gobi$Block[Gobi$Site == t][1])][1] <- Gobi$Transect_Length[Gobi$Site == t][1]
+}
 Aa <- rep(0, length(xjitter))
 for(b in unique(argali$Block)){
-  Aa[argali$Block == b][1] <- 2*w*sum(La[argali$Block == b])
+  Aa[argali$Block == b][1] <- 2*w*sum(unique(Gobi$Transect_Length[Gobi$Block == b]))
 }
 
 argalijitter <- data.frame(x = xjitter, y = yjitter,
@@ -492,3 +525,4 @@ argalijitter <- data.frame(x = xjitter, y = yjitter,
                            area = Aa,
                            object = 1:dim(argali)[1],
                            size = argali$Group.size)
+
