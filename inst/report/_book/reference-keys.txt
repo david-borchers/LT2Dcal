@@ -1,7 +1,6 @@
-fig:nice-fig
-tab:nice-tab
-eq:binom
-about
+fig:2D-histograms
+fig:imperfect-matching-histograms
+url-your-book-url-like-httpsbookdown.orgyihuibookdown
 usage
 render-book
 preview-book
@@ -11,17 +10,20 @@ cross
 chapters-and-sub-chapters
 captioned-figures-and-tables
 parts
-footnotes-and-citations
-footnotes
-citations
-blocks
-equations
-theorems-and-proofs
-callout-blocks
+mark-recapture-distance-sampling
+introduction
+methods
+results
+simulation---imperfect-matching
+results-1
+futher-reading
+d-distance-sampling
+introduction-1
 sharing-your-book
 publishing
 pages
 metadata-for-sharing
+<<<<<<< HEAD
 url-your-book-url-like-httpsbookdown.orgyihuibookdown
 mark-recapture-distance-sampling
 simulation-1
@@ -37,3 +39,5 @@ futher-reading
 d-distance-sampling
 introduction-1
 simulation---comparison-to-mark-recapture
+=======
+>>>>>>> d85b16122a051a3e34299ae1edb7800599cf536d
