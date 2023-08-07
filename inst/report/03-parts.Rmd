@@ -66,7 +66,7 @@ In this section, we will present the results of a simulation study that aims to 
 
 For each scenario we simulate 99 surveys, with each survey having a simulated sample size $N$ = 500.
 
-#### Scenario 1: When the underlying assumptions are met
+### Scenario 1: When the underlying assumptions are met
 
 We investigate how well the method performs when $p(0) = 1$ assumption is met and animals are uniformly distributed. For each replication, we will compare the estimated abundance to the true population size ($N$ = 500). The detection function chosen is half-normal with $\sigma = 0.4$ . We then calculate the mean estimate and the variance of the estimates across replications and thus check if true population size is within the confidence interval of the estimates.
 
@@ -120,41 +120,42 @@ ds.analysis <- function(n, sigma, movement){
   
   if (movement == TRUE){
     df1 <- subset(df, df$obs==2 & df$detect==1)
-  }
-  else{
-    df1 <- subset(df, df$obs==1 & df$detect==1)
-  }
-
-  n <- nrow(df1)
-  new_df1 <- data.frame(Region.Label = rep(1, n), Area = rep(4, n), 
-                        Sample.Label = rep(1, n), Effort = rep(2, n),
-                        distance = df1$distance)
-  
-  if (movement == TRUE){
+    n <- nrow(df1)
+    new_df1 <- data.frame(Region.Label = rep(1, n), Area = rep(4, n), 
+                          Sample.Label = rep(1, n), Effort = rep(2, n),
+                          distance = df1$distance)
     df.ds <- ds(new_df1, truncation=1, transect="line", key="hn", order=0, monotonicity = "none")
-  }
-  else{
-    df.ds <- ds(new_df1, truncation=1, transect="line", key="hn", monotonicity = "none")
-  }
+  }else{
+    df1 <- subset(df, df$obs==1 & df$detect==1)
+    n <- nrow(df1)
+    new_df1 <- data.frame(Region.Label = rep(1, n), Area = rep(4, n), 
+                          Sample.Label = rep(1, n), Effort = rep(2, n),
+                          distance = df1$distance)
+    df.ds <- ds(new_df1, truncation=1, transect="line", key="hn", monotonicity = "none")}
   
-  return(df.ds$ddf$Nhat)
+  return(c(df.ds$ddf$Nhat, df.ds$dht$individuals$N$lcl, df.ds$dht$individuals$N$ucl))
 }
+
 
 boot.ds <- function(n, sigma, movement){
   input <- rep(n, 99)
-  est.N <- unlist(lapply(input, ds.analysis, sigma, movement))
-  return(est.N)
+  ests <- lapply(input, ds.analysis, sigma, movement)
+  df.ests <- data.frame(t(sapply(ests,c)))
+  colnames(df.ests) <- c("N.hat", "lcl", "ucl")
+  return(df.ests)
 }
 ```
 
 ```{r message=FALSE, warning=FALSE}
-est.N.mr <- boot.ds(500, 0.4, FALSE)  # bootstrap estimates
-ci <- mean(est.N.mr) + c(-1, 1)*1.96*sqrt(var(est.N.mr)/99)  # confidence interval
-bias <- mean((est.N.mr-500)/500*100)  # mean percentage relative bias
-ci; bias
+ests.ds <- boot.ds(500, 0.4, FALSE)  # bootstrap estimates
+ci.ds <- mean(ests.ds$N.hat) + c(-1, 1)*1.96*sqrt(var(ests.ds$N.hat)/99)  # confidence interval
+bias.ds <- mean((ests.ds$N.hat-500)/500)  # mean relative bias
+check.pcover.ds <- 500 > ests.ds$lcl & 500 < ests.ds$ucl
+coverage.p.ds <- length(check.pcover.ds[check.pcover.ds==TRUE])/length(check.pcover.ds)  # coverage probablity
+ci.ds; bias.ds; coverage.p.ds
 ```
 
-#### Scenario 2: When animals show responsive movement
+### Scenario 2: When animals show responsive movement
 
 Apart from assuming that objects on the transect line are certain to be detected, another model assumption of distance sampling is that objects are detected at their initial location. Here we aim to examine the validity of method when animals move in response to the observer (away from transect line in this case) before being detected. The detection function chosen is half-normal with $\sigma = 0.4$ . The result above shows that the abundance estimate is negatively unbiased with mean percentage relative bias being about 50%.
 
@@ -167,29 +168,37 @@ ds.result <- function(n, sigma, movement){
   df <- sim.data.ds(n, sigma)
   ddist <- density(df$distance[df$obs==2]+1)
   plot(ddist, main="Animal distribution after responsive movement", xlab="", ylab="")
-  polygon(ddist, col="grey")
+  polygon(ddist, col="lightgrey")
   
   
   ## plot 2: histogram of bootstrap abundance estimates
-  est.N <- boot.ds(n, sigma, movement)
+  ests <- boot.ds(n, sigma, movement)
+  est.N <- ests$N.hat
   hist(est.N, main=paste("Abudance estimates"), xlab=NULL, ylab = NULL, prob=TRUE)
   points(mean(est.N),0,pch=19,col="red")
   arrows(quantile(est.N, 0.025),0,quantile(est.N, 0.975),0,angle=90,code=3,col="red")
   
-  return(est.N)
+  return(ests)
 }
 ```
 
 ```{r ds responsive movement, message=FALSE, warning=FALSE}
-est.N.ds <- ds.result(500, 0.4, TRUE)
+ests.ds2 <- ds.result(500, 0.4, TRUE)
 ```
 
 ```{r}
-ci <- mean(est.N.ds) + c(-1, 1)*1.96*sqrt(var(est.N.ds)/99)  # confidence interval
-bias <- mean((est.N.ds-500)/500*100)  # mean percentage relative bias
-ci; bias
+ci.ds2 <- mean(ests.ds2$N.hat) + c(-1, 1)*1.96*sqrt(var(ests.ds2$N.hat)/99)  # confidence interval
+bias.ds2 <- mean((ests.ds2$N.hat-500)/500)  # mean relative bias
+check.pcover.ds2 <- 500 > ests.ds2$lcl & 500 < ests.ds2$ucl
+coverage.p.ds2 <- length(check.pcover.ds2[check.pcover.ds2==TRUE])/length(check.pcover.ds2)  # coverage probablity
+ci.ds2; bias.ds2; coverage.p.ds2
+```
+
+```{r table DS, tidy=FALSE}
+tab.ds <- data.frame(scenario=c("No responsive movement", "Has responsive movement"), mean.relative.bias=c(bias.ds, bias.ds2), coverage.probablity=c(coverage.p.ds, coverage.p.ds2))
+knitr::kable(tab.ds, caption = 'A table of results from both scenarios', booktabs = TRUE)
 ```
 
 ## Further Reading
 
-Buckland, S.T., Rexstad, E.A., Marques, T.A. and Oedekoven, C.S. (2015). Distance Sampling: Methods and Applications. Springer International Publish, pp.99--103.
+Buckland, S.T., Rexstad, E.A., Marques, T.A. and Oedekoven, C.S. (2015). Distance Sampling: Methods and Applications. Springer International Publish. <https://doi.org/10.1007/978-3-319-19219-2>
