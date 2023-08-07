@@ -31,7 +31,7 @@ avoidance_demo(Nanimals, 1.5)
 As expected, the mrds estimator is unbiased for p(0) \< 1 when there is no animal movement and no heterogeneity in the population. However, this may not be realistic for most situations. The estimate becomes more negatively biased as the animals move more as a result of the increasing difference in detectability between the two occasions.
 
 ```{r mrds-simulation-plotting, echo= F, warning=FALSE, fig.cap="Bias for different levels of animal avoidance"}
-p0.bias <- get_p0_bias(50,200) #make reps higher 
+p0.bias <- get_p0_bias(9,200) #make reps higher 
 plot(p0.bias,pch = 16, xlab = "", ylab = "% Bias")
 abline(h = 0, col = "blue", type = "dashed")
 legend("bottom", inset=c(0,-0.4), legend=c("No", "Low","Medium", "High"), title="Avoidance", horiz = T, xpd = T)

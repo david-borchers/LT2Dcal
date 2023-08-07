@@ -5,6 +5,7 @@ library(dplyr)
 library(mrds)
 library(secr)
 library(Distance)
+library(knitr)
 
 movement <- function(N){ #random movement
   animals <- data.frame("id" = 1:N, "x" = runif(N,0,3), "y" = runif(N,0,3))
@@ -300,7 +301,7 @@ library(LT2D)
 MCR_2D <- function(Nrep, Nanimals, 
                    b = c(5, 0.7), logphi = c(6.5,4.5),
                    w = 1600, ystart = 1300, L = 100,
-                   match_limits = c(300,1000), match_params = c(250,3)){
+                   match_limits = c(300,1000), match_param = c(250,3)){
   ests_2d <- c();ci_l <- rep(NA, Nrep);ci_u <- rep(NA, Nrep)
   chapman.nomvmnt <- c();nomvmnt_l <- c();nomvmnt_u <- c()
   chapman.mvmnt <- c();mvmnt_l <- c(); mvmnt_u <- c()
@@ -433,7 +434,7 @@ MCR_2D <- function(Nrep, Nanimals,
 # Gobi Analysis -----------------------------------------------------------
 
 Gobi <- read.csv("Gobi.csv")
-
+ystart = 1300; w = 1600
 DistData <- Gobi[Gobi$Obs1 == 1,c(1,3,9,11,16:18,35,45)]
 DistData$AngleDiff <- DistData$Obs1.AngleDetection-DistData$Obs1.AnglePath 
 #convert to radians

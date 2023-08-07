@@ -39,7 +39,7 @@ In practice the conditional likelihood $L(\boldsymbol{\beta}|n)$ is used to calc
 We start by simulating attraction to the line by generating 200 animals using a half normal distribution with parameters `r exp(logphi)`. We used a hazard rate detection function with parameters `r b`. The parameters chosen are the best model for the real snow leopard prey data.
 
 ```{r 2D-simulation, echo = F, warnings = F}
-suppressWarnings(simdata <- MCR_2D(10,Nanimals, b=b, logphi = logphi, w= w, ystart = ystart, match_limits = match_limits, match_params = match_param))
+suppressWarnings(simdata <- MCR_2D(10,Nanimals, b=b, logphi = logphi, w= w, ystart = ystart, match_limits = match_limits, match_param = match_param))
 bias_2d <- 100*(simdata$X2D - Nanimals)/Nanimals
 ```
 
@@ -127,7 +127,7 @@ boot <- LT2D.bootstrap(jitter.h1.norm, r = 999, alpha = 0.05)
 ibexboot <- LT2D.bootstrap(ibexjitter.h1.norm, r = 999, alpha = 0.05)
 argaliboot <- LT2D.bootstrap(argalijitter.h1, r = 999, alpha = 0.05)
 total.N <- jitter.h1.norm$ests[nrow(jitter.h1.norm$ests),ncol(jitter.h1.norm$ests)]
-total.ibex <- ibexjitter.h1.norm$ests[nrow(ibexjitter.h1.hnorm$ests),ncol(ibexjitter.h1.norm$ests)]
+total.ibex <- ibexjitter.h1.norm$ests[nrow(ibexjitter.h1.norm$ests),ncol(ibexjitter.h1.norm$ests)]
 total.argali <- argalijitter.h1$ests[nrow(argalijitter.h1$ests),ncol(argalijitter.h1$ests)]
 ```
 
