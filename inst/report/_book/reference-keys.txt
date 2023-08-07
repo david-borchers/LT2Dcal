@@ -28,3 +28,12 @@ simulation-1
 simulation
 introduction
 fig:unnamed-chunk-2
+methods
+results
+simulation---imperfect-matching
+methods-1
+results-1
+futher-reading
+d-distance-sampling
+introduction-1
+simulation---comparison-to-mark-recapture
