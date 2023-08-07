@@ -70,7 +70,7 @@ For each scenario we simulate 99 surveys, with each survey having a simulated sa
 
 We investigate how well the method performs when $p(0) = 1$ assumption is met and animals are uniformly distributed. For each replication, we will compare the estimated abundance to the true population size ($N$ = 500). The detection function chosen is half-normal with $\sigma = 0.4$ . We then calculate the mean estimate and the variance of the estimates across replications and thus check if true population size is within the confidence interval of the estimates.
 
-The result below shows that the abundance estimate is nearly unbiased, i.e. the mean percentage relative bias is very close to 0.
+The result below shows that the abundance estimate is unbiased as the 95% CI covers the true population size and the mean percentage relative bias is very close to 0.
 
 ```{r simulated data DS, message=FALSE}
 sim.data.ds <- function(n, sigma){
