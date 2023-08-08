@@ -435,7 +435,7 @@ MCR_2D <- function(Nrep, Nanimals,
 
 Gobi <- read.csv("Gobi.csv")
 ystart = 1300; w = 1600
-DistData <- Gobi[Gobi$Obs1 == 1,c(1,3,9,11,16:18,35,45)]
+DistData <- Gobi[Gobi$Obs1 == 1,]
 DistData$AngleDiff <- DistData$Obs1.AngleDetection-DistData$Obs1.AnglePath 
 #convert to radians
 DistData$AngleDiff <- DistData$AngleDiff * pi/180
@@ -450,28 +450,33 @@ yobs <- DistData$forward
 jitterdat = jitterzeros(xobs,yobs,xcut=10,ycut=10,anground.degree=5)
 xjitter = jitterdat$x
 yjitter = jitterdat$y
+#add missing
+DistData$id <- 1:dim(DistData)[1]
+missed <- Gobi[!Gobi$Site %in% DistData$Site,]
+missed$AngleDiff <- rep("", dim(missed)[1])
+missed$Group.size <- rep(0, dim(missed)[1])
+missed$distance <- rep(NA, dim(missed)[1])
+missed$forward <- rep(NA, dim(missed)[1])
+missed$id <- rep(NA, dim(missed)[1])
+DistData <- rbind(DistData, missed)
 
-L <- rep(0, length(xjitter)) 
+L <- rep(0, dim(DistData)[1]) 
 #there's probably a way to do this without for loops
 #but it would take longer for me to figure out than just running the loops
 for(t in unique(DistData$Site)){
   L[DistData$Site == t][1] <- DistData$Transect_Length[DistData$Site == t][1]
 }
-for(t in unique(Gobi$Site[!Gobi$Site %in% DistData$Site])){
-  L[which(L == 0 & DistData$Block == Gobi$Block[Gobi$Site == t])][1] <- Gobi$Transect_Length[Gobi$Site == t][1]
-}
-A <- rep(0, length(xjitter))
-for(b in unique(DistData$Block)){
-  A[DistData$Block == b][1] <- 2*w*sum(unique(Gobi$Transect_Length[DistData$Block == b]))
+A <- rep(0, dim(DistData)[1])
+for(b in unique(Gobi$Block)){
+  A[DistData$Block == b][1] <- 2*w*sum(unique(Gobi$Transect_Length[Gobi$Block == b]))
 }
 
-
-jitterdf <- data.frame(x = xjitter[1:dim(DistData)[1]], y = yjitter[1:dim(DistData)[1]],
+jitterdf <- data.frame(x = append(xjitter, missed$distance), y = append(yjitter,missed$forward),
                        stratum = DistData$Block,
                        transect = DistData$Site,
                        L = L,
                        area = A,
-                       object = 1:dim(DistData)[1],
+                       object = DistData$id,
                        size = DistData$Group.size)
 
 # Ibex --------------------------------------------------------------------
@@ -481,23 +486,30 @@ yobs <- ibex$forward
 jitterdat = jitterzeros(xobs,yobs,xcut=10,ycut=10,anground.degree=5)
 xjitter = jitterdat$x
 yjitter = jitterdat$y
-Li <- rep(0, length(xjitter)) 
-for(t in unique(ibex$Site)){
+#adding missed
+ibex$id <- 1:dim(ibex)[1]
+missed <- Gobi[!Gobi$Site %in% ibex$Site,]
+missed$AngleDiff <- rep("", dim(missed)[1])
+missed$Group.size <- rep(0, dim(missed)[1])
+missed$distance <- rep(NA, dim(missed)[1])
+missed$forward <- rep(NA, dim(missed)[1])
+missed$id <- rep(NA, dim(missed)[1])
+ibex <- rbind(ibex, missed)
+
+Li <- rep(0, dim(ibex)[1]) 
+for(t in unique(Gobi$Site)){
   Li[ibex$Site == t][1] <- ibex$Transect_Length[ibex$Site == t][1]
 }
-for(t in unique(Gobi$Site[!Gobi$Site %in% ibex$Site])){
-  Li[which(Li == 0 & ibex$Block == Gobi$Block[Gobi$Site == t][1])][1] <- Gobi$Transect_Length[Gobi$Site == t][1]
-}
 Ai <- rep(0, length(xjitter))
-for(b in unique(ibex$Block)){
+for(b in unique(Gobi$Block)){
   Ai[ibex$Block == b][1] <- 2*w*sum(unique(Gobi$Transect_Length[Gobi$Block == b]))
 }
-ibexjitter <- data.frame(x = xjitter, y = yjitter,
+ibexjitter <- data.frame(x = append(xjitter,missed$distance), y = append(yjitter,missed$forward),
                          stratum = ibex$Block,
                          transect = ibex$Site,
                          L = Li,
                          area = Ai,
-                         object = 1:dim(ibex)[1],
+                         object = ibex$id,
                          size = ibex$Group.size)
 
 # Argali ------------------------------------------------------------------
@@ -507,23 +519,30 @@ yobs <- argali$forward
 jitterdat = jitterzeros(xobs,yobs,xcut=10,ycut=10,anground.degree=5)
 xjitter = jitterdat$x
 yjitter = jitterdat$y
-La <- rep(0, length(xjitter)) 
-for(t in unique(argali$Site)){
+
+#adding missed
+argali$id <- 1:dim(argali)[1]
+missed <- Gobi[!Gobi$Site %in% argali$Site,]
+missed$AngleDiff <- rep("", dim(missed)[1])
+missed$Group.size <- rep(0, dim(missed)[1])
+missed$distance <- rep(NA, dim(missed)[1])
+missed$forward <- rep(NA, dim(missed)[1])
+missed$id <- rep(NA, dim(missed)[1])
+argali <- rbind(argali, missed)
+
+La <- rep(0, dim(argali)[1]) 
+for(t in unique(Gobi$Site)){
   La[argali$Site == t][1] <- argali$Transect_Length[argali$Site == t][1]
 }
-for(t in unique(Gobi$Site[!Gobi$Site %in% argali$Site])){
-  La[which(La == 0 & argali$Block == Gobi$Block[Gobi$Site == t][1])][1] <- Gobi$Transect_Length[Gobi$Site == t][1]
-}
 Aa <- rep(0, length(xjitter))
-for(b in unique(argali$Block)){
+for(b in unique(Gobi$Block)){
   Aa[argali$Block == b][1] <- 2*w*sum(unique(Gobi$Transect_Length[Gobi$Block == b]))
 }
-
-argalijitter <- data.frame(x = xjitter, y = yjitter,
-                           stratum = argali$Block,
-                           transect = argali$Site,
-                           L = La,
-                           area = Aa,
-                           object = 1:dim(argali)[1],
-                           size = argali$Group.size)
+argalijitter <- data.frame(x = append(xjitter,missed$distance), y = append(yjitter,missed$forward),
+                         stratum = argali$Block,
+                         transect = argali$Site,
+                         L = La,
+                         area = Aa,
+                         object = argali$id,
+                         size = argali$Group.size)
 

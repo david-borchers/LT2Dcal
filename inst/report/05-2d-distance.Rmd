@@ -30,7 +30,7 @@ $$ where:
 
 \- $h(t_i, x_i; \boldsymbol{\beta})$ is the probability animal i is detected at forward distance $y_i$ and perpendicular distance $x_i$. We will refer to $h(t_i, x_i; \boldsymbol{\beta})$ as the detection function.
 
- - $S(t_i, x_i; \boldsymbol{\beta}) = e^{-\int_{0}^{t_i}h(u,x;\boldsymbol{\beta})du}$ is the survivor function, i.e. the probability that animal i was undetected until time $t_i$ - $p.(\boldsymbol{\beta},\boldsymbol{\phi})]$ is the average probability of being detected in the region
+-   $S(t_i, x_i; \boldsymbol{\beta}) = e^{-\int_{0}^{t_i}h(u,x;\boldsymbol{\beta})du}$ is the survivor function, i.e. the probability that animal i was undetected until time $t_i$ - $p.(\boldsymbol{\beta},\boldsymbol{\phi})]$ is the average probability of being detected in the region
 
 In practice the conditional likelihood $L(\boldsymbol{\beta}|n)$ is used to calculate the maximum likelihood estimators. It is the same as the equation above, but without the leading binomial term, and so avoids considering the unseen animals. The forward distance to the detected animal $y_i$ is used instead of the time $t_i$.
 
@@ -90,8 +90,8 @@ We will now use the 2D distance framework to analyse the real snow leopard prey 
 Upon closer inspection, many detection distances (both perpendicular and forward) appeared to be rounded to zero, likely as a result of the bearings being rounded to the nearest 5 degrees. To prevent this from impacting the model fit we simply added a small random number to each zero observation.
 
 ```{r distance-histograms, fig.cap = "Histograms of forward and perpendicular distances"}
-hist(DistData$distance, main = "Perpendicular Distance")
-hist(DistData$forward, main = "Forward Distance")
+hist(DistData$distance, main = "Perpendicular Distance", xlab = "Distance")
+hist(DistData$forward, main = "Forward Distance", ylab = "Distance")
 ```
 
 From looking at the histograms of observed data we set the perpendicular truncation distance at `r w1` and the forward truncation distance at `r ystart1`. This excluded 2 outlier observations.\
