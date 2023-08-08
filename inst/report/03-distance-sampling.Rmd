@@ -152,7 +152,7 @@ ci.ds <- mean(ests.ds$N.hat) + c(-1, 1)*1.96*sqrt(var(ests.ds$N.hat)/99)  # conf
 bias.ds <- mean((ests.ds$N.hat-500)/500)  # mean relative bias
 check.pcover.ds <- 500 > ests.ds$lcl & 500 < ests.ds$ucl
 coverage.p.ds <- length(check.pcover.ds[check.pcover.ds==TRUE])/length(check.pcover.ds)  # coverage probablity
-ci.ds; bias.ds; coverage.p.ds
+ci.ds; sprintf("%1.2f%%", bias.ds*100); coverage.p.ds
 ```
 
 ### Scenario 2: When animals show responsive movement
@@ -191,7 +191,7 @@ ci.ds2 <- mean(ests.ds2$N.hat) + c(-1, 1)*1.96*sqrt(var(ests.ds2$N.hat)/99)  # c
 bias.ds2 <- mean((ests.ds2$N.hat-500)/500)  # mean relative bias
 check.pcover.ds2 <- 500 > ests.ds2$lcl & 500 < ests.ds2$ucl
 coverage.p.ds2 <- length(check.pcover.ds2[check.pcover.ds2==TRUE])/length(check.pcover.ds2)  # coverage probablity
-ci.ds2; bias.ds2; coverage.p.ds2
+ci.ds2; sprintf("%1.2f%%", bias.ds2*100); coverage.p.ds2
 ```
 
 ```{r table DS, tidy=FALSE}
