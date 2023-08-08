@@ -8,7 +8,7 @@ output:
 
 ```{r 2D-setup, include=FALSE}
 source("code.R")
-b = c(5.0174523,0.7224735); logphi = c(6.630331,4.537701)
+b = c(4.89553757, 0.03561984); logphi = c(6.61348904, 4.84269089)
 w = 1600; ystart = 1300
 Nanimals = 200
 match_limits = c(300,1000); match_param = c(450,5)
@@ -18,7 +18,7 @@ match_limits = c(300,1000); match_param = c(450,5)
 
 2D Distance Sampling builds on standard distance sampling by including the forward distance to the detected animal as well as the perpendicular distance. This removes the assumptions that the animals are uniformly distributed and that p(0) = 1, so this method is useful for situations where the other methods covered previously are not suitable. In particular, 2D distance sampling only requires the transect to be surveyed by one observer. This is not only more efficient but removes the issue of imperfect matching in mark-recapture methods.
 
-Animal movement is also less problematic for 2d distance sampling. Like in standard distance sampling, as long as the movement is slow relative to the speed of the observers it will only cause a small amount of bias. Responsive movement can be accounted for in the animal distribution model so does not cause bias.
+Animal movement is also less problematic for 2D distance sampling. Like in standard distance sampling, as long as the movement is slow relative to the speed of the observers it will only cause a small amount of bias. Responsive movement can be accounted for in the animal distribution model so does not cause bias.
 
 The likelihood equation for this model is: $$
 L(N, \boldsymbol{\beta}) = {N\choose n}[1-p.(\boldsymbol{\beta},\boldsymbol{\phi})]^{N-n}\prod_{i = 1}^{n}\pi(x_i; \boldsymbol{\phi})S(t_i, x_i; \boldsymbol{\beta}) h(t_i, x_i; \boldsymbol{\beta}) 
@@ -30,20 +30,22 @@ $$ where:
 
 \- $h(t_i, x_i; \boldsymbol{\beta})$ is the probability animal i is detected at forward distance $y_i$ and perpendicular distance $x_i$. We will refer to $h(t_i, x_i; \boldsymbol{\beta})$ as the detection function.
 
--   $S(t_i, x_i; \boldsymbol{\beta}) = e^{-\int_{0}^{t_i}h(u,x;\boldsymbol{\beta})du}$ is the survivor function, i.e. the probability that animal i was undetected until time $t_i$ - $p.(\boldsymbol{\beta},\boldsymbol{\phi})]$ is the average probability of being detected in the region
+\- $S(t_i, x_i; \boldsymbol{\beta}) = e^{-\int_{0}^{t_i}h(u,x;\boldsymbol{\beta})du}$ is the survivor function, i.e. the probability that animal i was undetected until time $t_i$
 
-In practice the conditional likelihood $L(\boldsymbol{\beta}|n)$ is used to calculate the maximum likelihood estimators. It is the same as the equation above, but without the leading binomial term, and so avoids considering the unseen animals. The forward distance to the detected animal $y_i$ is used instead of the time $t_i$.
+\- $p.(\boldsymbol{\beta},\boldsymbol{\phi})$ is the average probability of being detected in the region
+
+In practice the conditional likelihood $L(\boldsymbol{\beta}|n)$ is used to calculate the maximum likelihood estimators. It is the same as the equation above, but without the leading binomial term, and so avoids considering the unseen animals. $\hat N$ is then estimated using a Horvitz-Thompson like estimator. The forward distance to the detected animal $y_i$ is used instead of the time $t_i$.
 
 ## Simulation: Non Uniform Distribution
 
-We start by simulating attraction to the line by generating 200 animals using a half normal distribution with parameters `r exp(logphi)`. We used a hazard rate detection function with parameters `r b`. The parameters chosen are the best model for the real snow leopard prey data.
+We start by simulating attraction to the line by generating 200 animals using a half normal distribution with parameters `r exp(logphi)`. We used a inverse power detection function with parameters `r b`. The parameters chosen are the best model for the real snow leopard prey data.
 
-```{r 2D-simulation, echo = F, warnings = F}
+```{r 2D-simulation, echo = F, warnings = F, cache = TRUE}
 suppressWarnings(simdata <- MCR_2D(10,Nanimals, b=b, logphi = logphi, w= w, ystart = ystart, match_limits = match_limits, match_param = match_param))
 bias_2d <- 100*(simdata$X2D - Nanimals)/Nanimals
 ```
 
-We then fitted a model using a half normal distribution for animal density and hazard detection function. We did not fit any other models for efficiency purposes. This gives a bias of `r mean(bias_2d)` \pm `r 1.96*sqrt(var(bias_2d)/length(bias_2d))`, so we can confirm it is unbiased.
+We then fitted a model using a half normal distribution for animal density and inverse power detection function. We did not fit any other models for efficiency purposes. This gives a bias of `r mean(bias_2d)` $\pm$ `r 1.96*sqrt(var(bias_2d)/length(bias_2d))`, so we can confirm it is unbiased.
 
 ## Simulation: Comparison to Mark Recapture
 
@@ -74,7 +76,7 @@ cp.nomvmnt <- 100*length(simdata[simdata$nomvmnt.lower <= Nanimals & simdata$nom
 if(length(dim(cis_2D)[1] == 0)){
   print("Hessian matrices could not be computed for any 2D models")
   covprob2D <- NA}
-cp.mvmnt <- 100*length(simdata[simdata$mvmnt.lower <= Nanimals & simdata$mvmnt.upper >= Nanimals])/length(simdata$MCR.mvmnt)
+cp.mvmnt <- 100*length(simdata[simdata$mvmnt.lower <= Nanimals & simdata$mvmnt.upper >= Nanimals])/length(simdata$MCR.move)
 cp.imperf <- 100*length(simdata[simdata$imperf.lower <= Nanimals & simdata$nimperf.upper >= Nanimals])/length(simdata$MCR.imperf)
 kable(data.frame("2D" = covprob2D,"nm" = cp.nomvmnt, "m" = cp.mvmnt,"i" = cp.imperf), col.names = c("2D", "Chapman without movement", "Chapman with movement", "Chapman with imperfect matching"), caption = "Coverage Probabilities")
 ```
@@ -100,46 +102,49 @@ We then fitted a series of model with different detection functions and animal d
 ### Results
 
 ```{r fit-model, include = FALSE, warning=FALSE }
-jitter.h1.norm <- LT2D.fit(DataFrameInput = jitterdf, 
-                           hr = 'h1',
-                           b = c(log(100),log(2)),
-                           ystart = ystart,      
-                           pi.x = 'pi.norm',   
-                           logphi = c(0,5),
-                           w = w,
-                           hessian = TRUE)
-ibexjitter.h1.norm <- LT2D.fit(DataFrameInput = ibexjitter, 
-                               hr = 'h1',
-                               b = c(log(100),log(2)),
-                               ystart = ystart,      
-                               pi.x = 'pi.norm',   
-                               logphi = c(0,5),
-                               w = w,
-                               hessian = TRUE)
-argalijitter.h1 <- LT2D.fit(DataFrameInput = argalijitter,
-                            hr = 'h1',
-                            b = c(4.5, 0.75),
-                            ystart = ystart,
-                            pi.x = 'pi.const',
+combined.ip0.hnorm <- LT2D.fit(DataFrameInput = jitterdf,
+                            hr = 'ip0',
+                            b = b,
+                            ystart = ystart,      
+                            pi.x = 'pi.hnorm',   
+                            logphi = logphi,
                             w = w,
                             hessian = TRUE)
-boot <- LT2D.bootstrap(jitter.h1.norm, r = 999, alpha = 0.05)
-ibexboot <- LT2D.bootstrap(ibexjitter.h1.norm, r = 999, alpha = 0.05)
-argaliboot <- LT2D.bootstrap(argalijitter.h1, r = 999, alpha = 0.05)
-total.N <- jitter.h1.norm$ests[nrow(jitter.h1.norm$ests),ncol(jitter.h1.norm$ests)]
-total.ibex <- ibexjitter.h1.norm$ests[nrow(ibexjitter.h1.norm$ests),ncol(ibexjitter.h1.norm$ests)]
-total.argali <- argalijitter.h1$ests[nrow(argalijitter.h1$ests),ncol(argalijitter.h1$ests)]
+ibex.ip0.hnorm <- LT2D.fit(DataFrameInput = ibexjitter, 
+                            hr = 'ip0',
+                            b = c(5,1),
+                            ystart = ystart,      
+                            pi.x = 'pi.hnorm',   
+                            logphi = c(5,5),
+                            w = w,
+                            hessian = TRUE)
+argali.ip0 <- LT2D.fit(DataFrameInput = argalijitter,
+                            hr = 'ip0',
+                            b = c(4.5,0.75),
+                            ystart = ystart,      
+                            pi.x = 'pi.const',   
+                            w = w,
+                            hessian = TRUE)
+try({ #what to do when can't get hessian?
+  boot <- LT2D.bootstrap(combined.ip0.hnorm, r = 999, alpha = 0.05)
+  ibexboot <- LT2D.bootstrap(ibex.ip0.hnorm, r = 999, alpha = 0.05)
+})
+  argaliboot <- LT2D.bootstrap(argali.ip0, r = 999, alpha = 0.05)
+
+total.N <- combined.ip0.hnorm$ests[nrow(combined.ip0.hnorm$ests),ncol(combined.ip0.hnorm$ests)]
+total.ibex <- ibex.ip0.hnorm$ests[nrow(ibex.ip0.hnorm$ests),ncol(ibex.ip0.hnorm$ests)]
+total.argali <- argali.ip0$ests[nrow(argali.ip0$ests),ncol(argali.ip0$ests)]
 ```
 
-Our best fitting model used the h1 hazard detection function and a normal distribution for the animal density. All of the best fitting models used a normal animal distribution, which implies that the animals are attracted to the line rather than avoiding it as initially thought. This could be due to the non random line placement, as the observers travel along valleys or ridges that are easier to walk along so the animals could also favour the easier terrain.
+Our best fitting model used the 2-parameter inverse power hazard detection function and a half normal distribution for the animal density. All of the best fitting models used a half normal animal distribution, which implies that the animals are attracted to the line rather than avoiding it as initially thought. This could be due to the non random line placement, as the observers travel along valleys or ridges that are easier to walk along so the animals could also favour the easier terrain.
 
 ```{r real-results-plot,echo = F, fig.cap = "Detection and distribution functions for best model (h1 and normal)"}
 par(mfrow = c(2,2))
-plot(jitter.h1.norm)
-test.results <- gof.LT2D(jitter.h1.norm, plot = T)
+plot(combined.ip0.hnorm)
+test.results <- gof.LT2D(combined.ip0.hnorm, plot = T)
 ```
 
-We tried fitting different models to each species in the survey, but this had a higher AIC than the combined model (`r ibexjitter.h1.norm$fit$AIC + argalijitter.h1$fit$AIC` vs `r jitter.h1.norm$fit$AIC` for combined model). Interestingly, the argali appear to be uniformly distributed across the area whereas the ibex exhibit line attraction. However, there are only 37 argali groups recorded so further investigation is needed before drawing any conclusions.
+We tried fitting different models to each species in the survey, but this had a higher AIC than the combined model (`r ibex.ip0.hnorm$fit$AIC + argali.ip0$fit$AIC` vs `r combined.ip0.hnorm$fit$AIC` for combined model). Interestingly, the argali appear to be uniformly distributed across the area whereas the ibex exhibit line attraction. However, there are only 39 argali groups recorded so further investigation is needed before drawing any conclusions. With more time we would fit a model that had species as a covariate.
 
 The best combined model estimates there are `r total.N` individual animals in total.
 
@@ -149,7 +154,7 @@ kable(ci.tabs, col.names = c("Point Estimate","95% Bootstrap", "Confidence Inter
 ```
 
 ```{r estimate-by-block, echo = F}
-ests <- jitter.h1.norm$ests[,c(1,2,4,6,7:11)]
+ests <- combined.ip0.hnorm$ests[,c(1,2,4,6,7:11)]
 rownames(ests) <- NULL
 kable(ests, col.names = c("Stratum", "Groups Seen", "Total Transect Length ($km$)", "Stratum Area ($m^2$)", "Estimated Group Denisty", "Number of Groups", "Mean Size", "Individual Density", "Abundance Estimate" ), escape = FALSE)
 ```

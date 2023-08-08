@@ -2,3 +2,6 @@ delete_merged_file: true
 language:
   ui:
     chapter_name: "Chapter "
+rmd_files: 
+  html: ["01-intro.Rmd","02-mark-recapture.Rmd","03-distance-sampling.Rmd",
+  "04-mrds.Rmd", "05-2d-distance.Rmd"]
