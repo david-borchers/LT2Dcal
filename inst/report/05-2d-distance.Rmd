@@ -6,7 +6,7 @@ output:
 
 # 2D Distance Sampling
 
-```{r 2D-setup, include=FALSE}
+```{r 2D-setup, include=FALSE, warning = FALSE}
 source("code.R")
 b = c(4.89553757, 0.03561984); logphi = c(6.61348904, 4.84269089)
 w = 1600; ystart = 1300
@@ -40,8 +40,9 @@ In practice the conditional likelihood $L(\boldsymbol{\beta}|n)$ is used to calc
 
 We start by simulating attraction to the line by generating 200 animals using a half normal distribution with parameters `r exp(logphi)`. We used a inverse power detection function with parameters `r b`. The parameters chosen are the best model for the real snow leopard prey data.
 
-```{r 2D-simulation, echo = F, warnings = F, cache = TRUE}
-suppressWarnings(simdata <- MCR_2D(10,Nanimals, b=b, logphi = logphi, w= w, ystart = ystart, match_limits = match_limits, match_param = match_param))
+```{r 2D-simulation, echo = F, warning = F, cache = TRUE}
+#suppressWarnings(simdata <- MCR_2D(99,Nanimals, b=b, logphi = logphi, w= w, ystart = ystart, match_limits = match_limits, match_param = match_param))
+load("simdata.Rdata")
 bias_2d <- 100*(simdata$X2D - Nanimals)/Nanimals
 ```
 
@@ -63,21 +64,21 @@ The Chapman estimator was significantly negatively biased due to the unmodelled 
 
 ```{r imperfect-matching-histograms, echo = F, fig.cap = "Histograms of abundance estimates using the Chapman estimator with random movment"}
 par(mfrow = c(1,2))
-hist(simdata$MCR.move, main = "Perfect Matching", xlab = "Estimate of N", xlim = c(min(simdata$MCR.move),max(c(max(simdata$MCR.move),Nanimals))))
+hist(simdata$MCR.move, main = "Perfect Matching", xlab = "Estimate of N", xlim = c(min(simdata$MCR.move),max(c(max(simdata$MCR.move)+10,Nanimals))))
 abline(v = Nanimals, col = "blue")
 hist(simdata$MCR.imperf, main = "Imperfect Matching", xlab = "Estimate of N", xlim = c(min(simdata$MCR.imperf), max(c(max(simdata$MCR.imperf)+10,Nanimals))))
 abline(v = Nanimals, col = "blue")
 ```
 
-```{r coverage-probabilities, echo = FALSE}
+```{r coverage-probabilities, include=FALSE}
 cis_2D <- simdata[!is.na(simdata$X2D.lower)&!is.na(simdata$X2D.lower), 2:3]
 covprob2D <- 100*length(cis_2D[cis_2D$X2D.lower <= Nanimals &cis_2D$X2D.upper >= Nanimals])/length(cis_2D)
 cp.nomvmnt <- 100*length(simdata[simdata$nomvmnt.lower <= Nanimals & simdata$nomvmnt.upper >= Nanimals])/length(simdata$MCR.nomvmnt)
 if(length(dim(cis_2D)[1] == 0)){
   print("Hessian matrices could not be computed for any 2D models")
   covprob2D <- NA}
-cp.mvmnt <- 100*length(simdata[simdata$mvmnt.lower <= Nanimals & simdata$mvmnt.upper >= Nanimals])/length(simdata$MCR.move)
-cp.imperf <- 100*length(simdata[simdata$imperf.lower <= Nanimals & simdata$nimperf.upper >= Nanimals])/length(simdata$MCR.imperf)
+cp.mvmnt <- 100*length(simdata[simdata$mvmnt.lower <= Nanimals & simdata$mvmnt.upper >= Nanimals,])/length(simdata$MCR.move)
+cp.imperf <- 100*length(simdata[simdata$imperf.lower <= Nanimals & simdata$nimperf.upper >= Nanimals,])/length(simdata$MCR.imperf)
 kable(data.frame("2D" = covprob2D,"nm" = cp.nomvmnt, "m" = cp.mvmnt,"i" = cp.imperf), col.names = c("2D", "Chapman without movement", "Chapman with movement", "Chapman with imperfect matching"), caption = "Coverage Probabilities")
 ```
 
@@ -87,21 +88,21 @@ From this it is clear that double-observer mark-recapture will yield significant
 
 ### Methods
 
-We will now use the 2D distance framework to analyse the real snow leopard prey data. The observers surveyed 48 transects in 10 blocks and recorded the bearing of the path, the bearing of the group they saw and radial distance to the group where possible. There were 2 species included in the survey: ibex and argali. The observers had limited rangefinders so 49 of these observations had no distance data; 61 groups were behind the observers so did not have a valid "forward" distance. This left 132 usable observations.
+We will now use the 2D distance framework to analyse the real snow leopard prey data. The observers surveyed 60 transects in 10 blocks and recorded the bearing of the path, the bearing of the group they saw and radial distance to the group where possible. There were 2 species included in the survey: ibex and argali. The observers had limited rangefinders so 49 of these observations had no distance data; 61 groups were behind the observers so did not have a valid "forward" distance. This left 132 usable observations.
 
 Upon closer inspection, many detection distances (both perpendicular and forward) appeared to be rounded to zero, likely as a result of the bearings being rounded to the nearest 5 degrees. To prevent this from impacting the model fit we simply added a small random number to each zero observation.
 
 ```{r distance-histograms, fig.cap = "Histograms of forward and perpendicular distances"}
 hist(DistData$distance, main = "Perpendicular Distance", xlab = "Distance")
-hist(DistData$forward, main = "Forward Distance", ylab = "Distance")
+hist(DistData$forward, main = "Forward Distance", xlab = "Distance")
 ```
 
-From looking at the histograms of observed data we set the perpendicular truncation distance at `r w1` and the forward truncation distance at `r ystart1`. This excluded 2 outlier observations.\
+From looking at the histograms of observed data we set the perpendicular truncation distance at `r w` and the forward truncation distance at `r ystart`. This excluded 2 outlier observations.\
 We then fitted a series of model with different detection functions and animal distributions, and picked the one with the lowest AIC.
 
 ### Results
 
-```{r fit-model, include = FALSE, warning=FALSE }
+```{r fit-model, include = FALSE, warning=FALSE, cache = TRUE}
 combined.ip0.hnorm <- LT2D.fit(DataFrameInput = jitterdf,
                             hr = 'ip0',
                             b = b,
@@ -131,9 +132,9 @@ try({ #what to do when can't get hessian?
 })
   argaliboot <- LT2D.bootstrap(argali.ip0, r = 999, alpha = 0.05)
 
-total.N <- combined.ip0.hnorm$ests[nrow(combined.ip0.hnorm$ests),ncol(combined.ip0.hnorm$ests)]
-total.ibex <- ibex.ip0.hnorm$ests[nrow(ibex.ip0.hnorm$ests),ncol(ibex.ip0.hnorm$ests)]
-total.argali <- argali.ip0$ests[nrow(argali.ip0$ests),ncol(argali.ip0$ests)]
+total.N <- round(combined.ip0.hnorm$ests[nrow(combined.ip0.hnorm$ests),ncol(combined.ip0.hnorm$ests)])
+total.ibex <- round(ibex.ip0.hnorm$ests[nrow(ibex.ip0.hnorm$ests),ncol(ibex.ip0.hnorm$ests)])
+total.argali <- round(argali.ip0$ests[nrow(argali.ip0$ests),ncol(argali.ip0$ests)])
 ```
 
 Our best fitting model used the 2-parameter inverse power hazard detection function and a half normal distribution for the animal density. All of the best fitting models used a half normal animal distribution, which implies that the animals are attracted to the line rather than avoiding it as initially thought. This could be due to the non random line placement, as the observers travel along valleys or ridges that are easier to walk along so the animals could also favour the easier terrain.

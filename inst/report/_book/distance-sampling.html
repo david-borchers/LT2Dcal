@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 3 Distance sampling | _main.knit</title>
+  <meta name="description" content="" />
+  <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 3 Distance sampling | _main.knit" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 3 Distance sampling | _main.knit" />
+  
+  
+  
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="cross.html"/>
+<link rel="next" href="mark-recapture-distance-sampling.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
+<li class="chapter" data-level="2" data-path="cross.html"><a href="cross.html"><i class="fa fa-check"></i><b>2</b> Mark-recapture</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="cross.html"><a href="cross.html#closed-populations"><i class="fa fa-check"></i><b>2.1</b> Closed populations</a></li>
+<li class="chapter" data-level="2.2" data-path="cross.html"><a href="cross.html#simulation-study"><i class="fa fa-check"></i><b>2.2</b> Simulation study</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="cross.html"><a href="cross.html#scenario-1-when-the-underlying-assumptions-are-met"><i class="fa fa-check"></i><b>2.2.1</b> Scenario 1: When the underlying assumptions are met</a></li>
+<li class="chapter" data-level="2.2.2" data-path="cross.html"><a href="cross.html#scenario-2-when-there-has-imperfect-matching"><i class="fa fa-check"></i><b>2.2.2</b> Scenario 2: When there has imperfect matching</a></li>
+<li class="chapter" data-level="2.2.3" data-path="cross.html"><a href="cross.html#scenario-3-when-inherent-capture-probabilities-are-different"><i class="fa fa-check"></i><b>2.2.3</b> Scenario 3: When inherent capture probabilities are different</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="cross.html"><a href="cross.html#further-reading"><i class="fa fa-check"></i><b>2.3</b> Further Reading</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="distance-sampling.html"><a href="distance-sampling.html"><i class="fa fa-check"></i><b>3</b> Distance sampling</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="distance-sampling.html"><a href="distance-sampling.html#line-transect-sampling"><i class="fa fa-check"></i><b>3.1</b> 3.1 Line transect sampling</a></li>
+<li class="chapter" data-level="3.2" data-path="distance-sampling.html"><a href="distance-sampling.html#simulation-study-1"><i class="fa fa-check"></i><b>3.2</b> 3.2 Simulation study</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="distance-sampling.html"><a href="distance-sampling.html#scenario-1-when-the-underlying-assumptions-are-met-1"><i class="fa fa-check"></i><b>3.2.1</b> Scenario 1: When the underlying assumptions are met</a></li>
+<li class="chapter" data-level="3.2.2" data-path="distance-sampling.html"><a href="distance-sampling.html#scenario-2-when-animals-show-responsive-movement"><i class="fa fa-check"></i><b>3.2.2</b> Scenario 2: When animals show responsive movement</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="distance-sampling.html"><a href="distance-sampling.html#further-reading-1"><i class="fa fa-check"></i><b>3.3</b> Further Reading</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="mark-recapture-distance-sampling.html"><a href="mark-recapture-distance-sampling.html"><i class="fa fa-check"></i><b>4</b> Mark Recapture Distance Sampling</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="mark-recapture-distance-sampling.html"><a href="mark-recapture-distance-sampling.html#introduction-1"><i class="fa fa-check"></i><b>4.1</b> Introduction</a></li>
+<li class="chapter" data-level="4.2" data-path="mark-recapture-distance-sampling.html"><a href="mark-recapture-distance-sampling.html#simulation---p0-1-and-animal-movement"><i class="fa fa-check"></i><b>4.2</b> Simulation - p(0) &lt; 1 and animal movement</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="mark-recapture-distance-sampling.html"><a href="mark-recapture-distance-sampling.html#methods"><i class="fa fa-check"></i><b>4.2.1</b> Methods</a></li>
+<li class="chapter" data-level="4.2.2" data-path="mark-recapture-distance-sampling.html"><a href="mark-recapture-distance-sampling.html#results"><i class="fa fa-check"></i><b>4.2.2</b> Results</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="mark-recapture-distance-sampling.html"><a href="mark-recapture-distance-sampling.html#simulation---imperfect-matching"><i class="fa fa-check"></i><b>4.3</b> Simulation - Imperfect Matching</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="mark-recapture-distance-sampling.html"><a href="mark-recapture-distance-sampling.html#methods-1"><i class="fa fa-check"></i><b>4.3.1</b> Methods</a></li>
+<li class="chapter" data-level="4.3.2" data-path="mark-recapture-distance-sampling.html"><a href="mark-recapture-distance-sampling.html#results-1"><i class="fa fa-check"></i><b>4.3.2</b> Results</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="mark-recapture-distance-sampling.html"><a href="mark-recapture-distance-sampling.html#conclusion"><i class="fa fa-check"></i><b>4.4</b> Conclusion</a></li>
+<li class="chapter" data-level="4.5" data-path="mark-recapture-distance-sampling.html"><a href="mark-recapture-distance-sampling.html#futher-reading"><i class="fa fa-check"></i><b>4.5</b> Futher Reading</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="d-distance-sampling.html"><a href="d-distance-sampling.html"><i class="fa fa-check"></i><b>5</b> 2D Distance Sampling</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="d-distance-sampling.html"><a href="d-distance-sampling.html#introduction-2"><i class="fa fa-check"></i><b>5.1</b> Introduction</a></li>
+<li class="chapter" data-level="5.2" data-path="d-distance-sampling.html"><a href="d-distance-sampling.html#simulation-non-uniform-distribution"><i class="fa fa-check"></i><b>5.2</b> Simulation: Non Uniform Distribution</a></li>
+<li class="chapter" data-level="5.3" data-path="d-distance-sampling.html"><a href="d-distance-sampling.html#simulation-comparison-to-mark-recapture"><i class="fa fa-check"></i><b>5.3</b> Simulation: Comparison to Mark Recapture</a></li>
+<li class="chapter" data-level="5.4" data-path="d-distance-sampling.html"><a href="d-distance-sampling.html#real-data-analysis"><i class="fa fa-check"></i><b>5.4</b> Real Data Analysis</a>
+<ul>
+<li class="chapter" data-level="5.4.1" data-path="d-distance-sampling.html"><a href="d-distance-sampling.html#methods-2"><i class="fa fa-check"></i><b>5.4.1</b> Methods</a></li>
+<li class="chapter" data-level="5.4.2" data-path="d-distance-sampling.html"><a href="d-distance-sampling.html#results-2"><i class="fa fa-check"></i><b>5.4.2</b> Results</a></li>
+</ul></li>
+<li class="chapter" data-level="5.5" data-path="d-distance-sampling.html"><a href="d-distance-sampling.html#further-reading-2"><i class="fa fa-check"></i><b>5.5</b> Further Reading</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./"></a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="distance-sampling" class="section level1 hasAnchor" number="3">
+<h1><span class="header-section-number">Chapter 3</span> Distance sampling<a href="distance-sampling.html#distance-sampling" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Distance sampling is another widely used method in ecological research or estimating animal abundance and density. Here we focus on conventional distance sampling, the fundamental distance sampling techniques among all.</p>
+<div id="line-transect-sampling" class="section level2 hasAnchor" number="3.1">
+<h2><span class="header-section-number">3.1</span> 3.1 Line transect sampling<a href="distance-sampling.html#line-transect-sampling" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Usually, observers travel along the transect lines that are strategically placed across the study area to ensure coverage of different habitats and representative sampling of the population. Upon detecting an object, they record the perpendicular distance from the line to the identified object. In some cases, additional information, such as the angle of detection or group size are also recorded for the purpose of multiple-covariate distance sampling (MCDS) analysis.</p>
+<p>Detection function <span class="math inline">\(g(x)\)</span>describes the probability of detecting an animal at different distances from the transect lines. A fundamental assumption is that all objects present on the line are detected, i.e. <span class="math inline">\(g(0)=1\)</span> ; however it is expected that objects become progressively more challenging to detect as their distance from the line increases, leading to a decrease in detection with increasing distance. Commonly used detection functions include uniform, half-normal and hazard rate. Example of adjustment terms include cosine, Hermite polynomial series and simple polynomial series.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="distance-sampling.html#cb17-1" aria-hidden="true" tabindex="-1"></a>detection <span class="ot">&lt;-</span> <span class="cf">function</span>(){</span>
+<span id="cb17-2"><a href="distance-sampling.html#cb17-2" aria-hidden="true" tabindex="-1"></a>  hn.sigma <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.2</span>, <span class="fl">0.3</span>, <span class="fl">0.4</span>)</span>
+<span id="cb17-3"><a href="distance-sampling.html#cb17-3" aria-hidden="true" tabindex="-1"></a>  hr.sigma <span class="ot">&lt;-</span> <span class="fl">0.3</span>; hr.beta <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">5</span>)</span>
+<span id="cb17-4"><a href="distance-sampling.html#cb17-4" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb17-5"><a href="distance-sampling.html#cb17-5" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="fl">0.01</span>)</span>
+<span id="cb17-6"><a href="distance-sampling.html#cb17-6" aria-hidden="true" tabindex="-1"></a>  y.unif <span class="ot">&lt;-</span> x<span class="sc">/</span>x</span>
+<span id="cb17-7"><a href="distance-sampling.html#cb17-7" aria-hidden="true" tabindex="-1"></a>  y.hn1 <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="sc">-</span>x<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>(<span class="dv">2</span><span class="sc">*</span>hn.sigma[<span class="dv">1</span>]<span class="sc">^</span><span class="dv">2</span>)); y.hn2 <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="sc">-</span>x<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>(<span class="dv">2</span><span class="sc">*</span>hn.sigma[<span class="dv">2</span>]<span class="sc">^</span><span class="dv">2</span>)); y.hn3 <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="sc">-</span>x<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>(<span class="dv">2</span><span class="sc">*</span>hn.sigma[<span class="dv">3</span>]<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb17-8"><a href="distance-sampling.html#cb17-8" aria-hidden="true" tabindex="-1"></a>  y.hr1 <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">-</span><span class="fu">exp</span>(<span class="sc">-</span>(x<span class="sc">/</span>hr.sigma)<span class="sc">^</span>(<span class="sc">-</span>hr.beta[<span class="dv">1</span>])); y.hr2 <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">-</span><span class="fu">exp</span>(<span class="sc">-</span>(x<span class="sc">/</span>hr.sigma)<span class="sc">^</span>(<span class="sc">-</span>hr.beta[<span class="dv">2</span>])); y.hr3 <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">-</span><span class="fu">exp</span>(<span class="sc">-</span>(x<span class="sc">/</span>hr.sigma)<span class="sc">^</span>(<span class="sc">-</span>hr.beta[<span class="dv">3</span>]))</span>
+<span id="cb17-9"><a href="distance-sampling.html#cb17-9" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb17-10"><a href="distance-sampling.html#cb17-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>))</span>
+<span id="cb17-11"><a href="distance-sampling.html#cb17-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(x, y.unif, <span class="at">type=</span><span class="st">&quot;l&quot;</span>, <span class="at">col=</span><span class="st">&quot;red&quot;</span>, <span class="at">xlab=</span><span class="st">&quot;Distance&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;Detection probability&quot;</span>, <span class="at">main=</span><span class="st">&quot;Uniform&quot;</span>, <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>))</span>
+<span id="cb17-12"><a href="distance-sampling.html#cb17-12" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb17-13"><a href="distance-sampling.html#cb17-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(x, y.hn1, <span class="at">type=</span><span class="st">&quot;l&quot;</span>, <span class="at">lwd=</span><span class="fl">1.5</span>, <span class="at">col=</span><span class="st">&quot;red&quot;</span>, <span class="at">xlab=</span><span class="st">&quot;Distance&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;Detection probability&quot;</span>, <span class="at">main=</span><span class="st">&quot;Half-normal&quot;</span>, <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>))</span>
+<span id="cb17-14"><a href="distance-sampling.html#cb17-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lines</span>(x, y.hn2, <span class="at">col=</span><span class="st">&quot;darkgreen&quot;</span>, <span class="at">lty=</span><span class="dv">2</span>, <span class="at">lwd=</span><span class="fl">1.5</span>)</span>
+<span id="cb17-15"><a href="distance-sampling.html#cb17-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lines</span>(x, y.hn3, <span class="at">col=</span><span class="st">&quot;steelblue&quot;</span>, <span class="at">lty=</span><span class="dv">3</span>, <span class="at">lwd=</span><span class="fl">1.5</span>)</span>
+<span id="cb17-16"><a href="distance-sampling.html#cb17-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">legend</span>(<span class="at">x =</span> <span class="st">&quot;topright&quot;</span>, <span class="at">legend =</span> <span class="fu">c</span>(<span class="st">&quot;sigma = 0.2&quot;</span>, <span class="st">&quot;sigma = 0.3&quot;</span>, <span class="st">&quot;sigma = 0.4&quot;</span>),  </span>
+<span id="cb17-17"><a href="distance-sampling.html#cb17-17" aria-hidden="true" tabindex="-1"></a>         <span class="at">lty =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>), <span class="at">col =</span> <span class="fu">c</span>(<span class="st">&quot;red&quot;</span>, <span class="st">&quot;darkgreen&quot;</span>, <span class="st">&quot;steelblue&quot;</span>), <span class="at">lwd =</span> <span class="fl">1.5</span>, <span class="at">cex=</span><span class="fl">0.5</span>) </span>
+<span id="cb17-18"><a href="distance-sampling.html#cb17-18" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb17-19"><a href="distance-sampling.html#cb17-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(x, y.hr1, <span class="at">type=</span><span class="st">&quot;l&quot;</span>, <span class="at">lwd=</span><span class="fl">1.5</span>, <span class="at">col=</span><span class="st">&quot;red&quot;</span>, <span class="at">xlab=</span><span class="st">&quot;Distance&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;Detection probability&quot;</span>, <span class="at">main=</span><span class="st">&quot;Hazard rate (sigma = 0.3)&quot;</span>, <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>))</span>
+<span id="cb17-20"><a href="distance-sampling.html#cb17-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lines</span>(x, y.hr2, <span class="at">col=</span><span class="st">&quot;darkgreen&quot;</span>, <span class="at">lty=</span><span class="dv">2</span>, <span class="at">lwd=</span><span class="fl">1.5</span>)</span>
+<span id="cb17-21"><a href="distance-sampling.html#cb17-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lines</span>(x, y.hr3, <span class="at">col=</span><span class="st">&quot;steelblue&quot;</span>, <span class="at">lty=</span><span class="dv">3</span>, <span class="at">lwd=</span><span class="fl">1.5</span>)</span>
+<span id="cb17-22"><a href="distance-sampling.html#cb17-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">legend</span>(<span class="at">x =</span> <span class="st">&quot;topright&quot;</span>, <span class="at">legend =</span> <span class="fu">c</span>(<span class="st">&quot;beta = 1&quot;</span>, <span class="st">&quot;beta = 2&quot;</span>, <span class="st">&quot;beta = 5&quot;</span>),  </span>
+<span id="cb17-23"><a href="distance-sampling.html#cb17-23" aria-hidden="true" tabindex="-1"></a>         <span class="at">lty =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>), <span class="at">col =</span> <span class="fu">c</span>(<span class="st">&quot;red&quot;</span>, <span class="st">&quot;darkgreen&quot;</span>, <span class="st">&quot;steelblue&quot;</span>), <span class="at">lwd =</span> <span class="fl">1.5</span>, <span class="at">cex=</span><span class="fl">0.5</span>) </span>
+<span id="cb17-24"><a href="distance-sampling.html#cb17-24" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb17-25"><a href="distance-sampling.html#cb17-25" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="distance-sampling.html#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">detection</span>()  <span class="co"># plot detection functions</span></span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>Once the detection function is fitted, the estimator can calculate animal density and thus abundance by accounting for the area surveyed and the proportion of animals detected at different distances. The obtained abundance estimates can be extrapolated to the entire study area if the survey design is representative of the entire habitat.</p>
+<div class="theorem">
+<p><span id="thm:tri" class="theorem"><strong>Theorem 2.1  </strong></span><strong>Animal density</strong> <span class="math inline">\(D\)</span> <strong>is estimated by:</strong> <span class="math display">\[\hat{D} = \frac{n}{2wL\hat{P}_a}\]</span></p>
+<p><span class="math display">\[\hat{P}_a = \frac{\int_{0}^{w}\hat{g}(x)dx}{w}\]</span></p>
+<p>where:</p>
+<ul>
+<li><p><span class="math inline">\(n\)</span> is the number of animals detected.</p></li>
+<li><p><span class="math inline">\(w\)</span> is the half-width of the strip.</p></li>
+<li><p><span class="math inline">\(L\)</span> is the lengths of transect lines.</p></li>
+<li><p><span class="math inline">\(\hat{P}_a\)</span> is the probability that a randomly chosen animal within the surveyed area is detected.</p></li>
+<li><p><span class="math inline">\(\hat{g}(x)\)</span> is the estimate of detection function.</p></li>
+</ul>
+</div>
+</div>
+<div id="simulation-study-1" class="section level2 hasAnchor" number="3.2">
+<h2><span class="header-section-number">3.2</span> 3.2 Simulation study<a href="distance-sampling.html#simulation-study-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>In this section, we will present the results of a simulation study that aims to evaluate the performance of the conventional line transect sampling. We will create artificial datasets with with known population sizes, detectability patterns to assess the accuracy and precision of the method under different scenarios.</p>
+<p>For each scenario we simulate 99 surveys, with each survey having a simulated sample size <span class="math inline">\(N\)</span> = 500.</p>
+<div id="scenario-1-when-the-underlying-assumptions-are-met-1" class="section level3 hasAnchor" number="3.2.1">
+<h3><span class="header-section-number">3.2.1</span> Scenario 1: When the underlying assumptions are met<a href="distance-sampling.html#scenario-1-when-the-underlying-assumptions-are-met-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>We investigate how well the method performs when <span class="math inline">\(p(0) = 1\)</span> assumption is met and animals are uniformly distributed. For each replication, we will compare the estimated abundance to the true population size (<span class="math inline">\(N\)</span> = 500). The detection function chosen is half-normal with <span class="math inline">\(\sigma = 0.4\)</span> . We then calculate the mean estimate and the variance of the estimates across replications and thus check if true population size is within the confidence interval of the estimates.</p>
+<p>The result below shows that the abundance estimate is unbiased as the 95% CI covers the true population size and the mean percentage relative bias is very close to 0.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="distance-sampling.html#cb19-1" aria-hidden="true" tabindex="-1"></a>sim.data.ds <span class="ot">&lt;-</span> <span class="cf">function</span>(n, sigma){</span>
+<span id="cb19-2"><a href="distance-sampling.html#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">#browser()</span></span>
+<span id="cb19-3"><a href="distance-sampling.html#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="do">## 1. generate n uniform points </span></span>
+<span id="cb19-4"><a href="distance-sampling.html#cb19-4" aria-hidden="true" tabindex="-1"></a>  df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">id=</span><span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span>n, <span class="at">each =</span> <span class="dv">2</span>), <span class="at">obs=</span><span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, n),</span>
+<span id="cb19-5"><a href="distance-sampling.html#cb19-5" aria-hidden="true" tabindex="-1"></a>                   <span class="at">x=</span><span class="cn">NA</span>, <span class="at">y=</span><span class="cn">NA</span>, <span class="at">distance=</span><span class="cn">NA</span>, <span class="at">detect=</span><span class="cn">NA</span>, <span class="at">angle=</span><span class="cn">NA</span>)</span>
+<span id="cb19-6"><a href="distance-sampling.html#cb19-6" aria-hidden="true" tabindex="-1"></a>  df<span class="sc">$</span>x[df<span class="sc">$</span>obs<span class="sc">==</span><span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">runif</span>(n, <span class="dv">0</span>, <span class="dv">2</span>)</span>
+<span id="cb19-7"><a href="distance-sampling.html#cb19-7" aria-hidden="true" tabindex="-1"></a>  df<span class="sc">$</span>y[df<span class="sc">$</span>obs<span class="sc">==</span><span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">runif</span>(n, <span class="dv">0</span>, <span class="dv">2</span>)</span>
+<span id="cb19-8"><a href="distance-sampling.html#cb19-8" aria-hidden="true" tabindex="-1"></a>  df<span class="sc">$</span>distance[df<span class="sc">$</span>obs<span class="sc">==</span><span class="dv">1</span>] <span class="ot">&lt;-</span> df<span class="sc">$</span>x[df<span class="sc">$</span>obs<span class="sc">==</span><span class="dv">1</span>] <span class="sc">-</span> <span class="dv">1</span></span>
+<span id="cb19-9"><a href="distance-sampling.html#cb19-9" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb19-10"><a href="distance-sampling.html#cb19-10" aria-hidden="true" tabindex="-1"></a>  <span class="do">## 2. Points moving away from transect</span></span>
+<span id="cb19-11"><a href="distance-sampling.html#cb19-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># moving angle &amp; distance</span></span>
+<span id="cb19-12"><a href="distance-sampling.html#cb19-12" aria-hidden="true" tabindex="-1"></a>  nleft <span class="ot">&lt;-</span> <span class="fu">nrow</span>(df[df<span class="sc">$</span>x <span class="sc">&lt;=</span> <span class="dv">1</span> <span class="sc">&amp;</span> df<span class="sc">$</span>obs<span class="sc">==</span><span class="dv">1</span>, ])</span>
+<span id="cb19-13"><a href="distance-sampling.html#cb19-13" aria-hidden="true" tabindex="-1"></a>  nright <span class="ot">&lt;-</span> <span class="fu">nrow</span>(df[df<span class="sc">$</span>x <span class="sc">&gt;</span> <span class="dv">1</span> <span class="sc">&amp;</span> df<span class="sc">$</span>obs<span class="sc">==</span><span class="dv">1</span>, ])</span>
+<span id="cb19-14"><a href="distance-sampling.html#cb19-14" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb19-15"><a href="distance-sampling.html#cb19-15" aria-hidden="true" tabindex="-1"></a>  angleleft <span class="ot">&lt;-</span> <span class="fu">rwrappedcauchy</span>(nleft, <span class="at">mu=</span><span class="fu">circular</span>(pi), <span class="at">rho=</span><span class="fl">0.8</span>, <span class="at">control.circular=</span><span class="fu">list</span>(<span class="at">units=</span><span class="st">&quot;radian&quot;</span>))</span>
+<span id="cb19-16"><a href="distance-sampling.html#cb19-16" aria-hidden="true" tabindex="-1"></a>  df<span class="sc">$</span>angle[df<span class="sc">$</span>x <span class="sc">&lt;=</span> <span class="dv">1</span> <span class="sc">&amp;</span> df<span class="sc">$</span>obs<span class="sc">==</span><span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(angleleft)</span>
+<span id="cb19-17"><a href="distance-sampling.html#cb19-17" aria-hidden="true" tabindex="-1"></a>  angleright <span class="ot">&lt;-</span> <span class="fu">rwrappedcauchy</span>(nright, <span class="at">mu=</span><span class="fu">circular</span>(<span class="dv">0</span>), <span class="at">rho=</span><span class="fl">0.8</span>, <span class="at">control.circular=</span><span class="fu">list</span>(<span class="at">units=</span><span class="st">&quot;radian&quot;</span>))</span>
+<span id="cb19-18"><a href="distance-sampling.html#cb19-18" aria-hidden="true" tabindex="-1"></a>  df<span class="sc">$</span>angle[df<span class="sc">$</span>x <span class="sc">&gt;</span> <span class="dv">1</span> <span class="sc">&amp;</span> df<span class="sc">$</span>obs<span class="sc">==</span><span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(angleright)</span>
+<span id="cb19-19"><a href="distance-sampling.html#cb19-19" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb19-20"><a href="distance-sampling.html#cb19-20" aria-hidden="true" tabindex="-1"></a>  dist <span class="ot">&lt;-</span> (<span class="dv">1</span><span class="sc">-</span><span class="fu">abs</span>(df<span class="sc">$</span>distance[df<span class="sc">$</span>obs<span class="sc">==</span><span class="dv">1</span>]))<span class="sc">*</span><span class="fu">runif</span>(n, <span class="dv">0</span>, <span class="fl">0.2</span>)<span class="sc">*</span><span class="dv">3</span></span>
+<span id="cb19-21"><a href="distance-sampling.html#cb19-21" aria-hidden="true" tabindex="-1"></a>  df<span class="sc">$</span>x[df<span class="sc">$</span>obs<span class="sc">==</span><span class="dv">2</span>] <span class="ot">&lt;-</span> df<span class="sc">$</span>x[df<span class="sc">$</span>obs<span class="sc">==</span><span class="dv">1</span>] <span class="sc">+</span> dist <span class="sc">*</span> <span class="fu">cos</span>(df<span class="sc">$</span>angle[df<span class="sc">$</span>obs<span class="sc">==</span><span class="dv">1</span>])</span>
+<span id="cb19-22"><a href="distance-sampling.html#cb19-22" aria-hidden="true" tabindex="-1"></a>  df<span class="sc">$</span>y[df<span class="sc">$</span>obs<span class="sc">==</span><span class="dv">2</span>] <span class="ot">&lt;-</span> df<span class="sc">$</span>y[df<span class="sc">$</span>obs<span class="sc">==</span><span class="dv">1</span>] <span class="sc">+</span> dist <span class="sc">*</span> <span class="fu">sin</span>(df<span class="sc">$</span>angle[df<span class="sc">$</span>obs<span class="sc">==</span><span class="dv">1</span>])</span>
+<span id="cb19-23"><a href="distance-sampling.html#cb19-23" aria-hidden="true" tabindex="-1"></a>  df<span class="sc">$</span>distance[df<span class="sc">$</span>obs<span class="sc">==</span><span class="dv">2</span>] <span class="ot">&lt;-</span> df<span class="sc">$</span>x[df<span class="sc">$</span>obs<span class="sc">==</span><span class="dv">2</span>] <span class="sc">-</span> <span class="dv">1</span></span>
+<span id="cb19-24"><a href="distance-sampling.html#cb19-24" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb19-25"><a href="distance-sampling.html#cb19-25" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb19-26"><a href="distance-sampling.html#cb19-26" aria-hidden="true" tabindex="-1"></a>  <span class="do">## 3. detection probability, half-normal</span></span>
+<span id="cb19-27"><a href="distance-sampling.html#cb19-27" aria-hidden="true" tabindex="-1"></a>  p1 <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="sc">-</span><span class="fu">abs</span>(df<span class="sc">$</span>distance[df<span class="sc">$</span>obs<span class="sc">==</span><span class="dv">1</span>])<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>(<span class="dv">2</span><span class="sc">*</span>sigma<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb19-28"><a href="distance-sampling.html#cb19-28" aria-hidden="true" tabindex="-1"></a>  p2 <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="sc">-</span><span class="fu">abs</span>(df<span class="sc">$</span>distance[df<span class="sc">$</span>obs<span class="sc">==</span><span class="dv">2</span>])<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>(<span class="dv">2</span><span class="sc">*</span>sigma<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb19-29"><a href="distance-sampling.html#cb19-29" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb19-30"><a href="distance-sampling.html#cb19-30" aria-hidden="true" tabindex="-1"></a>  df<span class="sc">$</span>detect[df<span class="sc">$</span>obs<span class="sc">==</span><span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(n, <span class="dv">1</span>, p1)  <span class="co"># first situation</span></span>
+<span id="cb19-31"><a href="distance-sampling.html#cb19-31" aria-hidden="true" tabindex="-1"></a>  df<span class="sc">$</span>detect[df<span class="sc">$</span>obs<span class="sc">==</span><span class="dv">2</span>] <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(n, <span class="dv">1</span>, p2)  <span class="co"># second situation</span></span>
+<span id="cb19-32"><a href="distance-sampling.html#cb19-32" aria-hidden="true" tabindex="-1"></a>  df<span class="sc">$</span>detect[<span class="fu">abs</span>(df<span class="sc">$</span>distance) <span class="sc">&gt;</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="dv">0</span>  <span class="co"># truncation</span></span>
+<span id="cb19-33"><a href="distance-sampling.html#cb19-33" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb19-34"><a href="distance-sampling.html#cb19-34" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb19-35"><a href="distance-sampling.html#cb19-35" aria-hidden="true" tabindex="-1"></a>  <span class="do">## 4. return</span></span>
+<span id="cb19-36"><a href="distance-sampling.html#cb19-36" aria-hidden="true" tabindex="-1"></a>  df[ , <span class="fu">c</span>(<span class="st">&quot;angle&quot;</span>)] <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="cn">NULL</span>)</span>
+<span id="cb19-37"><a href="distance-sampling.html#cb19-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(df)</span>
+<span id="cb19-38"><a href="distance-sampling.html#cb19-38" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="distance-sampling.html#cb20-1" aria-hidden="true" tabindex="-1"></a>ds.analysis <span class="ot">&lt;-</span> <span class="cf">function</span>(n, sigma, movement){</span>
+<span id="cb20-2"><a href="distance-sampling.html#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">#browser()</span></span>
+<span id="cb20-3"><a href="distance-sampling.html#cb20-3" aria-hidden="true" tabindex="-1"></a>  df <span class="ot">&lt;-</span> <span class="fu">sim.data.ds</span>(n, sigma)</span>
+<span id="cb20-4"><a href="distance-sampling.html#cb20-4" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb20-5"><a href="distance-sampling.html#cb20-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (movement <span class="sc">==</span> <span class="cn">TRUE</span>){</span>
+<span id="cb20-6"><a href="distance-sampling.html#cb20-6" aria-hidden="true" tabindex="-1"></a>    df1 <span class="ot">&lt;-</span> <span class="fu">subset</span>(df, df<span class="sc">$</span>obs<span class="sc">==</span><span class="dv">2</span> <span class="sc">&amp;</span> df<span class="sc">$</span>detect<span class="sc">==</span><span class="dv">1</span>)</span>
+<span id="cb20-7"><a href="distance-sampling.html#cb20-7" aria-hidden="true" tabindex="-1"></a>    n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(df1)</span>
+<span id="cb20-8"><a href="distance-sampling.html#cb20-8" aria-hidden="true" tabindex="-1"></a>    new_df1 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Region.Label =</span> <span class="fu">rep</span>(<span class="dv">1</span>, n), <span class="at">Area =</span> <span class="fu">rep</span>(<span class="dv">4</span>, n), </span>
+<span id="cb20-9"><a href="distance-sampling.html#cb20-9" aria-hidden="true" tabindex="-1"></a>                          <span class="at">Sample.Label =</span> <span class="fu">rep</span>(<span class="dv">1</span>, n), <span class="at">Effort =</span> <span class="fu">rep</span>(<span class="dv">2</span>, n),</span>
+<span id="cb20-10"><a href="distance-sampling.html#cb20-10" aria-hidden="true" tabindex="-1"></a>                          <span class="at">distance =</span> df1<span class="sc">$</span>distance)</span>
+<span id="cb20-11"><a href="distance-sampling.html#cb20-11" aria-hidden="true" tabindex="-1"></a>    df.ds <span class="ot">&lt;-</span> <span class="fu">ds</span>(new_df1, <span class="at">truncation=</span><span class="dv">1</span>, <span class="at">transect=</span><span class="st">&quot;line&quot;</span>, <span class="at">key=</span><span class="st">&quot;hn&quot;</span>, <span class="at">order=</span><span class="dv">0</span>, <span class="at">monotonicity =</span> <span class="st">&quot;none&quot;</span>)</span>
+<span id="cb20-12"><a href="distance-sampling.html#cb20-12" aria-hidden="true" tabindex="-1"></a>  }<span class="cf">else</span>{</span>
+<span id="cb20-13"><a href="distance-sampling.html#cb20-13" aria-hidden="true" tabindex="-1"></a>    df1 <span class="ot">&lt;-</span> <span class="fu">subset</span>(df, df<span class="sc">$</span>obs<span class="sc">==</span><span class="dv">1</span> <span class="sc">&amp;</span> df<span class="sc">$</span>detect<span class="sc">==</span><span class="dv">1</span>)</span>
+<span id="cb20-14"><a href="distance-sampling.html#cb20-14" aria-hidden="true" tabindex="-1"></a>    n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(df1)</span>
+<span id="cb20-15"><a href="distance-sampling.html#cb20-15" aria-hidden="true" tabindex="-1"></a>    new_df1 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Region.Label =</span> <span class="fu">rep</span>(<span class="dv">1</span>, n), <span class="at">Area =</span> <span class="fu">rep</span>(<span class="dv">4</span>, n), </span>
+<span id="cb20-16"><a href="distance-sampling.html#cb20-16" aria-hidden="true" tabindex="-1"></a>                          <span class="at">Sample.Label =</span> <span class="fu">rep</span>(<span class="dv">1</span>, n), <span class="at">Effort =</span> <span class="fu">rep</span>(<span class="dv">2</span>, n),</span>
+<span id="cb20-17"><a href="distance-sampling.html#cb20-17" aria-hidden="true" tabindex="-1"></a>                          <span class="at">distance =</span> df1<span class="sc">$</span>distance)</span>
+<span id="cb20-18"><a href="distance-sampling.html#cb20-18" aria-hidden="true" tabindex="-1"></a>    df.ds <span class="ot">&lt;-</span> <span class="fu">ds</span>(new_df1, <span class="at">truncation=</span><span class="dv">1</span>, <span class="at">transect=</span><span class="st">&quot;line&quot;</span>, <span class="at">key=</span><span class="st">&quot;hn&quot;</span>, <span class="at">monotonicity =</span> <span class="st">&quot;none&quot;</span>)}</span>
+<span id="cb20-19"><a href="distance-sampling.html#cb20-19" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb20-20"><a href="distance-sampling.html#cb20-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">c</span>(df.ds<span class="sc">$</span>ddf<span class="sc">$</span>Nhat, df.ds<span class="sc">$</span>dht<span class="sc">$</span>individuals<span class="sc">$</span>N<span class="sc">$</span>lcl, df.ds<span class="sc">$</span>dht<span class="sc">$</span>individuals<span class="sc">$</span>N<span class="sc">$</span>ucl))</span>
+<span id="cb20-21"><a href="distance-sampling.html#cb20-21" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb20-22"><a href="distance-sampling.html#cb20-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-23"><a href="distance-sampling.html#cb20-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-24"><a href="distance-sampling.html#cb20-24" aria-hidden="true" tabindex="-1"></a>boot.ds <span class="ot">&lt;-</span> <span class="cf">function</span>(n, sigma, movement){</span>
+<span id="cb20-25"><a href="distance-sampling.html#cb20-25" aria-hidden="true" tabindex="-1"></a>  input <span class="ot">&lt;-</span> <span class="fu">rep</span>(n, <span class="dv">99</span>)</span>
+<span id="cb20-26"><a href="distance-sampling.html#cb20-26" aria-hidden="true" tabindex="-1"></a>  ests <span class="ot">&lt;-</span> <span class="fu">lapply</span>(input, ds.analysis, sigma, movement)</span>
+<span id="cb20-27"><a href="distance-sampling.html#cb20-27" aria-hidden="true" tabindex="-1"></a>  df.ests <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="fu">t</span>(<span class="fu">sapply</span>(ests,c)))</span>
+<span id="cb20-28"><a href="distance-sampling.html#cb20-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">colnames</span>(df.ests) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;N.hat&quot;</span>, <span class="st">&quot;lcl&quot;</span>, <span class="st">&quot;ucl&quot;</span>)</span>
+<span id="cb20-29"><a href="distance-sampling.html#cb20-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(df.ests)</span>
+<span id="cb20-30"><a href="distance-sampling.html#cb20-30" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="distance-sampling.html#cb21-1" aria-hidden="true" tabindex="-1"></a>ests.ds <span class="ot">&lt;-</span> <span class="fu">boot.ds</span>(<span class="dv">500</span>, <span class="fl">0.4</span>, <span class="cn">FALSE</span>)  <span class="co"># bootstrap estimates</span></span>
+<span id="cb21-2"><a href="distance-sampling.html#cb21-2" aria-hidden="true" tabindex="-1"></a>ci.ds <span class="ot">&lt;-</span> <span class="fu">mean</span>(ests.ds<span class="sc">$</span>N.hat) <span class="sc">+</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>)<span class="sc">*</span><span class="fl">1.96</span><span class="sc">*</span><span class="fu">sqrt</span>(<span class="fu">var</span>(ests.ds<span class="sc">$</span>N.hat)<span class="sc">/</span><span class="dv">99</span>)  <span class="co"># confidence interval</span></span>
+<span id="cb21-3"><a href="distance-sampling.html#cb21-3" aria-hidden="true" tabindex="-1"></a>bias.ds <span class="ot">&lt;-</span> <span class="fu">mean</span>((ests.ds<span class="sc">$</span>N.hat<span class="dv">-500</span>)<span class="sc">/</span><span class="dv">500</span>)  <span class="co"># mean relative bias</span></span>
+<span id="cb21-4"><a href="distance-sampling.html#cb21-4" aria-hidden="true" tabindex="-1"></a>check.pcover.ds <span class="ot">&lt;-</span> <span class="dv">500</span> <span class="sc">&gt;</span> ests.ds<span class="sc">$</span>lcl <span class="sc">&amp;</span> <span class="dv">500</span> <span class="sc">&lt;</span> ests.ds<span class="sc">$</span>ucl</span>
+<span id="cb21-5"><a href="distance-sampling.html#cb21-5" aria-hidden="true" tabindex="-1"></a>coverage.p.ds <span class="ot">&lt;-</span> <span class="fu">length</span>(check.pcover.ds[check.pcover.ds<span class="sc">==</span><span class="cn">TRUE</span>])<span class="sc">/</span><span class="fu">length</span>(check.pcover.ds)  <span class="co"># coverage probablity</span></span>
+<span id="cb21-6"><a href="distance-sampling.html#cb21-6" aria-hidden="true" tabindex="-1"></a>ci.ds; <span class="fu">sprintf</span>(<span class="st">&quot;%1.2f%%&quot;</span>, bias.ds<span class="sc">*</span><span class="dv">100</span>); coverage.p.ds</span></code></pre></div>
+<pre><code>## [1] 492.1211 509.5555</code></pre>
+<pre><code>## [1] &quot;0.17%&quot;</code></pre>
+<pre><code>## [1] 0.979798</code></pre>
+</div>
+<div id="scenario-2-when-animals-show-responsive-movement" class="section level3 hasAnchor" number="3.2.2">
+<h3><span class="header-section-number">3.2.2</span> Scenario 2: When animals show responsive movement<a href="distance-sampling.html#scenario-2-when-animals-show-responsive-movement" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Apart from assuming that objects on the transect line are certain to be detected, another model assumption of distance sampling is that objects are detected at their initial location. Here we aim to examine the validity of method when animals move in response to the observer (away from transect line in this case) before being detected. The detection function chosen is half-normal with <span class="math inline">\(\sigma = 0.4\)</span> . The result above shows that the abundance estimate is negatively unbiased with mean percentage relative bias being about 50%.</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="distance-sampling.html#cb25-1" aria-hidden="true" tabindex="-1"></a>ds.result <span class="ot">&lt;-</span> <span class="cf">function</span>(n, sigma, movement){</span>
+<span id="cb25-2"><a href="distance-sampling.html#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">#browser()</span></span>
+<span id="cb25-3"><a href="distance-sampling.html#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
+<span id="cb25-4"><a href="distance-sampling.html#cb25-4" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb25-5"><a href="distance-sampling.html#cb25-5" aria-hidden="true" tabindex="-1"></a>  <span class="do">## plot 1: animal distribution</span></span>
+<span id="cb25-6"><a href="distance-sampling.html#cb25-6" aria-hidden="true" tabindex="-1"></a>  df <span class="ot">&lt;-</span> <span class="fu">sim.data.ds</span>(n, sigma)</span>
+<span id="cb25-7"><a href="distance-sampling.html#cb25-7" aria-hidden="true" tabindex="-1"></a>  ddist <span class="ot">&lt;-</span> <span class="fu">density</span>(df<span class="sc">$</span>distance[df<span class="sc">$</span>obs<span class="sc">==</span><span class="dv">2</span>]<span class="sc">+</span><span class="dv">1</span>)</span>
+<span id="cb25-8"><a href="distance-sampling.html#cb25-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(ddist, <span class="at">main=</span><span class="st">&quot;Animal distribution after responsive movement&quot;</span>, <span class="at">xlab=</span><span class="st">&quot;&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;&quot;</span>)</span>
+<span id="cb25-9"><a href="distance-sampling.html#cb25-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">polygon</span>(ddist, <span class="at">col=</span><span class="st">&quot;lightgrey&quot;</span>)</span>
+<span id="cb25-10"><a href="distance-sampling.html#cb25-10" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb25-11"><a href="distance-sampling.html#cb25-11" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb25-12"><a href="distance-sampling.html#cb25-12" aria-hidden="true" tabindex="-1"></a>  <span class="do">## plot 2: histogram of bootstrap abundance estimates</span></span>
+<span id="cb25-13"><a href="distance-sampling.html#cb25-13" aria-hidden="true" tabindex="-1"></a>  ests <span class="ot">&lt;-</span> <span class="fu">boot.ds</span>(n, sigma, movement)</span>
+<span id="cb25-14"><a href="distance-sampling.html#cb25-14" aria-hidden="true" tabindex="-1"></a>  est.N <span class="ot">&lt;-</span> ests<span class="sc">$</span>N.hat</span>
+<span id="cb25-15"><a href="distance-sampling.html#cb25-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">hist</span>(est.N, <span class="at">main=</span><span class="fu">paste</span>(<span class="st">&quot;Abudance estimates&quot;</span>), <span class="at">xlab=</span><span class="cn">NULL</span>, <span class="at">ylab =</span> <span class="cn">NULL</span>, <span class="at">prob=</span><span class="cn">TRUE</span>)</span>
+<span id="cb25-16"><a href="distance-sampling.html#cb25-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">points</span>(<span class="fu">mean</span>(est.N),<span class="dv">0</span>,<span class="at">pch=</span><span class="dv">19</span>,<span class="at">col=</span><span class="st">&quot;red&quot;</span>)</span>
+<span id="cb25-17"><a href="distance-sampling.html#cb25-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrows</span>(<span class="fu">quantile</span>(est.N, <span class="fl">0.025</span>),<span class="dv">0</span>,<span class="fu">quantile</span>(est.N, <span class="fl">0.975</span>),<span class="dv">0</span>,<span class="at">angle=</span><span class="dv">90</span>,<span class="at">code=</span><span class="dv">3</span>,<span class="at">col=</span><span class="st">&quot;red&quot;</span>)</span>
+<span id="cb25-18"><a href="distance-sampling.html#cb25-18" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb25-19"><a href="distance-sampling.html#cb25-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(ests)</span>
+<span id="cb25-20"><a href="distance-sampling.html#cb25-20" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="distance-sampling.html#cb26-1" aria-hidden="true" tabindex="-1"></a>ests.ds2 <span class="ot">&lt;-</span> <span class="fu">ds.result</span>(<span class="dv">500</span>, <span class="fl">0.4</span>, <span class="cn">TRUE</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/ds%20responsive%20movement-1.png" width="672" /></p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="distance-sampling.html#cb27-1" aria-hidden="true" tabindex="-1"></a>ci.ds2 <span class="ot">&lt;-</span> <span class="fu">mean</span>(ests.ds2<span class="sc">$</span>N.hat) <span class="sc">+</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>)<span class="sc">*</span><span class="fl">1.96</span><span class="sc">*</span><span class="fu">sqrt</span>(<span class="fu">var</span>(ests.ds2<span class="sc">$</span>N.hat)<span class="sc">/</span><span class="dv">99</span>)  <span class="co"># confidence interval</span></span>
+<span id="cb27-2"><a href="distance-sampling.html#cb27-2" aria-hidden="true" tabindex="-1"></a>bias.ds2 <span class="ot">&lt;-</span> <span class="fu">mean</span>((ests.ds2<span class="sc">$</span>N.hat<span class="dv">-500</span>)<span class="sc">/</span><span class="dv">500</span>)  <span class="co"># mean relative bias</span></span>
+<span id="cb27-3"><a href="distance-sampling.html#cb27-3" aria-hidden="true" tabindex="-1"></a>check.pcover.ds2 <span class="ot">&lt;-</span> <span class="dv">500</span> <span class="sc">&gt;</span> ests.ds2<span class="sc">$</span>lcl <span class="sc">&amp;</span> <span class="dv">500</span> <span class="sc">&lt;</span> ests.ds2<span class="sc">$</span>ucl</span>
+<span id="cb27-4"><a href="distance-sampling.html#cb27-4" aria-hidden="true" tabindex="-1"></a>coverage.p.ds2 <span class="ot">&lt;-</span> <span class="fu">length</span>(check.pcover.ds2[check.pcover.ds2<span class="sc">==</span><span class="cn">TRUE</span>])<span class="sc">/</span><span class="fu">length</span>(check.pcover.ds2)  <span class="co"># coverage probablity</span></span>
+<span id="cb27-5"><a href="distance-sampling.html#cb27-5" aria-hidden="true" tabindex="-1"></a>ci.ds2; <span class="fu">sprintf</span>(<span class="st">&quot;%1.2f%%&quot;</span>, bias.ds2<span class="sc">*</span><span class="dv">100</span>); coverage.p.ds2</span></code></pre></div>
+<pre><code>## [1] 241.2021 249.2616</code></pre>
+<pre><code>## [1] &quot;-50.95%&quot;</code></pre>
+<pre><code>## [1] 0</code></pre>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="distance-sampling.html#cb31-1" aria-hidden="true" tabindex="-1"></a>tab.ds <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">scenario=</span><span class="fu">c</span>(<span class="st">&quot;No responsive movement&quot;</span>, <span class="st">&quot;Has responsive movement&quot;</span>), <span class="at">mean.relative.bias=</span><span class="fu">c</span>(bias.ds, bias.ds2), <span class="at">coverage.probablity=</span><span class="fu">c</span>(coverage.p.ds, coverage.p.ds2))</span>
+<span id="cb31-2"><a href="distance-sampling.html#cb31-2" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(tab.ds, <span class="at">caption =</span> <span class="st">&#39;A table of results from both scenarios&#39;</span>, <span class="at">booktabs =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<table>
+<caption>(#tab:table DS)A table of results from both scenarios</caption>
+<thead>
+<tr class="header">
+<th align="left">scenario</th>
+<th align="right">mean.relative.bias</th>
+<th align="right">coverage.probablity</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">No responsive movement</td>
+<td align="right">0.0016765</td>
+<td align="right">0.979798</td>
+</tr>
+<tr class="even">
+<td align="left">Has responsive movement</td>
+<td align="right">-0.5095363</td>
+<td align="right">0.000000</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="further-reading-1" class="section level2 hasAnchor" number="3.3">
+<h2><span class="header-section-number">3.3</span> Further Reading<a href="distance-sampling.html#further-reading-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Buckland, S.T., Rexstad, E.A., Marques, T.A. and Oedekoven, C.S. (2015). Distance Sampling: Methods and Applications. Springer International Publish. <a href="https://doi.org/10.1007/978-3-319-19219-2" class="uri">https://doi.org/10.1007/978-3-319-19219-2</a></p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="cross.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="mark-recapture-distance-sampling.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf", "_main.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

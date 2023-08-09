@@ -72,7 +72,7 @@ We investigate how well the method performs when $p(0) = 1$ assumption is met an
 
 The result below shows that the abundance estimate is unbiased as the 95% CI covers the true population size and the mean percentage relative bias is very close to 0.
 
-```{r simulated data DS, message=FALSE}
+```{r simulated data DS, message=FALSE, cache = TRUE}
 sim.data.ds <- function(n, sigma){
   #browser()
   ## 1. generate n uniform points 
@@ -113,7 +113,7 @@ sim.data.ds <- function(n, sigma){
 }
 ```
 
-```{r}
+```{r cache = TRUE}
 ds.analysis <- function(n, sigma, movement){
   #browser()
   df <- sim.data.ds(n, sigma)
@@ -146,7 +146,7 @@ boot.ds <- function(n, sigma, movement){
 }
 ```
 
-```{r message=FALSE, warning=FALSE}
+```{r message=FALSE, warning=FALSE, cache = TRUE}
 ests.ds <- boot.ds(500, 0.4, FALSE)  # bootstrap estimates
 ci.ds <- mean(ests.ds$N.hat) + c(-1, 1)*1.96*sqrt(var(ests.ds$N.hat)/99)  # confidence interval
 bias.ds <- mean((ests.ds$N.hat-500)/500)  # mean relative bias
@@ -159,7 +159,7 @@ ci.ds; sprintf("%1.2f%%", bias.ds*100); coverage.p.ds
 
 Apart from assuming that objects on the transect line are certain to be detected, another model assumption of distance sampling is that objects are detected at their initial location. Here we aim to examine the validity of method when animals move in response to the observer (away from transect line in this case) before being detected. The detection function chosen is half-normal with $\sigma = 0.4$ . The result above shows that the abundance estimate is negatively unbiased with mean percentage relative bias being about 50%.
 
-```{r}
+```{r cache = TRUE}
 ds.result <- function(n, sigma, movement){
   #browser()
   par(mfrow=c(1,2))
@@ -182,7 +182,7 @@ ds.result <- function(n, sigma, movement){
 }
 ```
 
-```{r ds responsive movement, message=FALSE, warning=FALSE}
+```{r ds responsive movement, message=FALSE, warning=FALSE, cache = TRUE}
 ests.ds2 <- ds.result(500, 0.4, TRUE)
 ```
 

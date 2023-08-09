@@ -136,7 +136,7 @@ get_p0_bias <- function(Nrep, Nanimals, detectfn = "hr",
       }
     }
   }
-  bias <- (colMeans(estimates, na.rm = T) - Nanimals)/(Nanimals/100)
+  bias <- 100*(colMeans(estimates, na.rm = T) - Nanimals)/(Nanimals)
   return(bias)
 }
 
@@ -162,11 +162,6 @@ heterogeneity <- function(Nanimals, transect, hr_param = c(150,2.2416)){
   data$distance[data$distance > w] <- w
   model <- fit_mrds_model(data)
   return(model)
-}
-het.ests <- c()
-for(i in length(het.ests):200){
-  suppressWarnings(mod <- heterogeneity(200,0))
-  het.ests[i] <- mod$Nhat 
 }
 
 # Imperfect Matching ------------------------------------------------------

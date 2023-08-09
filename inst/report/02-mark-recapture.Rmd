@@ -6,7 +6,7 @@ The fundamental principle behind mark-recapture lies in the idea that the probab
 
 In this chapter, we explore the principles and applications of mark-recapture methods, focusing on the Lincoln-Peterson MR estimator in closed populations and the importance of simulation studies to evaluate method performance.
 
-## 2.1 Closed populations
+## Closed populations
 
 The Lincoln-Peterson MR estimator is one of the most classic and widely used methods for estimating the population size of closed populations. Proposed independently by Peterson in the 1890s and by Lincoln in the 1920s, this estimator relies on two sampling events: the initial capture, where a subset of the population is marked, and the subsequent recapture, where the marked individuals are identified among the newly captured individuals.
 
@@ -40,7 +40,7 @@ Sometimes after initial capture, animals may learn to avoid the traps or area wh
 
 It is possible that marks may fade, fall off, or be lost over time, making individuals indistinguishable from unmarked ones during recapture events. Ensuring durable and effective marking techniques is essential to maintain the integrity of the mark-recapture process and achieve unbiased estimates.
 
-## 2.2 Simulation study
+## Simulation study
 
 Simulation studies have become indispensable in ecology and conservation research, providing a controlled and repeatable approach to evaluate the performance of estimation methods. In this section, we will present the results of a simulation study that aims to evaluate the performance of the Lincoln-Peterson MR estimator in closed populations. We will create artificial datasets with with known population sizes, detectability patterns to assess the accuracy and precision of estimators under different scenarios.
 
@@ -50,7 +50,7 @@ For each scenario we simulate 999 surveys, with each survey having a simulated s
 
 We first looked into the performance of mark-recapture estimator when all the above assumptions are met. Specifically, we will create artificial datasets to mimic a closed population, equal probability of detection of marked and unmarked individuals ($p = 0.4$), and random sampling. For each replication, we will compare the estimated population size to the true population size ($N = 500$). We then calculate the mean estimate and the variance of the estimates across replications and thus check with the coverage probability.
 
-```{r simulated data, message=FALSE}
+```{r simulated data, message=FALSE, cache = TRUE}
 library(circular)
 library(fields)
 
@@ -91,7 +91,7 @@ sim.mr <- function(n, move, equal.p, param){
 }
 ```
 
-```{r imperfect matching}
+```{r imperfect-matching, cache = TRUE}
 sim.mismatch <- function(df, equal.p, param){
   #browser()
   
@@ -134,7 +134,7 @@ sim.mismatch <- function(df, equal.p, param){
 
 ```
 
-```{r Chapman MR}
+```{r Chapman MR, cache = TRUE}
 chapman.mr <- function(n, move, equal.p, param, mismatching){
   df <- sim.mr(n, move, equal.p, param)
   if (mismatching==TRUE){df <- sim.mismatch(df, equal.p, param)}
@@ -150,7 +150,7 @@ chapman.mr <- function(n, move, equal.p, param, mismatching){
 }
 ```
 
-```{r bootstrap simulation}
+```{r bootstrap simulation, cache = TRUE}
 boot.mr <- function(n, move, equal.p, param, mismatching){
   input <- rep(n, 999)
   ests <- lapply(input, chapman.mr, move, equal.p, param, mismatching)
@@ -160,7 +160,7 @@ boot.mr <- function(n, move, equal.p, param, mismatching){
 }
 ```
 
-```{r}
+```{r cache = TRUE}
 ests <- boot.mr(500, 0, TRUE, 0.4, FALSE)  # bootstrap estimates
 ci <- mean(ests$N.hat) + c(-1, 1)*1.96*sqrt(var(ests$N.hat)/999)
 bias <- mean((ests$N.hat-500)/500)  # mean relative bias
@@ -175,7 +175,7 @@ The result above shows that Chapman estimator of abundance is unbiased as the 95
 
 We are interested in how imperfect matching influence the abundance estimate given that all other assumptions (e.g. equal capture probability) are met. The result below shows that failure to account for imperfect matching leads to largely biased abundance estimate.
 
-```{r}
+```{r cache = TRUE}
 N <- 200
 ests <- boot.mr(N, 0, TRUE, 0.4, TRUE)  # bootstrap estimates 
 ci <- mean(ests$N.hat) + c(-1, 1)*1.96*sqrt(var(ests$N.hat)/999) 
