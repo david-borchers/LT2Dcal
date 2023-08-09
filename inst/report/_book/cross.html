@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 2 Mark-recapture | _main.knit</title>
+  <meta name="description" content="" />
+  <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 2 Mark-recapture | _main.knit" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 2 Mark-recapture | _main.knit" />
+  
+  
+  
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="introduction.html"/>
+<link rel="next" href="distance-sampling.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
+<li class="chapter" data-level="2" data-path="cross.html"><a href="cross.html"><i class="fa fa-check"></i><b>2</b> Mark-recapture</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="cross.html"><a href="cross.html#closed-populations"><i class="fa fa-check"></i><b>2.1</b> Closed populations</a></li>
+<li class="chapter" data-level="2.2" data-path="cross.html"><a href="cross.html#simulation-study"><i class="fa fa-check"></i><b>2.2</b> Simulation study</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="cross.html"><a href="cross.html#scenario-1-when-the-underlying-assumptions-are-met"><i class="fa fa-check"></i><b>2.2.1</b> Scenario 1: When the underlying assumptions are met</a></li>
+<li class="chapter" data-level="2.2.2" data-path="cross.html"><a href="cross.html#scenario-2-when-there-has-imperfect-matching"><i class="fa fa-check"></i><b>2.2.2</b> Scenario 2: When there has imperfect matching</a></li>
+<li class="chapter" data-level="2.2.3" data-path="cross.html"><a href="cross.html#scenario-3-when-inherent-capture-probabilities-are-different"><i class="fa fa-check"></i><b>2.2.3</b> Scenario 3: When inherent capture probabilities are different</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="cross.html"><a href="cross.html#further-reading"><i class="fa fa-check"></i><b>2.3</b> Further Reading</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="distance-sampling.html"><a href="distance-sampling.html"><i class="fa fa-check"></i><b>3</b> Distance sampling</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="distance-sampling.html"><a href="distance-sampling.html#line-transect-sampling"><i class="fa fa-check"></i><b>3.1</b> 3.1 Line transect sampling</a></li>
+<li class="chapter" data-level="3.2" data-path="distance-sampling.html"><a href="distance-sampling.html#simulation-study-1"><i class="fa fa-check"></i><b>3.2</b> 3.2 Simulation study</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="distance-sampling.html"><a href="distance-sampling.html#scenario-1-when-the-underlying-assumptions-are-met-1"><i class="fa fa-check"></i><b>3.2.1</b> Scenario 1: When the underlying assumptions are met</a></li>
+<li class="chapter" data-level="3.2.2" data-path="distance-sampling.html"><a href="distance-sampling.html#scenario-2-when-animals-show-responsive-movement"><i class="fa fa-check"></i><b>3.2.2</b> Scenario 2: When animals show responsive movement</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="distance-sampling.html"><a href="distance-sampling.html#further-reading-1"><i class="fa fa-check"></i><b>3.3</b> Further Reading</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="mark-recapture-distance-sampling.html"><a href="mark-recapture-distance-sampling.html"><i class="fa fa-check"></i><b>4</b> Mark Recapture Distance Sampling</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="mark-recapture-distance-sampling.html"><a href="mark-recapture-distance-sampling.html#introduction-1"><i class="fa fa-check"></i><b>4.1</b> Introduction</a></li>
+<li class="chapter" data-level="4.2" data-path="mark-recapture-distance-sampling.html"><a href="mark-recapture-distance-sampling.html#simulation---p0-1-and-animal-movement"><i class="fa fa-check"></i><b>4.2</b> Simulation - p(0) &lt; 1 and animal movement</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="mark-recapture-distance-sampling.html"><a href="mark-recapture-distance-sampling.html#methods"><i class="fa fa-check"></i><b>4.2.1</b> Methods</a></li>
+<li class="chapter" data-level="4.2.2" data-path="mark-recapture-distance-sampling.html"><a href="mark-recapture-distance-sampling.html#results"><i class="fa fa-check"></i><b>4.2.2</b> Results</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="mark-recapture-distance-sampling.html"><a href="mark-recapture-distance-sampling.html#simulation---imperfect-matching"><i class="fa fa-check"></i><b>4.3</b> Simulation - Imperfect Matching</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="mark-recapture-distance-sampling.html"><a href="mark-recapture-distance-sampling.html#methods-1"><i class="fa fa-check"></i><b>4.3.1</b> Methods</a></li>
+<li class="chapter" data-level="4.3.2" data-path="mark-recapture-distance-sampling.html"><a href="mark-recapture-distance-sampling.html#results-1"><i class="fa fa-check"></i><b>4.3.2</b> Results</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="mark-recapture-distance-sampling.html"><a href="mark-recapture-distance-sampling.html#conclusion"><i class="fa fa-check"></i><b>4.4</b> Conclusion</a></li>
+<li class="chapter" data-level="4.5" data-path="mark-recapture-distance-sampling.html"><a href="mark-recapture-distance-sampling.html#futher-reading"><i class="fa fa-check"></i><b>4.5</b> Futher Reading</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="d-distance-sampling.html"><a href="d-distance-sampling.html"><i class="fa fa-check"></i><b>5</b> 2D Distance Sampling</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="d-distance-sampling.html"><a href="d-distance-sampling.html#introduction-2"><i class="fa fa-check"></i><b>5.1</b> Introduction</a></li>
+<li class="chapter" data-level="5.2" data-path="d-distance-sampling.html"><a href="d-distance-sampling.html#simulation-non-uniform-distribution"><i class="fa fa-check"></i><b>5.2</b> Simulation: Non Uniform Distribution</a></li>
+<li class="chapter" data-level="5.3" data-path="d-distance-sampling.html"><a href="d-distance-sampling.html#simulation-comparison-to-mark-recapture"><i class="fa fa-check"></i><b>5.3</b> Simulation: Comparison to Mark Recapture</a></li>
+<li class="chapter" data-level="5.4" data-path="d-distance-sampling.html"><a href="d-distance-sampling.html#real-data-analysis"><i class="fa fa-check"></i><b>5.4</b> Real Data Analysis</a>
+<ul>
+<li class="chapter" data-level="5.4.1" data-path="d-distance-sampling.html"><a href="d-distance-sampling.html#methods-2"><i class="fa fa-check"></i><b>5.4.1</b> Methods</a></li>
+<li class="chapter" data-level="5.4.2" data-path="d-distance-sampling.html"><a href="d-distance-sampling.html#results-2"><i class="fa fa-check"></i><b>5.4.2</b> Results</a></li>
+</ul></li>
+<li class="chapter" data-level="5.5" data-path="d-distance-sampling.html"><a href="d-distance-sampling.html#further-reading-2"><i class="fa fa-check"></i><b>5.5</b> Further Reading</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./"></a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="cross" class="section level1 hasAnchor" number="2">
+<h1><span class="header-section-number">Chapter 2</span> Mark-recapture<a href="cross.html#cross" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Mark-recapture is a powerful technique used in ecology and wildlife biology to estimate the population size of a specific animal or species within a given area. This method is based on the concept of sampling, marking, and then recapturing individuals from the target population. By utilizing this approach, researchers can extrapolate the population size and gain valuable insights into population dynamics, species abundance, and conservation efforts.</p>
+<p>The fundamental principle behind mark-recapture lies in the idea that the probability of capturing an individual within the population is the same for each capture event. Once an individual is captured, it is marked in some way, making it distinguishable from other members of the population. The marked individuals are then released back into the wild, allowing them to mix freely with the unmarked individuals. Subsequently, during the recapture phase, researchers perform another sampling effort, capturing a new group of individuals from the population. The proportion of marked individuals in the recaptured sample allows scientists to estimate the total population size based on the assumption of a closed population.</p>
+<p>In this chapter, we explore the principles and applications of mark-recapture methods, focusing on the Lincoln-Peterson MR estimator in closed populations and the importance of simulation studies to evaluate method performance.</p>
+<div id="closed-populations" class="section level2 hasAnchor" number="2.1">
+<h2><span class="header-section-number">2.1</span> Closed populations<a href="cross.html#closed-populations" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The Lincoln-Peterson MR estimator is one of the most classic and widely used methods for estimating the population size of closed populations. Proposed independently by Peterson in the 1890s and by Lincoln in the 1920s, this estimator relies on two sampling events: the initial capture, where a subset of the population is marked, and the subsequent recapture, where the marked individuals are identified among the newly captured individuals.</p>
+<p>The Chapman mark-recapture estimator is a modified version of the traditional Lincoln-Peterson estimator with less bias and is less affected by zeros.</p>
+<div class="theorem">
+<p><span id="thm:tri" class="theorem"><strong>Theorem 2.1  </strong></span><strong>Chapman MR estimator (1951)</strong> <span class="math display">\[\hat{N}_{CPM} = \frac{(n_{1} + 1)(n_{2} + 1)}{m_{2}+1}-1\]</span></p>
+<p>where:</p>
+<ul>
+<li><p><span class="math inline">\(\hat{N}_{CPM}\)</span> is the estimated population size.</p></li>
+<li><p><span class="math inline">\(n_{1}\)</span> is the number of individuals captured and marked in the first occasion.</p></li>
+<li><p><span class="math inline">\(n_{2}\)</span> is the number of marked individuals recaptured in the second occasion.</p></li>
+<li><p><span class="math inline">\(m_{2}\)</span> is the number of recaptured individuals that were already marked in the first occasion.</p></li>
+</ul>
+</div>
+<p>The accuracy of this estimate relies on a number of assumptions being met.</p>
+<div class="line-block"><strong>Assumption 1.</strong> The population is closed to additions and deletions;</div>
+<p>In other words, no individuals are added to or removed from the population through birth, death, immigration, or emigration during the study period. An exception is when there are equal proportions of additions or deletions for marked and unmarked individuals during the sampling period. In cases where significant movements occur, potential bias might need to be introduced to the results or more advanced models might be needed to account for population dynamics.</p>
+<div class="line-block"><strong>Assumption 2.</strong> All animals are equally likely to be captured in each sample;</div>
+<p>Sometimes after initial capture, animals may learn to avoid the traps or area where the capture occurred, causing them to be captured less frequently (“trap shy”). The opposite (“trap happy”) may also occur, making them more likely to be captured. Individuals may also inherently different capture probabilities, and if ignored, the resulting abundance estimates are likely to be negatively biased.</p>
+<div class="line-block"><strong>Assumption 3.</strong> Marks are not lost and not overlooked by the observer</div>
+<p>It is possible that marks may fade, fall off, or be lost over time, making individuals indistinguishable from unmarked ones during recapture events. Ensuring durable and effective marking techniques is essential to maintain the integrity of the mark-recapture process and achieve unbiased estimates.</p>
+</div>
+<div id="simulation-study" class="section level2 hasAnchor" number="2.2">
+<h2><span class="header-section-number">2.2</span> Simulation study<a href="cross.html#simulation-study" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Simulation studies have become indispensable in ecology and conservation research, providing a controlled and repeatable approach to evaluate the performance of estimation methods. In this section, we will present the results of a simulation study that aims to evaluate the performance of the Lincoln-Peterson MR estimator in closed populations. We will create artificial datasets with with known population sizes, detectability patterns to assess the accuracy and precision of estimators under different scenarios.</p>
+<p>For each scenario we simulate 999 surveys, with each survey having a simulated sample size <span class="math inline">\(N = 500\)</span>.</p>
+<div id="scenario-1-when-the-underlying-assumptions-are-met" class="section level3 hasAnchor" number="2.2.1">
+<h3><span class="header-section-number">2.2.1</span> Scenario 1: When the underlying assumptions are met<a href="cross.html#scenario-1-when-the-underlying-assumptions-are-met" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>We first looked into the performance of mark-recapture estimator when all the above assumptions are met. Specifically, we will create artificial datasets to mimic a closed population, equal probability of detection of marked and unmarked individuals (<span class="math inline">\(p = 0.4\)</span>), and random sampling. For each replication, we will compare the estimated population size to the true population size (<span class="math inline">\(N = 500\)</span>). We then calculate the mean estimate and the variance of the estimates across replications and thus check with the coverage probability.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="cross.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(circular)</span>
+<span id="cb1-2"><a href="cross.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(fields)</span>
+<span id="cb1-3"><a href="cross.html#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="cross.html#cb1-4" aria-hidden="true" tabindex="-1"></a>sim.mr <span class="ot">&lt;-</span> <span class="cf">function</span>(n, move, equal.p, param){</span>
+<span id="cb1-5"><a href="cross.html#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="co">#browser()</span></span>
+<span id="cb1-6"><a href="cross.html#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="do">## 1. object positions</span></span>
+<span id="cb1-7"><a href="cross.html#cb1-7" aria-hidden="true" tabindex="-1"></a>  df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">id=</span><span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span>n, <span class="at">each =</span> <span class="dv">2</span>), <span class="at">obs=</span><span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, n),</span>
+<span id="cb1-8"><a href="cross.html#cb1-8" aria-hidden="true" tabindex="-1"></a>                   <span class="at">x=</span><span class="cn">NA</span>, <span class="at">y=</span><span class="cn">NA</span>, <span class="at">distance=</span><span class="cn">NA</span>, <span class="at">detect=</span><span class="cn">NA</span>)</span>
+<span id="cb1-9"><a href="cross.html#cb1-9" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-10"><a href="cross.html#cb1-10" aria-hidden="true" tabindex="-1"></a>  df<span class="sc">$</span>x[df<span class="sc">$</span>obs<span class="sc">==</span><span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">runif</span>(n, <span class="dv">0</span>, <span class="dv">2</span>); df<span class="sc">$</span>y[df<span class="sc">$</span>obs<span class="sc">==</span><span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">runif</span>(n, <span class="dv">0</span>, <span class="dv">2</span>)</span>
+<span id="cb1-11"><a href="cross.html#cb1-11" aria-hidden="true" tabindex="-1"></a>  df<span class="sc">$</span>distance[df<span class="sc">$</span>obs<span class="sc">==</span><span class="dv">1</span>] <span class="ot">&lt;-</span> df<span class="sc">$</span>x[df<span class="sc">$</span>obs<span class="sc">==</span><span class="dv">1</span>] <span class="sc">-</span> <span class="dv">1</span></span>
+<span id="cb1-12"><a href="cross.html#cb1-12" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-13"><a href="cross.html#cb1-13" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (move<span class="sc">==</span><span class="dv">0</span>){</span>
+<span id="cb1-14"><a href="cross.html#cb1-14" aria-hidden="true" tabindex="-1"></a>    angle <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">rwrappedcauchy</span>(n, <span class="at">mu =</span> <span class="fu">circular</span>(<span class="dv">0</span>),<span class="at">rho =</span> <span class="dv">0</span>))</span>
+<span id="cb1-15"><a href="cross.html#cb1-15" aria-hidden="true" tabindex="-1"></a>    distance <span class="ot">&lt;-</span> <span class="fu">abs</span>(<span class="fu">rnorm</span>(n, <span class="fl">0.1</span>, <span class="fl">0.1</span>))</span>
+<span id="cb1-16"><a href="cross.html#cb1-16" aria-hidden="true" tabindex="-1"></a>    df<span class="sc">$</span>x[df<span class="sc">$</span>obs<span class="sc">==</span><span class="dv">2</span>] <span class="ot">&lt;-</span> df<span class="sc">$</span>x[df<span class="sc">$</span>obs<span class="sc">==</span><span class="dv">1</span>] <span class="sc">+</span> distance<span class="sc">*</span><span class="fu">cos</span>(angle)</span>
+<span id="cb1-17"><a href="cross.html#cb1-17" aria-hidden="true" tabindex="-1"></a>    df<span class="sc">$</span>y[df<span class="sc">$</span>obs<span class="sc">==</span><span class="dv">2</span>] <span class="ot">&lt;-</span> df<span class="sc">$</span>y[df<span class="sc">$</span>obs<span class="sc">==</span><span class="dv">1</span>] <span class="sc">+</span> distance<span class="sc">*</span><span class="fu">sin</span>(angle)</span>
+<span id="cb1-18"><a href="cross.html#cb1-18" aria-hidden="true" tabindex="-1"></a>  }<span class="cf">else</span>{</span>
+<span id="cb1-19"><a href="cross.html#cb1-19" aria-hidden="true" tabindex="-1"></a>    df<span class="sc">$</span>x[df<span class="sc">$</span>obs<span class="sc">==</span><span class="dv">2</span>] <span class="ot">&lt;-</span> <span class="fu">runif</span>(n, <span class="dv">0</span>, <span class="dv">2</span>)</span>
+<span id="cb1-20"><a href="cross.html#cb1-20" aria-hidden="true" tabindex="-1"></a>    df<span class="sc">$</span>y[df<span class="sc">$</span>obs<span class="sc">==</span><span class="dv">2</span>] <span class="ot">&lt;-</span> <span class="fu">runif</span>(n, <span class="dv">0</span>, <span class="dv">2</span>)}</span>
+<span id="cb1-21"><a href="cross.html#cb1-21" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-22"><a href="cross.html#cb1-22" aria-hidden="true" tabindex="-1"></a>  df<span class="sc">$</span>distance[df<span class="sc">$</span>obs<span class="sc">==</span><span class="dv">2</span>] <span class="ot">&lt;-</span> df<span class="sc">$</span>x[df<span class="sc">$</span>obs<span class="sc">==</span><span class="dv">2</span>] <span class="sc">-</span> <span class="dv">1</span></span>
+<span id="cb1-23"><a href="cross.html#cb1-23" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-24"><a href="cross.html#cb1-24" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-25"><a href="cross.html#cb1-25" aria-hidden="true" tabindex="-1"></a>  <span class="do">## 2. detection probability &amp; Mark-Recapture</span></span>
+<span id="cb1-26"><a href="cross.html#cb1-26" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (equal.p <span class="sc">==</span> <span class="cn">TRUE</span>){</span>
+<span id="cb1-27"><a href="cross.html#cb1-27" aria-hidden="true" tabindex="-1"></a>    p1 <span class="ot">&lt;-</span> p2 <span class="ot">&lt;-</span> param</span>
+<span id="cb1-28"><a href="cross.html#cb1-28" aria-hidden="true" tabindex="-1"></a>  }<span class="cf">else</span>{</span>
+<span id="cb1-29"><a href="cross.html#cb1-29" aria-hidden="true" tabindex="-1"></a>    p1 <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="sc">-</span><span class="fu">abs</span>(df<span class="sc">$</span>distance[df<span class="sc">$</span>obs<span class="sc">==</span><span class="dv">1</span>])<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>(<span class="dv">2</span><span class="sc">*</span>param<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb1-30"><a href="cross.html#cb1-30" aria-hidden="true" tabindex="-1"></a>    p2 <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="sc">-</span><span class="fu">abs</span>(df<span class="sc">$</span>distance[df<span class="sc">$</span>obs<span class="sc">==</span><span class="dv">2</span>])<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>(<span class="dv">2</span><span class="sc">*</span>param<span class="sc">^</span><span class="dv">2</span>))}</span>
+<span id="cb1-31"><a href="cross.html#cb1-31" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-32"><a href="cross.html#cb1-32" aria-hidden="true" tabindex="-1"></a>  df<span class="sc">$</span>detect[df<span class="sc">$</span>obs<span class="sc">==</span><span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(n, <span class="dv">1</span>, p1)  <span class="co"># first occasion</span></span>
+<span id="cb1-33"><a href="cross.html#cb1-33" aria-hidden="true" tabindex="-1"></a>  df<span class="sc">$</span>detect[df<span class="sc">$</span>obs<span class="sc">==</span><span class="dv">2</span>] <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(n, <span class="dv">1</span>, p2)  <span class="co"># second occasion</span></span>
+<span id="cb1-34"><a href="cross.html#cb1-34" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-35"><a href="cross.html#cb1-35" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-36"><a href="cross.html#cb1-36" aria-hidden="true" tabindex="-1"></a>  <span class="do">## 3. return</span></span>
+<span id="cb1-37"><a href="cross.html#cb1-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(df)</span>
+<span id="cb1-38"><a href="cross.html#cb1-38" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="cross.html#cb2-1" aria-hidden="true" tabindex="-1"></a>sim.mismatch <span class="ot">&lt;-</span> <span class="cf">function</span>(df, equal.p, param){</span>
+<span id="cb2-2"><a href="cross.html#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">#browser()</span></span>
+<span id="cb2-3"><a href="cross.html#cb2-3" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-4"><a href="cross.html#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="do">## 1. get distance between every pair of detected objects</span></span>
+<span id="cb2-5"><a href="cross.html#cb2-5" aria-hidden="true" tabindex="-1"></a>  df1 <span class="ot">&lt;-</span> <span class="fu">subset</span>(df, df<span class="sc">$</span>obs<span class="sc">==</span><span class="dv">1</span> <span class="sc">&amp;</span> df<span class="sc">$</span>detect<span class="sc">==</span><span class="dv">1</span>)[ , <span class="fu">c</span>(<span class="st">&quot;x&quot;</span>, <span class="st">&quot;y&quot;</span>)]  </span>
+<span id="cb2-6"><a href="cross.html#cb2-6" aria-hidden="true" tabindex="-1"></a>  df2 <span class="ot">&lt;-</span> <span class="fu">subset</span>(df, df<span class="sc">$</span>obs<span class="sc">==</span><span class="dv">2</span> <span class="sc">&amp;</span> df<span class="sc">$</span>detect<span class="sc">==</span><span class="dv">1</span>)[ , <span class="fu">c</span>(<span class="st">&quot;x&quot;</span>, <span class="st">&quot;y&quot;</span>)]  </span>
+<span id="cb2-7"><a href="cross.html#cb2-7" aria-hidden="true" tabindex="-1"></a>  dist.pair <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">rdist</span>(df1, df2))</span>
+<span id="cb2-8"><a href="cross.html#cb2-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-9"><a href="cross.html#cb2-9" aria-hidden="true" tabindex="-1"></a>  dist.pair<span class="sc">$</span>unique <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(dist.pair)</span>
+<span id="cb2-10"><a href="cross.html#cb2-10" aria-hidden="true" tabindex="-1"></a>  df1<span class="sc">$</span>id <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(df1); df1<span class="sc">$</span>detect <span class="ot">&lt;-</span> df1<span class="sc">$</span>obs <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">1</span>, <span class="fu">nrow</span>(df1))</span>
+<span id="cb2-11"><a href="cross.html#cb2-11" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-12"><a href="cross.html#cb2-12" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-13"><a href="cross.html#cb2-13" aria-hidden="true" tabindex="-1"></a>  <span class="do">## 2. using min distance to decide mismatching</span></span>
+<span id="cb2-14"><a href="cross.html#cb2-14" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>(<span class="fu">ncol</span>(dist.pair)<span class="sc">-</span><span class="dv">1</span>)) {</span>
+<span id="cb2-15"><a href="cross.html#cb2-15" aria-hidden="true" tabindex="-1"></a>    min.index <span class="ot">&lt;-</span> <span class="fu">which.min</span>(dist.pair[, i])</span>
+<span id="cb2-16"><a href="cross.html#cb2-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">length</span>(min.index)<span class="sc">&gt;</span><span class="dv">0</span>){  </span>
+<span id="cb2-17"><a href="cross.html#cb2-17" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (dist.pair[min.index, i] <span class="sc">&lt;</span> <span class="fl">0.1</span>) {detect2 <span class="ot">&lt;-</span> <span class="dv">1</span>}</span>
+<span id="cb2-18"><a href="cross.html#cb2-18" aria-hidden="true" tabindex="-1"></a>      <span class="cf">else</span> <span class="cf">if</span> (dist.pair[min.index, i] <span class="sc">&gt;</span> <span class="fl">0.9</span>) {detect2 <span class="ot">&lt;-</span> <span class="dv">0</span>}</span>
+<span id="cb2-19"><a href="cross.html#cb2-19" aria-hidden="true" tabindex="-1"></a>      <span class="cf">else</span>{</span>
+<span id="cb2-20"><a href="cross.html#cb2-20" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> (equal.p<span class="sc">==</span><span class="cn">TRUE</span>) {detect2 <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(<span class="dv">1</span>, <span class="dv">1</span>, param)}</span>
+<span id="cb2-21"><a href="cross.html#cb2-21" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span> {detect2 <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="fu">exp</span>(<span class="sc">-</span>dist.pair[min.index, i]<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>(<span class="dv">2</span><span class="sc">*</span>param<span class="sc">^</span><span class="dv">2</span>)))}}</span>
+<span id="cb2-22"><a href="cross.html#cb2-22" aria-hidden="true" tabindex="-1"></a>    }<span class="cf">else</span>{detect2 <span class="ot">&lt;-</span> <span class="dv">0</span>}  <span class="co"># if no obs1 detection to match</span></span>
+<span id="cb2-23"><a href="cross.html#cb2-23" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-24"><a href="cross.html#cb2-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (detect2<span class="sc">==</span><span class="dv">1</span>){  <span class="co"># if matched</span></span>
+<span id="cb2-25"><a href="cross.html#cb2-25" aria-hidden="true" tabindex="-1"></a>      df1[<span class="fu">nrow</span>(df1) <span class="sc">+</span> <span class="dv">1</span>, ] <span class="ot">&lt;-</span> <span class="fu">c</span>(df2<span class="sc">$</span>x[i], df2<span class="sc">$</span>y[i], dist.pair<span class="sc">$</span>unique[min.index], <span class="dv">2</span>, <span class="dv">1</span>)</span>
+<span id="cb2-26"><a href="cross.html#cb2-26" aria-hidden="true" tabindex="-1"></a>      dist.pair <span class="ot">&lt;-</span> dist.pair[<span class="sc">-</span>min.index, ]</span>
+<span id="cb2-27"><a href="cross.html#cb2-27" aria-hidden="true" tabindex="-1"></a>    }<span class="cf">else</span>{  <span class="co"># if no match</span></span>
+<span id="cb2-28"><a href="cross.html#cb2-28" aria-hidden="true" tabindex="-1"></a>      id <span class="ot">&lt;-</span> <span class="fu">max</span>(<span class="fu">unique</span>(df1<span class="sc">$</span>id))<span class="sc">+</span><span class="dv">1</span></span>
+<span id="cb2-29"><a href="cross.html#cb2-29" aria-hidden="true" tabindex="-1"></a>      df1[<span class="fu">nrow</span>(df1) <span class="sc">+</span> <span class="dv">1</span>, ] <span class="ot">&lt;-</span> <span class="fu">c</span>(df2<span class="sc">$</span>x[i], df2<span class="sc">$</span>y[i], id, <span class="dv">1</span>, <span class="dv">0</span>)</span>
+<span id="cb2-30"><a href="cross.html#cb2-30" aria-hidden="true" tabindex="-1"></a>      df1[<span class="fu">nrow</span>(df1) <span class="sc">+</span> <span class="dv">1</span>, ] <span class="ot">&lt;-</span> <span class="fu">c</span>(df2<span class="sc">$</span>x[i], df2<span class="sc">$</span>y[i], id, <span class="dv">2</span>, <span class="dv">1</span>)}}</span>
+<span id="cb2-31"><a href="cross.html#cb2-31" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-32"><a href="cross.html#cb2-32" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> dist.pair<span class="sc">$</span>unique){ </span>
+<span id="cb2-33"><a href="cross.html#cb2-33" aria-hidden="true" tabindex="-1"></a>    df1[<span class="fu">nrow</span>(df1) <span class="sc">+</span> <span class="dv">1</span>, ] <span class="ot">&lt;-</span> <span class="fu">c</span>(df1<span class="sc">$</span>x[df1<span class="sc">$</span>id<span class="sc">==</span>i], df1<span class="sc">$</span>y[df1<span class="sc">$</span>id<span class="sc">==</span>i], i, <span class="dv">2</span>, <span class="dv">0</span>)}</span>
+<span id="cb2-34"><a href="cross.html#cb2-34" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-35"><a href="cross.html#cb2-35" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-36"><a href="cross.html#cb2-36" aria-hidden="true" tabindex="-1"></a>  <span class="do">## 3. return new dataset</span></span>
+<span id="cb2-37"><a href="cross.html#cb2-37" aria-hidden="true" tabindex="-1"></a>  df1 <span class="ot">&lt;-</span> df1[<span class="fu">order</span>(df1<span class="sc">$</span>id), ]</span>
+<span id="cb2-38"><a href="cross.html#cb2-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(df1)</span>
+<span id="cb2-39"><a href="cross.html#cb2-39" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="cross.html#cb3-1" aria-hidden="true" tabindex="-1"></a>chapman.mr <span class="ot">&lt;-</span> <span class="cf">function</span>(n, move, equal.p, param, mismatching){</span>
+<span id="cb3-2"><a href="cross.html#cb3-2" aria-hidden="true" tabindex="-1"></a>  df <span class="ot">&lt;-</span> <span class="fu">sim.mr</span>(n, move, equal.p, param)</span>
+<span id="cb3-3"><a href="cross.html#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (mismatching<span class="sc">==</span><span class="cn">TRUE</span>){df <span class="ot">&lt;-</span> <span class="fu">sim.mismatch</span>(df, equal.p, param)}</span>
+<span id="cb3-4"><a href="cross.html#cb3-4" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-5"><a href="cross.html#cb3-5" aria-hidden="true" tabindex="-1"></a>  S1 <span class="ot">&lt;-</span> <span class="fu">nrow</span>(df[df<span class="sc">$</span>obs<span class="sc">==</span><span class="dv">1</span> <span class="sc">&amp;</span> df<span class="sc">$</span>detect<span class="sc">==</span><span class="dv">1</span>, ])  <span class="co"># first occasion</span></span>
+<span id="cb3-6"><a href="cross.html#cb3-6" aria-hidden="true" tabindex="-1"></a>  S2 <span class="ot">&lt;-</span> <span class="fu">nrow</span>(df[df<span class="sc">$</span>obs<span class="sc">==</span><span class="dv">2</span> <span class="sc">&amp;</span> df<span class="sc">$</span>detect<span class="sc">==</span><span class="dv">1</span>, ])  <span class="co"># second occasion</span></span>
+<span id="cb3-7"><a href="cross.html#cb3-7" aria-hidden="true" tabindex="-1"></a>  B <span class="ot">&lt;-</span> df<span class="sc">$</span>detect[df<span class="sc">$</span>obs<span class="sc">==</span><span class="dv">1</span>]<span class="sc">==</span><span class="dv">1</span> <span class="sc">&amp;</span> df<span class="sc">$</span>detect[df<span class="sc">$</span>obs<span class="sc">==</span><span class="dv">2</span>]<span class="sc">==</span><span class="dv">1</span>  </span>
+<span id="cb3-8"><a href="cross.html#cb3-8" aria-hidden="true" tabindex="-1"></a>  B <span class="ot">&lt;-</span> <span class="fu">length</span>(B[B<span class="sc">==</span><span class="cn">TRUE</span>])  <span class="co"># caught by both occasions</span></span>
+<span id="cb3-9"><a href="cross.html#cb3-9" aria-hidden="true" tabindex="-1"></a>  N.hat <span class="ot">&lt;-</span> (S1<span class="sc">+</span><span class="dv">1</span>)<span class="sc">*</span>(S2<span class="sc">+</span><span class="dv">1</span>)<span class="sc">/</span>(B<span class="sc">+</span><span class="dv">1</span>)<span class="sc">-</span><span class="dv">1</span>  <span class="co"># abundance estimate</span></span>
+<span id="cb3-10"><a href="cross.html#cb3-10" aria-hidden="true" tabindex="-1"></a>  var.N <span class="ot">&lt;-</span> (S1<span class="sc">+</span><span class="dv">1</span>)<span class="sc">*</span>(S2<span class="sc">+</span><span class="dv">1</span>)<span class="sc">*</span>(S1<span class="sc">-</span>B)<span class="sc">*</span>(S2<span class="sc">-</span>B)<span class="sc">/</span>(((B<span class="sc">+</span><span class="dv">1</span>)<span class="sc">^</span><span class="dv">2</span>)<span class="sc">*</span>(B<span class="sc">+</span><span class="dv">2</span>))</span>
+<span id="cb3-11"><a href="cross.html#cb3-11" aria-hidden="true" tabindex="-1"></a>  d <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="fl">1.96</span><span class="sc">*</span><span class="fu">sqrt</span>(<span class="fu">log</span>(<span class="dv">1</span><span class="sc">+</span>(var.N<span class="sc">/</span>(N.hat<span class="sc">^</span><span class="dv">2</span>)))))</span>
+<span id="cb3-12"><a href="cross.html#cb3-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">c</span>(N.hat, d))</span>
+<span id="cb3-13"><a href="cross.html#cb3-13" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="cross.html#cb4-1" aria-hidden="true" tabindex="-1"></a>boot.mr <span class="ot">&lt;-</span> <span class="cf">function</span>(n, move, equal.p, param, mismatching){</span>
+<span id="cb4-2"><a href="cross.html#cb4-2" aria-hidden="true" tabindex="-1"></a>  input <span class="ot">&lt;-</span> <span class="fu">rep</span>(n, <span class="dv">999</span>)</span>
+<span id="cb4-3"><a href="cross.html#cb4-3" aria-hidden="true" tabindex="-1"></a>  ests <span class="ot">&lt;-</span> <span class="fu">lapply</span>(input, chapman.mr, move, equal.p, param, mismatching)</span>
+<span id="cb4-4"><a href="cross.html#cb4-4" aria-hidden="true" tabindex="-1"></a>  df.ests <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="fu">t</span>(<span class="fu">sapply</span>(ests,c)))</span>
+<span id="cb4-5"><a href="cross.html#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">colnames</span>(df.ests) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;N.hat&quot;</span>, <span class="st">&quot;d&quot;</span>)</span>
+<span id="cb4-6"><a href="cross.html#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(df.ests)</span>
+<span id="cb4-7"><a href="cross.html#cb4-7" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="cross.html#cb5-1" aria-hidden="true" tabindex="-1"></a>ests <span class="ot">&lt;-</span> <span class="fu">boot.mr</span>(<span class="dv">500</span>, <span class="dv">0</span>, <span class="cn">TRUE</span>, <span class="fl">0.4</span>, <span class="cn">FALSE</span>)  <span class="co"># bootstrap estimates</span></span>
+<span id="cb5-2"><a href="cross.html#cb5-2" aria-hidden="true" tabindex="-1"></a>ci <span class="ot">&lt;-</span> <span class="fu">mean</span>(ests<span class="sc">$</span>N.hat) <span class="sc">+</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>)<span class="sc">*</span><span class="fl">1.96</span><span class="sc">*</span><span class="fu">sqrt</span>(<span class="fu">var</span>(ests<span class="sc">$</span>N.hat)<span class="sc">/</span><span class="dv">999</span>)</span>
+<span id="cb5-3"><a href="cross.html#cb5-3" aria-hidden="true" tabindex="-1"></a>bias <span class="ot">&lt;-</span> <span class="fu">mean</span>((ests<span class="sc">$</span>N.hat<span class="dv">-500</span>)<span class="sc">/</span><span class="dv">500</span>)  <span class="co"># mean relative bias</span></span>
+<span id="cb5-4"><a href="cross.html#cb5-4" aria-hidden="true" tabindex="-1"></a>check.pcover <span class="ot">&lt;-</span> <span class="dv">500</span> <span class="sc">&gt;</span> ests<span class="sc">$</span>N.hat<span class="sc">/</span>ests<span class="sc">$</span>d <span class="sc">&amp;</span> <span class="dv">500</span> <span class="sc">&lt;</span> ests<span class="sc">$</span>N.hat<span class="sc">*</span>ests<span class="sc">$</span>d</span>
+<span id="cb5-5"><a href="cross.html#cb5-5" aria-hidden="true" tabindex="-1"></a>coverage.p <span class="ot">&lt;-</span> <span class="fu">length</span>(check.pcover[check.pcover<span class="sc">==</span><span class="cn">TRUE</span>])<span class="sc">/</span><span class="fu">length</span>(check.pcover)</span>
+<span id="cb5-6"><a href="cross.html#cb5-6" aria-hidden="true" tabindex="-1"></a>ci; <span class="fu">sprintf</span>(<span class="st">&quot;%1.2f%%&quot;</span>, bias<span class="sc">*</span><span class="dv">100</span>); coverage.p</span></code></pre></div>
+<pre><code>## [1] 497.7029 501.9331</code></pre>
+<pre><code>## [1] &quot;-0.04%&quot;</code></pre>
+<pre><code>## [1] 0.951952</code></pre>
+<p>The result above shows that Chapman estimator of abundance is unbiased as the 95% CI covers the true population size and the mean percentage relative bias is very close to 0.</p>
+</div>
+<div id="scenario-2-when-there-has-imperfect-matching" class="section level3 hasAnchor" number="2.2.2">
+<h3><span class="header-section-number">2.2.2</span> Scenario 2: When there has imperfect matching<a href="cross.html#scenario-2-when-there-has-imperfect-matching" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>We are interested in how imperfect matching influence the abundance estimate given that all other assumptions (e.g. equal capture probability) are met. The result below shows that failure to account for imperfect matching leads to largely biased abundance estimate.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="cross.html#cb9-1" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="dv">200</span></span>
+<span id="cb9-2"><a href="cross.html#cb9-2" aria-hidden="true" tabindex="-1"></a>ests <span class="ot">&lt;-</span> <span class="fu">boot.mr</span>(N, <span class="dv">0</span>, <span class="cn">TRUE</span>, <span class="fl">0.4</span>, <span class="cn">TRUE</span>)  <span class="co"># bootstrap estimates </span></span>
+<span id="cb9-3"><a href="cross.html#cb9-3" aria-hidden="true" tabindex="-1"></a>ci <span class="ot">&lt;-</span> <span class="fu">mean</span>(ests<span class="sc">$</span>N.hat) <span class="sc">+</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>)<span class="sc">*</span><span class="fl">1.96</span><span class="sc">*</span><span class="fu">sqrt</span>(<span class="fu">var</span>(ests<span class="sc">$</span>N.hat)<span class="sc">/</span><span class="dv">999</span>) </span>
+<span id="cb9-4"><a href="cross.html#cb9-4" aria-hidden="true" tabindex="-1"></a>bias <span class="ot">&lt;-</span> <span class="fu">mean</span>((ests<span class="sc">$</span>N.hat<span class="sc">-</span>N)<span class="sc">/</span>N)  <span class="co"># mean relative bias </span></span>
+<span id="cb9-5"><a href="cross.html#cb9-5" aria-hidden="true" tabindex="-1"></a>check.pcover <span class="ot">&lt;-</span> N <span class="sc">&gt;</span> ests<span class="sc">$</span>N.hat<span class="sc">/</span>ests<span class="sc">$</span>d <span class="sc">&amp;</span> N <span class="sc">&lt;</span> ests<span class="sc">$</span>N.hat<span class="sc">*</span>ests<span class="sc">$</span>d </span>
+<span id="cb9-6"><a href="cross.html#cb9-6" aria-hidden="true" tabindex="-1"></a>coverage.p <span class="ot">&lt;-</span> <span class="fu">length</span>(check.pcover[check.pcover<span class="sc">==</span><span class="cn">TRUE</span>])<span class="sc">/</span><span class="fu">length</span>(check.pcover) </span>
+<span id="cb9-7"><a href="cross.html#cb9-7" aria-hidden="true" tabindex="-1"></a>ci; <span class="fu">sprintf</span>(<span class="st">&quot;%1.2f%%&quot;</span>, bias<span class="sc">*</span><span class="dv">100</span>); coverage.p</span></code></pre></div>
+<pre><code>## [1] 124.5352 125.9197</code></pre>
+<pre><code>## [1] &quot;-37.39%&quot;</code></pre>
+<pre><code>## [1] 0</code></pre>
+</div>
+<div id="scenario-3-when-inherent-capture-probabilities-are-different" class="section level3 hasAnchor" number="2.2.3">
+<h3><span class="header-section-number">2.2.3</span> Scenario 3: When inherent capture probabilities are different<a href="cross.html#scenario-3-when-inherent-capture-probabilities-are-different" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>In this scenario, we aim to examine the impact of deviations from equal detectability assumption on the accuracy and bias of mark-recapture method. We make probability of detection falls off with distance from the transect line following half-normal distribution in both occasion. Different half-normal parameters are fitted to investigate how they affect the estimate.</p>
+<div id="i.-complete-random-animal-movement" class="section level4 hasAnchor" number="2.2.3.1">
+<h4><span class="header-section-number">2.2.3.1</span> <em>i. complete random animal movement</em><a href="cross.html#i.-complete-random-animal-movement" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>When animals move completely random between two occasions, the result shows that larger value of sigma, i.e. when detectability decreases less rapidly with increasing distance, leads to more precise estimates. The abundance estimate is rather accurate for each detection function used (<span class="math inline">\(\sigma = 0.3, 0.5, 0.7\)</span>). The explanation behind this is that the estimator is likely to be biased when the probabilities of detection are correlated by the two observers, however, in this case complete random animal movement does not lead to a correlated detection probabilities and thus negatively biased estimates.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="cross.html#cb13-1" aria-hidden="true" tabindex="-1"></a>plot1<span class="fl">.1</span> <span class="ot">&lt;-</span> <span class="cf">function</span>(n){</span>
+<span id="cb13-2"><a href="cross.html#cb13-2" aria-hidden="true" tabindex="-1"></a>  N1 <span class="ot">&lt;-</span> <span class="fu">boot.mr</span>(n, <span class="dv">1</span>, <span class="cn">FALSE</span>, <span class="fl">0.3</span>, <span class="cn">FALSE</span>)<span class="sc">$</span>N.hat</span>
+<span id="cb13-3"><a href="cross.html#cb13-3" aria-hidden="true" tabindex="-1"></a>  N2 <span class="ot">&lt;-</span> <span class="fu">boot.mr</span>(n, <span class="dv">1</span>, <span class="cn">FALSE</span>, <span class="fl">0.5</span>, <span class="cn">FALSE</span>)<span class="sc">$</span>N.hat</span>
+<span id="cb13-4"><a href="cross.html#cb13-4" aria-hidden="true" tabindex="-1"></a>  N3 <span class="ot">&lt;-</span> <span class="fu">boot.mr</span>(n, <span class="dv">1</span>, <span class="cn">FALSE</span>, <span class="fl">0.7</span>, <span class="cn">FALSE</span>)<span class="sc">$</span>N.hat</span>
+<span id="cb13-5"><a href="cross.html#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">boxplot</span>(<span class="fu">c</span>(N1, N2, N3)<span class="sc">~</span><span class="fu">rep</span>(<span class="fu">c</span>(<span class="fl">0.3</span>, <span class="fl">0.5</span>, <span class="fl">0.7</span>), <span class="at">each =</span> <span class="dv">999</span>),</span>
+<span id="cb13-6"><a href="cross.html#cb13-6" aria-hidden="true" tabindex="-1"></a>          <span class="at">data=</span>ToothGrowth,</span>
+<span id="cb13-7"><a href="cross.html#cb13-7" aria-hidden="true" tabindex="-1"></a>          <span class="at">main=</span><span class="st">&quot;Abundance estimates for different detection functions&quot;</span>,</span>
+<span id="cb13-8"><a href="cross.html#cb13-8" aria-hidden="true" tabindex="-1"></a>          <span class="at">xlab=</span><span class="st">&quot;sigma&quot;</span>,</span>
+<span id="cb13-9"><a href="cross.html#cb13-9" aria-hidden="true" tabindex="-1"></a>          <span class="at">ylab=</span><span class="st">&quot;Estimates&quot;</span>,</span>
+<span id="cb13-10"><a href="cross.html#cb13-10" aria-hidden="true" tabindex="-1"></a>          <span class="at">border=</span><span class="st">&quot;black&quot;</span>)</span>
+<span id="cb13-11"><a href="cross.html#cb13-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">abline</span>(<span class="at">h=</span><span class="dv">500</span>, <span class="at">col=</span><span class="st">&quot;blue&quot;</span>, <span class="at">lty=</span><span class="dv">2</span>, <span class="at">lwd=</span><span class="fl">1.5</span>)</span>
+<span id="cb13-12"><a href="cross.html#cb13-12" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="cross.html#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot1.1</span>(<span class="dv">500</span>)  <span class="co"># N = 500</span></span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+</div>
+<div id="ii.-random-animal-movement-over-short-distances" class="section level4 hasAnchor" number="2.2.3.2">
+<h4><span class="header-section-number">2.2.3.2</span> <em>ii. random animal movement over short distances</em><a href="cross.html#ii.-random-animal-movement-over-short-distances" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>We then take a look at the case where animals make random movement over short distances between two occasions. As shown in the graph below, when detectability decreases more rapidly with increasing distance (<span class="math inline">\(\sigma = 0.3\)</span>), the estimate are more negatively biased. In contrast, if there has less difference between detection probability on the transect and deetction probability on the truncation (<span class="math inline">\(\sigma = 0.7\)</span>), then abundance estimate are less negatively biased.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="cross.html#cb15-1" aria-hidden="true" tabindex="-1"></a>plot1<span class="fl">.2</span> <span class="ot">&lt;-</span> <span class="cf">function</span>(n){</span>
+<span id="cb15-2"><a href="cross.html#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">#browser()</span></span>
+<span id="cb15-3"><a href="cross.html#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
+<span id="cb15-4"><a href="cross.html#cb15-4" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb15-5"><a href="cross.html#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="do">## plot 1: half-normal</span></span>
+<span id="cb15-6"><a href="cross.html#cb15-6" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="fl">0.01</span>)</span>
+<span id="cb15-7"><a href="cross.html#cb15-7" aria-hidden="true" tabindex="-1"></a>  y1 <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="sc">-</span>x<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>(<span class="dv">2</span><span class="sc">*</span><span class="fl">0.3</span><span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb15-8"><a href="cross.html#cb15-8" aria-hidden="true" tabindex="-1"></a>  y2 <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="sc">-</span>x<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>(<span class="dv">2</span><span class="sc">*</span><span class="fl">0.5</span><span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb15-9"><a href="cross.html#cb15-9" aria-hidden="true" tabindex="-1"></a>  y3 <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="sc">-</span>x<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>(<span class="dv">2</span><span class="sc">*</span><span class="fl">0.7</span><span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb15-10"><a href="cross.html#cb15-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(x, y1, <span class="at">main =</span> <span class="st">&quot;Half normal&quot;</span>, <span class="at">xlab =</span> <span class="st">&quot;Distance&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Detection probability&quot;</span>,</span>
+<span id="cb15-11"><a href="cross.html#cb15-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">type=</span><span class="st">&quot;l&quot;</span>, <span class="at">lwd=</span><span class="fl">1.5</span>, <span class="at">col=</span><span class="st">&quot;red&quot;</span>, <span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>))</span>
+<span id="cb15-12"><a href="cross.html#cb15-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lines</span>(x, y2, <span class="at">col=</span><span class="st">&quot;blue&quot;</span>, <span class="at">lwd=</span><span class="fl">1.5</span>, <span class="at">lty=</span><span class="dv">2</span>)</span>
+<span id="cb15-13"><a href="cross.html#cb15-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lines</span>(x, y3, <span class="at">col=</span><span class="st">&quot;darkgreen&quot;</span>, <span class="at">lwd=</span><span class="fl">1.5</span>, <span class="at">lty=</span><span class="dv">3</span>)</span>
+<span id="cb15-14"><a href="cross.html#cb15-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">legend</span>(<span class="at">x =</span> <span class="st">&quot;topright&quot;</span>, <span class="at">legend =</span> <span class="fu">c</span>(<span class="st">&quot;sigma = 0.3&quot;</span>, <span class="st">&quot;sigma = 0.5&quot;</span>, <span class="st">&quot;sigma = 0.7&quot;</span>),  </span>
+<span id="cb15-15"><a href="cross.html#cb15-15" aria-hidden="true" tabindex="-1"></a>         <span class="at">lty =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>), <span class="at">col =</span> <span class="fu">c</span>(<span class="st">&quot;red&quot;</span>, <span class="st">&quot;blue&quot;</span>, <span class="st">&quot;darkgreen&quot;</span>), <span class="at">lwd =</span> <span class="fl">1.5</span>, <span class="at">cex=</span><span class="fl">0.5</span>) </span>
+<span id="cb15-16"><a href="cross.html#cb15-16" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb15-17"><a href="cross.html#cb15-17" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb15-18"><a href="cross.html#cb15-18" aria-hidden="true" tabindex="-1"></a>  <span class="do">## plot 2: bootstrap abundance estimates</span></span>
+<span id="cb15-19"><a href="cross.html#cb15-19" aria-hidden="true" tabindex="-1"></a>  N1 <span class="ot">&lt;-</span> <span class="fu">boot.mr</span>(n, <span class="dv">0</span>, <span class="cn">FALSE</span>, <span class="fl">0.3</span>, <span class="cn">FALSE</span>)<span class="sc">$</span>N.hat</span>
+<span id="cb15-20"><a href="cross.html#cb15-20" aria-hidden="true" tabindex="-1"></a>  N2 <span class="ot">&lt;-</span> <span class="fu">boot.mr</span>(n, <span class="dv">0</span>, <span class="cn">FALSE</span>, <span class="fl">0.5</span>, <span class="cn">FALSE</span>)<span class="sc">$</span>N.hat</span>
+<span id="cb15-21"><a href="cross.html#cb15-21" aria-hidden="true" tabindex="-1"></a>  N3 <span class="ot">&lt;-</span> <span class="fu">boot.mr</span>(n, <span class="dv">0</span>, <span class="cn">FALSE</span>, <span class="fl">0.7</span>, <span class="cn">FALSE</span>)<span class="sc">$</span>N.hat</span>
+<span id="cb15-22"><a href="cross.html#cb15-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(<span class="fl">0.3</span>, <span class="fu">mean</span>(N1), <span class="at">pch=</span><span class="dv">7</span>, <span class="at">col=</span><span class="st">&quot;red&quot;</span>, <span class="at">xlim=</span><span class="fu">c</span>(<span class="fl">0.2</span>, <span class="fl">0.8</span>), <span class="at">ylim=</span><span class="fu">c</span>(<span class="fu">min</span>(N1), n<span class="sc">+</span><span class="dv">10</span>), <span class="at">xlab=</span><span class="st">&quot;sigma&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;estimates&quot;</span>)</span>
+<span id="cb15-23"><a href="cross.html#cb15-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">title</span>(<span class="at">main=</span><span class="st">&quot;Mean estimates, N = 500&quot;</span>, <span class="at">cex.main=</span><span class="dv">1</span>)</span>
+<span id="cb15-24"><a href="cross.html#cb15-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">points</span>(<span class="fl">0.5</span>, <span class="fu">mean</span>(N2), <span class="at">pch=</span><span class="dv">7</span>, <span class="at">col=</span><span class="st">&quot;blue&quot;</span>)</span>
+<span id="cb15-25"><a href="cross.html#cb15-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">points</span>(<span class="fl">0.7</span>, <span class="fu">mean</span>(N3), <span class="at">pch=</span><span class="dv">7</span>, <span class="at">col=</span><span class="st">&quot;darkgreen&quot;</span>)</span>
+<span id="cb15-26"><a href="cross.html#cb15-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">abline</span>(<span class="at">h=</span>n, <span class="at">lwd=</span><span class="fl">1.5</span>)</span>
+<span id="cb15-27"><a href="cross.html#cb15-27" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="fl">0.3</span>, <span class="fl">0.7</span>, <span class="fl">0.02</span>)</span>
+<span id="cb15-28"><a href="cross.html#cb15-28" aria-hidden="true" tabindex="-1"></a>  y <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb15-29"><a href="cross.html#cb15-29" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> x){</span>
+<span id="cb15-30"><a href="cross.html#cb15-30" aria-hidden="true" tabindex="-1"></a>    meanN <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">boot.mr</span>(n, <span class="dv">0</span>, <span class="cn">FALSE</span>, i, <span class="cn">FALSE</span>)<span class="sc">$</span>N.hat)</span>
+<span id="cb15-31"><a href="cross.html#cb15-31" aria-hidden="true" tabindex="-1"></a>    y <span class="ot">&lt;-</span> <span class="fu">c</span>(y, meanN)}</span>
+<span id="cb15-32"><a href="cross.html#cb15-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lines</span>(x, y, <span class="at">lty=</span><span class="dv">3</span>, <span class="at">lwd=</span><span class="fl">1.5</span>)</span>
+<span id="cb15-33"><a href="cross.html#cb15-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">legend</span>(<span class="at">x =</span> <span class="st">&quot;bottomright&quot;</span>, <span class="at">legend =</span> <span class="fu">c</span>(<span class="st">&quot;sigma = 0.3&quot;</span>, <span class="st">&quot;sigma = 0.5&quot;</span>, <span class="st">&quot;sigma = 0.7&quot;</span>),  </span>
+<span id="cb15-34"><a href="cross.html#cb15-34" aria-hidden="true" tabindex="-1"></a>         <span class="at">pch =</span> <span class="fu">c</span>(<span class="dv">7</span>, <span class="dv">7</span>, <span class="dv">7</span>), <span class="at">col =</span> <span class="fu">c</span>(<span class="st">&quot;red&quot;</span>, <span class="st">&quot;blue&quot;</span>, <span class="st">&quot;darkgreen&quot;</span>), <span class="at">cex=</span><span class="fl">0.5</span>) </span>
+<span id="cb15-35"><a href="cross.html#cb15-35" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="cross.html#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot1.2</span>(<span class="dv">500</span>)  <span class="co"># N = 500</span></span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+</div>
+</div>
+</div>
+<div id="further-reading" class="section level2 hasAnchor" number="2.3">
+<h2><span class="header-section-number">2.3</span> Further Reading<a href="cross.html#further-reading" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Borchers, D.L., Buckland, S.T. and Zucchini, W. (2002). Estimating Animal Abundance: Closed Populations. Springer London. <a href="https://doi.org/10.1007/978-1-4471-3708-5" class="uri">https://doi.org/10.1007/978-1-4471-3708-5</a></p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="introduction.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="distance-sampling.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf", "_main.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

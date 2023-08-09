@@ -1,0 +1,15 @@
+# Introduction
+```{r initial-setup, include = FALSE, warning=FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+source("code.R")
+```
+Accurate estimation of animal abundance is a fundamental aspect of ecological research and wildlife conservation. Since total enumeration are rarely possible for natural populations of animals, robust estimation methods have to be used. Commonly used approaches for estimating animal abundance include mark-recapture, distance sampling, and mark-recapture distance sampling (MRDS). Each of these methods relies on different principles and assumptions to estimate population sizes.
+
+The mark-recapture method is based on capturing and marking individuals, followed by subsequent recapture efforts to estimate the total population size. Distance sampling, on the other hand, involves estimating the detection probability of individuals at different distances from the observer, allowing for the extrapolation of population size based on detection functions. MRDS is an extension that accounts for both the detection probabilities of individuals at different distances and the potential for recapture of marked individuals, providing more precise estimates, even when assumptions of closed populations and uniform detection probabilities are not fully met.
+
+However, the accuracy and reliability of these estimation methods depend heavily on how well their underlying assumptions are met. Assumptions such as closed population, random sampling, and homogeneous detection probabilities play a crucial role in determining the performance of the models. When these assumptions are violated, the estimates obtained from the methods can be biased and lead to misleading conclusions.
+
+2D Distance sampling is a new method that has the potential to work when these other methods fail. It uses a similar principle to distance sampling but the observers collect the forward distance as well as the perpendicular distance to the animal. This additional data allows the model to be flexible when dealing with different animal distributions and detection functions. 
+
+In this study, we systematically tested the four methods using a range of scenarios with varying degrees of assumption compliance and violations. By simulating populations with known abundance and detectability patterns, we aimed to assess how each method performed under different conditions. We have based our populations on snow leopard prey data from Gobi Gurvansaikhan National Park. In the following sections of this report, we will present the methodology of our simulation study and the results obtained from the simulations. We will then use 2D distance sampling to analyse the snow leopard prey data. 
+

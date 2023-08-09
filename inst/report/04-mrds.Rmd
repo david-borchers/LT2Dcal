@@ -1,0 +1,94 @@
+# Mark Recapture Distance Sampling
+
+```{r mrds-setup, include = FALSE}
+#set up
+Nanimals = 500
+hr_param = c(374.7160,2.2416) #parameters for detection function
+match_limits = c(300,1000)
+match_param = c(450,5)
+p0 = 0.8
+```
+
+## Introduction
+
+Mark Recapture Distance Sampling (MRDS) combines the principles of mark-recapture and standard distance sampling. 2 observers each travel along the same transect and record the animals they see and the perpendicular distance. By including the capture history of each animal we have enough information to allow for non-zero detection probability on the line, but we lose the pooling robustness property, so unmodelled heterogeneity will cause biased estimates.
+
+Point independence models, which assume the two observers' detection probabilities are uncorrelated at a specific distance, are less biased when faced with unmodelled heterogeneity than full independence models, which assume detection probabilities are independent at all distances. However, the estimates are still negatively biased in this situation. Unmodelled heterogeneity is likely to occur in most surveys as the observers are unlikely to be aware of every potential source of difference in detection and it is not feasible to record multitudes of information whilst moving along a transect.
+
+This model also assumes that the observers perfectly match which animals they both saw and which ones only one observer saw. If the animals don't have uniquely identifying features and there is any kind of animal movement between surveys then this assumption will not hold.
+
+## Simulation - p(0) \< 1 and animal movement
+
+### Methods
+
+To test the MRDS estimator, we simulated `r Nanimals` animals with a uniform distribution across the study area and simulated an observer detecting animals with a hazard rate detection function with sigma = `r hr_param[1]`, beta = `r hr_param[2]`, scaled by 0.8 to see the affect of p(0) \< 1. We then had the animals move away in response to the observer with three levels of avoidance, and simulated the second observer detecting the animals in their new positions with the same detection function as the first observer.
+
+We fitted a half normal and a hazard rate MRDS model to this data and selected the best using AIC, and repeated this process 99 times to estimate bias.
+```{r mrds-avoidance,echo = FALSE, fig.asp=1.25, fig.margin = TRUE, fig.cap='Demonstration of different avoidance levels'}
+avoidance_demo(Nanimals, 0)
+```
+
+### Results
+
+As expected, the MRDS estimator is approximately unbiased for p(0) \< 1 when there is no animal movement and no heterogeneity in the population. However, this may not be realistic for most situations. The estimate becomes more negatively biased as the animals move more as a result of the increasing difference in detectability between the two occasions.
+
+```{r mrds-simulation, echo= F, warning=FALSE, cache = TRUE}
+#p0.bias <- get_p0_bias(99,Nanimals, detectfn = "hr") 
+load("p0.bias.Rdata")
+```
+```{r mrds-simulation-plotting, fig.cap="Bias for different levels of animal avoidance", echo = FALSE}
+par(mar = c(6,4,1,1))
+plot(p0.bias,pch = 16, xlab = "", ylab = "% Bias", ylim = c(min(p0.bias)-5, max(c(max(p0.bias),0))), xaxt = "n")
+abline(h = 0, col = "blue", type = "dashed")
+legend("bottom", inset=c(0,-0.2), legend=c("No", "Low","Medium", "High"), title="Avoidance", horiz = T, xpd = T)
+```
+
+This method also assumes that the observers can identify an individual animal regardless of how far it moves. We investigate the impact of violating this assumption in the next simulation.
+
+
+## Simulation - Imperfect Matching
+
+### Methods
+
+To see the affect of imperfect matching, we simulated `r Nanimals` animals and had them move in the same way as before. We used the same detection function but kept p(0) = 1.
+
+To account for the imperfect matching we set that any animals detected on the second occasion within `r match_limits[1]`m of an animal detected on the first animal were recorded as the same animal, taking the closest as the match if there were multiple within this range. Any animals further than `r match_limits[2]`m were recorded as different, and the probability of matching animals within the range was generated using a hazard rate with parameters `r match_param`.
+
+```{r imperfect-matching2, echo = FALSE, fig.cap = 'Probability of matching animals as distance between them increase'}
+x <- seq(0,match_limits[2],0.01)
+plot(x, hazard_rate(x,match_param[1],match_param[2]), xlab = "Distance from 1st animal", ylab = "Probability of Match", type = "l")
+```
+
+```{r mrds-bias, include=FALSE, warning=FALSE, cache = TRUE}
+#estimates <- get_bias(99, Nanimals)
+load("estimates.Rdata")
+bias <- 100*colMeans((estimates - Nanimals)/(Nanimals), na.rm = T)
+```
+
+We fitted a half normal and a hazard rate MRDS model to this data and selected the best using AIC, and repeated this process 99 times to estimate bias.
+
+### Results
+
+The MRDS estimator is unbiased for perfect matching and no movement as there is no unmodelled heterogeneity in the population. It isn't significantly biased for scenarios with responsive movement and perfect matching, with an average bias of `r mean(bias[c(3,5,7)])`% across the 3 levels of movement. It is slightly positively biased due to the second observer being able to see less animals than the first as a result of the avoidance. This leads to underestimating the detection probability and so overestimating the abundance.
+
+However, when we add imperfect matching the estimator becomes significantly positively biased. The bias increases as the animals become more avoidant because it becomes more likely that the observers will make a mismatch. As the animals move more, more individuals that were truly seen on both occasions are misidentified as two separate animals that were seen once each on each occasion. This results in a severe underestimate of the detection probability and so the estimate of abundance is significantly positively biased.
+
+```{r mrds-plot, echo = FALSE}
+par(xpd = T, mar = c(6,4,1,1))
+plot(bias[c(1,3,5,7)], ylim = c(min(bias)-5, max(bias) + 10),  pch = c(15,16,17,18), main = "Bias by scenario", ylab = "% bias", xlab = "", xaxt = "n")
+points(bias[c(2,4,6,8)],pch = c(15,16,17,18), col = "red")
+legend("bottom", inset=c(0,-0.2), legend=c("No", "Low","Medium", "High"), pch=c(15,16,17,18), title="Avoidance", horiz = T, xpd = T)
+legend("topright", legend = c("Perfect Matching", "Imperfect Matching"), col = c("black", "red"), pch = 16)
+```
+
+## Conclusion
+
+MRDS is only recommended for situations where the animals are uniquely identifiable, as imperfect matching will cause significant positive bias. If MRDS is used then the observers should collect as much additional information as possible about the animals to account for any heterogeneity in the population. 
+
+## Futher Reading
+
+Buckland, S.T., Rexstad, E.A., Marques, T.A. and Oedekoven, C.S. (2015). Distance Sampling: Methods and Applications. Springer International Publish, pp.99--103.
+
+Borchers, D.L., Laake, J.L., Southwell, C. and Paxton, C.G.M. (2005). Accommodating Unmodeled Heterogeneity in Double-Observer Distance Sampling Surveys. *Biometrics*, [online] 62(2), pp.372--378. doi:<https://doi.org/10.1111/j.1541-0420.2005.00493.x.>
+
+Burt, M.L., Borchers, D.L., Jenkins, K.J. and Marques, T.A. (2014). Using mark-recapture distance sampling methods on line transect surveys. Methods in Ecology and Evolution, [online] 5(11), pp.1180--1191. <doi:https://doi.org/10.1111/2041-210x.12294>.
