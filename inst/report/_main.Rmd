@@ -15,26 +15,172 @@ link-citations: yes
 github-repo: rstudio/bookdown-demo
 ---
 
-# url: your book url like https://bookdown.org/yihui/bookdown
+# About
 
-Placeholder
-
+This is a *sample* book written in **Markdown**. You can use anything that Pandoc's Markdown supports; for example, a math equation $a^2 + b^2 = c^2$.
 
 ## Usage
+
+Each **bookdown** chapter is an .Rmd file, and each .Rmd file can contain one (and only one) chapter. A chapter *must* start with a first-level heading: `# A good chapter`, and can contain one (and only one) first-level heading.
+
+Use second-level and higher headings within chapters like: `## A short section` or `### An even shorter section`.
+
+The `index.Rmd` file is required, and is also your first book chapter. It will be the homepage when you render the book.
+
 ## Render book
+
+You can render the HTML version of this example book without changing anything:
+
+1.  Find the **Build** pane in the RStudio IDE, and
+
+2.  Click on **Build Book**, then select your output format, or select "All formats" if you'd like to use multiple formats from the same book source files.
+
+Or build the book from the R console:
+
+```{r, eval=FALSE}
+bookdown::render_book()
+```
+
+To render this example to PDF as a `bookdown::pdf_book`, you'll need to install XeLaTeX. You are recommended to install TinyTeX (which includes XeLaTeX): <https://yihui.org/tinytex/>.
+
 ## Preview book
+
+As you work, you may start a local server to live preview this HTML book. This preview will update as you edit the book when you save individual .Rmd files. You can start the server in a work session by using the RStudio add-in "Preview book", or from the R console:
+
+```{r eval=FALSE}
+bookdown::serve_book()
+```
+
+```{r include=FALSE}
+# automatically create a bib database for R packages
+knitr::write_bib(c(
+  .packages(), 'bookdown', 'knitr', 'rmarkdown'
+), 'packages.bib')
+```
+
+\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\--
+
+# 1. Hello bookdown
+
+All chapters start with a first-level heading followed by your chapter title, like the line above. There should be only one first-level heading (`#`) per .Rmd file.
+
 ## A section
+
+All chapter sections start with a second-level (`##`) or higher heading followed by your section title, like the sections above and below here. You can have as many as you want within a chapter.
+
 ### An unnumbered section {.unnumbered}
+
+Chapters and sections are numbered by default. To un-number a heading, add a `{.unnumbered}` or the shorter `{-}` at the end of the heading, like in this section.
+
+# 2. Cross-references {#cross}
+
+Cross-references make it easier for your readers to find and link to elements in your book.
+
 ## Chapters and sub-chapters
+
+There are two steps to cross-reference any heading:
+
+1.  Label the heading: `# Hello world {#nice-label}`.
+    -   Leave the label off if you like the automated heading generated based on your heading title: for example, `# Hello world` = `# Hello world {#hello-world}`.
+    -   To label an un-numbered heading, use: `# Hello world {-#nice-label}` or `{# Hello world .unnumbered}`.
+2.  Next, reference the labeled heading anywhere in the text using `\@ref(nice-label)`; for example, please see Chapter \@ref(cross).
+    -   If you prefer text as the link instead of a numbered reference use: [any text you want can go here](#cross).
+
 ## Captioned figures and tables
+
+Figures and tables *with captions* can also be cross-referenced from elsewhere in your book using `\@ref(fig:chunk-label)` and `\@ref(tab:chunk-label)`, respectively.
+
+See Figure \@ref(fig:nice-fig).
+
+```{r nice-fig, fig.cap='Here is a nice figure!', out.width='80%', fig.asp=.75, fig.align='center', fig.alt='Plot with connected points showing that vapor pressure of mercury increases exponentially as temperature increases.'} par(mar = c(4, 4, .1, .1)) plot(pressure, type = 'b', pch = 19)}
+```
+
+Don't miss Table \@ref(tab:nice-tab).
+
+```{r nice-tab, tidy=FALSE} knitr::kable(   head(pressure, 10), caption = 'Here is a nice table!',   booktabs = TRUE )}
+```
+
+# 3. Parts
+
+You can add parts to organize one or more book chapters together. Parts can be inserted at the top of an .Rmd file, before the first-level chapter heading in that same file.
+
+Add a numbered part: `# (PART) Act one {-}` (followed by `# A chapter`)
+
+Add an unnumbered part: `# (PART\*) Act one {-}` (followed by `# A chapter`)
+
+Add an appendix as a special kind of un-numbered part: `# (APPENDIX) Other stuff {-}` (followed by `# A chapter`). Chapters in an appendix are prepended with letters instead of numbers.
+
+# 4. Footnotes and citations
+
 ## Footnotes
+
+Footnotes are put inside the square brackets after a caret `^[]`. Like this one [^index-1].
+
+[^index-1]: This is a footnote.
+
 ## Citations
+
+Reference items in your bibliography file(s) using `@key`.
+
+For example, we are using the **bookdown** package [@R-bookdown] (check out the last code chunk in index.Rmd to see how this citation key was added) in this sample book, which was built on top of R Markdown and **knitr** [@xie2015] (this citation was added manually in an external file book.bib). Note that the `.bib` files need to be listed in the index.Rmd with the YAML `bibliography` key.
+
+The RStudio Visual Markdown Editor can also make it easier to insert citations: <https://rstudio.github.io/visual-markdown-editing/#/citations>
+
+# 5. Blocks
+
 ## Equations
+
+Here is an equation.
+
+```{=tex}
+\begin{equation}    f\left(k\right) = \binom{n}{k} p^k\left(1-p\right)^{n-k}   (\#eq:binom) \end{equation}
+```
+You may refer to using `\@ref(eq:binom)`, like see Equation \@ref(eq:binom).
+
 ## Theorems and proofs
+
+Labeled theorems can be referenced in text using `\@ref(thm:tri)`, for example, check out this smart theorem \@ref(thm:tri).
+
+::: {#tri .theorem}
+For a right triangle, if $c$ denotes the *length* of the hypotenuse and $a$ and $b$ denote the lengths of the **other** two sides, we have $$a^2 + b^2 = c^2$$
+:::
+
+Read more here <https://bookdown.org/yihui/bookdown/markdown-extensions-by-bookdown.html>.
+
 ## Callout blocks
+
+The R Markdown Cookbook provides more help on how to use custom blocks to design your own callouts: <https://bookdown.org/yihui/rmarkdown-cookbook/custom-blocks.html>
+
+# 6. Sharing your book
+
 ## Publishing
+
+HTML books can be published online, see: <https://bookdown.org/yihui/bookdown/publishing.html>
+
 ## 404 pages
+
+By default, users will be directed to a 404 page if they try to access a webpage that cannot be found. If you'd like to customize your 404 page instead of using the default, you may add either a `_404.Rmd` or `_404.md` file to your project root and use code and/or Markdown syntax.
+
 ## Metadata for sharing
+
+Bookdown HTML books will provide HTML metadata for social sharing on platforms like Twitter, Facebook, and LinkedIn, using information you provide in the `index.Rmd` YAML. To setup, set the `url` for your book and the path to your `cover-image` file. Your book's `title` and `description` are also used.
+
+This `gitbook` uses the same social sharing data across all chapters in your book- all links shared will look the same.
+
+Specify your book's source repository on GitHub using the `edit` key under the configuration options in the `_output.yml` file, which allows users to suggest an edit by linking to a chapter's source file.
+
+Read more about the features of this output format here:
+
+<https://pkgs.rstudio.com/bookdown/reference/gitbook.html>
+
+Or use:
+
+```{r eval=FALSE} ?bookdown::gitbook}
+```
+
+# 7.References
+
+`r if (knitr::is_html_output()) ' # References {-} '`
 
 <!--chapter:end:index.Rmd-->
 
@@ -59,23 +205,22 @@ Placeholder
 ## 2.1 Closed populations
 ## 2.2 Simulation study
 #### Scenario 1: When the underlying assumptions are met
-#### Scenario 2: when inherent capture probabilities are different
+#### Scenario 2: When inherent capture probabilities are different
 #### Limitations of mark-recapture
 
 <!--chapter:end:02-mark-recapture.Rmd-->
 
-# Parts
 
-You can add parts to organize one or more book chapters together. Parts can be inserted at the top of an .Rmd file, before the first-level chapter heading in that same file. 
+# Distance sampling
 
-Add a numbered part: `# (PART) Act one {-}` (followed by `# A chapter`)
-
-Add an unnumbered part: `# (PART\*) Act one {-}` (followed by `# A chapter`)
-
-Add an appendix as a special kind of un-numbered part: `# (APPENDIX) Other stuff {-}` (followed by `# A chapter`). Chapters in an appendix are prepended with letters instead of numbers.
+Placeholder
 
 
-
+## 3.1 Line transect sampling
+## 3.2 Simulation study
+#### Scenario 1: When the underlying assumptions are met
+#### Scenario 2: When animals show responsive movement
+## Further Reading
 
 <!--chapter:end:03-parts.Rmd-->
 
@@ -95,139 +240,19 @@ Placeholder
 
 <!--chapter:end:04-mrds.Rmd-->
 
----
-output:
-  pdf_document: default
-  html_document: default
----
 
 # 2D Distance Sampling
 
-```{r 2D-setup, include=FALSE, warnings = F}
-source("code.R")
-b = c(5.0174523,0.7224735); logphi = c(-0.3275344,6.6302135)
-w = 1600; ystart = 1300
-Nanimals = 200
-match_limits = c(300,1000); match_param = c(450,5)
-```
+Placeholder
+
 
 ## Introduction
-
-2D Distance Sampling builds on standard distance sampling by including the forward distance to the detected animal as well as the perpendicular distance. This removes the assumptions that the animals are uniformly distributed and that p(0) = 1, so this method is useful for situations where the other methods covered previously are not suitable.
-
 ## Simulation: Non Uniform Distribution
-
-We start by simulating attraction to the line by generating 200 animals using a half normal distribution with parameters `r exp(logphi)`. We used a hazard rate detection function with parameters `r b`. The parameters chosen are the best model for our real data.
-
-```{r 2D-simulation, echo = F, warnings = F}
-suppressWarnings(simdata <- MCR_2D(10,Nanimals))
-bias_2d <- 100*(simdata$X2D - Nanimals)/Nanimals
-```
-
-We then fitted a model using a half normal distribution for animal density and hazard detection function. We did not fit any other models for efficiency purposes. This gives a bias of `r mean(bias_2d)` \pm `r 1.96*sqrt(var(bias_2d)/length(bias_2d))`, so we can confirm it is unbiased.
-
 ## Simulation: Comparison to Mark Recapture
-
-Double Observer mark recapture methods are the current standard for estimating abundance of snow leopard prey. Our previous simulations have shown these have serious flaws, so we used both a 2D distance model and the Chapman estimator to estimate the abundance from the same data (simulated using the same parameters as above).
-
-```{r 2D-histograms, echo = F, fig.cap="Histograms of abundance estimates using 2D distance sampling and the Chapman estimator"}
-par(mfrow = c(1,2))
-hist(simdata$X2D, main = "2D Distance", xlab = "Estimate of N")
-abline(v = Nanimals, col = "blue")
-hist(simdata$MCR.nomvmnt, main = "Chapman", xlab = "Estimate of N", xlim = c(min(simdata$MCR.nomvmnt),max(c(max(simdata$MCR.nomvmnt),Nanimals))))
-abline(v = Nanimals, col = "blue")
-```
-
-The Chapman estimator was significantly negatively biased due to the unmodelled heterogeneity in the population. Adding random animal movement and imperfect matching gives a similar problem.
-
-```{r imperfect-matching-histograms, echo = F, fig.cap = "Histograms of abundance estimates using the Chapman estimator with random movment"}
-par(mfrow = c(1,2))
-hist(simdata$MCR.move, main = "Perfect Matching", xlab = "Estimate of N", xlim = c(min(simdata$MCR.move),max(c(max(simdata$MCR.move),Nanimals))))
-abline(v = Nanimals, col = "blue")
-hist(simdata$MCR.imperf, main = "Imperfect Matching", xlab = "Estimate of N", xlim = c(min(simdata$MCR.imperf), max(c(max(simdata$MCR.imperf)+10,Nanimals))))
-abline(v = Nanimals, col = "blue")
-```
-
-From this it is clear that double-observer mark-recapture will yield significantly biased estimates of abundance of snow leopard prey, even if the animals do not move and the observers can perfectly match the individuals seen. We recommend instead using 2D distance sampling, as it accounts for the non uniform animal distribution as well as the declining detectability with distance. It is also requires less time to be spent surveying, as each transect only need to be walked once.
-
 ## Real Data Analysis
-
 ### Methods
-
-We will now use the 2D distance framework to analyse the real snow leopard prey data. The observers surveyed 48 transects in 10 blocks and recorded the bearing of the path, the bearing of the group they saw and radial distance to the group where possible. There were 2 species included in the survey: ibex and argali. The observers had limited rangefinders so 49 of these observations had no distance data; 61 groups were behind the observers so did not have a valid "forward" distance. This left 132 usable observations.
-
-Upon closer inspection, many detection distances (both perpendicular and forward) appeared to be rounded to zero, likely as a result of the bearings being rounded to the nearest 5 degrees. To prevent this from impacting the model fit we simply added a small random number to each zero observation.
-
-```{r, distance-histograms, fig.cap = "Histograms of forward and perpendicular distances"}
-hist(DistData$distance, main = "Perpendicular Distance")
-hist(DistData$forward, main = "Forward Distance")
-```
-
-From looking at the histograms of observed data we set the perpendicular truncation distance at `r w1` and the forward truncation distance at `r ystart1`. This excluded 2 outlier observations.\
-We then fitted a series of model with different detection functions and animal distributions, and picked the one with the lowest AIC.
-
 ### Results
-
-```{r fit-model, include = FALSE, warning=FALSE }
-jitter.h1.norm <- LT2D.fit(DataFrameInput = jitterdf, 
-                           hr = 'h1',
-                           b = c(log(100),log(2)),
-                           ystart = ystart,      
-                           pi.x = 'pi.norm',   
-                           logphi = c(0,5),
-                           w = w,
-                           hessian = TRUE)
-ibexjitter.h1.norm <- LT2D.fit(DataFrameInput = ibexjitter, 
-                               hr = 'h1',
-                               b = c(log(100),log(2)),
-                               ystart = ystart,      
-                               pi.x = 'pi.norm',   
-                               logphi = c(0,5),
-                               w = w,
-                               hessian = TRUE)
-argalijitter.h1 <- LT2D.fit(DataFrameInput = argalijitter,
-                            hr = 'h1',
-                            b = c(4.5, 0.75),
-                            ystart = ystart,
-                            pi.x = 'pi.const',
-                            w = w,
-                            hessian = TRUE)
-boot <- LT2D.bootstrap(jitter.h1.norm, r = 999, alpha = 0.05)
-ibexboot <- LT2D.bootstrap(ibexjitter.h1.norm, r = 999, alpha = 0.05)
-argaliboot <- LT2D.bootstrap(argalijitter.h1, r = 999, alpha = 0.05)
-total.N <- jitter.h1.norm$ests[nrow(jitter.h1.norm$ests),ncol(jitter.h1.norm$ests)]
-total.ibex <- ibexjitter.h1.norm$ests[nrow(ibexjitter.h1.hnorm$ests),ncol(ibexjitter.h1.norm$ests)]
-total.argali <- argalijitter.h1$ests[nrow(argalijitter.h1$ests),ncol(argalijitter.h1$ests)]
-```
-
-Our best fitting model used the h1 hazard detection function and a normal distribution for the animal density. All of the best fitting models used a normal animal distribution, which implies that the animals are attracted to the line rather than avoiding it as initially thought. This could be due to the non random line placement, as the observers travel along valleys or ridges that are easier to walk along so the animals could also favour the easier terrain.
-
-```{r real-results-plot,echo = F, fig.cap = "Detection and distribution functions for best model (h1 and normal)"}
-par(mfrow = c(2,2))
-plot(jitter.h1.norm)
-test.results <- gof.LT2D(jitter.h1.norm, plot = T)
-```
-
-We tried fitting different models to each species in the survey, but this had a higher AIC than the combined model (`r ibexjitter.h1.norm$fit$AIC + argalijitter.h1$fit$AIC` vs `r jitter.h1.norm$fit$AIC` for combined model). Interestingly, the argali appear to be uniformly distributed across the area whereas the ibex exhibit line attraction. However, there are only 37 argali groups recorded so further investigation is needed before drawing any conclusions.
-
-The best combined model estimates there are `r total.N` individual animals in total.
-
-```{r confidence-tables, echo = F, fig.margin = T}
-ci.tabs <- data.frame("N" = c(total.N, total.ibex, total.argali), "95% CI L" = c(boot$ci[1], ibexboot$ci[1], argaliboot$ci[1]), "95%  CI U"= c(boot$ci[2], ibexboot$ci[2], argaliboot$ci[2]), row.names = c("Combined model", "Ibex only model", "Argali only model"))
-kable(ci.tabs, col.names = c("Point Estimate","95% Bootstrap", "Confidence Interval"))
-```
-
-```{r estimate-by-block, echo = F}
-ests <- jitter.h1.norm$ests[,c(1,2,4,5,7:11)]
-rownames(ests) <- NULL
-kable(ests, col.names = c("Stratum", "Groups Seen", "Total Transect Length (km)", "Covered Area (m^2)", "Estimated Group Denisty", "Number of Groups", "Mean Size", "Individual Density", "Abundance Estimate" ))
-```
-
 ## Further Reading
-
-Borchers, D.L. and Cox, M.J. (2016). Distance sampling detection functions: 2D or not 2D? Biometrics, 73(2), pp.593--602. <doi:https://doi.org/10.1111/biom.12581>.
-
-Suryawanshi, K.R., Bhatnagar, Y.V. and Mishra, C. (2012). Standardizing the double-observer survey method for estimating mountain ungulate prey of the endangered snow leopard. Oecologia, 169(3), pp.581--590. <doi:https://doi.org/10.1007/s00442-011-2237-0>.
 
 <!--chapter:end:05-2d-distance.Rmd-->
 
