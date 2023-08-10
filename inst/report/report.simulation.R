@@ -146,3 +146,54 @@ ds.analysis <- function(df){
 
 df <- sim.data(400, 0, 0)
 ds.analysis(df)  # NEGATIVELY BIASED, I AM WORRIED.
+
+
+# -------------------------------------------------------------------------
+fit.mrds <- function(df, mismatch){
+  if(mismatch){df <- sim.mismatch(df)}
+  names(df) <- c("object","observer", "x","y","forw.dist","detected")
+  df$distance <- abs(df$x)
+  df$Region.Label = rep(1,dim(df)[1])
+  df$Sample.Label = rep(1,dim(df)[1])
+  model <- ddf(method = "io", dsmodel =~cds(key ="hr"),
+               mrmodel =~glm(link = "logit", formula = ~distance),
+               data = df, meta.data = list(width = 1600), control = list(refit = T, nrefit = 5, debug = T))
+  ests <- dht(model, region.table = data.frame(Region.Label = 1, Area = 600000*1600*2),
+              sample.table = data.frame(Region.Label = 1, Sample.Label = 1,Effort = 600000))
+  N <- ests$individuals$N[2]
+  lci <- ests$individuals$N[2] -1.96*ests$individuals$N[3]
+  uci <- ests$individuals$N[2] +1.96*ests$individuals$N[3]
+  return(c(N, lci, uci))
+}
+
+# -------------------------------------------------------------------------
+fit.2d <- function(df){
+  simDat <- df[df$obs == 1 & df$detect == 1,]
+  all.1s <- rep(1,length(simDat$x))
+  obj <- 1:length(simDat$x)
+  sim.df <- data.frame(x = simDat$x,
+                       y = simDat$y,
+                       stratum = all.1s,
+                       transect = all.1s,
+                       L = 600,
+                       area = 2*1600*600,
+                       object = obj,
+                       size = all.1s)
+  fit <- LT2D.fit(DataFrameInput = sim.df,
+                  hr = 'ip0',
+                  b = c(4.9, 0.036),
+                  ystart = ystart,
+                  pi.x = pi.fun.name,
+                  logphi = logphi,
+                  w = 1600,
+                  hessian = TRUE)
+  est <- fit$ests[nrow(fit$ests),ncol(fit$ests)]
+  try({boot <- LT2D.bootstrap(fit)
+  lci <- boot$ci[1]
+  uci <- boot$ci[2]
+  }, silent = TRUE)
+  output <- c(est, lci, uci)
+  names(output) = NULL
+  return(output)
+}
+fit.2d(df)
