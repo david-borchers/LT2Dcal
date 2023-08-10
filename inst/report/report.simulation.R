@@ -31,13 +31,14 @@ sim.data <- function(n=400, density, move, match){
     angleright <- rwrappedcauchy((n-nleft), mu=circular(0), rho=0.9, control.circular=list(units="radian"))
     df$angle[df$x > 0 & df$obs==1] <- as.numeric(angleright)
     
-    dist <- (max(abs(df$x[df$obs==1]))-abs(df$x[df$obs==1]))*runif(n, 0, 0.1)*5
+    dist <- (max(abs(df$x[df$obs==1]))-abs(df$x[df$obs==1]))*runif(n, 0, 0.1)*2.5
     df$x[df$obs==2] <- df$x[df$obs==1] + dist * cos(df$angle[df$obs==1])
-    df$y[df$obs==2] <- df$y[df$obs==1] + dist * sin(df$angle[df$obs==1])
-    }
-  else{  # attracted 
-    df$x[df$obs==2] <- df$x[df$obs==1]
-    df$y[df$obs==2] <- df$y[df$obs==1]  # PLEASE MODIFY THIS!
+    df$y[df$obs==2] <- df$y[df$obs==1] + dist * sin(df$angle[df$obs==1])/1000
+    }else{ #random
+    df$angle <- rwrappedcauchy(n, mu = circular(0), rho = 0, control.circular=list(units="radian"))
+    dist <- rlnorm(n,log(12) + 1.5,1.5)
+    df$x[df$obs==2] <- df$x[df$obs==1] + dist * cos(df$angle[df$obs==1])
+    df$y[df$obs==2] <- df$y[df$obs==1] + dist * sin(df$angle[df$obs==1])/1000
   }
   
   ys <- seq(0, 1300, length.out=100)  
@@ -57,3 +58,4 @@ par(mfrow=c(1,2))
 plot(pos,pch="+",main=paste("Population (N=",nrow(pos),")"))
 abline(v=0,lty=2)
 hist(pos$x,breaks=seq(-1600,1600,length=21),xlab="Perp. distance",main="")
+
