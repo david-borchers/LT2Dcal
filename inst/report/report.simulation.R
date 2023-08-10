@@ -1,7 +1,7 @@
 library(fields)
 
 ###-----------------------------------------------------------------------------
-sim.data <- function(n=400, density, move, match){
+sim.data <- function(n=400, density, move){
   #browser()
   ## PART I. Simulated data
   
@@ -112,3 +112,37 @@ sim.mismatch <- function(df){
 df <- sim.data(400, 2, 0)
 df2 <- sim.mismatch(df)
 
+
+
+###-----------------------------------------------------------------------------
+chapman.mr <- function(df, mismatch){
+  if (mismatch==TRUE){df <- sim.mismatch(df)}
+  
+  S1 <- nrow(df[df$obs==1 & df$detect==1, ])  # first occasion
+  S2 <- nrow(df[df$obs==2 & df$detect==1, ])  # second occasion
+  B <- df$detect[df$obs==1]==1 & df$detect[df$obs==2]==1  
+  B <- length(B[B==TRUE])  # caught by both occasions
+  N.hat <- (S1+1)*(S2+1)/(B+1)-1  # abundance estimate
+  var.N <- (S1+1)*(S2+1)*(S1-B)*(S2-B)/(((B+1)^2)*(B+2))
+  d <- exp(1.96*sqrt(log(1+(var.N/(N.hat^2)))))
+  lcl <- N.hat/d; ucl <- N.hat*d
+  return(c(N.hat, lcl, ucl))
+}
+
+chapman.mr(df, FALSE)
+
+###-----------------------------------------------------------------------------
+ds.analysis <- function(df){
+  #browser()
+  df1 <- subset(df, df$obs==1 & df$detect==1)
+  n <- nrow(df1)
+  new_df1 <- data.frame(Region.Label = rep(1, n), Area = rep(1.92e+09, n), 
+                        Sample.Label = rep(1, n), Effort = rep(600000, n),
+                        distance = abs(df1$x))
+  df.ds <- ds(new_df1, truncation=1600, transect="line", key="hr", order=0, monotonicity = "none")
+
+  return(c(df.ds$ddf$Nhat, df.ds$dht$individuals$N$lcl, df.ds$dht$individuals$N$ucl))
+}
+
+df <- sim.data(400, 0, 0)
+ds.analysis(df)  # NEGATIVELY BIASED, I AM WORRIED.
