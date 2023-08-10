@@ -1,9 +1,3 @@
----
-output:
-  pdf_document: default
-  html_document: default
----
-
 # 2D Distance Sampling
 
 ```{r 2D-setup, include=FALSE, warning = FALSE}
@@ -97,7 +91,7 @@ hist(DistData$distance, main = "Perpendicular Distance", xlab = "Distance")
 hist(DistData$forward, main = "Forward Distance", xlab = "Distance")
 ```
 
-From looking at the histograms of observed data we set the perpendicular truncation distance at `r w` and the forward truncation distance at `r ystart`. This excluded 2 outlier observations.\
+From looking at the histograms of observed data we set the perpendicular truncation distance at `r w` and the forward truncation distance at `r ystart`. This excluded 2 outlier observations.
 We then fitted a series of model with different detection functions and animal distributions, and picked the one with the lowest AIC.
 
 ### Results
