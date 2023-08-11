@@ -1,3 +1,6 @@
+library(LT2D)
+library(circular)
+library(Distance)
 library(fields)
 
 ###-----------------------------------------------------------------------------
@@ -10,12 +13,12 @@ sim.data <- function(n=400, density, move){
                    angle=NA)
   
   # (a) initial animal distribution
-  if (density==0){pi.fun.name <- pi.const; logphi <- NA}  # uniform
+  if(density==0){pi.fun.name <- pi.const; logphi <- NA}  # uniform
   else if(density==1){pi.fun.name <- pi.chnorm; logphi <- c(0, 6)}  # avoid
-  else{pi.fun.name <- pi.hnorm; logphi <- 6.5}  # attracted
+  else if(density==2){pi.fun.name <- pi.hnorm; logphi <- 6.5}  # attracted
   
   # simulated positions
-  pos <- simpop2DLT(L=600,w = 1600, pi.x = pi.fun.name, logphi = logphi, En = n, fixed.n = T)
+  pos <- simpop2DLT(L=600,w = 2000, pi.x = pi.fun.name, logphi = logphi, En = n, fixed.n = T)
   pos$obs <- 0
   df$x[df$obs==1] <- pos$x  # original coordinates
   df$y[df$obs==1] <- pos$y
@@ -38,7 +41,7 @@ sim.data <- function(n=400, density, move){
     dist <- (max(abs(df$x[df$obs==1]))-abs(df$x[df$obs==1]))*runif(n, 0, 0.1)*2.5
     df$x[df$obs==2] <- df$x[df$obs==1] + dist * cos(df$angle[df$obs==1])
     df$y[df$obs==2] <- df$y[df$obs==1] + dist * sin(df$angle[df$obs==1])/1000
-    }else{ #random
+    }else if(move==1){ #random
     df$angle <- rwrappedcauchy(n, mu = circular(0), rho = 0, control.circular=list(units="radian"))
     dist <- rlnorm(n,log(12) + 1.5,1.5)
     df$x[df$obs==2] <- df$x[df$obs==1] + dist * cos(df$angle[df$obs==1])
@@ -57,18 +60,6 @@ sim.data <- function(n=400, density, move){
 }
 
 
-plot(df$x[df$obs==1], df$y[df$obs==1], xlim=c(-1600, 1600))
-abline(v=0, col="red", lty=2)
-plot(df$x[df$obs==2], df$y[df$obs==2], xlim=c(-1600, 1600), ylim = c(0, 600))
-
-par(mfrow=c(1,2))
-plot(pos,pch="+",main=paste("Population (N=",nrow(pos),")"))
-abline(v=0,lty=2)
-hist(pos$x,breaks=seq(-1600,1600,length=21),xlab="Perp. distance",main="")
-
-
-
-
 ###-----------------------------------------------------------------------------
 sim.mismatch <- function(df){
   #browser()
@@ -80,7 +71,6 @@ sim.mismatch <- function(df){
   
   dist.pair$unique <- 1:nrow(dist.pair)
   df1$id <- 1:nrow(df1); df1$detect <- df1$obs <- rep(1, nrow(df1))
-  
   
   ## 2. using min distance to decide mismatching
   for (i in 1:(ncol(dist.pair)-1)) {
@@ -102,16 +92,10 @@ sim.mismatch <- function(df){
   for (i in dist.pair$unique){ 
     df1[nrow(df1) + 1, ] <- c(df1$x[df1$id==i], df1$y[df1$id==i], i, 2, 0)}
   
-  
   ## 3. return new dataset
   df1 <- df1[order(df1$id), ]
   return(df1)
 }
-
-
-df <- sim.data(400, 2, 0)
-df2 <- sim.mismatch(df)
-
 
 
 ###-----------------------------------------------------------------------------
@@ -129,7 +113,6 @@ chapman.mr <- function(df, mismatch){
   return(c(N.hat, lcl, ucl))
 }
 
-chapman.mr(df, FALSE)
 
 ###-----------------------------------------------------------------------------
 ds.analysis <- function(df){
@@ -153,6 +136,7 @@ fit.mrds <- function(df, mismatch){
   if(mismatch){df <- sim.mismatch(df)}
   names(df) <- c("object","observer", "x","y","forw.dist","detected")
   df$distance <- abs(df$x)
+  df$detected[df$distance>1600] <- 0
   df$Region.Label = rep(1,dim(df)[1])
   df$Sample.Label = rep(1,dim(df)[1])
   model <- ddf(method = "io", dsmodel =~cds(key ="hr"),
@@ -160,14 +144,22 @@ fit.mrds <- function(df, mismatch){
                data = df, meta.data = list(width = 1600), control = list(refit = T, nrefit = 5, debug = T))
   ests <- dht(model, region.table = data.frame(Region.Label = 1, Area = 600000*1600*2),
               sample.table = data.frame(Region.Label = 1, Sample.Label = 1,Effort = 600000))
-  N <- ests$individuals$N[2]
-  lci <- ests$individuals$N[2] -1.96*ests$individuals$N[3]
-  uci <- ests$individuals$N[2] +1.96*ests$individuals$N[3]
+
+  N <- ests$individuals$N$Estimate
+  lci <- ests$individuals$N$lcl
+  uci <- ests$individuals$N$ucl
   return(c(N, lci, uci))
 }
+df <- sim.data(50, 0, 0)
+mrds <- fit.mrds(df, FALSE)
+
 
 # -------------------------------------------------------------------------
-fit.2d <- function(df){
+fit.2d <- function(df, density){
+  if (density==0){pi.fun.name <- "pi.const"; logphi <- NA}  # uniform
+  else if(density==1){pi.fun.name <- "pi.chnorm"; logphi <- c(0, 6)}  # avoid
+  else if (density==2){pi.fun.name <- "pi.hnorm"; logphi <- 6.5}  # attracted
+  
   simDat <- df[df$obs == 1 & df$detect == 1,]
   all.1s <- rep(1,length(simDat$x))
   obj <- 1:length(simDat$x)
@@ -182,7 +174,7 @@ fit.2d <- function(df){
   fit <- LT2D.fit(DataFrameInput = sim.df,
                   hr = 'ip0',
                   b = c(4.9, 0.036),
-                  ystart = ystart,
+                  ystart = 1300,
                   pi.x = pi.fun.name,
                   logphi = logphi,
                   w = 1600,
@@ -196,4 +188,42 @@ fit.2d <- function(df){
   names(output) = NULL
   return(output)
 }
-fit.2d(df)
+fit.2d(df, 0)
+
+###-----------------------------------------------------------------------------
+simulation <- function(n=400, b=99, density, move, mismatch){
+  #browser()
+  input <- rep(n, b)
+  df <- lapply(input, sim.data, density, move)
+  
+  ests.mr <- lapply(df, chapman.mr, mismatch)
+  ests.ds <- lapply(df, ds.analysis)
+  ests.mrds <- lapply(df, fit.mrds, mismatch)
+  ests.2d <- lapply(df, fit.2d, density)
+  
+  df.ests.mr <- data.frame(t(sapply(ests.mr,c)))
+  colnames(df.ests.mr) <- c("N.hat", "lcl", "ucl")
+  df.ests.ds <- data.frame(t(sapply(ests.ds,c)))
+  colnames(df.ests.ds) <- c("N.hat", "lcl", "ucl")
+  df.ests.mrds <- data.frame(t(sapply(ests.mrds,c)))
+  colnames(df.ests.mrds) <- c("N.hat", "lcl", "ucl")
+  df.ests.2d <- data.frame(t(sapply(ests.2d,c)))
+  colnames(df.ests.2d) <- c("N.hat", "lcl", "ucl")
+  
+  result <- function(method, n){
+    print(method)
+    bias <- mean((method$N.hat-n)/n)  # mean relative bias
+    
+    check <- n > method$lcl & n < method$ucl
+    cover.p <- length(check[check==TRUE])/length(check)  # coverage probability
+    
+    return(c(bias, cover.p))
+    }
+  
+  list.method <- list(df.ests.mr, df.ests.ds, df.ests.mrds, df.ests.2d)
+  out <- lapply(list.method, result, n)
+  output <- data.frame(t(sapply(out,c)), row.names = c("MR", "DS", "MRDS", "2D"))
+  colnames(output) <- c("mean relative bias", "coverage probability")
+
+  return(output)
+}
