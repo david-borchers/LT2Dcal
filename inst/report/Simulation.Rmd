@@ -44,44 +44,76 @@ abline(v = 0, col = 'red')
 For the mark recapture methods there are two detection occasions, which could be , for example, two observers on different decks of a boat or , as in the snow leopard prey data, two observers walking the transect at different times. Animal movement is not an issue for the first scenario as the animals move slowly in comparison to the boat, so will not move far enough to have different detection probabilities between the two observers. However, in our snow leopard prey example, there is 30 minutes between the first and second observer walking the transect so the animals could move significantly between the two observers. We consider two types of movement after the first detection: random movement and avoidant movement away from the transect. We based our simulation on Ibex movement data in Johansson *et al*. (2022), which shows that the distance moved follows roughly a log normal distribution with mean log(12) + 1.5 and standard deviation 1.5, 
 
 ```{r movement, echo = F, fig.asp= 1.25}
-par(mfrow = c(3,1))
-#
-start <- const[const$y < 100,]
-start$id <- 1:length(start$x)
-random <- avoid.move <- start
-#random movement
-angle <- as.numeric(rwrappedcauchy(length(start$x), mu = circular(0), rho = 0, control.circular=list(units="radian")))
-dist <- rlnorm(length(start$x),log(12) + 1.5,1.5)
-dist[dist >1000] <- 1000
-random$x <- start$x + dist * cos(angle)
-random$y <- start$y + dist * sin(angle)/1000
+par(mfrow = c(1,2))
+sim.dat <- function(n, level){
+  #browser()
+  ## 1. object positions
+  df <- data.frame(obs=rep(1:2, n),
+                   x=NA, y=NA, size=NA, level=NA)
+  
+  df$x[df$obs==1] <- runif(n, -1600, 1600); df$y[df$obs==1] <- runif(n, 0, 600)
+  df$size <- rep(sample(4:10, n, replace = TRUE), each=2)
+  perp.dist <- abs(df$x[df$obs==1])
+  
+  
+  if (level==1){
+    angle <- rwrappedcauchy(n, mu = circular(0), rho = 0, control.circular=list(units="radian"))
+    dist <- rlnorm(n,log(12) + 1.5,1.5)
+    dist[dist > 750] <- 750
+    df$x[df$obs==2] <- df$x[df$obs==1] + dist*cos(angle)
+    df$y[df$obs==2] <- df$y[df$obs==1] + dist*sin(angle)/1000
+    df$level <- rep("Random", 2*n)
+    }else{
+    nleft <- nrow(df[df$x <= 1 & df$obs==1, ])
+    nright <- nrow(df[df$x > 1 & df$obs==1, ])
+    
+    angleleft <- rwrappedcauchy(nleft, mu=circular(pi), rho=0.9, control.circular=list(units="radian"))
+    df$angle[df$x <= 1 & df$obs==1] <- as.numeric(angleleft)
+    angleright <- rwrappedcauchy(nright, mu=circular(0), rho=0.9, control.circular=list(units="radian"))
+    df$angle[df$x > 1 & df$obs==1] <- as.numeric(angleright)
+    
+    dist <- (max(abs(df$x[df$obs==1]))-abs(df$x[df$obs==1]))*runif(n, 0, 0.1)*2.5
+    df$x[df$obs==2] <- df$x[df$obs==1] + dist * cos(df$angle[df$obs==1])
+    df$y[df$obs==2] <- df$y[df$obs==1] + dist * sin(df$angle[df$obs==1])/1000
+    df$level <- rep("Avoidance", 2*n)
+    df[ , c("angle")] <- list(NULL)
+  }
+  
+  
+  ## 3. return
+  return(df)
+}
 
-#avoidance
-nleft <- length(start$x[start$x < 0])
-angle <- rep(0, length(start$x))
-angleleft <- rwrappedcauchy(nleft, mu=circular(pi), rho=0.9, control.circular=list(units="radian"))
-angle[start$x<0] <- as.numeric(angleleft)
-angleright <- rwrappedcauchy(length(start$x[start$x>=0]), mu=circular(0), rho=0.9, control.circular=list(units="radian"))
-angle[start$x>=0] <- as.numeric(angleright)
-dist <- (max(abs(start$x))-abs(start$x))*runif(length(start$x), 0, 0.1)*3
-avoid.move$x <- start$x + dist * cos(angle)
-avoid.move$y <- start$y + dist * sin(angle)/1000
-plot(start$x, start$y, pch = NA, main = "Positions for first observer", xlab = "x (m)", ylab = "y (km)", xlim = c(-2000,2000), ylim = c(0,100))
-abline(v = 0, col = "red")
-text(start$x, start$y, start$id)
-plot(random$x, random$y, pch = NA, main = "After random movement", xlab = "x (m)", ylab = "y (km)", xlim = c(-2000,2000), ylim = c(0,100))
-abline(v = 0, col = "red")
-text(random$x, random$y, random$id)
-plot(avoid.move$x, avoid.move$y, pch = NA, main = "After avoidance", xlab = "x (m)", ylab = "y (km)", xlim = c(-2000,2000), ylim = c(0,100))
-abline(v = 0, col = "red")
-text(avoid.move$x, avoid.move$y, avoid.move$id)
-
+df1 <- sim.dat(50,1)
+fig <- df1 %>%
+  plot_ly(
+    x = ~x,
+    y = ~y,
+    size = ~size,
+    color = ~level,
+    frame = ~obs,
+    type = 'scatter',
+    mode = 'markers')
+fig
+```
+```{r movement-animations}
+df2 <- sim.dat(50,2)
+fig2 <- df2 %>%
+  plot_ly(
+    x = ~x,
+    y = ~y,
+    size = ~size,
+    color = ~level,
+    frame = ~obs,
+    type = 'scatter',
+    mode = 'markers')
+fig2
 ```
 
 ### Imperfect Matching
 Mark recapture methods also assume that the observers can perfectly identify which animals were seen by both observers and which animals were seen by just one observer. This becomes problematic for animals without unique identifying markings in surveys where they could move between detection occasions. 
 
-We simulated imperfect matching by setting any animals detected on the second occasion within 300m of an animal detected on the first animal were recorded as the same animal, taking the closest as the match if there were multiple within this range. Any animals further than 1000m were recorded as different, and the probability of matching animals within the range was generated using a hazard rate with parameters $\sigma$ = 450, $\beta$ = 5. (Thanks to the snow leopard prey team for suggesting these limits)
+We simulated imperfect matching by setting any animals detected on the second occasion within 300m of an animal detected on the first animal were recorded as the same animal, taking the closest as the match if there were multiple within this range. Any animals further than 1000m were recorded as different, and the probability of matching animals within the range was generated using a inverse power function with parameters $\beta_1$ = 6, $\beta_2$ = 0.000005. (Thanks to the snow leopard prey team for suggesting these limits)
 ```{r imperfect-matching plot, echo = F, fig.cap = "Probability of matching two animals at different distances"}
 x <- 0:1000
 p <- p.approx(ys <- seq(0, 1300, length.out=100),x , ip0, b=c(6, 0.000005), what = "px")

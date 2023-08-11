@@ -15,7 +15,7 @@ sim.data <- function(n=400, density, move){
   # (a) initial animal distribution
   if(density==0){pi.fun.name <- 'pi.const'; logphi <- NA}  # uniform
   else if(density==1){pi.fun.name <- 'pi.chnorm'; logphi <- c(0, 6)}  # avoid
-  else if(density==2){pi.fun.name <- 'pi.hnorm'; logphi <- c(6.6,5.1)}  # attracted
+  else if(density==2){pi.fun.name <- 'pi.hnorm'; logphi <- 6.6}  # attracted
   
   # simulated positions
   pos <- simpop2DLT(L=600,w = 2000, pi.x = pi.fun.name, logphi = logphi, En = n, fixed.n = T)
@@ -162,8 +162,9 @@ simulation(400,3,0,1,T)
 fit.2d <- function(df, density){
   if (density==0){pi.fun.name <- "pi.const"; logphi <- NA}  # uniform
   else if(density==1){pi.fun.name <- "pi.chnorm"; logphi <- c(0, 6)}  # avoid
-  else if (density==2){pi.fun.name <- "pi.hnorm"; logphi <- c(6.5,5.1)}  # attracted
-
+  else if (density==2){pi.fun.name <- "pi.hnorm"; logphi <- 6.5}  # attracted
+  print(pi.fun.name)
+  print(logphi)
   simDat <- df[df$obs == 1 & df$detect == 1,]
   all.1s <- rep(1,length(simDat$x))
   obj <- 1:length(simDat$x)
@@ -184,6 +185,7 @@ fit.2d <- function(df, density){
                   w = 1600,
                   hessian = TRUE)
   est <- fit$ests[nrow(fit$ests),ncol(fit$ests)]
+  lci<-uci<- NA
   try({boot <- LT2D.bootstrap(fit)
   lci <- boot$ci[1]
   uci <- boot$ci[2]
@@ -192,9 +194,9 @@ fit.2d <- function(df, density){
   names(output) = NULL
   return(output)
 }
-fit.2d(df, 1)
-df <- sim.data(800,1,0)
-density = 1
+df <- sim.data(800,2,0)
+fit.2d(df, 2)
+dim(df[df$obs == 1,])
 ###-----------------------------------------------------------------------------
 simulation <- function(n=400, b=99, density, move, mismatch){
   #browser()
@@ -218,7 +220,7 @@ simulation <- function(n=400, b=99, density, move, mismatch){
   result <- function(method, n){
     bias <- mean((method$N.hat-n)/n)  # mean relative bias
     
-    check <- n > method$lcl & n < method$ucl
+    check <- n > method$lcl[!is.na(method$lcl)] & n < method$ucl[!is.na(method$ucl)]
     cover.p <- length(check[check==TRUE])/length(check)  # coverage probability
     
     return(c(bias, cover.p))
@@ -231,4 +233,5 @@ simulation <- function(n=400, b=99, density, move, mismatch){
 
   return(output)
 }
-simulation(400,2,2,0,F)
+simulation(800,9,0,0,F)
+
