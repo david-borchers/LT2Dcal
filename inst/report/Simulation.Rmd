@@ -39,9 +39,9 @@ plot(attract$x, attract$y, xlab = "x", ylab = "y", main = "Attracted to Line")
 abline(v = 0, col = 'red')
 ```
 
-## Movement after first detection
+### Movement after first detection
 
-For the mark recapture methods there are two detection occasions, which could be , for example, two observers on different decks of a boat or , as in the snow leopard prey data, two observers walking the transect at different times. Animal movement is not an issue for the first scenario as the animals move slowly in comparison to the boat, so will not move far enough to have different detection probabilities between the two observers. However, in our snow leopard prey example, there is 30 minutes between the first and second observer walking the transect so the animals could move significantly between the two observers. We consider two types of movement after the first detection: random movement and avoidant movement away from the transect. We based our simulation on Ibex movement data in Johansson *et al*. (2022), which shows that the distance moved follows roughly a log normal distribution with mean log(12) + 1.5 and standard deviation 1.5, 
+For the mark recapture methods there are two detection occasions, which could be , for example, two observers on different decks of a boat or , as in the snow leopard prey data, two observers walking the transect at different times. Animal movement is not an issue for the first scenario as the animals move slowly in comparison to the boat, so will not move far enough to have different detection probabilities between the two observers. However, in our snow leopard prey example, there is 30 minutes between the first and second observer walking the transect so the animals could move significantly between the two observers. We consider two types of movement after the first detection: random movement and avoidant movement away from the transect. We based our simulation on Ibex movement data in Johansson *et al*. (2022), which shows that the distance moved follows roughly a log normal distribution with mean log(12) + 1.5 and standard deviation 1.5,
 
 ```{r movement, echo = F, fig.asp= 1.25}
 par(mfrow = c(3,1))
@@ -78,15 +78,45 @@ text(avoid.move$x, avoid.move$y, avoid.move$id)
 
 ```
 
-## Imperfect Matching
-Mark recapture methods also assume that the observers can perfectly identify which animals were seen by both observers and which animals were seen by just one observer. This becomes problematic for animals without unique identifying markings in surveys where they could move between detection occasions. 
+### Imperfect Matching
+
+Mark recapture methods also assume that the observers can perfectly identify which animals were seen by both observers and which animals were seen by just one observer. This becomes problematic for animals without unique identifying markings in surveys where they could move between detection occasions.
 
 We simulated imperfect matching by setting any animals detected on the second occasion within 300m of an animal detected on the first animal were recorded as the same animal, taking the closest as the match if there were multiple within this range. Any animals further than 1000m were recorded as different, and the probability of matching animals within the range was generated using a hazard rate with parameters $\sigma$ = 450, $\beta$ = 5. (Thanks to the snow leopard prey team for suggesting these limits)
+
 ```{r imperfect-matching plot, echo = F}
 x <- 0:1000
 p <- p.approx(ys <- seq(0, 1300, length.out=100),x , ip0, b=c(6, 0.000005), what = "px")
 plot(x,p,ylim = c(0,1), type = "l")
 abline(v = 300)
 ```
-##Further Reading
-Johansson, Ö., Mishra, C., Chapron, G., Samelius, G., Lkhagvajav, P., McCarthy, T. and Low, M. (2022). Seasonal variation in daily activity patterns of snow leopards and their prey. Scientific Reports, [online] 12(1), p.21681. doi:https://doi.org/10.1038/s41598-022-26358-w.
+
+## Simulation Results
+
+```{r Sc.1, message=FALSE, warning=FALSE, cache=FALSE}
+# Scenario 1
+# Initial density: uniform + Movement: avoidance + Matching: perfect
+kable(sc1 <- simulation(n=800, b=9, 2, 0, FALSE))
+```
+
+```{r Sc.2, message=FALSE, warning=FALSE, cache = TRUE}
+# Scenario 2
+# Initial density: uniform + Movement: avoidance + Matching: imperfect
+kable(sc2 <- simulation(n=400, b=9, 0, 0, TRUE))
+```
+
+```{r Sc.3, message=FALSE, warning=FALSE, cache = TRUE}
+# Scenario 3
+# Initial density: uniform + Movement: random + Matching: perfect
+kable(sc3 <- simulation(n=400, b=3, 0, 1, FALSE))
+```
+
+```{r Sc.4, message=FALSE, warning=FALSE, cache = TRUE}
+# Scenario 4
+# Initial density: uniform + Movement: random + Matching: imperfect
+kable(sc2 <- simulation(n=400, b=3, 0, 1, TRUE))
+```
+
+## Further Reading 
+
+Johansson, Ö., Mishra, C., Chapron, G., Samelius, G., Lkhagvajav, P., McCarthy, T. and Low, M. (2022). Seasonal variation in daily activity patterns of snow leopards and their prey. Scientific Reports, [online] 12(1), p.21681. <doi:https://doi.org/10.1038/s41598-022-26358-w>.
