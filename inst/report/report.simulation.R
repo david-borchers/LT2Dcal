@@ -217,11 +217,11 @@ simulation <- function(n=400, b=99, density, move, mismatch){
   colnames(df.ests.2d) <- c("N.hat", "lcl", "ucl")
   
   result <- function(method, n){
-    N.hat <- unlist(method$N.hat)
-    bias <- mean((N.hat[N.hat < 3*n]-n)/n)  # mean relative bias
+    method$N.hat <- unlist(method$N.hat)
+    bias <- mean((method$N.hat[method$N.hat < 3*n]-n)/n)  # mean relative bias
     
-    lcl <- unlist(method$lcl); ucl <- unlist(method$ucl)
-    check <- n > lcl[!is.na(lcl)] & n < ucl[!is.na(ucl)]
+    method$lcl <- unlist(method$lcl); method$ucl <- unlist(method$ucl)
+    check <- n > method$lcl[!is.na(method$lcl[method$N.hat < 3*n])] & n < method$ucl[!is.na(method$ucl[method$N.hat < 3*n])]
     cover.p <- length(check[check==TRUE])/length(check)  # coverage probability
     
     return(c(bias, cover.p))

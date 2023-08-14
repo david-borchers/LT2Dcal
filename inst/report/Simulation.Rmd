@@ -116,7 +116,6 @@ fig2
 
 Mark recapture methods also assume that the observers can perfectly identify which animals were seen by both observers and which animals were seen by just one observer. This becomes problematic for animals without unique identifying markings in surveys where they could move between detection occasions.
 
-<<<<<<< HEAD
 We simulated imperfect matching by setting any animals detected on the second occasion within 300m of an animal detected on the first animal were recorded as the same animal, taking the closest as the match if there were multiple within this range. Any animals further than 1000m were recorded as different, and the probability of matching animals within the range was generated using a inverse power function with parameters $\beta_1$ = 6, $\beta_2$ = 0.000005. (Thanks to the snow leopard prey team for suggesting these limits)
 
 ```{r imperfect-matching plot, echo = F}
@@ -128,30 +127,78 @@ abline(v = 300)
 
 ## Simulation Results
 
-```{r Sc.1, message=FALSE, warning=FALSE, cache=FALSE}
+```{r Sc.1, message=FALSE, warning=FALSE, cache=TRUE}
 # Scenario 1
 # Initial density: uniform + Movement: avoidance + Matching: perfect
-#kable(sc1 <- simulation(n=800, b=9, 2, 0, FALSE))
+sc1 <- simulation(n=600, b=99, 0, 0, FALSE)
 ```
 
 ```{r Sc.2, message=FALSE, warning=FALSE, cache = TRUE}
 # Scenario 2
 # Initial density: uniform + Movement: avoidance + Matching: imperfect
-#kable(sc2 <- simulation(n=400, b=9, 0, 0, TRUE))
+kable(sc2 <- simulation(n=600, b=9, 0, 0, TRUE))
 ```
 
 ```{r Sc.3, message=FALSE, warning=FALSE, cache = TRUE}
 # Scenario 3
 # Initial density: uniform + Movement: random + Matching: perfect
-#kable(sc3 <- simulation(n=400, b=3, 0, 1, FALSE))
+kable(sc3 <- simulation(n=600, b=9, 0, 1, FALSE))
 ```
 
 ```{r Sc.4, message=FALSE, warning=FALSE, cache = TRUE}
 # Scenario 4
 # Initial density: uniform + Movement: random + Matching: imperfect
-#kable(sc2 <- simulation(n=400, b=3, 0, 1, TRUE))
+kable(sc4 <- simulation(n=600, b=9, 0, 1, TRUE))
 ```
 
-## Further Reading 
+```{r Sc.5, message=FALSE, warning=FALSE, cache = TRUE}
+# Scenario 5
+# Initial density: avoiding + Movement: avoidance + Matching: perfect
+kable(sc5 <- simulation(n=1200, b=9, 1, 0, FALSE))
+```
+
+```{r Sc.6, message=FALSE, warning=FALSE, cache = TRUE}
+# Scenario 6
+# Initial density: avoiding + Movement: avoidance + Matching: imperfect
+kable(sc6 <- simulation(n=1200, b=9, 1, 0, TRUE))
+```
+
+```{r Sc.7, message=FALSE, warning=FALSE, cache = TRUE}
+# Scenario 7
+# Initial density: avoiding + Movement: random + Matching: perfect
+kable(sc7 <- simulation(n=1200, b=9, 1, 1, FALSE))
+```
+
+```{r Sc.8, message=FALSE, warning=FALSE, cache = TRUE}
+# Scenario 8
+# Initial density: avoiding + Movement: random + Matching: imperfect
+kable(sc8 <- simulation(n=1200, b=9, 1, 1, TRUE))
+```
+
+```{r Sc.9, message=FALSE, warning=FALSE, cache = TRUE}
+# Scenario 9
+# Initial density: attracted + Movement: avoidance + Matching: perfect
+kable(sc9 <- simulation(n=400, b=9, 2, 0, FALSE))
+```
+
+```{r Sc.10, message=FALSE, warning=FALSE, cache = TRUE}
+# Scenario 10
+# Initial density: attracted + Movement: avoidance + Matching: imperfect
+kable(sc10 <- simulation(n=400, b=9, 2, 0, TRUE))
+```
+
+```{r Sc.11, message=FALSE, warning=FALSE, cache = TRUE}
+# Scenario 11
+# Initial density: attracted + Movement: random + Matching: perfect
+kable(sc11 <- simulation(n=400, b=9, 2, 1, FALSE))
+```
+
+```{r Sc.12, message=FALSE, warning=FALSE, cache = TRUE}
+# Scenario 12
+# Initial density: attracted + Movement: random + Matching: imperfect
+kable(sc12 <- simulation(n=400, b=9, 2, 1, TRUE))
+```
+
+## Further Reading
 
 Johansson, Ö., Mishra, C., Chapron, G., Samelius, G., Lkhagvajav, P., McCarthy, T. and Low, M. (2022). Seasonal variation in daily activity patterns of snow leopards and their prey. Scientific Reports, [online] 12(1), p.21681. <doi:https://doi.org/10.1038/s41598-022-26358-w>.
