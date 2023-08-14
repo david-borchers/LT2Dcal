@@ -121,7 +121,7 @@ ds.analysis <- function(df){
   df1 <- subset(df, df$obs==1 & df$detect==1)
   n <- nrow(df1)
   try({
-    new_df1 <- data.frame(Region.Label = rep(1, n), Area = rep(1.92e+09, n), 
+    new_df1 <- data.frame(Region.Label = rep(1, n), Area = rep(2*2000*600000, n), 
                         Sample.Label = rep(1, n), Effort = rep(600000, n),
                         distance = abs(df1$x))
     df.ds <- ds(new_df1, truncation=1600, transect="line", key="hr", order=0, monotonicity = "none")
@@ -232,5 +232,4 @@ simulation <- function(n=400, b=99, density, move, mismatch){
 
   return(output)
 }
-
 
