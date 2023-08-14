@@ -198,7 +198,7 @@ fit.2d <- function(df, density){
 
 ###-----------------------------------------------------------------------------
 simulation <- function(n=400, b=99, density, move, mismatch){
-  #browser()
+  browser()
   input <- rep(n, b)
   df <- lapply(input, sim.data, density, move)
   
@@ -217,9 +217,11 @@ simulation <- function(n=400, b=99, density, move, mismatch){
   colnames(df.ests.2d) <- c("N.hat", "lcl", "ucl")
   
   result <- function(method, n){
-    bias <- mean((method$N.hat[method$N.hat < 3*n]-n)/n)  # mean relative bias
+    N.hat <- unlist(method$N.hat)
+    bias <- mean((N.hat[N.hat < 3*n]-n)/n)  # mean relative bias
     
-    check <- n > method$lcl[!is.na(method$lcl)] & n < method$ucl[!is.na(method$ucl)]
+    lcl <- unlist(method$lcl); ucl <- unlist(method$ucl)
+    check <- n > lcl[!is.na(lcl)] & n < ucl[!is.na(ucl)]
     cover.p <- length(check[check==TRUE])/length(check)  # coverage probability
     
     return(c(bias, cover.p))
