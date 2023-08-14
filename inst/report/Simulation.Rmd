@@ -43,7 +43,8 @@ abline(v = 0, col = 'red')
 
 For the mark recapture methods there are two detection occasions, which could be , for example, two observers on different decks of a boat or , as in the snow leopard prey data, two observers walking the transect at different times. Animal movement is not an issue for the first scenario as the animals move slowly in comparison to the boat, so will not move far enough to have different detection probabilities between the two observers. However, in our snow leopard prey example, there is 30 minutes between the first and second observer walking the transect so the animals could move significantly between the two observers. We consider two types of movement after the first detection: random movement and avoidant movement away from the transect. We based our simulation on Ibex movement data in Johansson *et al*. (2022), which shows that the distance moved follows roughly a log normal distribution with mean log(12) + 1.5 and standard deviation 1.5,
 
-```{r movement, echo = F, fig.asp= 1.25}
+```{r movement, echo = F, fig.asp= 1.25, warning = F}
+library(plotly)
 par(mfrow = c(1,2))
 sim.dat <- function(n, level){
   #browser()
@@ -64,8 +65,8 @@ sim.dat <- function(n, level){
     df$y[df$obs==2] <- df$y[df$obs==1] + dist*sin(angle)/1000
     df$level <- rep("Random", 2*n)
     }else{
-    nleft <- nrow(df[df$x <= 1 & df$obs==1, ])
-    nright <- nrow(df[df$x > 1 & df$obs==1, ])
+    nleft <- nrow(df[df$x <= 0 & df$obs==1, ])
+    nright <- nrow(df[df$x > 0 & df$obs==1, ])
     
     angleleft <- rwrappedcauchy(nleft, mu=circular(pi), rho=0.9, control.circular=list(units="radian"))
     df$angle[df$x <= 1 & df$obs==1] <- as.numeric(angleleft)
@@ -96,6 +97,7 @@ fig <- df1 %>%
     mode = 'markers')
 fig
 ```
+
 ```{r movement-animations}
 df2 <- sim.dat(50,2)
 fig2 <- df2 %>%
@@ -129,25 +131,25 @@ abline(v = 300)
 ```{r Sc.1, message=FALSE, warning=FALSE, cache=FALSE}
 # Scenario 1
 # Initial density: uniform + Movement: avoidance + Matching: perfect
-kable(sc1 <- simulation(n=800, b=9, 2, 0, FALSE))
+#kable(sc1 <- simulation(n=800, b=9, 2, 0, FALSE))
 ```
 
 ```{r Sc.2, message=FALSE, warning=FALSE, cache = TRUE}
 # Scenario 2
 # Initial density: uniform + Movement: avoidance + Matching: imperfect
-kable(sc2 <- simulation(n=400, b=9, 0, 0, TRUE))
+#kable(sc2 <- simulation(n=400, b=9, 0, 0, TRUE))
 ```
 
 ```{r Sc.3, message=FALSE, warning=FALSE, cache = TRUE}
 # Scenario 3
 # Initial density: uniform + Movement: random + Matching: perfect
-kable(sc3 <- simulation(n=400, b=3, 0, 1, FALSE))
+#kable(sc3 <- simulation(n=400, b=3, 0, 1, FALSE))
 ```
 
 ```{r Sc.4, message=FALSE, warning=FALSE, cache = TRUE}
 # Scenario 4
 # Initial density: uniform + Movement: random + Matching: imperfect
-kable(sc2 <- simulation(n=400, b=3, 0, 1, TRUE))
+#kable(sc2 <- simulation(n=400, b=3, 0, 1, TRUE))
 ```
 
 ## Further Reading 

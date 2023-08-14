@@ -32,3 +32,11 @@ real-data-analysis
 methods-2
 results-2
 further-reading-2
+fig:distribution-plots
+simulation
+simulation-scenarios
+initial-perpendicular-distance-distribution
+movement-after-first-detection
+imperfect-matching
+simulation-results
+further-reading-3

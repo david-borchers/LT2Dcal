@@ -18,12 +18,12 @@ sim.data <- function(n=400, density, move){
   else if(density==2){pi.fun.name <- 'pi.hnorm'; logphi <- 6.6}  # attracted
   
   # simulated positions
-  pos <- simpop2DLT(L=600,w = 2000, pi.x = pi.fun.name, logphi = logphi, En = n, fixed.n = T)
+  pos <- simpop2DLT(L=600,w = 2000, pi.x = pi.fun.name,logphi = logphi, En = n, fixed.n = T)
   pos$obs <- 0
   df$x[df$obs==1] <- pos$x  # original coordinates
   df$y[df$obs==1] <- pos$y
   
-  detect.2d <- detect2DLT(pos$x, hr = ip0, b=c(4.9, 0.036), ystart = 1300, ny = 1000)
+  detect.2d <- detect2DLT(pos$x, hr = ip0, b=c(4.9, 0.036), ystart = 1700, ny = 1000)
   pos$obs[pos$x %in% detect.2d$x] <- 1  
   df$detect[df$obs==1] <- pos$obs  # first observer detection
   df$forw.dist[df$obs==1 & df$detect==1] <- detect.2d$y
@@ -128,9 +128,6 @@ ds.analysis <- function(df){
   return(c(df.ds$ddf$Nhat, df.ds$dht$individuals$N$lcl, df.ds$dht$individuals$N$ucl))
 }
 
-df <- sim.data(400, 0, 0)
-ds.analysis(df)  # NEGATIVELY BIASED, I AM WORRIED.
-names(df)
 
 # -------------------------------------------------------------------------
 fit.mrds <- function(df, mismatch){
@@ -163,13 +160,11 @@ fit.2d <- function(df, density){
   if (density==0){pi.fun.name <- "pi.const"; logphi <- NA}  # uniform
   else if(density==1){pi.fun.name <- "pi.chnorm"; logphi <- c(0, 6)}  # avoid
   else if (density==2){pi.fun.name <- "pi.hnorm"; logphi <- 6.5}  # attracted
-  print(pi.fun.name)
-  print(logphi)
   simDat <- df[df$obs == 1 & df$detect == 1,]
   all.1s <- rep(1,length(simDat$x))
   obj <- 1:length(simDat$x)
   sim.df <- data.frame(x = simDat$x,
-                       y = simDat$y,
+                       y = simDat$forw.dist,
                        stratum = all.1s,
                        transect = all.1s,
                        L = 600,
@@ -179,7 +174,7 @@ fit.2d <- function(df, density){
   fit <- LT2D.fit(DataFrameInput = sim.df,
                   hr = 'ip0',
                   b = c(4.9, 0.036),
-                  ystart = 1300,
+                  ystart = 1700,
                   pi.x = pi.fun.name,
                   logphi = logphi,
                   w = 1600,
@@ -194,9 +189,8 @@ fit.2d <- function(df, density){
   names(output) = NULL
   return(output)
 }
-df <- sim.data(800,2,0)
-fit.2d(df, 2)
-dim(df[df$obs == 1,])
+
+
 ###-----------------------------------------------------------------------------
 simulation <- function(n=400, b=99, density, move, mismatch){
   #browser()
@@ -233,5 +227,5 @@ simulation <- function(n=400, b=99, density, move, mismatch){
 
   return(output)
 }
-simulation(800,9,0,0,F)
+
 

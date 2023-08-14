@@ -85,24 +85,61 @@ ibex.ip0.hnorm <- LT2D.fit(DataFrameInput = ibexjitter,
                             hessian = TRUE)
 argali.ip0 <- LT2D.fit(DataFrameInput = argalijitter,
                             hr = 'ip0',
-                            b = 5,
+                            b = c(5,1),
                             ystart = ystart,      
                             pi.x = 'pi.const',   
                             w = w,
                             hessian = TRUE)
-try({ #what to do when can't get hessian?
-  boot <- LT2D.bootstrap(combined.ip0.hnorm, r = 999, alpha = 0.05)
-  ibexboot <- LT2D.bootstrap(ibex.ip0.hnorm, r = 999, alpha = 0.05)
-})
-  argaliboot <- LT2D.bootstrap(argali.ip0, r = 999, alpha = 0.05)
 
 total.N <- round(combined.ip0.hnorm$ests[nrow(combined.ip0.hnorm$ests),8])
 total.ibex <- round(ibex.ip0.hnorm$ests[nrow(ibex.ip0.hnorm$ests),8])
 total.argali <- round(argali.ip0$ests[nrow(argali.ip0$ests),8])
+#not interested in individuals currently, keeping code in case we want it
+#indivs.N <- round(combined.ip0.hnorm$ests[nrow(combined.ip0.hnorm$ests),,ncol(combined.ip0.hnorm$ests)])
+#indivs.ibex <- round(ibex.ip0.hnorm$ests[nrow(ibex.ip0.hnorm$ests),ncol(ibex.ip0.hnorm$ests)])
+#indivs.argali <- round(argali.ip0$ests[nrow(argali.ip0$ests),,ncol(argali.ip0$ests)])
+#boot <- LT2D.bootstrap(combined.ip0.hnorm, r = 999, alpha = 0.05)
+#ibexboot <- LT2D.bootstrap(ibex.ip0.hnorm, r = 999, alpha = 0.05)
+#argaliboot <- LT2D.bootstrap(argali.ip0, r = 999, alpha = 0.05)
+```
+```{r group-ci, include=FALSE, warning=FALSE, cache = TRUE}
+comb.groupdf <- jitterdf
+comb.groupdf$size <- rep(1, length(comb.groupdf$size))
+comb.group <- LT2D.fit(DataFrameInput = comb.groupdf,
+                            hr = 'ip0',
+                            b = c(5,0.04),
+                            ystart = ystart,      
+                            pi.x = 'pi.hnorm',   
+                            logphi = 6,
+                            w = w,
+                            hessian = TRUE)
+groupboot <- LT2D.bootstrap(comb.group, r = 999, alpha = 0.05)
+groupci <- groupboot$ci
+ibex.groupdf <- ibexjitter
+ibex.groupdf$size <- rep(1, length(ibex.groupdf$size))
+ibex.group <- LT2D.fit(DataFrameInput = ibex.groupdf,
+                            hr = 'ip0',
+                            b = c(5,0.04),
+                            ystart = ystart,      
+                            pi.x = 'pi.hnorm',   
+                            logphi = 6,
+                            w = w,
+                            hessian = TRUE)
+ibboot <- LT2D.bootstrap(ibex.group, r = 999, alpha = 0.05)
+ibci <- ibboot$ci
 
-indivs.N <- round(combined.ip0.hnorm$ests[nrow(combined.ip0.hnorm$ests),,ncol(combined.ip0.hnorm$ests)])
-indivs.ibex <- round(ibex.ip0.hnorm$ests[nrow(ibex.ip0.hnorm$ests),ncol(ibex.ip0.hnorm$ests)])
-indivs.argali <- round(argali.ip0$ests[nrow(argali.ip0$ests),,ncol(argali.ip0$ests)])
+argali.groupdf <- argalijitter
+argali.groupdf$size <- rep(1, length(argali.groupdf$size))
+argali.group <- LT2D.fit(DataFrameInput = argali.groupdf,
+                            hr = 'ip0',
+                            b = c(5,0.04),
+                            ystart = ystart,      
+                            pi.x = 'pi.hnorm',   
+                            logphi = 6,
+                            w = w,
+                            hessian = TRUE)
+argboot <- LT2D.bootstrap(argali.group, r = 999, alpha = 0.05)
+argbootci <- argboot$ci
 ```
 
 Our best fitting model used the 2-parameter inverse power hazard detection function and a half normal distribution for the animal density. All of the best fitting models used a half normal animal distribution, which implies that the animals are attracted to the line rather than avoiding it as initially thought. This could be due to the non random line placement, as the observers travel along valleys or ridges that are easier to walk along so the animals could also favour the easier terrain.
@@ -126,12 +163,12 @@ kable(ests, col.names = c("Stratum", "Groups Seen", "Total Transect Length ($km$
 The 2D distance analysis suggests that the animals are attracted to the line. This would make the conventional distance estimate positively biased, and so it is reasonable that the 2D estimate would be lower. We would expect the mark recapture estimate to be negatively biased due to the declining detectability with distance, but it is higher. This is likely due to imperfect matching in the data, so we recommend 2D Distance sampling as the most reliable estimate, as it is not impacted by imperfect matching or non uniform animal distribution. 
 
 ```{r tables, echo = F}
-combinedcis <- data.frame( "N" = c(round(total.N), round(CDSN), round(combined[1])), "L" = c(NA, CDSci[1], combined[2]), "U" = c(NA, CDSci[2], combined[3]), row.names = c("2D Distance", "Conventional Distance", "Chapman")) #how to get 2d group CI?
+combinedcis <- data.frame( "N" = c(round(total.N), round(CDSN), round(combined[1])), "L" = c(groupci[1], CDSci[1], combined[2]), "U" = c(groupci[2], CDSci[2], combined[3]), row.names = c("2D Distance", "Conventional Distance", "Chapman")) 
 combtab <- kable(combinedcis, col.names = c("Point Estimate", "95% Confidence", "Interval"), caption = "Combined")
 
-ibexcis <- data.frame( "N" = c(round(total.ibex), round(ibexN), round(ibex.cm[1])), "L" = c(NA, ibexci[1], ibex.cm[2]), "U" = c(NA, ibexci[2], ibex.cm[3]), row.names = c("2D Distance", "Conventional Distance", "Chapman"))
+ibexcis <- data.frame( "N" = c(round(total.ibex), round(ibexN), round(ibex.cm[1])), "L" = c(ibci[1], ibexci[1], ibex.cm[2]), "U" = c(ibci[2], ibexci[2], ibex.cm[3]), row.names = c("2D Distance", "Conventional Distance", "Chapman"))
 ibtab <- kable(ibexcis, col.names = c("Point Estimate", "95% Confidence", "Interval"),  caption = "Ibex")
-argalicis <- data.frame( "N" = c(round(total.argali), round(argN), round(argali.cm[1])), "L" = c(NA, argci[1], argali.cm[2]), "U" = c(NA, argci[2], argali.cm[3]), row.names = c("2D Distance", "Conventional Distance", "Chapman"))
+argalicis <- data.frame( "N" = c(round(total.argali), round(argN), round(argali.cm[1])), "L" = c(argbootci[1], argci[1], argali.cm[2]), "U" = c(argbootci[2], argci[2], argali.cm[3]), row.names = c("2D Distance", "Conventional Distance", "Chapman"))
 argtab <- kable(argalicis, col.names = c("Point Estimate", "95% Confidence", "Interval"), caption = "Argali")
 kables(list(combtab, ibtab, argtab))
 ```
