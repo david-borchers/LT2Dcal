@@ -48,7 +48,7 @@ sim.data <- function(n=400, density, move){
     df$y[df$obs==2] <- df$y[df$obs==1] + dist * sin(df$angle[df$obs==1])/1000
   }
   
-  ys <- seq(0, 1300, length.out=100)  
+  ys <- seq(0, 1700, length.out=100)  
   obs2.probs <- p.approx(ys, df$x[df$obs==2], ip0, b=c(4.9, 0.036), what = "px")
   df$detect[df$obs==2] <- rbinom(n, 1, obs2.probs)  # second observer detection
   
@@ -79,7 +79,7 @@ sim.mismatch <- function(df){
     if (length(min.index)>0){  
       if (dist.pair[min.index, i] < 300) {detect2 <- 1}
       else if (dist.pair[min.index, i] > 1000) {detect2 <- 0}
-      else{detect2 <- rbinom(1, 1, p.approx(ys <- seq(0, 1300, length.out=100), dist.pair[min.index, i], ip0, b=c(6, 0.000005), what = "px"))}
+      else{detect2 <- rbinom(1, 1, p.approx(ys <- seq(0, 1700, length.out=100), dist.pair[min.index, i], ip0, b=c(6, 0.000005), what = "px"))}
     }else{detect2 <- 0}  # if no obs1 detection to match
     
     if (detect2==1){  # if matched
@@ -153,7 +153,6 @@ fit.mrds <- function(df, mismatch){
   return(c(N, lci, uci))
 }
 
-simulation(400,3,0,1,T)
 
 # -------------------------------------------------------------------------
 fit.2d <- function(df, density){
