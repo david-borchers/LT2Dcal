@@ -162,7 +162,7 @@ fit.2d <- function(df, density){
   simDat <- df[df$obs == 1 & df$detect == 1,]
   all.1s <- rep(1,length(simDat$x))
   obj <- 1:length(simDat$x)
-  sim.df <- data.frame(x = simDat$x,
+  sim.df <- data.frame(x = abs(simDat$x),
                        y = simDat$forw.dist,
                        stratum = all.1s,
                        transect = all.1s,
@@ -192,14 +192,14 @@ fit.2d <- function(df, density){
 
 ###-----------------------------------------------------------------------------
 simulation <- function(n=400, b=99, density, move, mismatch){
-  #browser()
+  browser()
   input <- rep(n, b)
   df <- lapply(input, sim.data, density, move)
   
-  ests.mr <- lapply(df, chapman.mr, mismatch)
-  ests.ds <- lapply(df, ds.analysis)
-  ests.mrds <- lapply(df, fit.mrds, mismatch)
-  ests.2d <- lapply(df, fit.2d, density)
+  ests.mr <- lapply(df, tryCatch(chapman.mr, error=function(e) NULL), mismatch)
+  ests.ds <- lapply(df, tryCatch(ds.analysis, error=function(e) NULL))
+  ests.mrds <- lapply(df, tryCatch(fit.mrds, error=function(e) NULL), mismatch)
+  ests.2d <- lapply(df, tryCatch(fit.2d, error=function(e) NULL), density)
   
   df.ests.mr <- data.frame(t(sapply(ests.mr,c)))
   colnames(df.ests.mr) <- c("N.hat", "lcl", "ucl")
@@ -212,7 +212,7 @@ simulation <- function(n=400, b=99, density, move, mismatch){
   
   result <- function(method, n){
     sd <- sqrt(var(method$N.hat))
-    bias <- mean((method$N.hat[method$N.hat < n+2*sd]-n)/n)  # mean relative bias
+    bias <- mean((method$N.hat[method$N.hat < 3*n]-n)/n)  # mean relative bias
     
     check <- n > method$lcl[!is.na(method$lcl)] & n < method$ucl[!is.na(method$ucl)]
     cover.p <- length(check[check==TRUE])/length(check)  # coverage probability
