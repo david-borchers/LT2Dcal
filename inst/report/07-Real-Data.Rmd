@@ -1,7 +1,7 @@
 #Real Data
 ```{r loading, include = F}
 b = c(4.89553757, 0.03561984); logphi = c(6.61348904, 4.84269089)
-w = 1600; ystart = 1300
+w = 1600; ystart = 1700
 ```
 We will now use these methods to analyse the real snow leopard prey data. The observers surveyed 60 transects in 10 blocks twice, with 30 minutes between the first and second observer starting the survey. The observers had limited rangefinders so only the first observer recorded the radial distance to the group, the bearing of the path and the bearing of the group they saw. This means we cannot use mrds to analyse this data as there are no distances for the second observer. There were 2 species included in the survey: ibex and argali. They saw 242 groups in total, and 193 of them have distance data.
 
@@ -65,6 +65,9 @@ This gives an estimate of `r round(CDSN)` total groups with a 95% confidence int
 ## 2D Distance Sampling
 
 We will now use 2D distance sampling to investigate if the animals are uniformly distributed. 61 of the detected groups were behind the observers so did not have a valid "forward" distance. This leaves 132 usable observations.
+```{ forward-hist, echo = F}
+hist(DistData$forward, main = "Forward Distance", xlab = "Distance (m)")
+```
 
 ```{r fit-model, include = FALSE, warning=FALSE, cache = TRUE}
 combined.ip0.hnorm <- LT2D.fit(DataFrameInput = jitterdf,
@@ -85,7 +88,7 @@ ibex.ip0.hnorm <- LT2D.fit(DataFrameInput = ibexjitter,
                             hessian = TRUE)
 argali.ip0 <- LT2D.fit(DataFrameInput = argalijitter,
                             hr = 'ip0',
-                            b = c(5,1),
+                            b = c(4.86,0.03),
                             ystart = ystart,      
                             pi.x = 'pi.const',   
                             w = w,
@@ -144,7 +147,7 @@ argbootci <- argboot$ci
 
 Our best fitting model used the 2-parameter inverse power hazard detection function and a half normal distribution for the animal density. All of the best fitting models used a half normal animal distribution, which implies that the animals are attracted to the line rather than avoiding it as initially thought. This could be due to the non random line placement, as the observers travel along valleys or ridges that are easier to walk along so the animals could also favour the easier terrain.
 
-```{r real-results-plot,echo = F, fig.cap = "Detection and distribution functions for best model (h1 and normal)"}
+```{r real-results-plot,echo = F, fig.cap = "Detection and distribution functions for best model (h1 and normal)", cache = T}
 par(mfrow = c(2,2))
 plot(combined.ip0.hnorm)
 test.results <- gof.LT2D(combined.ip0.hnorm, plot = T)
@@ -153,7 +156,7 @@ test.results <- gof.LT2D(combined.ip0.hnorm, plot = T)
 We tried fitting different models to each species in the survey, but this had a higher AIC than the combined model (`r ibex.ip0.hnorm$fit$AIC + argali.ip0$fit$AIC` vs `r combined.ip0.hnorm$fit$AIC` for combined model). Interestingly, the argali appear to be uniformly distributed across the area whereas the ibex exhibit line attraction. However, there are only 39 argali groups with valid distances so further investigation is needed before drawing any conclusions. With more time we would fit a model that had species as a covariate.
 
 The best combined model estimates there are `r total.N` groups in total.
-```{r estimate-by-block, echo = F}
+```{r estimate-by-block, echo = F, cache = T}
 ests <- combined.ip0.hnorm$ests[,c(1,2,4,6,7:11)]
 rownames(ests) <- NULL
 kable(ests, col.names = c("Stratum", "Groups Seen", "Total Transect Length ($km$)", "Stratum Area ($m^2$)", "Estimated Group Denisty", "Number of Groups", "Mean Size", "Individual Density", "Abundance Estimate" ), escape = FALSE)
@@ -162,7 +165,7 @@ kable(ests, col.names = c("Stratum", "Groups Seen", "Total Transect Length ($km$
 ## Summary
 The 2D distance analysis suggests that the animals are attracted to the line. This would make the conventional distance estimate positively biased, and so it is reasonable that the 2D estimate would be lower. We would expect the mark recapture estimate to be negatively biased due to the declining detectability with distance, but it is higher. This is likely due to imperfect matching in the data, so we recommend 2D Distance sampling as the most reliable estimate, as it is not impacted by imperfect matching or non uniform animal distribution. 
 
-```{r tables, echo = F}
+```{r tables, echo = F, cache = T}
 combinedcis <- data.frame( "N" = c(round(total.N), round(CDSN), round(combined[1])), "L" = c(groupci[1], CDSci[1], combined[2]), "U" = c(groupci[2], CDSci[2], combined[3]), row.names = c("2D Distance", "Conventional Distance", "Chapman")) 
 combtab <- kable(combinedcis, col.names = c("Point Estimate", "95% Confidence", "Interval"), caption = "Combined")
 

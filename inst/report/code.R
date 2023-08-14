@@ -6,7 +6,7 @@ library(mrds)
 library(secr)
 library(Distance)
 library(knitr)
-ystart = 1300; w = 1600
+ystart = 1700; w = 1600
 
 movement <- function(N){ #random movement
   animals <- data.frame("id" = 1:N, "x" = runif(N,-w,w), "y" = runif(N,0,10000))
@@ -182,9 +182,9 @@ recapture_imperfect <- function(animals,transect = 0,
     detect_prob1 <- hazard_rate(animals$distance, hr_param[1], hr_param[2])
     detect_prob2 <- hazard_rate(animals$newdistance, hr_param[1], hr_param[2])
   }else{
-    detect_prob1 <- p.approx(y = seq(0,1300, length.out = 200), x = animals$distance,
+    detect_prob1 <- p.approx(y = seq(0,1700, length.out = 200), x = animals$distance,
                                 h.fun = detectfn, b = b, what = "px")
-    detect_prob2 <- p.approx(y = seq(0,1300, length.out = 200), x = animals$newdistance,
+    detect_prob2 <- p.approx(y = seq(0,1700, length.out = 200), x = animals$newdistance,
                                 h.fun = detectfn, b = b, what = "px")
   }
   animals$true.obs1 <- rbinom(length(animals$id),1,detect_prob1)
@@ -453,7 +453,7 @@ MCR_2D <- function(Nrep, Nanimals,
 
 # Gobi Analysis -----------------------------------------------------------
 Gobi <- read.csv("Gobi.csv")
-ystart = 1300; w = 1600
+ystart = 1700; w = 1600
 DistData <- Gobi[Gobi$Obs1 == 1,]
 DistData$AngleDiff <- DistData$Obs1.AngleDetection-DistData$Obs1.AnglePath 
 #convert to radians
