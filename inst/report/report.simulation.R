@@ -23,7 +23,7 @@ sim.data <- function(n=400, density, move){
   df$x[df$obs==1] <- pos$x  # original coordinates
   df$y[df$obs==1] <- pos$y
   
-  detect.2d <- detect2DLT(pos$x, hr = ip0, b=c(4.9, 0.036), ystart = 1700, ny = 1000)
+  detect.2d <- detect2DLT(pos$x, hr = ip0, b=c(4.9, 0.036),ystart = 1700, ny = 1000)
   pos$obs[pos$x %in% detect.2d$x] <- 1  
   df$detect[df$obs==1] <- pos$obs  # first observer detection
   df$forw.dist[df$obs==1 & df$detect==1] <- detect.2d$y
@@ -120,12 +120,14 @@ ds.analysis <- function(df){
   #browser()
   df1 <- subset(df, df$obs==1 & df$detect==1)
   n <- nrow(df1)
-  new_df1 <- data.frame(Region.Label = rep(1, n), Area = rep(1.92e+09, n), 
+  try({
+    new_df1 <- data.frame(Region.Label = rep(1, n), Area = rep(1.92e+09, n), 
                         Sample.Label = rep(1, n), Effort = rep(600000, n),
                         distance = abs(df1$x))
-  df.ds <- ds(new_df1, truncation=1600, transect="line", key="hr", order=0, monotonicity = "none")
+    df.ds <- ds(new_df1, truncation=1600, transect="line", key="hr", order=0, monotonicity = "none")
 
-  return(c(df.ds$ddf$Nhat, df.ds$dht$individuals$N$lcl, df.ds$dht$individuals$N$ucl))
+    return(c(df.ds$ddf$Nhat, df.ds$dht$individuals$N$lcl, df.ds$dht$individuals$N$ucl))
+  })
 }
 
 
@@ -141,22 +143,24 @@ fit.mrds <- function(df, mismatch){
   df$distance[df$distance > 1600] <- 1600
   df$Region.Label = rep(1,dim(df)[1])
   df$Sample.Label = rep(1,dim(df)[1])
-  model <- ddf(method = "io", dsmodel =~cds(key ="hr"),
+  try({
+    model <- ddf(method = "io", dsmodel =~cds(key ="hr"),
                mrmodel =~glm(link = "logit", formula = ~distance),
                data = df, meta.data = list(width = 1600), control = list(refit = T, nrefit = 5, debug = T))
-  ests <- dht(model, region.table = data.frame(Region.Label = 1, Area = 600000*1600*2),
+    ests <- dht(model, region.table = data.frame(Region.Label = 1, Area = 600000*1600*2),
               sample.table = data.frame(Region.Label = 1, Sample.Label = 1,Effort = 600000))
-
-  N <- ests$individuals$N$Estimate
-  lci <- ests$individuals$N$lcl
-  uci <- ests$individuals$N$ucl
-  return(c(N, lci, uci))
+  
+    N <- ests$individuals$N$Estimate
+    lci <- ests$individuals$N$lcl
+    uci <- ests$individuals$N$ucl
+    return(c(N, lci, uci))
+  })
 }
 
 
 # -------------------------------------------------------------------------
 fit.2d <- function(df, density){
-  if (density==0){pi.fun.name <- "pi.const"; logphi <- NA}  # uniform
+  if (density==0){pi.fun.name <- "pi.const"; logphi <- NULL}  # uniform
   else if(density==1){pi.fun.name <- "pi.chnorm"; logphi <- c(0, 6)}  # avoid
   else if (density==2){pi.fun.name <- "pi.hnorm"; logphi <- 6.5}  # attracted
   simDat <- df[df$obs == 1 & df$detect == 1,]
@@ -167,10 +171,12 @@ fit.2d <- function(df, density){
                        stratum = all.1s,
                        transect = all.1s,
                        L = 600,
-                       area = 2*1600*600,
+                       area = 2*2000*600,
                        object = obj,
                        size = all.1s)
-  fit <- LT2D.fit(DataFrameInput = sim.df,
+  est <- lci<-uci<- NA
+  try({
+    fit <- LT2D.fit(DataFrameInput = sim.df,
                   hr = 'ip0',
                   b = c(4.9, 0.036),
                   ystart = 1700,
@@ -178,8 +184,8 @@ fit.2d <- function(df, density){
                   logphi = logphi,
                   w = 1600,
                   hessian = TRUE)
-  est <- fit$ests[nrow(fit$ests),ncol(fit$ests)]
-  lci<-uci<- NA
+    est <- fit$ests[nrow(fit$ests),ncol(fit$ests)]
+  })
   try({boot <- LT2D.bootstrap(fit)
   lci <- boot$ci[1]
   uci <- boot$ci[2]
@@ -192,14 +198,14 @@ fit.2d <- function(df, density){
 
 ###-----------------------------------------------------------------------------
 simulation <- function(n=400, b=99, density, move, mismatch){
-  browser()
+  #browser()
   input <- rep(n, b)
   df <- lapply(input, sim.data, density, move)
   
   ests.mr <- lapply(df, tryCatch(chapman.mr, error=function(e) NULL), mismatch)
   ests.ds <- lapply(df, tryCatch(ds.analysis, error=function(e) NULL))
-  ests.mrds <- lapply(df, tryCatch(fit.mrds, error=function(e) NULL), mismatch)
-  ests.2d <- lapply(df, tryCatch(fit.2d, error=function(e) NULL), density)
+  ests.mrds <- lapply(df, tryCatch(fit.mrds,error=function(e) NULL), mismatch)
+  ests.2d <- lapply(df, tryCatch(fit.2d,error=function(e) NULL), density)
   
   df.ests.mr <- data.frame(t(sapply(ests.mr,c)))
   colnames(df.ests.mr) <- c("N.hat", "lcl", "ucl")
@@ -211,7 +217,6 @@ simulation <- function(n=400, b=99, density, move, mismatch){
   colnames(df.ests.2d) <- c("N.hat", "lcl", "ucl")
   
   result <- function(method, n){
-    sd <- sqrt(var(method$N.hat))
     bias <- mean((method$N.hat[method$N.hat < 3*n]-n)/n)  # mean relative bias
     
     check <- n > method$lcl[!is.na(method$lcl)] & n < method$ucl[!is.na(method$ucl)]
@@ -223,7 +228,7 @@ simulation <- function(n=400, b=99, density, move, mismatch){
   list.method <- list(df.ests.mr, df.ests.ds, df.ests.mrds, df.ests.2d)
   out <- lapply(list.method, result, n)
   output <- data.frame(t(sapply(out,c)), row.names = c("MR", "DS", "MRDS", "2D"))
-  colnames(output) <- c("mean relative bias", "coverage probability")
+  colnames(output) <- c("mean relative bias", "coverage probability", "number of reps")
 
   return(output)
 }
