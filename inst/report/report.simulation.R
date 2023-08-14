@@ -198,7 +198,7 @@ fit.2d <- function(df, density){
 
 ###-----------------------------------------------------------------------------
 simulation <- function(n=400, b=99, density, move, mismatch){
-  browser()
+  #browser()
   input <- rep(n, b)
   df <- lapply(input, sim.data, density, move)
   
