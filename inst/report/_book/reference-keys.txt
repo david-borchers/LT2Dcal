@@ -39,6 +39,8 @@ movement-after-first-detection
 imperfect-matching
 simulation-results
 uniform-animal-distribution
+avoiding-transect
+attracted-to-transect
 further-reading-3
 real-data
 mark-recapture

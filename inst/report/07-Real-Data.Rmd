@@ -33,7 +33,7 @@ hist(CDSData$distance, main = "Perpendicular Distance", xlab = "Distance")
 
 We decided to truncate the data at 1600m, which excluded one outlier at 1820m. We then fitted a series of models using both half normal and hazard rate detection functions to the combined data set and to each species individually. We included size, block and observer (and species in the combined model) as covariates, and chose the best model using AIC. (Full analysis can be found in the \_CDS analysis file.)
 
-```{r fit-CDS, include = F, warning = F}
+```{r fit-CDS, include = F, warning = F, cache=T}
 hr_block <- ds(CDSdf, truncation = w, formula = ~Region.Label, key = "hr")
 hr_ibex_block <- ds(ibexdf, truncation = w, formula = ~Region.Label, key = "hr")
 hr_argali_block <- ds(argalidf, truncation = w, formula = ~Region.Label, key = "hr")

@@ -175,7 +175,11 @@ sc4.table <- kable(sc4.out <- result(sc4, n=600),col.names = c("Bias", "Coverage
 kables(list(sc4.table, sc2.table), caption = "With Imperfect Matching")
 ```
 
-After introducing imperfect matching, MRDS estimates seem to be less negatively biased. This is due to some individuals that were seen twice being mistakenly identified as two separate animals, leading to a lower estimate of detection probability and hence a higher estimate of abundance. Whilst it looks like MRDS should be the best estimator in the scenario with avoidance movement and imperfect matching, this is actually because effects of breaking multiple assumptions happen to balance out in this specific situation. This results in very variable estimates, as the variance of the $N\hat$s was `{r var(sc2[[3]]$N.hat[sc2[[3]]$N.hat < 3*600])/99}` for MRDS, compared to `{r var(sc2[[4]]$N.hat[sc2[[4]]$N.hat < 3*600])/99}` for 2D Distance. \### Avoiding Transect As expected, only 2D Distance is unbiased when the animals initially avoid the transect.
+After introducing imperfect matching, MRDS estimates seem to be less negatively biased. This is due to some individuals that were seen twice being mistakenly identified as two separate animals, leading to a lower estimate of detection probability and hence a higher estimate of abundance. Whilst it looks like MRDS should be the best estimator in the scenario with avoidance movement and imperfect matching, this is actually because effects of breaking multiple assumptions happen to balance out in this specific situation. This results in very variable estimates, as the variance of the $N\hat$s was `{r var(sc2[[3]]$N.hat[sc2[[3]]$N.hat < 3*600])/99}` for MRDS, compared to `{r var(sc2[[4]]$N.hat[sc2[[4]]$N.hat < 3*600])/99}` for 2D Distance.
+
+### Avoiding Transect 
+
+As expected, only 2D Distance is unbiased when the animals initially avoid the transect.
 
 ```{r Sc.5, message=FALSE, warning=FALSE, cache = TRUE, echo = F}
 # Scenario 5
@@ -240,7 +244,11 @@ sc8.table <- kable(sc8.out <- result(sc8, n=1200), col.names = c("Bias", "Covera
 kables(list(sc8.table,sc6.table), caption = "With Imperfect Matching")
 ```
 
-As before, all the methods except 2D distance sampling are negatively biased. The imperfect matching does make the MRDS estimates slightly bigger, but not enough to counteract the negative bias from the non uniform distribution. \### Attracted to Transect As with the avoidance case, we expect only 2D Distance to be unbiased when animals are initially attracted to the line.
+As before, all the methods except 2D distance sampling are negatively biased. The imperfect matching does make the MRDS estimates slightly bigger, but not enough to counteract the negative bias from the non uniform distribution.
+
+### Attracted to Transect 
+
+As with the avoidance case, we expect only 2D Distance to be unbiased when animals are initially attracted to the line.
 
 ```{r Sc.9, message=FALSE, warning=FALSE, cache = TRUE, echo = FALSE}
 # Scenario 9
