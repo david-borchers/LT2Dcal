@@ -130,70 +130,93 @@ abline(v = 300)
 ```{r Sc.1, message=FALSE, warning=FALSE, cache=TRUE}
 # Scenario 1
 # Initial density: uniform + Movement: avoidance + Matching: perfect
-sc1 <- simulation(n=600, b=99, 0, 0, FALSE)
+#sc1 <- simulation(n=600, b=99, 0, 0, FALSE)
+load("sc1.RData")
+kable(sc1.out <- result(sc1, n=600))
 ```
 
 ```{r Sc.2, message=FALSE, warning=FALSE, cache=FALSE}
 # Scenario 2
 # Initial density: uniform + Movement: avoidance + Matching: imperfect
-sc2 <- simulation(n=600, b=99, 0, 0, TRUE)
-save(sc2, file = "sc2.RData")
+#sc2 <- simulation(n=600, b=99, 0, 0, TRUE)
+load("sc2.RData")
+kable(sc2.out <- result(sc2, n=600))
 ```
 
 ```{r Sc.3, message=FALSE, warning=FALSE, cache = TRUE}
 # Scenario 3
 # Initial density: uniform + Movement: random + Matching: perfect
-sc3 <- simulation(n=600, b=99, 0, 1, FALSE)
-save(sc3, file = "sc3.RData")
+#sc3 <- simulation(n=600, b=99, 0, 1, FALSE)
+load("sc3.RData")
+kable(sc3.out <- result(sc3, n=600))
 ```
 
 ```{r Sc.4, message=FALSE, warning=FALSE, cache = TRUE}
 # Scenario 4
 # Initial density: uniform + Movement: random + Matching: imperfect
-sc4 <- simulation(n=600, b=99, 0, 1, TRUE)
-save(sc4, file = "sc4.RData")
+#sc4 <- simulation(n=600, b=99, 0, 1, TRUE)
+load("sc4.RData")
+kable(sc4.out <- result(sc4, n=600))
 ```
 
 ```{r Sc.5, message=FALSE, warning=FALSE, cache = TRUE}
 # Scenario 5
 # Initial density: avoiding + Movement: avoidance + Matching: perfect
-sc5 <- simulation(n=1200, b=99, 1, 0, FALSE)
-save(sc5, file = "sc5.RData")
+#sc5 <- simulation(n=1200, b=99, 1, 0, FALSE)
+load("sc5.RData")
+sc5[[3]] <- unname(apply(sc5[[3]], 1, as.list)[[1]])
+index <- which(sapply(sc5[[3]], is.numeric))
+sc5[[3]] <- data.frame(t(sapply(sc5[[3]][index], c)))
+colnames(sc5[[3]]) <- c("N.hat", "lcl", "ucl")
+kable(sc5.out <- result(sc5, n=1200))
 ```
 
 ```{r Sc.6, message=FALSE, warning=FALSE, cache = TRUE}
 # Scenario 6
 # Initial density: avoiding + Movement: avoidance + Matching: imperfect
-sc6 <- simulation(n=1200, b=99, 1, 0, TRUE)
-save(sc6, file = "sc6.RData")
+#sc6 <- simulation(n=1200, b=99, 1, 0, TRUE)
+load("sc6.RData")
+sc6[[3]] <- unname(apply(sc6[[3]], 1, as.list)[[1]])
+index <- which(sapply(sc6[[3]], is.numeric))
+sc6[[3]] <- data.frame(t(sapply(sc6[[3]][index], c)))
+colnames(sc6[[3]]) <- c("N.hat", "lcl", "ucl")
+kable(sc6.out <- result(sc6, n=1200))
 ```
 
 ```{r Sc.7, message=FALSE, warning=FALSE, cache = TRUE}
 # Scenario 7
 # Initial density: avoiding + Movement: random + Matching: perfect
-sc7 <- simulation(n=1200, b=99, 1, 1, FALSE)
-save(sc7, file = "sc7.RData")
+#sc7 <- simulation(n=1200, b=99, 1, 1, FALSE)
+load("sc7.RData")
+sc7[[3]] <- unname(apply(sc7[[3]], 1, as.list)[[1]])
+index <- which(sapply(sc7[[3]], is.numeric))
+sc7[[3]] <- data.frame(t(sapply(sc7[[3]][index], c)))
+colnames(sc7[[3]]) <- c("N.hat", "lcl", "ucl")
+kable(sc7.out <- result(sc7, n=1200))
 ```
 
 ```{r Sc.8, message=FALSE, warning=FALSE, cache = TRUE}
 # Scenario 8
 # Initial density: avoiding + Movement: random + Matching: imperfect
-sc8 <- simulation(n=1200, b=99, 1, 1, TRUE)
-save(sc8, file = "sc8.RData")
+#sc8 <- simulation(n=1200, b=99, 1, 1, TRUE)
+load("sc8.RData")
+kable(sc8.out <- result(sc8, n=1200))
 ```
 
 ```{r Sc.9, message=FALSE, warning=FALSE, cache = TRUE}
 # Scenario 9
 # Initial density: attracted + Movement: avoidance + Matching: perfect
-sc9 <- simulation(n=400, b=99, 2, 0, FALSE)
-save(sc9, file = "sc9.RData")
+#sc9 <- simulation(n=400, b=99, 2, 0, FALSE)
+load("sc9.RData")
+kable(sc9.out <- result(sc9, n=400))
 ```
 
 ```{r Sc.10, message=FALSE, warning=FALSE, cache = TRUE}
 # Scenario 10
 # Initial density: attracted + Movement: avoidance + Matching: imperfect
-sc10 <- simulation(n=400, b=99, 2, 0, TRUE)
-save(sc10, file = "sc10.RData")
+#sc10 <- simulation(n=400, b=99, 2, 0, TRUE)
+load("sc10.RData")
+kable(sc10.out <- result(sc10, n=400))
 ```
 
 ```{r Sc.11, message=FALSE, warning=FALSE, cache = TRUE}

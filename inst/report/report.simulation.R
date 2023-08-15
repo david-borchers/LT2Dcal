@@ -160,9 +160,10 @@ fit.mrds <- function(df, mismatch){
 
 # -------------------------------------------------------------------------
 fit.2d <- function(df, density){
+  #browser()
   if (density==0){pi.fun.name <- "pi.const"; logphi <- NULL}  # uniform
   else if(density==1){pi.fun.name <- "pi.chnorm"; logphi <- c(0, 6)}  # avoid
-  else if (density==2){pi.fun.name <- "pi.hnorm"; logphi <- 6.5}  # attracted
+  else if (density==2){pi.fun.name <- "pi.hnorm"; logphi <- 6.6}  # attracted
   simDat <- df[df$obs == 1 & df$detect == 1,]
   all.1s <- rep(1,length(simDat$x))
   obj <- 1:length(simDat$x)
@@ -222,18 +223,27 @@ simulation <- function(n=400, b=99, density, move, mismatch){
 }
 
 
-result <- function(method, n){
-  method$N.hat <- unlist(method$N.hat)
-  bias <- mean((method$N.hat[method$N.hat < 3*n]-n)/n)  # mean relative bias
+result <- function(list.method, n){
   
-  method$lcl <- unlist(method$lcl); method$ucl <- unlist(method$ucl)
-  check <- n > method$lcl[!is.na(method$lcl[method$N.hat < 3*n])] & n < method$ucl[!is.na(method$ucl[method$N.hat < 3*n])]
-  cover.p <- length(check[check==TRUE])/length(check)  # coverage probability
+  calc <- function(method, n){
+    method <- method[!is.infinite(rowSums(method)),]
+    method <- na.omit(method)
+    
+    method$N.hat <- unlist(method$N.hat)
+    bias <- mean((method$N.hat[method$N.hat < 3*n]-n)/n)  # mean relative bias
+    
+    method$lcl <- unlist(method$lcl); method$ucl <- unlist(method$ucl)
+    check <- n > method$lcl[!is.na(method$lcl[method$N.hat < 3*n])] & n < method$ucl[!is.na(method$ucl[method$N.hat < 3*n])]
+    cover.p <- length(check[check==TRUE])/length(check)  # coverage probability
+    
+    return(c(bias, cover.p))
+  }
   
-  return(c(bias, cover.p))
+  out <- lapply(list.method, calc, n)
+  output <- data.frame(t(sapply(out,c)), row.names = c("MR", "DS", "MRDS", "2D"))
+  colnames(output) <- c("mean relative bias", "coverage probability")
+  
+  return(output)
 }
 
-#out <- lapply(list.method, result, n)
-#output <- data.frame(t(sapply(out,c)), row.names = c("MR", "DS", "MRDS", "2D"))
-#colnames(output) <- c("mean relative bias", "coverage probability")
 
