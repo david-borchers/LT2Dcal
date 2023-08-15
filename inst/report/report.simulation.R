@@ -216,22 +216,24 @@ simulation <- function(n=400, b=99, density, move, mismatch){
   df.ests.2d <- data.frame(t(sapply(ests.2d,c)))
   colnames(df.ests.2d) <- c("N.hat", "lcl", "ucl")
   
-  result <- function(method, n){
-    method$N.hat <- unlist(method$N.hat)
-    bias <- mean((method$N.hat[method$N.hat < 3*n]-n)/n)  # mean relative bias
-    
-    method$lcl <- unlist(method$lcl); method$ucl <- unlist(method$ucl)
-    check <- n > method$lcl[!is.na(method$lcl[method$N.hat < 3*n])] & n < method$ucl[!is.na(method$ucl[method$N.hat < 3*n])]
-    cover.p <- length(check[check==TRUE])/length(check)  # coverage probability
-    
-    return(c(bias, cover.p))
-    }
-  
   list.method <- list(df.ests.mr, df.ests.ds, df.ests.mrds, df.ests.2d)
-  out <- lapply(list.method, result, n)
-  output <- data.frame(t(sapply(out,c)), row.names = c("MR", "DS", "MRDS", "2D"))
-  colnames(output) <- c("mean relative bias", "coverage probability", "number of reps")
-
-  return(output)
+  
+  return(list.method)
 }
+
+
+result <- function(method, n){
+  method$N.hat <- unlist(method$N.hat)
+  bias <- mean((method$N.hat[method$N.hat < 3*n]-n)/n)  # mean relative bias
+  
+  method$lcl <- unlist(method$lcl); method$ucl <- unlist(method$ucl)
+  check <- n > method$lcl[!is.na(method$lcl[method$N.hat < 3*n])] & n < method$ucl[!is.na(method$ucl[method$N.hat < 3*n])]
+  cover.p <- length(check[check==TRUE])/length(check)  # coverage probability
+  
+  return(c(bias, cover.p))
+}
+
+#out <- lapply(list.method, result, n)
+#output <- data.frame(t(sapply(out,c)), row.names = c("MR", "DS", "MRDS", "2D"))
+#colnames(output) <- c("mean relative bias", "coverage probability")
 
