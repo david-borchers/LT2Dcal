@@ -2,6 +2,11 @@
 
 Simulation studies have become indispensable in ecology and conservation research, providing a controlled and repeatable approach to evaluate the performance of estimation methods. In this study, we aimed to assess how each method performs using a range of scenarios with varying degrees of assumption compliance and violations. In each scenario, artificial datasets are created with with known population sizes, density patterns, detectability patterns, etc. to test the accuracy and precision of estimators.
 
+```{r}
+source("report.simulation.R")
+library(knitr)
+```
+
 ## Simulation scenarios
 
 ### Initial perpendicular distance distribution
