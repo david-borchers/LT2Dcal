@@ -126,6 +126,7 @@ abline(v = 300)
 ```
 
 ## Simulation Results
+For each of the 12 scenarios we calculated the bias and coverage probability of the 4 methods. Due to time constraints we only fitted a hazard-rate detection function with no adjustments for conventional distance sampling and only used the independent observer configuration with a hazard rate distance model for MRDS. This means the models for these methods may not be the best fit, and it could be possible to achieve a smaller bias or larger coverage probability.  With more time we would fit multiple models to each set of simulated data and choose the best using AIC. We also only fit one 2D model, but as it was the model used the generate the data it should be the best model regardless. 
 
 ```{r Sc.1, message=FALSE, warning=FALSE, cache=TRUE}
 # Scenario 1
