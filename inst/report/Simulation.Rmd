@@ -126,41 +126,54 @@ abline(v = 300)
 ```
 
 ## Simulation Results
-For each of the 12 scenarios we calculated the bias and coverage probability of the 4 methods. Due to time constraints we only fitted a hazard-rate detection function with no adjustments for conventional distance sampling and only used the independent observer configuration with a hazard rate distance model for MRDS. This means the models for these methods may not be the best fit, and it could be possible to achieve a smaller bias or larger coverage probability.  With more time we would fit multiple models to each set of simulated data and choose the best using AIC. We also only fit one 2D model, but as it was the model used the generate the data it should be the best model regardless. 
 
-```{r Sc.1, message=FALSE, warning=FALSE, cache=TRUE}
+For each of the 12 scenarios we calculated the bias and coverage probability of the 4 methods. Due to time constraints we only fitted a hazard-rate detection function with no adjustments for conventional distance sampling and only used the independent observer configuration with a hazard rate distance model for MRDS. This means the models for these methods may not be the best fit, and it could be possible to achieve a smaller bias or larger coverage probability. With more time we would fit multiple models to each set of simulated data and choose the best using AIC. We also only fit one 2D model, but as it was the model used the generate the data it should be the best model regardless. 
+
+### Uniform Animal Distribution
+
+With uniform animal distribution we expect conventional distance and 2D distance sampling to perform similarly, as all the assumptions for both methods are met. Our results show that they both have similar coverage probabilities, and whilst conventional distance may appear to be more biased, this is more likely a result of only fitting one model rather than performing model selection. As these methods involve walking the transect just once, they are not affected by movement between observers.
+
+```{r Sc.1, message=FALSE, warning=FALSE, cache=TRUE, echo = F}
 # Scenario 1
 # Initial density: uniform + Movement: avoidance + Matching: perfect
 #sc1 <- simulation(n=600, b=99, 0, 0, FALSE)
 load("sc1.RData")
-kable(sc1.out <- result(sc1, n=600))
+sc1.table <- kable(sc1.out <- result(sc1, n=600), col.names = c("Bias", "Coverage Probability"), caption = "Avoidance Movement")
 ```
 
-```{r Sc.2, message=FALSE, warning=FALSE, cache=FALSE}
+```{r Sc.2, message=FALSE, warning=FALSE, cache=FALSE, fig.cap = "Uniform animal density, avoidance movement and imperfect matching"}
 # Scenario 2
 # Initial density: uniform + Movement: avoidance + Matching: imperfect
 #sc2 <- simulation(n=600, b=99, 0, 0, TRUE)
 load("sc2.RData")
-kable(sc2.out <- result(sc2, n=600))
+sc2.table <- kable(sc2.out <- result(sc2, n=600), col.names = c("Bias", "Coverage Probability"), caption = "Avoidance Movement")
 ```
 
-```{r Sc.3, message=FALSE, warning=FALSE, cache = TRUE}
+```{r Sc.3, message=FALSE, warning=FALSE, cache = TRUE, echo = F, fig.cap = "Uniform distribution and perfect matching"}
 # Scenario 3
 # Initial density: uniform + Movement: random + Matching: perfect
 #sc3 <- simulation(n=600, b=99, 0, 1, FALSE)
 load("sc3.RData")
-kable(sc3.out <- result(sc3, n=600))
+sc3.table <- kable(sc3.out <- result(sc3, n=600), col.names = c("Bias", "Coverage Probability"), caption = "Random Movement")
+
+kables(list(sc3.table, sc1.table))
 ```
 
-```{r Sc.4, message=FALSE, warning=FALSE, cache = TRUE}
+Mark recapture performs poorly in this scenario and all the other scenarios as detectability declines with distance. This means there is unmodelled heterogeneity in the population, so it is negatively biased. MRDS is negatively biased with random animal movement as this violates the assumption that each animal has the same detection probability for each observer. It is less negatively biased with avoidance as second observer will see less animals than the first due to them now being further away. This results in a lower estimated detection probability and therefore a higher estimate.
+
+```{r Sc.4, message=FALSE, warning=FALSE, cache = TRUE, echo = F, fig.cap = "Uniform Distribution and Imperfect Matching"}
 # Scenario 4
 # Initial density: uniform + Movement: random + Matching: imperfect
 #sc4 <- simulation(n=600, b=99, 0, 1, TRUE)
 load("sc4.RData")
-kable(sc4.out <- result(sc4, n=600))
+sc4.table <- kable(sc4.out <- result(sc4, n=600),col.names = c("Bias", "Coverage Probability"), caption = "Random Movement")
+kables(list(sc4.table, sc2.table), caption = "With Imperfect Matching")
 ```
 
-```{r Sc.5, message=FALSE, warning=FALSE, cache = TRUE}
+After introducing imperfect matching, MRDS estimates seem to be less negatively biased. This is due to some individuals that were seen twice being mistakenly identified as two separate animals, leading to a lower estimate of detection probability and hence a higher estimate of abundance. Whilst it looks like MRDS should be the best estimator in the scenario with avoidance movement and imperfect matching, this is actually because effects of breaking multiple assumptions happen to balance out in this specific situation. This results in very variable estimates, as the variance of the $N\hat$s was `{r var(sc2[[3]]$N.hat[sc2[[3]]$N.hat < 3*600])/99}` for MRDS, compared to `{r var(sc2[[4]]$N.hat[sc2[[4]]$N.hat < 3*600])/99}` for 2D Distance. 
+### Avoiding Transect
+As expected, only 2D Distance is unbiased when the animals initially avoid the transect.
+```{r Sc.5, message=FALSE, warning=FALSE, cache = TRUE, echo = F}
 # Scenario 5
 # Initial density: avoiding + Movement: avoidance + Matching: perfect
 #sc5 <- simulation(n=1200, b=99, 1, 0, FALSE)
@@ -169,10 +182,10 @@ sc5[[3]] <- unname(apply(sc5[[3]], 1, as.list)[[1]])
 index <- which(sapply(sc5[[3]], is.numeric))
 sc5[[3]] <- data.frame(t(sapply(sc5[[3]][index], c)))
 colnames(sc5[[3]]) <- c("N.hat", "lcl", "ucl")
-kable(sc5.out <- result(sc5, n=1200))
+sc5.table <- kable(sc5.out <- result(sc5, n=1200), col.names = c("Bias", "Coverage Probability"), caption = "Avoidance Movement")
 ```
 
-```{r Sc.6, message=FALSE, warning=FALSE, cache = TRUE}
+```{r Sc.6, message=FALSE, warning=FALSE, cache = TRUE, echo = F}
 # Scenario 6
 # Initial density: avoiding + Movement: avoidance + Matching: imperfect
 #sc6 <- simulation(n=1200, b=99, 1, 0, TRUE)
@@ -181,10 +194,10 @@ sc6[[3]] <- unname(apply(sc6[[3]], 1, as.list)[[1]])
 index <- which(sapply(sc6[[3]], is.numeric))
 sc6[[3]] <- data.frame(t(sapply(sc6[[3]][index], c)))
 colnames(sc6[[3]]) <- c("N.hat", "lcl", "ucl")
-kable(sc6.out <- result(sc6, n=1200))
+sc6.table <- kable(sc6.out <- result(sc6, n=1200), col.names = c("Bias", "Coverage Probability"), caption = "Avoidance Movement")
 ```
 
-```{r Sc.7, message=FALSE, warning=FALSE, cache = TRUE}
+```{r Sc.7, message=FALSE, warning=FALSE, cache = TRUE, echo = F,fig.cap = "Intially avoidant with perfect matching"}
 # Scenario 7
 # Initial density: avoiding + Movement: random + Matching: perfect
 #sc7 <- simulation(n=1200, b=99, 1, 1, FALSE)
@@ -193,45 +206,66 @@ sc7[[3]] <- unname(apply(sc7[[3]], 1, as.list)[[1]])
 index <- which(sapply(sc7[[3]], is.numeric))
 sc7[[3]] <- data.frame(t(sapply(sc7[[3]][index], c)))
 colnames(sc7[[3]]) <- c("N.hat", "lcl", "ucl")
-kable(sc7.out <- result(sc7, n=1200))
+sc7.table <- kable(sc7.out <- result(sc7, n=1200), col.names = c("Bias", "Coverage Probability"), caption = "Random Movement")
+kables(list(sc7.table,sc5.table))
 ```
+Conventional distance and MRDS are both negatively biased as the fitted detection function decays less quickly than the true detection function to account for the large numbers of detections far away from the transect. However, as these detections are a result of more animals being far from the transect rather than a high detection probability, the models overestimate the detection probability and so underestimate the abundance.
+```{r avoidance-df-hist, echo = F, cache = TRUE, fig.cap = "Fitted detection function vs True detection function"}
+exdata <- sim.data(1200,1,0)
+exdata <- exdata[exdata$obs == 1 & exdata$detect == 1,]
+n <- length(exdata$x)
+new_df1 <- data.frame(Region.Label = rep(1, n), Area = rep(2*2000*600000, n),Sample.Label = rep(1, n), Effort = rep(600000, n),distance = abs(exdata$x))
+df.ds <- ds(new_df1, truncation=1600, transect="line", key="hr", order=0, monotonicity = "none")
+truedetect <- function(x){
+  return(p.approx(ys <- seq(0,1700,100),x,ip0,b=c(4.9, 0.036), what = "px"))
+}
 
-```{r Sc.8, message=FALSE, warning=FALSE, cache = TRUE}
+plot(df.ds)
+curve(truedetect, 0,1600,col = "red", add = T)
+legend("topleft", legend = c("Fitted", "True"),lty = 1, col = c("black", "red"))
+```
+```{r Sc.8, message=FALSE, warning=FALSE, cache = TRUE, fig.cap = "Intially avoidant with imperfect matching"}
 # Scenario 8
 # Initial density: avoiding + Movement: random + Matching: imperfect
 #sc8 <- simulation(n=1200, b=99, 1, 1, TRUE)
 load("sc8.RData")
-kable(sc8.out <- result(sc8, n=1200))
+sc8.table <- kable(sc8.out <- result(sc8, n=1200), col.names = c("Bias", "Coverage Probability"), caption = "Random Movement")
+kables(list(sc8.table,sc6.table), caption = "With Imperfect Matching")
 ```
-
-```{r Sc.9, message=FALSE, warning=FALSE, cache = TRUE}
+As before, all the methods except 2D distance sampling are negatively biased. The imperfect matching does make the MRDS estimates slightly bigger, but not enough to counteract the negative bias from the non uniform distribution. 
+### Attracted to Transect
+As with the avoidance case, we expect only 2D Distance to be unbiased when animals are initially attracted to the line.
+```{r Sc.9, message=FALSE, warning=FALSE, cache = TRUE, echo = FALSE}
 # Scenario 9
 # Initial density: attracted + Movement: avoidance + Matching: perfect
 #sc9 <- simulation(n=400, b=99, 2, 0, FALSE)
 load("sc9.RData")
-kable(sc9.out <- result(sc9, n=400))
+sc9.table <- kable(sc9.out <- result(sc9, n=400), col.names = c("Bias", "Coverage Probability"), caption = "Avoidant Movement")
 ```
 
-```{r Sc.10, message=FALSE, warning=FALSE, cache = TRUE}
+```{r Sc.10, message=FALSE, warning=FALSE, cache = TRUE, echo = FALSE}
 # Scenario 10
 # Initial density: attracted + Movement: avoidance + Matching: imperfect
 #sc10 <- simulation(n=400, b=99, 2, 0, TRUE)
 load("sc10.RData")
-kable(sc10.out <- result(sc10, n=400))
+sc10.table <- kable(sc10.out <- result(sc10, n=400), col.names = c("Bias", "Coverage Probability"), caption = "Avoidant Movement")
 ```
 
-```{r Sc.11, message=FALSE, warning=FALSE, cache = TRUE}
+```{r Sc.11, message=FALSE, warning=FALSE, cache = TRUE, echo = FALSE, fig.cap = "Initially attracted to the line with perfect matching"}
 # Scenario 11
 # Initial density: attracted + Movement: random + Matching: perfect
-sc11 <- simulation(n=400, b=99, 2, 1, FALSE)
-save(sc11, file = "sc11.RData")
+load("sc11.Rdata")
+sc11.table <- kable(sc11, col.names = c("Bias", "Coverage Probability"), caption = "Random Movement")
+kables(list(sc11.table, sc9.table))
 ```
-
+Conventional distance and MRDS are positively biased this time, as the fitted detection functions now decay quicker than the true function. This gives a lower detection probability and therefore a higher estimate. 
 ```{r Sc.12, message=FALSE, warning=FALSE, cache = TRUE}
 # Scenario 12
 # Initial density: attracted + Movement: random + Matching: imperfect
-sc12 <- simulation(n=400, b=99, 2, 1, TRUE)
-save(sc12, file = "sc12.RData")
+#sc12 <- simulation(n=400, b=99, 2, 1, TRUE)
+load("sc12.Rdata")
+sc12.table <- kable(sc12, col.names = c("Bias", "Coverage Probability"), caption = "Random Movement")
+kables(list(sc12.table,sc10.table), caption = "With Imperfect Matching")
 ```
 
 ## Further Reading
