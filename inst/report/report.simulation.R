@@ -147,7 +147,7 @@ fit.mrds <- function(df, mismatch){
     model <- ddf(method = "io", dsmodel =~cds(key ="hr"),
                mrmodel =~glm(link = "logit", formula = ~distance),
                data = df, meta.data = list(width = 1600), control = list(refit = T, nrefit = 5, debug = T))
-    ests <- dht(model, region.table = data.frame(Region.Label = 1, Area = 600000*1600*2),
+    ests <- dht(model, region.table = data.frame(Region.Label = 1, Area = 600000*2000*2),
               sample.table = data.frame(Region.Label = 1, Sample.Label = 1,Effort = 600000))
   
     N <- ests$individuals$N$Estimate
@@ -183,7 +183,7 @@ fit.2d <- function(df, density){
                   ystart = 1700,
                   pi.x = pi.fun.name,
                   logphi = logphi,
-                  w = 1600,
+                  w = 2000, 
                   hessian = TRUE)
     est <- fit$ests[nrow(fit$ests),ncol(fit$ests)]
   })
@@ -195,7 +195,8 @@ fit.2d <- function(df, density){
   names(output) = NULL
   return(output)
 }
-
+test <- sim.data(400,2,0)
+fit.2d(test,2)
 
 ###-----------------------------------------------------------------------------
 simulation <- function(n=400, b=99, density, move, mismatch){
@@ -245,5 +246,31 @@ result <- function(list.method, n){
   
   return(output)
 }
+
+
+estimates <- c()
+for(i in 1:9){
+  ex = simXY(400,'pi.hnorm',6.6, 'ip0', c(4.9, 0.036),1600, 1700)
+  all.1s <- rep(1,length(ex$locs$x))
+  obj <- 1:length(ex$locs$x)
+  sim.df <- data.frame(x = ex$locs$x,
+                       y = ex$locs$y,
+                       stratum = all.1s,
+                       transect = all.1s,
+                       L = 600,
+                       area = 2*2000*600,
+                       object = obj,
+                       size = all.1s)
+  fit <- LT2D.fit(DataFrameInput = sim.df,
+                  hr = 'ip0',
+                  b = c(4.9, 0.036),
+                  ystart = 1700,
+                  pi.x = 'pi.hnorm',
+                  logphi = 6.6,
+                  w = 1600, 
+                  hessian = TRUE)
+  estimates[i] <- fit$ests[nrow(fit$ests), ncol(fit$ests)]
+}
+mean(estimates)
 
 

@@ -24,9 +24,6 @@ In practice the conditional likelihood $L(\boldsymbol{\beta}|n)$ is used to calc
 
 
 
-
-
-
 ## Further Reading
 
 Borchers, D.L. and Cox, M.J. (2016). Distance sampling detection functions: 2D or not 2D? Biometrics, 73(2), pp.593--602. <doi:https://doi.org/10.1111/biom.12581>.

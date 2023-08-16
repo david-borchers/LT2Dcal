@@ -146,7 +146,11 @@ load("sc1.RData")
 sc1.table <- kable(sc1.out <- result(sc1, n=600), col.names = c("Bias", "Coverage Probability"), caption = "Avoidance Movement")
 ```
 
+<<<<<<< Updated upstream
 ```{r Sc.2, message=FALSE, warning=FALSE, cache=TRUE, fig.cap = "Uniform animal density, avoidance movement and imperfect matching"}
+=======
+```{r Sc.2, message=FALSE, warning=FALSE, cache=TRUE, echo = FALSE, fig.cap = "Uniform animal density, avoidance movement and imperfect matching"}
+>>>>>>> Stashed changes
 # Scenario 2
 # Initial density: uniform + Movement: avoidance + Matching: imperfect
 #sc2 <- simulation(n=600, b=99, 0, 0, TRUE)
@@ -234,8 +238,12 @@ plot(df.ds)
 curve(truedetect, 0,1600,col = "red", add = T)
 legend("topleft", legend = c("Fitted", "True"),lty = 1, col = c("black", "red"))
 ```
+<<<<<<< Updated upstream
 
 ```{r Sc.8, message=FALSE, warning=FALSE, cache = TRUE, fig.cap = "Intially avoidant with imperfect matching"}
+=======
+```{r Sc.8, message=FALSE, warning=FALSE, cache = TRUE, fig.cap = "Intially avoidant with imperfect matching", echo = FALSE}
+>>>>>>> Stashed changes
 # Scenario 8
 # Initial density: avoiding + Movement: random + Matching: imperfect
 #sc8 <- simulation(n=1200, b=99, 1, 1, TRUE)
@@ -273,10 +281,15 @@ load("sc11.Rdata")
 sc11.table <- kable(sc11, col.names = c("Bias", "Coverage Probability"), caption = "Random Movement")
 kables(list(sc11.table, sc9.table))
 ```
+<<<<<<< Updated upstream
 
 Conventional distance and MRDS are positively biased this time, as the fitted detection functions now decay quicker than the true function. This gives a lower detection probability and therefore a higher estimate.
 
 ```{r Sc.12, message=FALSE, warning=FALSE, cache = TRUE}
+=======
+Conventional distance and MRDS are positively biased this time, as the fitted detection functions now decay quicker than the true function. This gives a lower detection probability and therefore a higher estimate. 
+```{r Sc.12, message=FALSE, warning=FALSE, cache = TRUE, echo = FALSE}
+>>>>>>> Stashed changes
 # Scenario 12
 # Initial density: attracted + Movement: random + Matching: imperfect
 #sc12 <- simulation(n=400, b=99, 2, 1, TRUE)
