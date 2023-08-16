@@ -293,6 +293,14 @@ sc12.table <- kable(sc12.out <- result(sc12, n=400), col.names = c("Bias", "Cove
 kables(list(sc12.table,sc10.table), caption = "Initial Attraction with Imperfect Matching")
 ```
 
+## Conclusions
+
+Mark recapture is the current standard for estimating snow leopard prey abundance, but our simulations have shown that it performs poorly in every scenario. It should not be used in situations where the detection probability declines with distance, which will be most line transect surveys.
+
+Distance sampling and mark recapture distance sampling performed well with uniform animal distribution but not with attraction or avoidance. Mark recapture also faces the issue of imperfect matching increasing the variance of the estimate.
+
+2D Distance sampling produced good estimates in all the scenarios. In practice it may not be known if the animal distribution is non uniform; the scientists who collected the prey data did not expect line attraction. Therefore, as 2D does not require more resources than conventional distance sampling we recommend more surveys adopt it.
+
 ## Further Reading
 
 Johansson, Ö., Mishra, C., Chapron, G., Samelius, G., Lkhagvajav, P., McCarthy, T. and Low, M. (2022). Seasonal variation in daily activity patterns of snow leopards and their prey. Scientific Reports, [online] 12(1), p.21681. [https://doi.org/10.1038/s41598-022-26358-w](doi:https://doi.org/10.1038/s41598-022-26358-w){.uri}.

@@ -137,3 +137,12 @@ Borchers, D.L., Laake, J.L., Southwell, C. and Paxton, C.G.M. (2005). Accommodat
 Buckland, S.T., Rexstad, E.A., Marques, T.A. and Oedekoven, C.S. (2015). Distance Sampling: Methods and Applications. Springer International Publish. <https://doi.org/10.1007/978-3-319-19219-2>
 
 Burt, M.L., Borchers, D.L., Jenkins, K.J. and Marques, T.A. (2014). Using mark-recapture distance sampling methods on line transect surveys. Methods in Ecology and Evolution, [online] 5(11), pp.1180--1191. <doi:https://doi.org/10.1111/2041-210x.12294>.
+
+Borchers, D.L., Laake, J.L., Southwell, C. and Paxton, C.G.M. (2005). Accommodating Unmodeled Heterogeneity in Double-Observer Distance Sampling Surveys. \*Biometrics\*, [online] 62(2), pp.372--378. doi:<https://doi.org/10.1111/j.1541-0420.2005.00493.x.>
+
+Burt, M.L., Borchers, D.L., Jenkins, K.J. and Marques, T.A. (2014). Using mark-recapture distance sampling methods on line transect surveys. Methods in Ecology and Evolution, [online] 5(11), pp.1180--1191. \<doi:<https://doi.org/10.1111/2041-210x.12294>.
+
+Borchers, D.L. and Cox, M.J. (2016). Distance sampling detection functions: 2D or not 2D? Biometrics, 73(2), pp.593--602. \<doi:<https://doi.org/10.1111/biom.12581>.
+
+Suryawanshi, K.R., Bhatnagar, Y.V. and Mishra, C. (2012). Standardizing the double-observer survey method for estimating mountain ungulate prey of the endangered snow leopard. Oecologia, 169(3), pp.581--590. \<doi:<https://doi.org/10.1007/s00442-011-2237-0>.
+
