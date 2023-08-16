@@ -29,7 +29,7 @@
   
   
 <link rel="prev" href="mark-recapture-distance-sampling.html"/>
-
+<link rel="next" href="simulation.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -50,6 +50,13 @@
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
+<script src="libs/plotly-binding-4.10.2/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
 
 
 <style type="text/css">
@@ -90,7 +97,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -103,7 +110,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -139,23 +146,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2" data-path="cross.html"><a href="cross.html"><i class="fa fa-check"></i><b>2</b> Mark-recapture</a>
 <ul>
 <li class="chapter" data-level="2.1" data-path="cross.html"><a href="cross.html#closed-populations"><i class="fa fa-check"></i><b>2.1</b> Closed populations</a></li>
-<li class="chapter" data-level="2.2" data-path="cross.html"><a href="cross.html#simulation-study"><i class="fa fa-check"></i><b>2.2</b> Simulation study</a>
-<ul>
-<li class="chapter" data-level="2.2.1" data-path="cross.html"><a href="cross.html#scenario-1-when-the-underlying-assumptions-are-met"><i class="fa fa-check"></i><b>2.2.1</b> Scenario 1: When the underlying assumptions are met</a></li>
-<li class="chapter" data-level="2.2.2" data-path="cross.html"><a href="cross.html#scenario-2-when-there-has-imperfect-matching"><i class="fa fa-check"></i><b>2.2.2</b> Scenario 2: When there has imperfect matching</a></li>
-<li class="chapter" data-level="2.2.3" data-path="cross.html"><a href="cross.html#scenario-3-when-inherent-capture-probabilities-are-different"><i class="fa fa-check"></i><b>2.2.3</b> Scenario 3: When inherent capture probabilities are different</a></li>
-</ul></li>
-<li class="chapter" data-level="2.3" data-path="cross.html"><a href="cross.html#further-reading"><i class="fa fa-check"></i><b>2.3</b> Further Reading</a></li>
+<li class="chapter" data-level="2.2" data-path="cross.html"><a href="cross.html#further-reading"><i class="fa fa-check"></i><b>2.2</b> Further Reading</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="distance-sampling.html"><a href="distance-sampling.html"><i class="fa fa-check"></i><b>3</b> Distance sampling</a>
 <ul>
-<li class="chapter" data-level="3.1" data-path="distance-sampling.html"><a href="distance-sampling.html#line-transect-sampling"><i class="fa fa-check"></i><b>3.1</b> 3.1 Line transect sampling</a></li>
-<li class="chapter" data-level="3.2" data-path="distance-sampling.html"><a href="distance-sampling.html#simulation-study-1"><i class="fa fa-check"></i><b>3.2</b> 3.2 Simulation study</a>
-<ul>
-<li class="chapter" data-level="3.2.1" data-path="distance-sampling.html"><a href="distance-sampling.html#scenario-1-when-the-underlying-assumptions-are-met-1"><i class="fa fa-check"></i><b>3.2.1</b> Scenario 1: When the underlying assumptions are met</a></li>
-<li class="chapter" data-level="3.2.2" data-path="distance-sampling.html"><a href="distance-sampling.html#scenario-2-when-animals-show-responsive-movement"><i class="fa fa-check"></i><b>3.2.2</b> Scenario 2: When animals show responsive movement</a></li>
-</ul></li>
-<li class="chapter" data-level="3.3" data-path="distance-sampling.html"><a href="distance-sampling.html#further-reading-1"><i class="fa fa-check"></i><b>3.3</b> Further Reading</a></li>
+<li class="chapter" data-level="3.1" data-path="distance-sampling.html"><a href="distance-sampling.html#line-transect-sampling"><i class="fa fa-check"></i><b>3.1</b> Line transect sampling</a></li>
+<li class="chapter" data-level="3.2" data-path="distance-sampling.html"><a href="distance-sampling.html#further-reading-1"><i class="fa fa-check"></i><b>3.2</b> Further Reading</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="mark-recapture-distance-sampling.html"><a href="mark-recapture-distance-sampling.html"><i class="fa fa-check"></i><b>4</b> Mark Recapture Distance Sampling</a>
 <ul>
@@ -178,12 +174,28 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="5.1" data-path="d-distance-sampling.html"><a href="d-distance-sampling.html#introduction-2"><i class="fa fa-check"></i><b>5.1</b> Introduction</a></li>
 <li class="chapter" data-level="5.2" data-path="d-distance-sampling.html"><a href="d-distance-sampling.html#simulation-non-uniform-distribution"><i class="fa fa-check"></i><b>5.2</b> Simulation: Non Uniform Distribution</a></li>
 <li class="chapter" data-level="5.3" data-path="d-distance-sampling.html"><a href="d-distance-sampling.html#simulation-comparison-to-mark-recapture"><i class="fa fa-check"></i><b>5.3</b> Simulation: Comparison to Mark Recapture</a></li>
-<li class="chapter" data-level="5.4" data-path="d-distance-sampling.html"><a href="d-distance-sampling.html#real-data-analysis"><i class="fa fa-check"></i><b>5.4</b> Real Data Analysis</a>
-<ul>
-<li class="chapter" data-level="5.4.1" data-path="d-distance-sampling.html"><a href="d-distance-sampling.html#methods-2"><i class="fa fa-check"></i><b>5.4.1</b> Methods</a></li>
-<li class="chapter" data-level="5.4.2" data-path="d-distance-sampling.html"><a href="d-distance-sampling.html#results-2"><i class="fa fa-check"></i><b>5.4.2</b> Results</a></li>
+<li class="chapter" data-level="5.4" data-path="d-distance-sampling.html"><a href="d-distance-sampling.html#further-reading-2"><i class="fa fa-check"></i><b>5.4</b> Further Reading</a></li>
 </ul></li>
-<li class="chapter" data-level="5.5" data-path="d-distance-sampling.html"><a href="d-distance-sampling.html#further-reading-2"><i class="fa fa-check"></i><b>5.5</b> Further Reading</a></li>
+<li class="chapter" data-level="6" data-path="simulation.html"><a href="simulation.html"><i class="fa fa-check"></i><b>6</b> Simulation</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="simulation.html"><a href="simulation.html#simulation-scenarios"><i class="fa fa-check"></i><b>6.1</b> Simulation scenarios</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="simulation.html"><a href="simulation.html#initial-perpendicular-distance-distribution"><i class="fa fa-check"></i><b>6.1.1</b> Initial perpendicular distance distribution</a></li>
+<li class="chapter" data-level="6.1.2" data-path="simulation.html"><a href="simulation.html#movement-after-first-detection"><i class="fa fa-check"></i><b>6.1.2</b> Movement after first detection</a></li>
+<li class="chapter" data-level="6.1.3" data-path="simulation.html"><a href="simulation.html#imperfect-matching"><i class="fa fa-check"></i><b>6.1.3</b> Imperfect Matching</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="simulation.html"><a href="simulation.html#simulation-results"><i class="fa fa-check"></i><b>6.2</b> Simulation Results</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="simulation.html"><a href="simulation.html#uniform-animal-distribution"><i class="fa fa-check"></i><b>6.2.1</b> Uniform Animal Distribution</a></li>
+<li class="chapter" data-level="6.2.2" data-path="simulation.html"><a href="simulation.html#avoiding-transect"><i class="fa fa-check"></i><b>6.2.2</b> Avoiding Transect</a></li>
+<li class="chapter" data-level="6.2.3" data-path="simulation.html"><a href="simulation.html#attracted-to-transect"><i class="fa fa-check"></i><b>6.2.3</b> Attracted to Transect</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="simulation.html"><a href="simulation.html#further-reading-3"><i class="fa fa-check"></i><b>6.3</b> Further Reading</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="real-data.html"><a href="real-data.html"><i class="fa fa-check"></i><b>7</b> Real Data</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="real-data.html"><a href="real-data.html#mark-recapture"><i class="fa fa-check"></i><b>7.1</b> Mark Recapture</a></li>
+<li class="chapter" data-level="7.2" data-path="real-data.html"><a href="real-data.html#summary"><i class="fa fa-check"></i><b>7.2</b> Summary</a></li>
 </ul></li>
 </ul>
 
@@ -241,223 +253,8 @@ Figure 5.2: Histograms of abundance estimates using the Chapman estimator with r
 </div>
 <p>From this it is clear that double-observer mark-recapture will yield significantly biased estimates of abundance of snow leopard prey, even if the animals do not move and the observers can perfectly match the individuals seen. We recommend instead using 2D distance sampling, as it accounts for the non uniform animal distribution as well as the declining detectability with distance. It is also requires less time to be spent surveying, as each transect only need to be walked once.</p>
 </div>
-<div id="real-data-analysis" class="section level2 hasAnchor" number="5.4">
-<h2><span class="header-section-number">5.4</span> Real Data Analysis<a href="d-distance-sampling.html#real-data-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div id="methods-2" class="section level3 hasAnchor" number="5.4.1">
-<h3><span class="header-section-number">5.4.1</span> Methods<a href="d-distance-sampling.html#methods-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>We will now use the 2D distance framework to analyse the real snow leopard prey data. The observers surveyed 60 transects in 10 blocks and recorded the bearing of the path, the bearing of the group they saw and radial distance to the group where possible. There were 2 species included in the survey: ibex and argali. The observers had limited rangefinders so 49 of these observations had no distance data; 61 groups were behind the observers so did not have a valid “forward” distance. This left 132 usable observations.</p>
-<p>Upon closer inspection, many detection distances (both perpendicular and forward) appeared to be rounded to zero, likely as a result of the bearings being rounded to the nearest 5 degrees. To prevent this from impacting the model fit we simply added a small random number to each zero observation.</p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="d-distance-sampling.html#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(DistData<span class="sc">$</span>distance, <span class="at">main =</span> <span class="st">&quot;Perpendicular Distance&quot;</span>, <span class="at">xlab =</span> <span class="st">&quot;Distance&quot;</span>)</span></code></pre></div>
-<div class="figure"><span style="display:block;" id="fig:distance-histograms-1"></span>
-<img src="_main_files/figure-html/distance-histograms-1.png" alt="Histograms of forward and perpendicular distances" width="672" />
-<p class="caption">
-Figure 5.3: Histograms of forward and perpendicular distances
-</p>
-</div>
-<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="d-distance-sampling.html#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(DistData<span class="sc">$</span>forward, <span class="at">main =</span> <span class="st">&quot;Forward Distance&quot;</span>, <span class="at">xlab =</span> <span class="st">&quot;Distance&quot;</span>)</span></code></pre></div>
-<div class="figure"><span style="display:block;" id="fig:distance-histograms-2"></span>
-<img src="_main_files/figure-html/distance-histograms-2.png" alt="Histograms of forward and perpendicular distances" width="672" />
-<p class="caption">
-Figure 5.4: Histograms of forward and perpendicular distances
-</p>
-</div>
-<p>From looking at the histograms of observed data we set the perpendicular truncation distance at 1600 and the forward truncation distance at 1300. This excluded 2 outlier observations.<br />
-We then fitted a series of model with different detection functions and animal distributions, and picked the one with the lowest AIC.</p>
-</div>
-<div id="results-2" class="section level3 hasAnchor" number="5.4.2">
-<h3><span class="header-section-number">5.4.2</span> Results<a href="d-distance-sampling.html#results-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Our best fitting model used the 2-parameter inverse power hazard detection function and a half normal distribution for the animal density. All of the best fitting models used a half normal animal distribution, which implies that the animals are attracted to the line rather than avoiding it as initially thought. This could be due to the non random line placement, as the observers travel along valleys or ridges that are easier to walk along so the animals could also favour the easier terrain.</p>
-<div class="figure"><span style="display:block;" id="fig:real-results-plot"></span>
-<img src="_main_files/figure-html/real-results-plot-1.png" alt="Detection and distribution functions for best model (h1 and normal)" width="672" />
-<p class="caption">
-Figure 5.5: Detection and distribution functions for best model (h1 and normal)
-</p>
-</div>
-<p>We tried fitting different models to each species in the survey, but this had a higher AIC than the combined model (3507.2139814 vs 3503.5143265 for combined model). Interestingly, the argali appear to be uniformly distributed across the area whereas the ibex exhibit line attraction. However, there are only 39 argali groups recorded so further investigation is needed before drawing any conclusions. With more time we would fit a model that had species as a covariate.</p>
-<p>The best combined model estimates there are 2418 individual animals in total.</p>
-<table>
-<thead>
-<tr class="header">
-<th align="left"></th>
-<th align="right">Point Estimate</th>
-<th align="right">95% Bootstrap</th>
-<th align="right">Confidence Interval</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">Combined model</td>
-<td align="right">2418</td>
-<td align="right">2083.07</td>
-<td align="right">2940.87</td>
-</tr>
-<tr class="even">
-<td align="left">Ibex only model</td>
-<td align="right">1801</td>
-<td align="right">1551.50</td>
-<td align="right">2241.13</td>
-</tr>
-<tr class="odd">
-<td align="left">Argali only model</td>
-<td align="right">796</td>
-<td align="right">602.92</td>
-<td align="right">1228.91</td>
-</tr>
-</tbody>
-</table>
-<table style="width:100%;">
-<colgroup>
-<col width="5%" />
-<col width="7%" />
-<col width="18%" />
-<col width="13%" />
-<col width="15%" />
-<col width="10%" />
-<col width="6%" />
-<col width="11%" />
-<col width="11%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th align="left">Stratum</th>
-<th align="right">Groups Seen</th>
-<th align="right">Total Transect Length (<span class="math inline">\(km\)</span>)</th>
-<th align="right">Stratum Area (<span class="math inline">\(m^2\)</span>)</th>
-<th align="right">Estimated Group Denisty</th>
-<th align="right">Number of Groups</th>
-<th align="right">Mean Size</th>
-<th align="right">Individual Density</th>
-<th align="right">Abundance Estimate</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">1</td>
-<td align="right">27</td>
-<td align="right">60.68086</td>
-<td align="right">194178.7</td>
-<td align="right">0.000410</td>
-<td align="right">79.6</td>
-<td align="right">6.5</td>
-<td align="right">0.0026575</td>
-<td align="right">516.0</td>
-</tr>
-<tr class="even">
-<td align="left">2</td>
-<td align="right">9</td>
-<td align="right">71.47497</td>
-<td align="right">228719.9</td>
-<td align="right">0.000116</td>
-<td align="right">26.5</td>
-<td align="right">6.9</td>
-<td align="right">0.0007993</td>
-<td align="right">182.8</td>
-</tr>
-<tr class="odd">
-<td align="left">3</td>
-<td align="right">19</td>
-<td align="right">81.92104</td>
-<td align="right">262147.3</td>
-<td align="right">0.000214</td>
-<td align="right">56.0</td>
-<td align="right">6.8</td>
-<td align="right">0.0014623</td>
-<td align="right">383.3</td>
-</tr>
-<tr class="even">
-<td align="left">4</td>
-<td align="right">14</td>
-<td align="right">59.59936</td>
-<td align="right">190717.9</td>
-<td align="right">0.000216</td>
-<td align="right">41.3</td>
-<td align="right">4.2</td>
-<td align="right">0.0009122</td>
-<td align="right">174.0</td>
-</tr>
-<tr class="odd">
-<td align="left">5</td>
-<td align="right">12</td>
-<td align="right">78.34713</td>
-<td align="right">250710.8</td>
-<td align="right">0.000141</td>
-<td align="right">35.4</td>
-<td align="right">4.5</td>
-<td align="right">0.0006351</td>
-<td align="right">159.2</td>
-</tr>
-<tr class="even">
-<td align="left">6</td>
-<td align="right">12</td>
-<td align="right">76.74868</td>
-<td align="right">245595.8</td>
-<td align="right">0.000144</td>
-<td align="right">35.4</td>
-<td align="right">9.1</td>
-<td align="right">0.0013087</td>
-<td align="right">321.4</td>
-</tr>
-<tr class="odd">
-<td align="left">7</td>
-<td align="right">13</td>
-<td align="right">96.53271</td>
-<td align="right">308904.7</td>
-<td align="right">0.000124</td>
-<td align="right">38.3</td>
-<td align="right">4.4</td>
-<td align="right">0.0005441</td>
-<td align="right">168.1</td>
-</tr>
-<tr class="even">
-<td align="left">8</td>
-<td align="right">7</td>
-<td align="right">44.55528</td>
-<td align="right">142576.9</td>
-<td align="right">0.000145</td>
-<td align="right">20.6</td>
-<td align="right">4.1</td>
-<td align="right">0.0005998</td>
-<td align="right">85.5</td>
-</tr>
-<tr class="odd">
-<td align="left">9</td>
-<td align="right">6</td>
-<td align="right">39.25853</td>
-<td align="right">125627.3</td>
-<td align="right">0.000141</td>
-<td align="right">17.7</td>
-<td align="right">4.0</td>
-<td align="right">0.0005633</td>
-<td align="right">70.8</td>
-</tr>
-<tr class="even">
-<td align="left">10</td>
-<td align="right">12</td>
-<td align="right">37.72042</td>
-<td align="right">120705.4</td>
-<td align="right">0.000293</td>
-<td align="right">35.4</td>
-<td align="right">10.1</td>
-<td align="right">0.0029560</td>
-<td align="right">356.8</td>
-</tr>
-<tr class="odd">
-<td align="left">Total</td>
-<td align="right">131</td>
-<td align="right">646.83898</td>
-<td align="right">2069884.7</td>
-<td align="right">0.000187</td>
-<td align="right">386.0</td>
-<td align="right">6.3</td>
-<td align="right">0.0011682</td>
-<td align="right">2418.0</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<div id="further-reading-2" class="section level2 hasAnchor" number="5.5">
-<h2><span class="header-section-number">5.5</span> Further Reading<a href="d-distance-sampling.html#further-reading-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="further-reading-2" class="section level2 hasAnchor" number="5.4">
+<h2><span class="header-section-number">5.4</span> Further Reading<a href="d-distance-sampling.html#further-reading-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Borchers, D.L. and Cox, M.J. (2016). Distance sampling detection functions: 2D or not 2D? Biometrics, 73(2), pp.593–602. <a href="doi:https://doi.org/10.1111/biom.12581" class="uri">doi:https://doi.org/10.1111/biom.12581</a>.</p>
 <p>Borchers, D.L., Buckland, S.T. and Zucchini, W. (2002). Estimating Animal Abundance. [online] Springer Science &amp; Business Media.</p>
 <p>Suryawanshi, K.R., Bhatnagar, Y.V. and Mishra, C. (2012). Standardizing the double-observer survey method for estimating mountain ungulate prey of the endangered snow leopard. Oecologia, 169(3), pp.581–590. <a href="doi:https://doi.org/10.1007/s00442-011-2237-0" class="uri">doi:https://doi.org/10.1007/s00442-011-2237-0</a>.</p>
@@ -469,8 +266,8 @@ Figure 5.5: Detection and distribution functions for best model (h1 and normal)
           </div>
         </div>
       </div>
-<a href="mark-recapture-distance-sampling.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-
+<a href="mark-recapture-distance-sampling.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="simulation.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

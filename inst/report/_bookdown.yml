@@ -4,7 +4,7 @@ language:
     chapter_name: "Chapter "
 rmd_files: 
   html: ["01-intro.Rmd","02-mark-recapture.Rmd","03-distance-sampling.Rmd",
-  "04-mrds.Rmd", "05-2d-distance.Rmd", "Simulation.Rmd"]
+  "04-mrds.Rmd", "05-2d-distance.Rmd", "Simulation.Rmd", "07-Real-Data.Rmd"]
 title: "Report"
 author: "Jiayi and Louise"
 date: "`r Sys.Date()`"

@@ -2,6 +2,11 @@
 
 Simulation studies have become indispensable in ecology and conservation research, providing a controlled and repeatable approach to evaluate the performance of estimation methods. In this study, we aimed to assess how each method performs using a range of scenarios with varying degrees of assumption compliance and violations. In each scenario, artificial datasets are created with with known population sizes, density patterns, detectability patterns, etc. to test the accuracy and precision of estimators.
 
+```{r}
+source("report.simulation.R")
+library(knitr)
+```
+
 ## Simulation scenarios
 
 ### Initial perpendicular distance distribution
@@ -127,7 +132,7 @@ abline(v = 300)
 
 ## Simulation Results
 
-For each of the 12 scenarios we calculated the bias and coverage probability of the 4 methods. Due to time constraints we only fitted a hazard-rate detection function with no adjustments for conventional distance sampling and only used the independent observer configuration with a hazard rate distance model for MRDS. This means the models for these methods may not be the best fit, and it could be possible to achieve a smaller bias or larger coverage probability. With more time we would fit multiple models to each set of simulated data and choose the best using AIC. We also only fit one 2D model, but as it was the model used the generate the data it should be the best model regardless. 
+For each of the 12 scenarios we calculated the bias and coverage probability of the 4 methods. Due to time constraints we only fitted a hazard-rate detection function with no adjustments for conventional distance sampling and only used the independent observer configuration with a hazard rate distance model for MRDS. This means the models for these methods may not be the best fit, and it could be possible to achieve a smaller bias or larger coverage probability. With more time we would fit multiple models to each set of simulated data and choose the best using AIC. We also only fit one 2D model, but as it was the model used the generate the data it should be the best model regardless.
 
 ### Uniform Animal Distribution
 
@@ -141,7 +146,7 @@ load("sc1.RData")
 sc1.table <- kable(sc1.out <- result(sc1, n=600), col.names = c("Bias", "Coverage Probability"), caption = "Avoidance Movement")
 ```
 
-```{r Sc.2, message=FALSE, warning=FALSE, cache=FALSE, fig.cap = "Uniform animal density, avoidance movement and imperfect matching"}
+```{r Sc.2, message=FALSE, warning=FALSE, cache=TRUE, fig.cap = "Uniform animal density, avoidance movement and imperfect matching"}
 # Scenario 2
 # Initial density: uniform + Movement: avoidance + Matching: imperfect
 #sc2 <- simulation(n=600, b=99, 0, 0, TRUE)
@@ -170,9 +175,12 @@ sc4.table <- kable(sc4.out <- result(sc4, n=600),col.names = c("Bias", "Coverage
 kables(list(sc4.table, sc2.table), caption = "With Imperfect Matching")
 ```
 
-After introducing imperfect matching, MRDS estimates seem to be less negatively biased. This is due to some individuals that were seen twice being mistakenly identified as two separate animals, leading to a lower estimate of detection probability and hence a higher estimate of abundance. Whilst it looks like MRDS should be the best estimator in the scenario with avoidance movement and imperfect matching, this is actually because effects of breaking multiple assumptions happen to balance out in this specific situation. This results in very variable estimates, as the variance of the $N\hat$s was `{r var(sc2[[3]]$N.hat[sc2[[3]]$N.hat < 3*600])/99}` for MRDS, compared to `{r var(sc2[[4]]$N.hat[sc2[[4]]$N.hat < 3*600])/99}` for 2D Distance. 
-### Avoiding Transect
+After introducing imperfect matching, MRDS estimates seem to be less negatively biased. This is due to some individuals that were seen twice being mistakenly identified as two separate animals, leading to a lower estimate of detection probability and hence a higher estimate of abundance. Whilst it looks like MRDS should be the best estimator in the scenario with avoidance movement and imperfect matching, this is actually because effects of breaking multiple assumptions happen to balance out in this specific situation. This results in very variable estimates, as the variance of the $N\hat$s was `{r var(sc2[[3]]$N.hat[sc2[[3]]$N.hat < 3*600])/99}` for MRDS, compared to `{r var(sc2[[4]]$N.hat[sc2[[4]]$N.hat < 3*600])/99}` for 2D Distance.
+
+### Avoiding Transect 
+
 As expected, only 2D Distance is unbiased when the animals initially avoid the transect.
+
 ```{r Sc.5, message=FALSE, warning=FALSE, cache = TRUE, echo = F}
 # Scenario 5
 # Initial density: avoiding + Movement: avoidance + Matching: perfect
@@ -209,7 +217,9 @@ colnames(sc7[[3]]) <- c("N.hat", "lcl", "ucl")
 sc7.table <- kable(sc7.out <- result(sc7, n=1200), col.names = c("Bias", "Coverage Probability"), caption = "Random Movement")
 kables(list(sc7.table,sc5.table))
 ```
+
 Conventional distance and MRDS are both negatively biased as the fitted detection function decays less quickly than the true detection function to account for the large numbers of detections far away from the transect. However, as these detections are a result of more animals being far from the transect rather than a high detection probability, the models overestimate the detection probability and so underestimate the abundance.
+
 ```{r avoidance-df-hist, echo = F, cache = TRUE, fig.cap = "Fitted detection function vs True detection function"}
 exdata <- sim.data(1200,1,0)
 exdata <- exdata[exdata$obs == 1 & exdata$detect == 1,]
@@ -224,6 +234,7 @@ plot(df.ds)
 curve(truedetect, 0,1600,col = "red", add = T)
 legend("topleft", legend = c("Fitted", "True"),lty = 1, col = c("black", "red"))
 ```
+
 ```{r Sc.8, message=FALSE, warning=FALSE, cache = TRUE, fig.cap = "Intially avoidant with imperfect matching"}
 # Scenario 8
 # Initial density: avoiding + Movement: random + Matching: imperfect
@@ -232,9 +243,13 @@ load("sc8.RData")
 sc8.table <- kable(sc8.out <- result(sc8, n=1200), col.names = c("Bias", "Coverage Probability"), caption = "Random Movement")
 kables(list(sc8.table,sc6.table), caption = "With Imperfect Matching")
 ```
-As before, all the methods except 2D distance sampling are negatively biased. The imperfect matching does make the MRDS estimates slightly bigger, but not enough to counteract the negative bias from the non uniform distribution. 
-### Attracted to Transect
+
+As before, all the methods except 2D distance sampling are negatively biased. The imperfect matching does make the MRDS estimates slightly bigger, but not enough to counteract the negative bias from the non uniform distribution.
+
+### Attracted to Transect 
+
 As with the avoidance case, we expect only 2D Distance to be unbiased when animals are initially attracted to the line.
+
 ```{r Sc.9, message=FALSE, warning=FALSE, cache = TRUE, echo = FALSE}
 # Scenario 9
 # Initial density: attracted + Movement: avoidance + Matching: perfect
@@ -258,13 +273,15 @@ load("sc11.Rdata")
 sc11.table <- kable(sc11, col.names = c("Bias", "Coverage Probability"), caption = "Random Movement")
 kables(list(sc11.table, sc9.table))
 ```
-Conventional distance and MRDS are positively biased this time, as the fitted detection functions now decay quicker than the true function. This gives a lower detection probability and therefore a higher estimate. 
+
+Conventional distance and MRDS are positively biased this time, as the fitted detection functions now decay quicker than the true function. This gives a lower detection probability and therefore a higher estimate.
+
 ```{r Sc.12, message=FALSE, warning=FALSE, cache = TRUE}
 # Scenario 12
 # Initial density: attracted + Movement: random + Matching: imperfect
 #sc12 <- simulation(n=400, b=99, 2, 1, TRUE)
 load("sc12.Rdata")
-sc12.table <- kable(sc12, col.names = c("Bias", "Coverage Probability"), caption = "Random Movement")
+sc12.table <- kable(sc12.out <- result(sc12, n=400), col.names = c("Bias", "Coverage Probability"), caption = "Random Movement")
 kables(list(sc12.table,sc10.table), caption = "With Imperfect Matching")
 ```
 

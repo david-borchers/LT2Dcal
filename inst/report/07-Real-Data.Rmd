@@ -1,12 +1,14 @@
-#Real Data
+# Real Data
+
 ```{r loading, include = F}
 b = c(4.89553757, 0.03561984); logphi = c(6.61348904, 4.84269089)
 w = 1600; ystart = 1700
 ```
+
 We will now use these methods to analyse the real snow leopard prey data. The observers surveyed 60 transects in 10 blocks twice, with 30 minutes between the first and second observer starting the survey. The observers had limited rangefinders so only the first observer recorded the radial distance to the group, the bearing of the path and the bearing of the group they saw. This means we cannot use mrds to analyse this data as there are no distances for the second observer. There were 2 species included in the survey: ibex and argali. They saw 242 groups in total, and 193 of them have distance data.
 
-
 ## Mark Recapture
+
 ```{r chapman, include = FALSE}
 chapman <- function(Gobi){
   S1 <- sum(Gobi$Obs1)
@@ -22,16 +24,16 @@ combined <- chapman(Gobi)
 ibex.cm <- chapman(Gobi[Gobi$Sightings == 'ibex',])
 argali.cm <- chapman(Gobi[Gobi$Sightings == 'argali',])
 ```
-We start by using the Chapman estimator to estimate the total number of groups. This gives us an estimate of `r round(combined[1])` with a 95% confidence interval of `r combined[2:3]`. Separating the data by species we estimate there are `r round(ibex.cm[1])` (`r ibex.cm[2:3]`) ibex groups and `r round(argali.cm[1])` (`r argali.cm[2:3]`) argali groups. 
-From our previous simulations we expect this to be negatively biased, as there is unmodelled heterogeneity in the population from detectability decreasing with distance. The estimates for the individual species are probably more reliable as it accounts for any difference in detectability between the two species. 
-## Conventional Distance Sampling
-We now turn to CDS. Upon closer inspection, many detection distances (both perpendicular and forward) appeared to be rounded to zero, likely as a result of the bearings being rounded to the nearest 5 degrees. To prevent this from impacting the model fit we simply added a small random number to each zero observation. We only use the jittered perpendicular distances for conventional distance sampling, but we will use the jittered forward distances in the 2D section. 
+
+We start by using the Chapman estimator to estimate the total number of groups. This gives us an estimate of `r round(combined[1])` with a 95% confidence interval of `r combined[2:3]`. Separating the data by species we estimate there are `r round(ibex.cm[1])` (`r ibex.cm[2:3]`) ibex groups and `r round(argali.cm[1])` (`r argali.cm[2:3]`) argali groups. From our previous simulations we expect this to be negatively biased, as there is unmodelled heterogeneity in the population from detectability decreasing with distance. The estimates for the individual species are probably more reliable as it accounts for any difference in detectability between the two species. \## Conventional Distance Sampling We now turn to CDS. Upon closer inspection, many detection distances (both perpendicular and forward) appeared to be rounded to zero, likely as a result of the bearings being rounded to the nearest 5 degrees. To prevent this from impacting the model fit we simply added a small random number to each zero observation. We only use the jittered perpendicular distances for conventional distance sampling, but we will use the jittered forward distances in the 2D section.
+
 ```{r perp-distance-histograms, fig.cap = "Histograms of perpendicular distances"}
 hist(CDSData$distance, main = "Perpendicular Distance", xlab = "Distance")
 ```
-We decided to truncate the data at 1600m, which excluded one outlier at 1820m. We then fitted a series of models using both half normal and hazard rate detection functions to the combined data set and to each species individually. We included size, block and observer (and species in the combined model) as covariates, and chose the best model using AIC. (Full analysis can be found in the _CDS analysis file.) 
 
-```{r fit-CDS, include = F, warning = F}
+We decided to truncate the data at 1600m, which excluded one outlier at 1820m. We then fitted a series of models using both half normal and hazard rate detection functions to the combined data set and to each species individually. We included size, block and observer (and species in the combined model) as covariates, and chose the best model using AIC. (Full analysis can be found in the \_CDS analysis file.)
+
+```{r fit-CDS, include = F, warning = F, cache=T}
 hr_block <- ds(CDSdf, truncation = w, formula = ~Region.Label, key = "hr")
 hr_ibex_block <- ds(ibexdf, truncation = w, formula = ~Region.Label, key = "hr")
 hr_argali_block <- ds(argalidf, truncation = w, formula = ~Region.Label, key = "hr")
@@ -39,7 +41,9 @@ total.summary <- summary(hr_block)
 ibex.summary <- summary(hr_ibex_block)
 argali.summary <- summary(hr_argali_block)
 ```
-The best fitting model according to AIC involved fitting separate hazard rate functions with block as a covariate to the ibex and argali data sets. However, the argali detection function has a large spike at zero, which is not realistic.  
+
+The best fitting model according to AIC involved fitting separate hazard rate functions with block as a covariate to the ibex and argali data sets. However, the argali detection function has a large spike at zero, which is not realistic.
+
 ```{r plot-separate species, echo = F, fig.cap= "Detection function and QQ-plots for ibex and argali models"}
 par(mfrow = c(2,2))
 plot(hr_ibex_block, main = "Ibex")
@@ -47,12 +51,15 @@ gofi <- gof_ds(hr_ibex_block)
 plot(hr_argali_block, main = "Argali")
 gofa <- gof_ds(hr_argali_block)
 ```
-Therefore, we choose the combined model as our best model, as the AIC was only slightly higher (`r hr_block$ddf$criterion` vs `r hr_ibex_block$ddf$criterion + hr_argali_block$ddf$criterion`) and it doesn't have the spike at zero. 
+
+Therefore, we choose the combined model as our best model, as the AIC was only slightly higher (`r hr_block$ddf$criterion` vs `r hr_ibex_block$ddf$criterion + hr_argali_block$ddf$criterion`) and it doesn't have the spike at zero.
+
 ```{r plot-combined, echo = F, fig.cap = "Detection function and QQ-plots for combined model"}
 par(mfrow = c(1,2))
 plot(hr_block)
 gof <- gof_ds(hr_block)
 ```
+
 ```{r CDS-ci, include = F, warning = F}
 CDSN <- total.summary$ds$Nhat
 CDSci <- total.summary$ds$Nhat + c(-1,1)*1.96*total.summary$ds$Nhat.se
@@ -61,13 +68,10 @@ ibexci <- ibex.summary$ds$Nhat + c(-1,1)*1.96*ibex.summary$ds$Nhat.se
 argN <- argali.summary$ds$Nhat
 argci <- argali.summary$ds$Nhat + c(-1,1)*1.96*argali.summary$ds$Nhat.se
 ```
-This gives an estimate of `r round(CDSN)` total groups with a 95% confidence interval of `r CDSci`. This is much higher than the MCR estimate, but may be biased if the animal distribution is not uniform. 
-## 2D Distance Sampling
 
-We will now use 2D distance sampling to investigate if the animals are uniformly distributed. 61 of the detected groups were behind the observers so did not have a valid "forward" distance. This leaves 132 usable observations.
-```{ forward-hist, echo = F}
-hist(DistData$forward, main = "Forward Distance", xlab = "Distance (m)")
-```
+This gives an estimate of `r round(CDSN)` total groups with a 95% confidence interval of `r CDSci`. This is much higher than the MCR estimate, but may be biased if the animal distribution is not uniform. \## 2D Distance Sampling
+
+We will now use 2D distance sampling to investigate if the animals are uniformly distributed. 61 of the detected groups were behind the observers so did not have a valid "forward" distance. This leaves 132 usable observations. `{ forward-hist, echo = F} hist(DistData$forward, main = "Forward Distance", xlab = "Distance (m)")`
 
 ```{r fit-model, include = FALSE, warning=FALSE, cache = TRUE}
 combined.ip0.hnorm <- LT2D.fit(DataFrameInput = jitterdf,
@@ -105,6 +109,7 @@ total.argali <- round(argali.ip0$ests[nrow(argali.ip0$ests),8])
 #ibexboot <- LT2D.bootstrap(ibex.ip0.hnorm, r = 999, alpha = 0.05)
 #argaliboot <- LT2D.bootstrap(argali.ip0, r = 999, alpha = 0.05)
 ```
+
 ```{r group-ci, include=FALSE, warning=FALSE, cache = TRUE}
 comb.groupdf <- jitterdf
 comb.groupdf$size <- rep(1, length(comb.groupdf$size))
@@ -156,6 +161,7 @@ test.results <- gof.LT2D(combined.ip0.hnorm, plot = T)
 We tried fitting different models to each species in the survey, but this had a higher AIC than the combined model (`r ibex.ip0.hnorm$fit$AIC + argali.ip0$fit$AIC` vs `r combined.ip0.hnorm$fit$AIC` for combined model). Interestingly, the argali appear to be uniformly distributed across the area whereas the ibex exhibit line attraction. However, there are only 39 argali groups with valid distances so further investigation is needed before drawing any conclusions. With more time we would fit a model that had species as a covariate.
 
 The best combined model estimates there are `r total.N` groups in total.
+
 ```{r estimate-by-block, echo = F, cache = T}
 ests <- combined.ip0.hnorm$ests[,c(1,2,4,6,7:11)]
 rownames(ests) <- NULL
@@ -163,7 +169,8 @@ kable(ests, col.names = c("Stratum", "Groups Seen", "Total Transect Length ($km$
 ```
 
 ## Summary
-The 2D distance analysis suggests that the animals are attracted to the line. This would make the conventional distance estimate positively biased, and so it is reasonable that the 2D estimate would be lower. We would expect the mark recapture estimate to be negatively biased due to the declining detectability with distance, but it is higher. This is likely due to imperfect matching in the data, so we recommend 2D Distance sampling as the most reliable estimate, as it is not impacted by imperfect matching or non uniform animal distribution. 
+
+The 2D distance analysis suggests that the animals are attracted to the line. This would make the conventional distance estimate positively biased, and so it is reasonable that the 2D estimate would be lower. We would expect the mark recapture estimate to be negatively biased due to the declining detectability with distance, but it is higher. This is likely due to imperfect matching in the data, so we recommend 2D Distance sampling as the most reliable estimate, as it is not impacted by imperfect matching or non uniform animal distribution.
 
 ```{r tables, echo = F, cache = T}
 combinedcis <- data.frame( "N" = c(round(total.N), round(CDSN), round(combined[1])), "L" = c(groupci[1], CDSci[1], combined[2]), "U" = c(groupci[2], CDSci[2], combined[3]), row.names = c("2D Distance", "Conventional Distance", "Chapman")) 
@@ -175,4 +182,5 @@ argalicis <- data.frame( "N" = c(round(total.argali), round(argN), round(argali.
 argtab <- kable(argalicis, col.names = c("Point Estimate", "95% Confidence", "Interval"), caption = "Argali")
 kables(list(combtab, ibtab, argtab))
 ```
-Whilst the combined model was the best fit for the data, we have included our separate estimates for each species as they may be more useful in practice. 
+
+Whilst the combined model was the best fit for the data, we have included our separate estimates for each species as they may be more useful in practice.
