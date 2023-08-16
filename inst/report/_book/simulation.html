@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 3 Simulation | _main.knit</title>
+  <meta name="description" content="" />
+  <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 3 Simulation | _main.knit" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 3 Simulation | _main.knit" />
+  
+  
+  
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="cross.html"/>
+<link rel="next" href="real-data.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
+<script src="libs/plotly-binding-4.10.2/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
+<link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="libs/datatables-binding-0.28/datatables.js"></script>
+<link href="libs/dt-core-1.13.4/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core-1.13.4/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-1.13.4/js/jquery.dataTables.min.js"></script>
+<link href="libs/dt-ext-fixedcolumns-1.13.4/css/fixedColumns.dataTables.min.css" rel="stylesheet" />
+<script src="libs/dt-ext-fixedcolumns-1.13.4/js/dataTables.fixedColumns.min.js"></script>
+<link href="libs/dt-ext-fixedheader-1.13.4/css/fixedHeader.dataTables.min.css" rel="stylesheet" />
+<script src="libs/dt-ext-fixedheader-1.13.4/js/dataTables.fixedHeader.min.js"></script>
+
+
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
+<li class="chapter" data-level="2" data-path="cross.html"><a href="cross.html"><i class="fa fa-check"></i><b>2</b> Methods</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="cross.html"><a href="cross.html#mark-recapture"><i class="fa fa-check"></i><b>2.1</b> Mark-Recapture</a>
+<ul>
+<li class="chapter" data-level="2.1.1" data-path="cross.html"><a href="cross.html#closed-populations"><i class="fa fa-check"></i><b>2.1.1</b> Closed populations</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="cross.html"><a href="cross.html#distance-sampling"><i class="fa fa-check"></i><b>2.2</b> Distance Sampling</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="cross.html"><a href="cross.html#line-transect-sampling"><i class="fa fa-check"></i><b>2.2.1</b> Line transect sampling</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="cross.html"><a href="cross.html#mrds"><i class="fa fa-check"></i><b>2.3</b> MRDS</a></li>
+<li class="chapter" data-level="2.4" data-path="cross.html"><a href="cross.html#d-distance"><i class="fa fa-check"></i><b>2.4</b> 2D Distance</a></li>
+<li class="chapter" data-level="2.5" data-path="cross.html"><a href="cross.html#further-reading"><i class="fa fa-check"></i><b>2.5</b> Further Reading</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="simulation.html"><a href="simulation.html"><i class="fa fa-check"></i><b>3</b> Simulation</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="simulation.html"><a href="simulation.html#simulation-scenarios"><i class="fa fa-check"></i><b>3.1</b> Simulation scenarios</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="simulation.html"><a href="simulation.html#initial-perpendicular-distance-distribution"><i class="fa fa-check"></i><b>3.1.1</b> Initial perpendicular distance distribution</a></li>
+<li class="chapter" data-level="3.1.2" data-path="simulation.html"><a href="simulation.html#movement-after-first-detection"><i class="fa fa-check"></i><b>3.1.2</b> Movement after first detection</a></li>
+<li class="chapter" data-level="3.1.3" data-path="simulation.html"><a href="simulation.html#imperfect-matching"><i class="fa fa-check"></i><b>3.1.3</b> Imperfect Matching</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="simulation.html"><a href="simulation.html#simulation-results"><i class="fa fa-check"></i><b>3.2</b> Simulation Results</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="simulation.html"><a href="simulation.html#uniform-animal-distribution"><i class="fa fa-check"></i><b>3.2.1</b> Uniform Animal Distribution</a></li>
+<li class="chapter" data-level="3.2.2" data-path="simulation.html"><a href="simulation.html#avoiding-transect"><i class="fa fa-check"></i><b>3.2.2</b> Avoiding Transect</a></li>
+<li class="chapter" data-level="3.2.3" data-path="simulation.html"><a href="simulation.html#attracted-to-transect"><i class="fa fa-check"></i><b>3.2.3</b> Attracted to Transect</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="simulation.html"><a href="simulation.html#further-reading-1"><i class="fa fa-check"></i><b>3.3</b> Further Reading</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="real-data.html"><a href="real-data.html"><i class="fa fa-check"></i><b>4</b> Real Data</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="real-data.html"><a href="real-data.html#mark-recapture-1"><i class="fa fa-check"></i><b>4.1</b> Mark Recapture</a></li>
+<li class="chapter" data-level="4.2" data-path="real-data.html"><a href="real-data.html#conventional-distance-sampling"><i class="fa fa-check"></i><b>4.2</b> Conventional Distance Sampling</a></li>
+<li class="chapter" data-level="4.3" data-path="real-data.html"><a href="real-data.html#d-distance-sampling"><i class="fa fa-check"></i><b>4.3</b> 2D Distance Sampling</a></li>
+<li class="chapter" data-level="4.4" data-path="real-data.html"><a href="real-data.html#summary"><i class="fa fa-check"></i><b>4.4</b> Summary</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./"></a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="simulation" class="section level1 hasAnchor" number="3">
+<h1><span class="header-section-number">Chapter 3</span> Simulation<a href="simulation.html#simulation" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Simulation studies have become indispensable in ecology and conservation research, providing a controlled and repeatable approach to evaluate the performance of estimation methods. In this study, we aimed to assess how each method performs using a range of scenarios with varying degrees of assumption compliance and violations. In each scenario, artificial datasets are created with with known population sizes, density patterns, detectability patterns, etc. to test the accuracy and precision of estimators.</p>
+<div id="simulation-scenarios" class="section level2 hasAnchor" number="3.1">
+<h2><span class="header-section-number">3.1</span> Simulation scenarios<a href="simulation.html#simulation-scenarios" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="initial-perpendicular-distance-distribution" class="section level3 hasAnchor" number="3.1.1">
+<h3><span class="header-section-number">3.1.1</span> Initial perpendicular distance distribution<a href="simulation.html#initial-perpendicular-distance-distribution" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Perpendicular distance refers to the minimum distance to the transect line at which animals are detected. 3 different levels are considered: uniformly distributed, avoiding the line and attracted to the line.</p>
+<p><img src="_main_files/figure-html/initial%20perp.%20dist.%20distribution-1.png" width="672" /></p>
+<div class="figure"><span style="display:block;" id="fig:distribution-plots"></span>
+<img src="_main_files/figure-html/distribution-plots-1.png" alt="Potential Animal Distributions" width="672" />
+<p class="caption">
+Figure 3.1: Potential Animal Distributions
+</p>
+</div>
+</div>
+<div id="movement-after-first-detection" class="section level3 hasAnchor" number="3.1.2">
+<h3><span class="header-section-number">3.1.2</span> Movement after first detection<a href="simulation.html#movement-after-first-detection" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>For the mark recapture methods there are two detection occasions, which could be , for example, two observers on different decks of a boat or , as in the snow leopard prey data, two observers walking the transect at different times. Animal movement is not an issue for the first scenario as the animals move slowly in comparison to the boat, so will not move far enough to have different detection probabilities between the two observers. However, in our snow leopard prey example, there is 30 minutes between the first and second observer walking the transect so the animals could move significantly between the two observers. We consider two types of movement after the first detection: random movement and avoidant movement away from the transect. We based our simulation on Ibex movement data in Johansson <em>et al</em>. (2022), which shows that the distance moved follows roughly a log normal distribution with mean log(12) + 1.5 and standard deviation 1.5,</p>
+<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-0f67f37ad928c9e82ce6" style="width:672px;height:840px;"></div>
+<script type="application/json" data-for="htmlwidget-0f67f37ad928c9e82ce6">{"x":{"visdat":{"4b584f974da4":["function () ","plotlyVisDat"]},"cur_data":"4b584f974da4","attrs":{"4b584f974da4":{"x":{},"y":{},"mode":"markers","color":{},"size":{},"frame":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"xaxis":{"domain":[0,1],"automargin":true,"title":"x","range":[-1709.8471016965661,1732.01063958129]},"yaxis":{"domain":[0,1],"automargin":true,"title":"y","range":[-6.6790872011117557,623.71952190791114]},"hovermode":"closest","showlegend":true,"sliders":[{"currentvalue":{"prefix":"obs: ","xanchor":"right","font":{"size":16,"color":"rgba(204,204,204,1)"}},"steps":[{"method":"animate","args":[["1"],{"transition":{"duration":500,"easing":"linear"},"frame":{"duration":500,"redraw":false},"mode":"immediate"}],"label":"1","value":"1"},{"method":"animate","args":[["2"],{"transition":{"duration":500,"easing":"linear"},"frame":{"duration":500,"redraw":false},"mode":"immediate"}],"label":"2","value":"2"}],"visible":true,"pad":{"t":40}}],"updatemenus":[{"type":"buttons","direction":"right","showactive":false,"y":0,"x":0,"yanchor":"top","xanchor":"right","pad":{"t":60,"r":5},"buttons":[{"label":"Play","method":"animate","args":[null,{"fromcurrent":true,"mode":"immediate","transition":{"duration":500,"easing":"linear"},"frame":{"duration":500,"redraw":false}}]}]}]},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[-942.64518916606903,1357.8640379011631,-1321.9942815601826,-1128.4907981753349,1233.4644734859467,145.95502093434334,-170.35699784755707,-638.99492025375366,-1543.6801880598068,45.189600437879562,1525.2490818500519,900.99607482552528,-194.04012262821198,-776.16106867790222,1517.6345229148865,-907.98265933990479,-200.47125518321991,-1090.8428080379963,-1121.0093632340431,1123.4407871961594,-1257.0475116372108,1280.6850716471672,-340.48385694622993,462.96083182096481,-301.43200010061264,1315.5749477446079,548.04782122373581,289.52328488230705,1321.3672123849392,795.95840871334076,921.38409018516541,1105.8483049273491,-1498.0683758854866,291.37545451521873,-1162.4046258628368,-982.61894956231117,-387.80816197395325,-391.04227945208549,-1333.4244877099991,1422.3593726754189,872.09012731909752,684.41362977027893,-136.54852658510208,-242.52520576119423,85.516928136348724,601.38882100582123,1239.7964119911194,-1268.1920267641544,256.97983950376511,-1272.4891878664494],"y":[252.35741953365505,457.95049918815494,482.24642090499401,311.68354055844247,501.15121034905314,91.076928935945034,206.59238900989294,580.35099073313177,22.01777589507401,557.36121917143464,474.9020311050117,493.82540979422629,137.19765460118651,353.35233500227332,499.74110405892134,191.23955257236958,571.20565320365131,362.9613455850631,366.29076674580574,294.86859426833689,71.251633577048779,358.33280179649591,209.0193553827703,474.84986409544945,93.850873410701752,374.00687648914754,522.188720991835,484.78298848494887,34.767354559153318,242.36138784326613,384.6306667663157,505.91558022424579,231.52129794470966,573.69724404998124,331.1070320662111,370.79277033917606,96.34739812463522,343.52037096396089,253.41170676983893,381.21409700252116,50.082953553646803,173.2773894444108,389.81675268150866,410.08210480213165,161.10344426706433,595.06503967568278,303.24008879251778,328.31280897371471,290.66868857480586,482.727564079687],"mode":"markers","frame":"1","type":"scatter","name":"Random","marker":{"color":"rgba(252,141,98,1)","size":[85,100,70,25,25,40,25,55,70,85,70,10,40,40,55,40,40,40,55,40,25,55,40,10,40,85,10,10,85,40,55,85,25,55,25,25,25,100,25,25,70,70,40,10,25,10,100,10,85,55],"sizemode":"area","line":{"color":"rgba(252,141,98,1)"}},"textfont":{"color":"rgba(252,141,98,1)","size":[85,100,70,25,25,40,25,55,70,85,70,10,40,40,55,40,40,40,55,40,25,55,40,10,40,85,10,10,85,40,55,85,25,55,25,25,25,100,25,25,70,70,40,10,25,10,100,10,85,55]},"error_y":{"color":"rgba(252,141,98,1)","width":[]},"error_x":{"color":"rgba(252,141,98,1)","width":[]},"line":{"color":"rgba(252,141,98,1)"},"xaxis":"x","yaxis":"y","visible":true}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"frames":[{"name":"1","data":[{"x":[-942.64518916606903,1357.8640379011631,-1321.9942815601826,-1128.4907981753349,1233.4644734859467,145.95502093434334,-170.35699784755707,-638.99492025375366,-1543.6801880598068,45.189600437879562,1525.2490818500519,900.99607482552528,-194.04012262821198,-776.16106867790222,1517.6345229148865,-907.98265933990479,-200.47125518321991,-1090.8428080379963,-1121.0093632340431,1123.4407871961594,-1257.0475116372108,1280.6850716471672,-340.48385694622993,462.96083182096481,-301.43200010061264,1315.5749477446079,548.04782122373581,289.52328488230705,1321.3672123849392,795.95840871334076,921.38409018516541,1105.8483049273491,-1498.0683758854866,291.37545451521873,-1162.4046258628368,-982.61894956231117,-387.80816197395325,-391.04227945208549,-1333.4244877099991,1422.3593726754189,872.09012731909752,684.41362977027893,-136.54852658510208,-242.52520576119423,85.516928136348724,601.38882100582123,1239.7964119911194,-1268.1920267641544,256.97983950376511,-1272.4891878664494],"y":[252.35741953365505,457.95049918815494,482.24642090499401,311.68354055844247,501.15121034905314,91.076928935945034,206.59238900989294,580.35099073313177,22.01777589507401,557.36121917143464,474.9020311050117,493.82540979422629,137.19765460118651,353.35233500227332,499.74110405892134,191.23955257236958,571.20565320365131,362.9613455850631,366.29076674580574,294.86859426833689,71.251633577048779,358.33280179649591,209.0193553827703,474.84986409544945,93.850873410701752,374.00687648914754,522.188720991835,484.78298848494887,34.767354559153318,242.36138784326613,384.6306667663157,505.91558022424579,231.52129794470966,573.69724404998124,331.1070320662111,370.79277033917606,96.34739812463522,343.52037096396089,253.41170676983893,381.21409700252116,50.082953553646803,173.2773894444108,389.81675268150866,410.08210480213165,161.10344426706433,595.06503967568278,303.24008879251778,328.31280897371471,290.66868857480586,482.727564079687],"mode":"markers","frame":"1","type":"scatter","name":"Random","marker":{"color":"rgba(252,141,98,1)","size":[85,100,70,25,25,40,25,55,70,85,70,10,40,40,55,40,40,40,55,40,25,55,40,10,40,85,10,10,85,40,55,85,25,55,25,25,25,100,25,25,70,70,40,10,25,10,100,10,85,55],"sizemode":"area","line":{"color":"rgba(252,141,98,1)"}},"textfont":{"color":"rgba(252,141,98,1)","size":[85,100,70,25,25,40,25,55,70,85,70,10,40,40,55,40,40,40,55,40,25,55,40,10,40,85,10,10,85,40,55,85,25,55,25,25,25,100,25,25,70,70,40,10,25,10,100,10,85,55]},"error_y":{"color":"rgba(252,141,98,1)","width":[]},"error_x":{"color":"rgba(252,141,98,1)","width":[]},"line":{"color":"rgba(252,141,98,1)"},"xaxis":"x","yaxis":"y","visible":true}],"traces":[0]},{"name":"2","data":[{"x":[-939.43140924685383,1338.339633890899,-1331.2616633109399,-1167.011578347671,1210.0549224749097,147.79807514302865,-159.71245964988819,-680.28201943459953,-1553.3990225475727,76.212382588087493,1510.2667331276414,896.87937748398633,-171.99864725252741,-719.59058933008373,1575.5625604322966,-900.35099885364889,-135.45283670261648,-1032.5882431481416,-1130.0776583430934,1127.4307711955589,-1219.0655208833027,1170.6137334725663,-384.22859398205702,461.38836092949543,-351.16749794830116,1336.4676767487292,758.99402498366749,298.64410582275065,1345.9139334755355,641.88250254940272,927.79290845621369,582.95817773498413,-1465.2136461964885,341.22290988817019,-1184.4408048013051,-977.43608366788601,-409.64370331555534,24.209692621440126,-1410.2001859554193,1433.7290373201629,943.62670696904252,642.30246015864952,-241.91004937596443,-123.5311551008798,88.893803742939866,780.35828450340273,1159.0890130681541,-1068.6928669167919,265.26439032706145,-1287.3342402212188],"y":[252.41751320696173,457.95337165743797,482.25722597263518,311.67873781572695,501.20602599414866,91.066325275327159,206.60251015869599,580.29565602679781,21.975395031116555,557.42764242835301,474.85467479395186,493.83745212953193,137.11710963820687,353.35387175192216,499.74743128273263,191.25993208577381,571.20991821922155,363.15736797325667,366.29555244118131,294.8744250542681,71.377609315178589,358.37168689820743,209.04417609427495,474.84656525843133,93.869091576425191,373.83925214446305,522.19794938982329,484.8163817666171,34.758865790643434,242.41241563527811,384.63805789881451,506.04611548362027,231.74724976811027,573.69139615431902,331.08128161639553,370.79623779296929,96.336528419233403,342.8958184844293,253.48703595262552,381.21566810952334,50.047035514151048,173.79943160827804,389.77584055647731,409.99161368934085,161.08495161263014,595.00764889328639,303.28394084466095,328.20588931712211,290.99456801302853,482.78011025708201],"mode":"markers","frame":"2","type":"scatter","name":"Random","marker":{"color":"rgba(252,141,98,1)","size":[85,100,70,25,25,40,25,55,70,85,70,10,40,40,55,40,40,40,55,40,25,55,40,10,40,85,10,10,85,40,55,85,25,55,25,25,25,100,25,25,70,70,40,10,25,10,100,10,85,55],"sizemode":"area","line":{"color":"rgba(252,141,98,1)"}},"textfont":{"color":"rgba(252,141,98,1)","size":[85,100,70,25,25,40,25,55,70,85,70,10,40,40,55,40,40,40,55,40,25,55,40,10,40,85,10,10,85,40,55,85,25,55,25,25,25,100,25,25,70,70,40,10,25,10,100,10,85,55]},"error_y":{"color":"rgba(252,141,98,1)","width":[]},"error_x":{"color":"rgba(252,141,98,1)","width":[]},"line":{"color":"rgba(252,141,98,1)"},"xaxis":"x","yaxis":"y","visible":true}],"traces":[0]}],"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-b4bb3fe7e4def8631c66" style="width:672px;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-b4bb3fe7e4def8631c66">{"x":{"visdat":{"4b5820d1442a":["function () ","plotlyVisDat"]},"cur_data":"4b5820d1442a","attrs":{"4b5820d1442a":{"x":{},"y":{},"mode":"markers","color":{},"size":{},"frame":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"xaxis":{"domain":[0,1],"automargin":true,"title":"x","range":[-1690.0317858609742,1749.8409798975654]},"yaxis":{"domain":[0,1],"automargin":true,"title":"y","range":[-17.860335900660974,626.52757374247039]},"hovermode":"closest","showlegend":true,"sliders":[{"currentvalue":{"prefix":"obs: ","xanchor":"right","font":{"size":16,"color":"rgba(204,204,204,1)"}},"steps":[{"method":"animate","args":[["1"],{"transition":{"duration":500,"easing":"linear"},"frame":{"duration":500,"redraw":false},"mode":"immediate"}],"label":"1","value":"1"},{"method":"animate","args":[["2"],{"transition":{"duration":500,"easing":"linear"},"frame":{"duration":500,"redraw":false},"mode":"immediate"}],"label":"2","value":"2"}],"visible":true,"pad":{"t":40}}],"updatemenus":[{"type":"buttons","direction":"right","showactive":false,"y":0,"x":0,"yanchor":"top","xanchor":"right","pad":{"t":60,"r":5},"buttons":[{"label":"Play","method":"animate","args":[null,{"fromcurrent":true,"mode":"immediate","transition":{"duration":500,"easing":"linear"},"frame":{"duration":500,"redraw":false}}]}]}]},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[363.23443651199341,-219.96892616152763,1211.8711419403553,1593.4831269085407,423.09701591730118,-35.528404265642166,-1527.6854924857616,1336.3431632518768,239.66019526124001,-326.25899240374565,-1228.6804862320423,121.66718170046806,-1271.8952722847462,-676.1932298541069,-263.85362595319748,160.88335067033768,-912.85649091005325,617.36292988061905,-298.62359240651131,705.02702742815018,1361.685661226511,-371.30385339260101,-721.56068310141563,453.90220656991005,-1405.3712636232376,1280.7345069944859,-931.93355947732925,1005.8243654668331,-868.97186115384102,-1290.7098732888699,-762.76198178529739,-660.18235310912132,-1107.424557954073,-955.67923337221146,-253.58340963721275,251.62149518728256,904.94038313627243,1264.3409676849842,1466.6289769113064,756.71579167246819,635.78747883439064,-503.43760922551155,-950.66177472472191,1421.4281156659126,258.98222327232361,-1120.6358045339584,1215.9357465803623,-1268.2579003274441,1530.6476682424545,-591.58111959695816],"y":[476.56512334942818,108.60521597787738,294.50200069695711,103.58579121530056,18.703698506578803,35.522172320634127,86.882883030921221,527.59047034196556,500.00019650906324,216.67573750019073,114.89748694002628,214.87120427191257,46.994108101353049,223.48149782046676,578.24988286010921,557.06764999777079,99.386809626594186,15.32405954785645,469.90419910289347,380.38221169263124,166.50294768624008,300.33589052036405,207.50512992963195,217.89615391753614,131.21963432058692,24.771416606381536,11.571169970557094,322.716178977862,597.23721421323717,75.894539896398783,19.146183365955949,298.31245257519186,241.52087294496596,184.65491272509098,155.98002620972693,414.45569498464465,454.334965813905,97.261753678321838,121.64439051412046,376.08994175679982,74.807984288781881,592.80988820828497,296.8404330778867,559.89189399406314,223.13834088854492,370.19994612783194,183.34605828858912,126.0838417802006,128.02809337154031,366.42660121433437],"mode":"markers","frame":"1","type":"scatter","name":"Avoidance","marker":{"color":"rgba(252,141,98,1)","size":[55,100,70,55,55,10,40,55,25,85,85,85,85,70,10,85,10,40,85,100,100,25,10,55,55,25,55,40,100,85,40,10,55,40,40,10,70,55,55,70,25,85,85,85,55,10,100,85,100,85],"sizemode":"area","line":{"color":"rgba(252,141,98,1)"}},"textfont":{"color":"rgba(252,141,98,1)","size":[55,100,70,55,55,10,40,55,25,85,85,85,85,70,10,85,10,40,85,100,100,25,10,55,55,25,55,40,100,85,40,10,55,40,40,10,70,55,55,70,25,85,85,85,55,10,100,85,100,85]},"error_y":{"color":"rgba(252,141,98,1)","width":[]},"error_x":{"color":"rgba(252,141,98,1)","width":[]},"line":{"color":"rgba(252,141,98,1)"},"xaxis":"x","yaxis":"y","visible":true}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"frames":[{"name":"1","data":[{"x":[363.23443651199341,-219.96892616152763,1211.8711419403553,1593.4831269085407,423.09701591730118,-35.528404265642166,-1527.6854924857616,1336.3431632518768,239.66019526124001,-326.25899240374565,-1228.6804862320423,121.66718170046806,-1271.8952722847462,-676.1932298541069,-263.85362595319748,160.88335067033768,-912.85649091005325,617.36292988061905,-298.62359240651131,705.02702742815018,1361.685661226511,-371.30385339260101,-721.56068310141563,453.90220656991005,-1405.3712636232376,1280.7345069944859,-931.93355947732925,1005.8243654668331,-868.97186115384102,-1290.7098732888699,-762.76198178529739,-660.18235310912132,-1107.424557954073,-955.67923337221146,-253.58340963721275,251.62149518728256,904.94038313627243,1264.3409676849842,1466.6289769113064,756.71579167246819,635.78747883439064,-503.43760922551155,-950.66177472472191,1421.4281156659126,258.98222327232361,-1120.6358045339584,1215.9357465803623,-1268.2579003274441,1530.6476682424545,-591.58111959695816],"y":[476.56512334942818,108.60521597787738,294.50200069695711,103.58579121530056,18.703698506578803,35.522172320634127,86.882883030921221,527.59047034196556,500.00019650906324,216.67573750019073,114.89748694002628,214.87120427191257,46.994108101353049,223.48149782046676,578.24988286010921,557.06764999777079,99.386809626594186,15.32405954785645,469.90419910289347,380.38221169263124,166.50294768624008,300.33589052036405,207.50512992963195,217.89615391753614,131.21963432058692,24.771416606381536,11.571169970557094,322.716178977862,597.23721421323717,75.894539896398783,19.146183365955949,298.31245257519186,241.52087294496596,184.65491272509098,155.98002620972693,414.45569498464465,454.334965813905,97.261753678321838,121.64439051412046,376.08994175679982,74.807984288781881,592.80988820828497,296.8404330778867,559.89189399406314,223.13834088854492,370.19994612783194,183.34605828858912,126.0838417802006,128.02809337154031,366.42660121433437],"mode":"markers","frame":"1","type":"scatter","name":"Avoidance","marker":{"color":"rgba(252,141,98,1)","size":[55,100,70,55,55,10,40,55,25,85,85,85,85,70,10,85,10,40,85,100,100,25,10,55,55,25,55,40,100,85,40,10,55,40,40,10,70,55,55,70,25,85,85,85,55,10,100,85,100,85],"sizemode":"area","line":{"color":"rgba(252,141,98,1)"}},"textfont":{"color":"rgba(252,141,98,1)","size":[55,100,70,55,55,10,40,55,25,85,85,85,85,70,10,85,10,40,85,100,100,25,10,55,55,25,55,40,100,85,40,10,55,40,40,10,70,55,55,70,25,85,85,85,55,10,100,85,100,85]},"error_y":{"color":"rgba(252,141,98,1)","width":[]},"error_x":{"color":"rgba(252,141,98,1)","width":[]},"line":{"color":"rgba(252,141,98,1)"},"xaxis":"x","yaxis":"y","visible":true}],"traces":[0]},{"name":"2","data":[{"x":[604.4723332387,-440.88151891339737,1225.0394804740338,1593.4831269085407,670.42883637249452,-304.58062834314507,-1533.6739328719495,1364.9091611127697,508.99932639817627,-346.52620569571502,-1312.4668903710988,222.59287694194535,-1335.2628646935764,-781.76245264030308,-496.66094541345961,371.34637825498396,-1006.5649156776585,656.97206180201329,-600.24218798174797,726.70272284657312,1345.6179006007994,-355.94338076142236,-748.00580925882025,591.81755631277201,-1445.0080285329852,1329.0452367263292,-996.49706396301076,1019.1761887905568,-964.62274639557313,-1356.1029360875843,-794.92603282886967,-752.24975951507736,-1156.2609392359088,-982.95220157019537,-310.29195293708915,321.60025426575328,966.64837865195886,1295.2900485438074,1481.0484562077711,921.78169935304754,729.73053612047283,-578.59571331602774,-976.97771541516511,1423.606270639345,397.78496112881163,-1166.5830588467218,1237.4804516562544,-1320.9810560294216,1540.0411295766439,-773.04926813867064],"y":[476.57394245062562,108.60418664137097,294.50239002316584,103.58579121530056,18.680429135775302,35.537329833529348,86.882457636233084,527.58999316184338,500.119623623564,216.67416144462999,114.88142216102752,214.87193084380931,46.989912544103227,223.49962342827445,578.16066209788653,557.06539985229529,99.389500199089028,15.326469823713447,469.8782797041535,380.34571818166478,166.5509019695661,300.1446775187452,207.50348749904001,217.89153630562157,131.22458532206031,24.775077325729693,11.430023628572272,322.71539631354477,597.21927550400801,75.909254175996352,19.144096937033993,298.29778155249051,241.52178784422122,184.6518667361332,155.99051714186143,414.45273620990338,454.35312736520598,97.26369369455854,121.64194179020267,376.09431173432307,74.819193267194237,592.80803072792628,296.84049748736459,559.89367968052045,223.10521501500244,370.20312487070169,183.30563428480812,126.08586744060599,128.02999082086674,366.39634043653393],"mode":"markers","frame":"2","type":"scatter","name":"Avoidance","marker":{"color":"rgba(252,141,98,1)","size":[55,100,70,55,55,10,40,55,25,85,85,85,85,70,10,85,10,40,85,100,100,25,10,55,55,25,55,40,100,85,40,10,55,40,40,10,70,55,55,70,25,85,85,85,55,10,100,85,100,85],"sizemode":"area","line":{"color":"rgba(252,141,98,1)"}},"textfont":{"color":"rgba(252,141,98,1)","size":[55,100,70,55,55,10,40,55,25,85,85,85,85,70,10,85,10,40,85,100,100,25,10,55,55,25,55,40,100,85,40,10,55,40,40,10,70,55,55,70,25,85,85,85,55,10,100,85,100,85]},"error_y":{"color":"rgba(252,141,98,1)","width":[]},"error_x":{"color":"rgba(252,141,98,1)","width":[]},"line":{"color":"rgba(252,141,98,1)"},"xaxis":"x","yaxis":"y","visible":true}],"traces":[0]}],"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="imperfect-matching" class="section level3 hasAnchor" number="3.1.3">
+<h3><span class="header-section-number">3.1.3</span> Imperfect Matching<a href="simulation.html#imperfect-matching" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Mark recapture methods also assume that the observers can perfectly identify which animals were seen by both observers and which animals were seen by just one observer. This becomes problematic for animals without unique identifying markings in surveys where they could move between detection occasions.</p>
+<p>We simulated imperfect matching by setting any animals detected on the second occasion within 300m of an animal detected on the first animal were recorded as the same animal, taking the closest as the match if there were multiple within this range. Any animals further than 1000m were recorded as different, and the probability of matching animals within the range was generated using a inverse power function with parameters <span class="math inline">\(\beta_1\)</span> = 6, <span class="math inline">\(\beta_2\)</span> = 0.000005. (Thanks to the snow leopard prey team for suggesting these limits)</p>
+<p><img src="_main_files/figure-html/imperfect-matching%20plot-1.png" width="672" /></p>
+</div>
+</div>
+<div id="simulation-results" class="section level2 hasAnchor" number="3.2">
+<h2><span class="header-section-number">3.2</span> Simulation Results<a href="simulation.html#simulation-results" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>For each of the 12 scenarios we calculated the bias and coverage probability of the 4 methods. Due to time constraints we only fitted a hazard-rate detection function with no adjustments for conventional distance sampling and only used the independent observer configuration with a hazard rate distance model for MRDS. This means the models for these methods may not be the best fit, and it could be possible to achieve a smaller bias or larger coverage probability. With more time we would fit multiple models to each set of simulated data and choose the best using AIC. We also only fit one 2D model, but as it was the model used the generate the data it should be the best model regardless.</p>
+<div id="uniform-animal-distribution" class="section level3 hasAnchor" number="3.2.1">
+<h3><span class="header-section-number">3.2.1</span> Uniform Animal Distribution<a href="simulation.html#uniform-animal-distribution" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>With uniform animal distribution we expect conventional distance and 2D distance sampling to perform similarly, as all the assumptions for both methods are met. Our results show that they both have similar coverage probabilities, and whilst conventional distance may appear to be more biased, this is more likely a result of only fitting one model rather than performing model selection. As these methods involve walking the transect just once, they are not affected by movement between observers.</p>
+<table class="kable_wrapper">
+<tbody>
+<tr>
+<td>
+<table>
+<caption>
+<span id="tab:unnamed-chunk-5">Table 3.1: </span>Random Movement
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+Bias
+</th>
+<th style="text-align:right;">
+Coverage Probability
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+MR
+</td>
+<td style="text-align:right;">
+-0.5712948
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+DS
+</td>
+<td style="text-align:right;">
+-0.2426987
+</td>
+<td style="text-align:right;">
+0.8686869
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+MRDS
+</td>
+<td style="text-align:right;">
+-0.2327096
+</td>
+<td style="text-align:right;">
+0.5050505
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2D
+</td>
+<td style="text-align:right;">
+-0.0241737
+</td>
+<td style="text-align:right;">
+0.8315789
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+<td>
+<table>
+<caption>
+<span id="tab:unnamed-chunk-3">Table 3.2: </span>Avoidance Movement
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+Bias
+</th>
+<th style="text-align:right;">
+Coverage Probability
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+MR
+</td>
+<td style="text-align:right;">
+-0.5371078
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+DS
+</td>
+<td style="text-align:right;">
+-0.1746048
+</td>
+<td style="text-align:right;">
+0.9090909
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+MRDS
+</td>
+<td style="text-align:right;">
+-0.1492886
+</td>
+<td style="text-align:right;">
+0.7979798
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2D
+</td>
+<td style="text-align:right;">
+0.0442049
+</td>
+<td style="text-align:right;">
+0.8541667
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Mark recapture performs poorly in this scenario and all the other scenarios as detectability declines with distance. This means there is unmodelled heterogeneity in the population, so it is negatively biased. MRDS is negatively biased with random animal movement as this violates the assumption that each animal has the same detection probability for each observer. It is less negatively biased with avoidance as second observer will see less animals than the first due to them now being further away. This results in a lower estimated detection probability and therefore a higher estimate.</p>
+<table class="kable_wrapper">
+<caption>
+<span id="tab:unnamed-chunk-6">Table 3.3: </span>With Imperfect Matching
+</caption>
+<tbody>
+<tr>
+<td>
+<table>
+<caption>
+<span id="tab:unnamed-chunk-6">Table 3.3: </span>Random Movement
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+Bias
+</th>
+<th style="text-align:right;">
+Coverage Probability
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+MR
+</td>
+<td style="text-align:right;">
+-0.7921806
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+DS
+</td>
+<td style="text-align:right;">
+-0.1992975
+</td>
+<td style="text-align:right;">
+0.8585859
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+MRDS
+</td>
+<td style="text-align:right;">
+-0.1449946
+</td>
+<td style="text-align:right;">
+0.7474747
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2D
+</td>
+<td style="text-align:right;">
+0.0114371
+</td>
+<td style="text-align:right;">
+0.8163265
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+<td>
+<table>
+<caption>
+<span id="tab:unnamed-chunk-4">Table 3.4: </span>Avoidance Movement
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+Bias
+</th>
+<th style="text-align:right;">
+Coverage Probability
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+MR
+</td>
+<td style="text-align:right;">
+-0.7960944
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+DS
+</td>
+<td style="text-align:right;">
+-0.2301179
+</td>
+<td style="text-align:right;">
+0.9090909
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+MRDS
+</td>
+<td style="text-align:right;">
+0.0069158
+</td>
+<td style="text-align:right;">
+0.9494949
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2D
+</td>
+<td style="text-align:right;">
+0.0007698
+</td>
+<td style="text-align:right;">
+0.8453608
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<p>After introducing imperfect matching, MRDS estimates seem to be less negatively biased. This is due to some individuals that were seen twice being mistakenly identified as two separate animals, leading to a lower estimate of detection probability and hence a higher estimate of abundance. Whilst it looks like MRDS should be the best estimator in the scenario with avoidance movement and imperfect matching, this is actually because effects of breaking multiple assumptions happen to balance out in this specific situation. This results in very variable estimates, as the variance of the <span class="math inline">\(\hat{N}\)</span> s was 210.5016262 for MRDS, compared to 53.1161078 for 2D Distance.</p>
+</div>
+<div id="avoiding-transect" class="section level3 hasAnchor" number="3.2.2">
+<h3><span class="header-section-number">3.2.2</span> Avoiding Transect<a href="simulation.html#avoiding-transect" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>As expected, only 2D Distance is unbiased when the animals initially avoid the transect.</p>
+<table class="kable_wrapper">
+<tbody>
+<tr>
+<td>
+<table>
+<caption>
+<span id="tab:unnamed-chunk-9">Table 3.5: </span>Random Movement
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+Bias
+</th>
+<th style="text-align:right;">
+Coverage Probability
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+MR
+</td>
+<td style="text-align:right;">
+-0.5236447
+</td>
+<td style="text-align:right;">
+0.0202020
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+DS
+</td>
+<td style="text-align:right;">
+-0.8951007
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+MRDS
+</td>
+<td style="text-align:right;">
+-0.7777289
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2D
+</td>
+<td style="text-align:right;">
+-0.0242510
+</td>
+<td style="text-align:right;">
+0.9325843
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+<td>
+<table>
+<caption>
+<span id="tab:unnamed-chunk-7">Table 3.6: </span>Avoidance Movement
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+Bias
+</th>
+<th style="text-align:right;">
+Coverage Probability
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+MR
+</td>
+<td style="text-align:right;">
+-0.4813794
+</td>
+<td style="text-align:right;">
+0.1818182
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+DS
+</td>
+<td style="text-align:right;">
+-0.8971265
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+MRDS
+</td>
+<td style="text-align:right;">
+-0.7722739
+</td>
+<td style="text-align:right;">
+0.0102041
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2D
+</td>
+<td style="text-align:right;">
+-0.0100226
+</td>
+<td style="text-align:right;">
+0.9625000
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Conventional distance and MRDS are both negatively biased as the fitted detection function decays less quickly than the true detection function to account for the large numbers of detections far away from the transect. However, as these detections are a result of more animals being far from the transect rather than a high detection probability, the models overestimate the detection probability and so underestimate the abundance.</p>
+<div class="figure"><span style="display:block;" id="fig:avoidance-df-hist"></span>
+<img src="_main_files/figure-html/avoidance-df-hist-1.png" alt="Fitted detection function vs True detection function" width="672" />
+<p class="caption">
+Figure 3.2: Fitted detection function vs True detection function
+</p>
+</div>
+<table class="kable_wrapper">
+<caption>
+<span id="tab:unnamed-chunk-10">Table 3.7: </span>With Imperfect Matching
+</caption>
+<tbody>
+<tr>
+<td>
+<table>
+<caption>
+<span id="tab:unnamed-chunk-10">Table 3.7: </span>Random Movement
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+Bias
+</th>
+<th style="text-align:right;">
+Coverage Probability
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+MR
+</td>
+<td style="text-align:right;">
+-0.8963410
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+DS
+</td>
+<td style="text-align:right;">
+-0.8946835
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+MRDS
+</td>
+<td style="text-align:right;">
+-0.8838497
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2D
+</td>
+<td style="text-align:right;">
+-0.0489940
+</td>
+<td style="text-align:right;">
+0.9550562
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+<td>
+<table>
+<caption>
+<span id="tab:unnamed-chunk-8">Table 3.8: </span>Avoidance Movement
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+Bias
+</th>
+<th style="text-align:right;">
+Coverage Probability
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+MR
+</td>
+<td style="text-align:right;">
+-0.9036200
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+DS
+</td>
+<td style="text-align:right;">
+-0.8972843
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+MRDS
+</td>
+<td style="text-align:right;">
+-0.8280747
+</td>
+<td style="text-align:right;">
+0.0425532
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2D
+</td>
+<td style="text-align:right;">
+-0.1057635
+</td>
+<td style="text-align:right;">
+0.9638554
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<p>As before, all the methods except 2D distance sampling are negatively biased. The imperfect matching does make the MRDS estimates slightly bigger, but not enough to counteract the negative bias from the non uniform distribution.</p>
+</div>
+<div id="attracted-to-transect" class="section level3 hasAnchor" number="3.2.3">
+<h3><span class="header-section-number">3.2.3</span> Attracted to Transect<a href="simulation.html#attracted-to-transect" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>As with the avoidance case, we expect only 2D Distance to be unbiased when animals are initially attracted to the line.</p>
+<table class="kable_wrapper">
+<tbody>
+<tr>
+<td>
+<table>
+<caption>
+<span id="tab:unnamed-chunk-13">Table 3.9: </span>Random Movement
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+Bias
+</th>
+<th style="text-align:right;">
+Coverage Probability
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+MR
+</td>
+<td style="text-align:right;">
+-0.3703866
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+DS
+</td>
+<td style="text-align:right;">
+0.5170905
+</td>
+<td style="text-align:right;">
+0.0202020
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+MRDS
+</td>
+<td style="text-align:right;">
+0.5902227
+</td>
+<td style="text-align:right;">
+0.0202020
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2D
+</td>
+<td style="text-align:right;">
+0.2672576
+</td>
+<td style="text-align:right;">
+0.2828283
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+<td>
+<table>
+<caption>
+<span id="tab:unnamed-chunk-11">Table 3.10: </span>Avoidant Movement
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+Bias
+</th>
+<th style="text-align:right;">
+Coverage Probability
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+MR
+</td>
+<td style="text-align:right;">
+-0.3494140
+</td>
+<td style="text-align:right;">
+0.0101010
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+DS
+</td>
+<td style="text-align:right;">
+0.5820032
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+MRDS
+</td>
+<td style="text-align:right;">
+0.6244091
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2D
+</td>
+<td style="text-align:right;">
+0.2470833
+</td>
+<td style="text-align:right;">
+0.3131313
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Conventional distance and MRDS are positively biased this time, as the fitted detection functions now decay quicker than the true function. This gives a lower detection probability and therefore a higher estimate.</p>
+<table class="kable_wrapper">
+<caption>
+<span id="tab:unnamed-chunk-14">Table 3.11: </span>With Imperfect Matching
+</caption>
+<tbody>
+<tr>
+<td>
+<table>
+<caption>
+<span id="tab:unnamed-chunk-14">Table 3.11: </span>Random Movement
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+Bias
+</th>
+<th style="text-align:right;">
+Coverage Probability
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+MR
+</td>
+<td style="text-align:right;">
+-0.6407544
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+DS
+</td>
+<td style="text-align:right;">
+0.5726782
+</td>
+<td style="text-align:right;">
+0.0101010
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+MRDS
+</td>
+<td style="text-align:right;">
+0.6222090
+</td>
+<td style="text-align:right;">
+0.1212121
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2D
+</td>
+<td style="text-align:right;">
+0.2494046
+</td>
+<td style="text-align:right;">
+0.2783505
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+<td>
+<table>
+<caption>
+<span id="tab:unnamed-chunk-12">Table 3.12: </span>Avoidant Movement
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+Bias
+</th>
+<th style="text-align:right;">
+Coverage Probability
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+MR
+</td>
+<td style="text-align:right;">
+-0.6362617
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+DS
+</td>
+<td style="text-align:right;">
+0.5949428
+</td>
+<td style="text-align:right;">
+0.0202020
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+MRDS
+</td>
+<td style="text-align:right;">
+1.1271412
+</td>
+<td style="text-align:right;">
+0.0202020
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2D
+</td>
+<td style="text-align:right;">
+0.2617803
+</td>
+<td style="text-align:right;">
+0.3131313
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="further-reading-1" class="section level2 hasAnchor" number="3.3">
+<h2><span class="header-section-number">3.3</span> Further Reading<a href="simulation.html#further-reading-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Johansson, Ö., Mishra, C., Chapron, G., Samelius, G., Lkhagvajav, P., McCarthy, T. and Low, M. (2022). Seasonal variation in daily activity patterns of snow leopards and their prey. Scientific Reports, [online] 12(1), p.21681. <a href="doi:https://doi.org/10.1038/s41598-022-26358-w" class="uri">doi:https://doi.org/10.1038/s41598-022-26358-w</a>.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="cross.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="real-data.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf", "_main.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

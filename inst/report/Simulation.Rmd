@@ -1,0 +1,298 @@
+# Simulation
+
+Simulation studies have become indispensable in ecology and conservation research, providing a controlled and repeatable approach to evaluate the performance of estimation methods. In this study, we aimed to assess how each method performs using a range of scenarios with varying degrees of assumption compliance and violations. In each scenario, artificial datasets are created with with known population sizes, density patterns, detectability patterns, etc. to test the accuracy and precision of estimators.
+
+```{r echo = FALSE}
+source("report.simulation.R")
+library(knitr)
+library(kableExtra)
+```
+
+## Simulation scenarios
+
+### Initial perpendicular distance distribution
+
+Perpendicular distance refers to the minimum distance to the transect line at which animals are detected. 3 different levels are considered: uniformly distributed, avoiding the line and attracted to the line.
+
+```{r initial perp. dist. distribution, echo = FALSE}
+library(zoo)
+par(mfrow=c(1,3))
+xs <- seq(0,1600,length=100)
+
+# uniformly distributed
+y.unif <- pi.const(x=xs,logphi=NA,w=1600)
+plot(xs, y.unif/sum(diff(xs)*rollmean(y.unif,2)),
+     type='l',xlab='Perp. distance, x',ylab=expression(pi(x)),
+     ylim=c(0, 1.5*max(y.unif)))
+
+# avoiding the line
+y.avoid <- pi.chnorm(x=xs,logphi=c(0, 6),w=1600)
+plot(xs, y.avoid/sum(diff(xs)*rollmean(y.avoid,2)),
+     type='l',xlab='Perp. distance, x',ylab=expression(pi(x)),
+     ylim=c(0, max(y.avoid)))
+
+# attracted to the line
+y.attracted <- pi.hnorm(x=xs,logphi=6.6,w=1600)
+plot(xs, y.attracted/sum(diff(xs)*rollmean(y.attracted,2)),
+     type='l',xlab='Perp. distance, x',ylab=expression(pi(x)),
+     ylim=c(0, max(y.attracted)))
+```
+
+```{r distribution-plots, echo = F, fig.cap = "Potential Animal Distributions"}
+par(mfrow = c(1,3))
+const <- simpop2DLT(600,2000,pi.const, En = 400, fixed.n = T)
+plot(const$x, const$y, xlab = "x", ylab = "y", main = "Uniformly Distributed", xlim=c(-1600, 1600))
+abline(v = 0, col = 'red')
+avoid <- simpop2DLT(600,2000,pi.chnorm, logphi = c(0,6), En = 400, fixed.n = T)
+plot(avoid$x, avoid$y, xlab = "x", ylab = "y", main = "Avoiding Line")
+abline(v = 0, col = 'red', xlim=c(-1600, 1600))
+attract <- simpop2DLT(600,2000,pi.hnorm, logphi = 6.5, En = 400, fixed.n = T)
+plot(attract$x, attract$y, xlab = "x", ylab = "y", main = "Attracted to Line", xlim=c(-1600, 1600))
+abline(v = 0, col = 'red')
+```
+
+### Movement after first detection
+
+For the mark recapture methods there are two detection occasions, which could be, for example, two observers on different decks of a boat or, as in the snow leopard prey data, two observers walking the transect at different times. Animal movement is not an issue for the first scenario as the animals move slowly in comparison to the boat, so will not move far enough to have different detection probabilities between the two observers. However, in our snow leopard prey example, there is 30 minutes between the first and second observer walking the transect so the animals could move significantly between the two observers. We consider two types of movement after the first detection: random movement and avoidance movement away from the transect. We based our simulation on Ibex movement data in Johansson *et al*. (2022), which shows that the distance moved follows roughly a log normal distribution with mean $log(12) + 1.5$ and standard deviation 1.5.
+
+```{r movement, echo = F, fig.asp= 1.25, warning = F}
+library(plotly)
+par(mfrow = c(1,2))
+sim.dat <- function(n, level){
+  #browser()
+  ## 1. object positions
+  df <- data.frame(obs=rep(1:2, n),
+                   x=NA, y=NA, size=NA, level=NA)
+  
+  df$x[df$obs==1] <- runif(n, -1600, 1600); df$y[df$obs==1] <- runif(n, 0, 600)
+  df$size <- rep(sample(4:10, n, replace = TRUE), each=2)
+  perp.dist <- abs(df$x[df$obs==1])
+  
+  
+  if (level==1){
+    angle <- rwrappedcauchy(n, mu = circular(0), rho = 0, control.circular=list(units="radian"))
+    dist <- rlnorm(n,log(12) + 1.5,1.5)
+    dist[dist > 750] <- 750
+    df$x[df$obs==2] <- df$x[df$obs==1] + dist*cos(angle)
+    df$y[df$obs==2] <- df$y[df$obs==1] + dist*sin(angle)/1000
+    df$level <- rep("Random", 2*n)
+    }else{
+    nleft <- nrow(df[df$x <= 0 & df$obs==1, ])
+    nright <- nrow(df[df$x > 0 & df$obs==1, ])
+    
+    angleleft <- rwrappedcauchy(nleft, mu=circular(pi), rho=0.9, control.circular=list(units="radian"))
+    df$angle[df$x <= 1 & df$obs==1] <- as.numeric(angleleft)
+    angleright <- rwrappedcauchy(nright, mu=circular(0), rho=0.9, control.circular=list(units="radian"))
+    df$angle[df$x > 1 & df$obs==1] <- as.numeric(angleright)
+    
+    dist <- (max(abs(df$x[df$obs==1]))-abs(df$x[df$obs==1]))*runif(n, 0, 0.1)*2.5
+    df$x[df$obs==2] <- df$x[df$obs==1] + dist * cos(df$angle[df$obs==1])
+    df$y[df$obs==2] <- df$y[df$obs==1] + dist * sin(df$angle[df$obs==1])/1000
+    df$level <- rep("Avoidance", 2*n)
+    df[ , c("angle")] <- list(NULL)
+  }
+  
+  
+  ## 3. return
+  return(df)
+}
+
+df1 <- sim.dat(50,1)
+fig <- df1 %>%
+  plot_ly(
+    x = ~x,
+    y = ~y,
+    size = ~size,
+    color = ~level,
+    frame = ~obs,
+    type = 'scatter',
+    mode = 'markers')
+fig
+```
+
+```{r movement-animations, echo = F}
+df2 <- sim.dat(50,2)
+fig2 <- df2 %>%
+  plot_ly(
+    x = ~x,
+    y = ~y,
+    size = ~size,
+    color = ~level,
+    colors = "lightpink",
+    frame = ~obs,
+    type = 'scatter',
+    mode = 'markers')
+fig2
+```
+
+### Imperfect Matching
+
+Mark recapture methods also assume that the observers can perfectly identify which animals were seen by both observers and which animals were seen by just one observer. This becomes problematic for animals without unique identifying markings in surveys where they could move between detection occasions.
+
+We simulated imperfect matching by setting any animals detected on the second occasion within 300m of an animal detected on the first animal were recorded as the same animal, taking the closest as the match if there were multiple within this range. Any animals further than 1000m were recorded as different, and the probability of matching animals within the range was generated using a inverse power function with parameters $\beta_1$ = 6, $\beta_2$ = 0.000005. (Thanks to the snow leopard prey team for suggesting these limits)
+
+```{r imperfect-matching plot, echo = F}
+x <- 0:1000
+p <- p.approx(ys <- seq(0, 1300, length.out=100),x , ip0, b=c(6, 0.000005), what = "px")
+plot(x,p,ylim = c(0,1), type = "l", xlab = "Distance", ylab = "Probability")
+abline(v = 300)
+```
+
+## Simulation Results
+
+For each of the 12 scenarios we calculated the bias and coverage probability of the 4 methods. Due to time constraints we only fitted a hazard-rate detection function with no adjustments for conventional distance sampling and only used the independent observer configuration with a hazard rate distance model for MRDS. This means the models for these methods may not be the best fit, and it could be possible to achieve a smaller bias or larger coverage probability. With more time we would fit multiple models to each set of simulated data and choose the best using AIC. We also only fit one 2D model, but as it was the model used the generate the data it should be the best model regardless.
+
+### Uniform Animal Distribution
+
+With uniform animal distribution we expect conventional distance and 2D distance sampling to perform similarly, as all the assumptions for both methods are met. Our results show that they both have similar coverage probabilities, and whilst conventional distance may appear to be more biased, this is more likely a result of only fitting one model rather than performing model selection. As these methods involve walking the transect just once, they are not affected by movement between observers.
+
+```{r message=FALSE, warning=FALSE, cache=TRUE, echo = F}
+# Scenario 1
+# Initial density: uniform + Movement: avoidance + Matching: perfect
+#sc1 <- simulation(n=600, b=99, 0, 0, FALSE)
+load("sc1.RData")
+sc1.table <- kable(sc1.out <- result(sc1, n=600), col.names = c("Bias", "Coverage Probability"), caption = "Avoidance Movement")
+```
+
+```{r message=FALSE, warning=FALSE, cache=TRUE, echo = FALSE, fig.cap = "Uniform animal density, avoidance movement and imperfect matching"}
+# Scenario 2
+# Initial density: uniform + Movement: avoidance + Matching: imperfect
+#sc2 <- simulation(n=600, b=99, 0, 0, TRUE)
+load("sc2.RData")
+sc2.table <- kable(sc2.out <- result(sc2, n=600), col.names = c("Bias", "Coverage Probability"), caption = "Avoidance Movement")
+```
+
+```{r message=FALSE, warning=FALSE, cache = TRUE, echo = F, fig.cap = "Uniform distribution and perfect matching"}
+# Scenario 3
+# Initial density: uniform + Movement: random + Matching: perfect
+#sc3 <- simulation(n=600, b=99, 0, 1, FALSE)
+load("sc3.RData")
+sc3.table <- kable(sc3.out <- result(sc3, n=600), col.names = c("Bias", "Coverage Probability"), caption = "Random Movement")
+
+kables(list(sc3.table, sc1.table))
+```
+
+Mark recapture performs poorly in this scenario and all the other scenarios as detectability declines with distance. This means there is unmodelled heterogeneity in the population, so it is negatively biased. MRDS is negatively biased with random animal movement as this violates the assumption that each animal has the same detection probability for each observer. It is less negatively biased with avoidance as second observer will see less animals than the first due to them now being further away. This results in a lower estimated detection probability and therefore a higher estimate.
+
+```{r message=FALSE, warning=FALSE, cache = TRUE, echo = F, fig.cap = "Uniform Distribution and Imperfect Matching"}
+# Scenario 4
+# Initial density: uniform + Movement: random + Matching: imperfect
+#sc4 <- simulation(n=600, b=99, 0, 1, TRUE)
+load("sc4.RData")
+sc4.table <- kable(sc4.out <- result(sc4, n=600),col.names = c("Bias", "Coverage Probability"), caption = "Random Movement")
+kables(list(sc4.table, sc2.table), caption = "With Imperfect Matching")
+```
+
+After introducing imperfect matching, MRDS estimates seem to be less negatively biased. This is due to some individuals that were seen twice being mistakenly identified as two separate animals, leading to a lower estimate of detection probability and hence a higher estimate of abundance. Whilst it looks like MRDS should be the best estimator in the scenario with avoidance movement and imperfect matching, this is actually because effects of breaking multiple assumptions happen to balance out in this specific situation. This results in very variable estimates, as the variance of the $\hat{N}$ s was `r round(var(sc2[[3]]$N.hat[sc2[[3]]$N.hat < 3*600])/99, 2)` for MRDS, compared to `r round(var(sc2[[4]]$N.hat[sc2[[4]]$N.hat < 3*600])/99, 2)` for 2D Distance.
+
+### Avoiding Transect
+
+As expected, only 2D Distance is unbiased when the animals initially avoid the transect.
+
+```{r message=FALSE, warning=FALSE, cache = TRUE, echo = F}
+# Scenario 5
+# Initial density: avoiding + Movement: avoidance + Matching: perfect
+#sc5 <- simulation(n=1200, b=99, 1, 0, FALSE)
+load("sc5.RData")
+sc5[[3]] <- unname(apply(sc5[[3]], 1, as.list)[[1]])
+index <- which(sapply(sc5[[3]], is.numeric))
+sc5[[3]] <- data.frame(t(sapply(sc5[[3]][index], c)))
+colnames(sc5[[3]]) <- c("N.hat", "lcl", "ucl")
+sc5.table <- kable(sc5.out <- result(sc5, n=1200), col.names = c("Bias", "Coverage Probability"), caption = "Avoidance Movement")
+```
+
+```{r message=FALSE, warning=FALSE, cache = TRUE, echo = F}
+# Scenario 6
+# Initial density: avoiding + Movement: avoidance + Matching: imperfect
+#sc6 <- simulation(n=1200, b=99, 1, 0, TRUE)
+load("sc6.RData")
+sc6[[3]] <- unname(apply(sc6[[3]], 1, as.list)[[1]])
+index <- which(sapply(sc6[[3]], is.numeric))
+sc6[[3]] <- data.frame(t(sapply(sc6[[3]][index], c)))
+colnames(sc6[[3]]) <- c("N.hat", "lcl", "ucl")
+sc6.table <- kable(sc6.out <- result(sc6, n=1200), col.names = c("Bias", "Coverage Probability"), caption = "Avoidance Movement")
+```
+
+```{r message=FALSE, warning=FALSE, cache = TRUE, echo = F,fig.cap = "Intially avoidant with perfect matching"}
+# Scenario 7
+# Initial density: avoiding + Movement: random + Matching: perfect
+#sc7 <- simulation(n=1200, b=99, 1, 1, FALSE)
+load("sc7.RData")
+sc7[[3]] <- unname(apply(sc7[[3]], 1, as.list)[[1]])
+index <- which(sapply(sc7[[3]], is.numeric))
+sc7[[3]] <- data.frame(t(sapply(sc7[[3]][index], c)))
+colnames(sc7[[3]]) <- c("N.hat", "lcl", "ucl")
+sc7.table <- kable(sc7.out <- result(sc7, n=1200), col.names = c("Bias", "Coverage Probability"), caption = "Random Movement")
+kables(list(sc7.table,sc5.table))
+```
+
+Conventional distance and MRDS are both negatively biased as the fitted detection function decays less quickly than the true detection function to account for the large numbers of detections far away from the transect. However, as these detections are a result of more animals being far from the transect rather than a high detection probability, the models overestimate the detection probability and so underestimate the abundance.
+
+```{r avoidance-df-hist, echo = F, cache = TRUE, fig.cap = "Fitted detection function vs True detection function"}
+exdata <- sim.data(1200,1,0)
+exdata <- exdata[exdata$obs == 1 & exdata$detect == 1,]
+n <- length(exdata$x)
+new_df1 <- data.frame(Region.Label = rep(1, n), Area = rep(2*2000*600000, n),Sample.Label = rep(1, n), Effort = rep(600000, n),distance = abs(exdata$x))
+df.ds <- ds(new_df1, truncation=1600, transect="line", key="hr", order=0, monotonicity = "none")
+truedetect <- function(x){
+  return(p.approx(ys <- seq(0,1700,100),x,ip0,b=c(4.9, 0.036), what = "px"))
+}
+
+plot(df.ds)
+curve(truedetect, 0,1600,col = "red", add = T)
+legend("topleft", legend = c("Fitted", "True"),lty = 1, col = c("black", "red"))
+```
+
+```{r  message=FALSE, warning=FALSE, cache = TRUE, fig.cap = "Intially avoidant with imperfect matching", echo = F}
+# Scenario 8
+# Initial density: avoiding + Movement: random + Matching: imperfect
+#sc8 <- simulation(n=1200, b=99, 1, 1, TRUE)
+load("sc8.RData")
+sc8.table <- kable(sc8.out <- result(sc8, n=1200), col.names = c("Bias", "Coverage Probability"), caption = "Random Movement")
+kables(list(sc8.table,sc6.table), caption = "With Imperfect Matching")
+```
+
+As before, all the methods except 2D distance sampling are negatively biased. The imperfect matching does make the MRDS estimates slightly bigger, but not enough to counteract the negative bias from the non uniform distribution.
+
+### Attracted to Transect
+
+As with the avoidance case, we expect only 2D Distance to be unbiased when animals are initially attracted to the line.
+
+```{r  message=FALSE, warning=FALSE, cache = TRUE, echo = FALSE}
+# Scenario 9
+# Initial density: attracted + Movement: avoidance + Matching: perfect
+#sc9 <- simulation(n=400, b=99, 2, 0, FALSE)
+load("sc9.RData")
+sc9.table <- kable(sc9.out <- result(sc9, n=400), col.names = c("Bias", "Coverage Probability"), caption = "Avoidance Movement")
+```
+
+```{r  message=FALSE, warning=FALSE, cache = TRUE, echo = FALSE}
+# Scenario 10
+# Initial density: attracted + Movement: avoidance + Matching: imperfect
+#sc10 <- simulation(n=400, b=99, 2, 0, TRUE)
+load("sc10.RData")
+sc10.table <- kable(sc10.out <- result(sc10, n=400), col.names = c("Bias", "Coverage Probability"), caption = "Avoidance Movement")
+```
+
+```{r message=FALSE, warning=FALSE, cache = TRUE, echo = FALSE, fig.cap = "Initially attracted to the line with perfect matching"}
+# Scenario 11
+# Initial density: attracted + Movement: random + Matching: perfect
+load("sc11.Rdata")
+sc11.table <- kable(sc11, col.names = c("Bias", "Coverage Probability"), caption = "Random Movement")
+kables(list(sc11.table, sc9.table))
+```
+
+Conventional distance and MRDS are positively biased this time, as the fitted detection functions now decay quicker than the true function. This gives a lower detection probability and therefore a higher estimate.
+
+```{r message=FALSE, warning=FALSE, cache = TRUE, echo = FALSE, fig.cap = "Initially Attracted with imperfect matching"}
+# Scenario 12
+# Initial density: attracted + Movement: random + Matching: imperfect
+#sc12 <- simulation(n=400, b=99, 2, 1, TRUE)
+load("sc12.Rdata")
+sc12.table <- kable(sc12.out <- result(sc12, n=400), col.names = c("Bias", "Coverage Probability"), caption = "Random Movement")
+kables(list(sc12.table,sc10.table), caption = "With Imperfect Matching")
+```
+
+## Further Reading
+
+Johansson, Ö., Mishra, C., Chapron, G., Samelius, G., Lkhagvajav, P., McCarthy, T. and Low, M. (2022). Seasonal variation in daily activity patterns of snow leopards and their prey. Scientific Reports, [online] 12(1), p.21681. [https://doi.org/10.1038/s41598-022-26358-w](doi:https://doi.org/10.1038/s41598-022-26358-w){.uri}.

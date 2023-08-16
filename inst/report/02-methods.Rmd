@@ -1,0 +1,139 @@
+# Methods {#cross}
+
+## Mark-Recapture
+
+Mark-recapture is a powerful technique used in ecology and wildlife biology to estimate the population size of a specific animal or species within a given area. This method is based on the concept of sampling, marking, and then recapturing individuals from the target population. By utilizing this approach, researchers can extrapolate the population size and gain valuable insights into population dynamics, species abundance, and conservation efforts.
+
+The fundamental principle behind mark-recapture lies in the idea that the probability of capturing an individual within the population is the same for each capture event. Once an individual is captured, it is marked in some way, making it distinguishable from other members of the population. The marked individuals are then released back into the wild, allowing them to mix freely with the unmarked individuals. Subsequently, during the recapture phase, researchers perform another sampling effort, capturing a new group of individuals from the population. The proportion of marked individuals in the recaptured sample allows scientists to estimate the total population size based on the assumption of a closed population.
+
+### Closed populations
+
+The Lincoln-Peterson MR estimator is one of the most classic and widely used methods for estimating the population size of closed populations. Proposed independently by Peterson in the 1890s and by Lincoln in the 1920s, this estimator relies on two sampling events: the initial capture, where a subset of the population is marked, and the subsequent recapture, where the marked individuals are identified among the newly captured individuals.
+
+The Chapman mark-recapture estimator is a modified version of the traditional Lincoln-Peterson estimator with less bias and is less affected by zeros.
+
+***Chapman MR estimator (1951)*** $$\hat{N}_{CPM} = \frac{(n_{1} + 1)(n_{2} + 1)}{m_{2}+1}-1$$
+
+*where:*
+
+-   $\hat{N}_{CPM}$ *is the estimated population size.*
+
+-   $n_{1}$ *is the number of individuals captured and marked in the first occasion.*
+
+-   $n_{2}$ *is the number of marked individuals recaptured in the second occasion.*
+
+-   $m_{2}$ *is the number of recaptured individuals that were already marked in the first occasion.*
+
+The accuracy of this estimate relies on a number of assumptions being met.
+
+> **Assumption 1.** The population is closed to additions and deletions;
+
+In other words, no individuals are added to or removed from the population through birth, death, immigration, or emigration during the study period. An exception is when there are equal proportions of additions or deletions for marked and unmarked individuals during the sampling period. In cases where significant movements occur, potential bias might need to be introduced to the results or more advanced models might be needed to account for population dynamics.
+
+> **Assumption 2.** All animals are equally likely to be captured in each sample;
+
+Sometimes after initial capture, animals may learn to avoid the traps or area where the capture occurred, causing them to be captured less frequently ("trap shy"). The opposite ("trap happy") may also occur, making them more likely to be captured. Individuals may also inherently different capture probabilities, and if ignored, the resulting abundance estimates are likely to be negatively biased.
+
+> **Assumption 3.** Marks are not lost and not overlooked by the observer
+
+It is possible that marks may fade, fall off, or be lost over time, making individuals indistinguishable from unmarked ones during recapture events. Ensuring durable and effective marking techniques is essential to maintain the integrity of the mark-recapture process and achieve unbiased estimates.
+
+## Distance Sampling
+
+Distance sampling is another widely used method in ecological research or estimating animal abundance and density. Here we focus on conventional distance sampling, the fundamental distance sampling techniques among all.
+
+### Line transect sampling
+
+Usually, observers travel along the transect lines that are strategically placed across the study area to ensure coverage of different habitats and representative sampling of the population. Upon detecting an object, they record the perpendicular distance from the line to the identified object. In some cases, additional information, such as the angle of detection or group size are also recorded for the purpose of multiple-covariate distance sampling (MCDS) analysis.
+
+Detection function $g(x)$describes the probability of detecting an animal at different distances from the transect lines. A fundamental assumption is that all objects present on the line are detected, i.e. $g(0)=1$ ; however it is expected that objects become progressively more challenging to detect as their distance from the line increases, leading to a decrease in detection with increasing distance. Commonly used detection functions include uniform, half-normal and hazard rate. Example of adjustment terms include cosine, Hermite polynomial series and simple polynomial series.
+
+```{r detection func, echo = FALSE, cache=TRUE}
+detection <- function(){   
+  hn.sigma <- c(0.2, 0.3, 0.4)   
+  hr.sigma <- 0.3; hr.beta <- c(1, 2, 5)      
+  x <- seq(0, 1, 0.01)   
+  y.unif <- x/x   
+  y.hn1 <- exp(-x^2/(2*hn.sigma[1]^2)); y.hn2 <- exp(-x^2/(2*hn.sigma[2]^2)); y.hn3 <- exp(-x^2/(2*hn.sigma[3]^2))   
+  y.hr1 <- 1-exp(-(x/hr.sigma)^(-hr.beta[1])); y.hr2 <- 1-exp(-(x/hr.sigma)^(-hr.beta[2])); y.hr3 <- 1-exp(-(x/hr.sigma)^(-hr.beta[3]))      
+  par(mfrow=c(1,3))   
+  plot(x, y.unif, type="l", col="red", xlab="Distance", ylab="Detection probability", main="Uniform", ylim=c(0, 1))      
+  
+  plot(x, y.hn1, type="l", lwd=1.5, col="red", xlab="Distance", ylab="Detection probability", main="Half-normal", ylim=c(0, 1))   
+  lines(x, y.hn2, col="darkgreen", lty=2, lwd=1.5)  
+  lines(x, y.hn3, col="steelblue", lty=3, lwd=1.5)   
+  legend(x = "topright", legend = c("sigma = 0.2", "sigma = 0.3", "sigma = 0.4"),            lty = c(1, 2, 3), col = c("red", "darkgreen", "steelblue"), lwd = 1.5, cex=0.5)       
+  
+  plot(x, y.hr1, type="l", lwd=1.5, col="red", xlab="Distance", ylab="Detection probability", main="Hazard rate (sigma = 0.3)", ylim=c(0, 1))   
+  lines(x, y.hr2, col="darkgreen", lty=2, lwd=1.5)   
+  lines(x, y.hr3, col="steelblue", lty=3, lwd=1.5)   
+  legend(x = "topright", legend = c("beta = 1", "beta = 2", "beta = 5"),            lty = c(1, 2, 3), col = c("red", "darkgreen", "steelblue"), lwd = 1.5, cex=0.5) }    
+```
+
+```{r, echo = FALSE}
+detection()  # plot detection functions
+```
+
+Once the detection function is fitted, the estimator can calculate animal density and thus abundance by accounting for the area surveyed and the proportion of animals detected at different distances. The obtained abundance estimates can be extrapolated to the entire study area if the survey design is representative of the entire habitat.
+
+***Animal density*** $D$ ***is estimated by:*** $$\hat{D} = \frac{n}{2wL\hat{P}_a}$$
+
+$$\hat{P}_a = \frac{\int_{0}^{w}\hat{g}(x)dx}{w}$$
+
+*where:*
+
+-   $n$ *is the number of animals detected.*
+
+-   $w$ *is the half-width of the strip.*
+
+-   $L$ *is the lengths of transect lines.*
+
+-   $\hat{P}_a$ *is the probability that a randomly chosen animal within the surveyed area is detected.*
+
+-   $\hat{g}(x)$ *is the estimate of detection function.*
+
+## MRDS
+
+Mark Recapture Distance Sampling (MRDS) combines the principles of mark-recapture and standard distance sampling. 2 observers each travel along the same transect and record the animals they see and the perpendicular distance. By including the capture history of each animal we have enough information to allow for non-zero detection probability on the line, but we lose the pooling robustness property, so unmodelled heterogeneity will cause biased estimates.
+
+Point independence models, which assume the two observers' detection probabilities are uncorrelated at a specific distance, are less biased when faced with unmodelled heterogeneity than full independence models, which assume detection probabilities are independent at all distances. However, the estimates are still negatively biased in this situation. Unmodelled heterogeneity is likely to occur in most surveys as the observers are unlikely to be aware of every potential source of difference in detection and it is not feasible to record multitudes of information whilst moving along a transect.
+
+One advantage of MRDS is that the extra data from the capture history means that it can be used for situations where the probability of detection on the line is not one. This can be useful for marine surveys, where animals on the transect line may be below the water and so not visible, or surveys in thickly forested areas where it is possible to not see animals high up in the canopy.
+
+This model also assumes that the observers perfectly match which animals they both saw and which ones only one observer saw. If the animals don't have uniquely identifying features and there is any kind of animal movement between surveys then this assumption will not hold.
+
+MRDS should be used in situations where it is suspected p(0) may be less than one and animals are uniformly distributed and uniquely identifiable. If it is used, the observers should collect as much information as is practical to prevent any unmodelled heterogeneity from causing bias.
+
+From our simulations, MRDS does not perform well in scenarios with non-uniform animal distribution. It is negatively biased when animals initially avoid the line and positively biased when they are attracted to it. Imperfect matching has different effects depending on the type of animal movement but makes the estimates much more variable.
+
+## 2D Distance
+
+2D Distance Sampling builds on standard distance sampling by including the forward distance to the detected animal as well as the perpendicular distance. This removes the assumptions that the animals are uniformly distributed and that p(0) = 1, so this method is useful for situations where the other methods covered previously are not suitable. In particular, 2D distance sampling only requires the transect to be surveyed by one observer. This is not only more efficient but removes the issue of imperfect matching in mark-recapture methods.
+
+Animal movement is also less problematic for 2D distance sampling. Like in standard distance sampling, as long as the movement is slow relative to the speed of the observers it will only cause a small amount of bias. Responsive movement can be accounted for in the animal distribution model so does not cause bias.
+
+The likelihood equation for this model is: $$
+L(N, \boldsymbol{\beta}) = {N\choose n}[1-p.(\boldsymbol{\beta},\boldsymbol{\phi})]^{N-n}\prod_{i = 1}^{n}\pi(x_i; \boldsymbol{\phi})S(t_i, x_i; \boldsymbol{\beta}) h(t_i, x_i; \boldsymbol{\beta}) 
+$$ where:
+
+\- $n$ is the number of animals observed and $N$ is the total in the population
+
+\- $\pi(x_i; \boldsymbol{\phi})$ is the probability animal i is at perpendicular distance $x_i$. We will refer to $\pi(x_i; \boldsymbol{\phi})$ as the animal distribution function.
+
+\- $h(t_i, x_i; \boldsymbol{\beta})$ is the probability animal i is detected at forward distance $y_i$ and perpendicular distance $x_i$. We will refer to $h(t_i, x_i; \boldsymbol{\beta})$ as the detection function.
+
+\- $S(t_i, x_i; \boldsymbol{\beta}) = e^{-\int_{0}^{t_i}h(u,x;\boldsymbol{\beta})du}$ is the survivor function, i.e. the probability that animal i was undetected until time $t_i$
+
+\- $p.(\boldsymbol{\beta},\boldsymbol{\phi})$ is the average probability of being detected in the region
+
+In practice the conditional likelihood $L(\boldsymbol{\beta}|n)$ is used to calculate the maximum likelihood estimators. It is the same as the equation above, but without the leading binomial term, and so avoids considering the unseen animals. $\hat N$ is then estimated using a Horvitz-Thompson like estimator. The forward distance to the detected animal $y_i$ is used instead of the time $t_i$.
+
+## Further Reading
+
+Borchers, D.L., Buckland, S.T. and Zucchini, W. (2002). Estimating Animal Abundance: Closed Populations. Springer London. <https://doi.org/10.1007/978-1-4471-3708-5>
+
+Borchers, D.L., Laake, J.L., Southwell, C. and Paxton, C.G.M. (2005). Accommodating Unmodeled Heterogeneity in Double-Observer Distance Sampling Surveys. *Biometrics*, [online] 62(2), pp.372--378. doi:<https://doi.org/10.1111/j.1541-0420.2005.00493.x.>
+
+Buckland, S.T., Rexstad, E.A., Marques, T.A. and Oedekoven, C.S. (2015). Distance Sampling: Methods and Applications. Springer International Publish. <https://doi.org/10.1007/978-3-319-19219-2>
+
+Burt, M.L., Borchers, D.L., Jenkins, K.J. and Marques, T.A. (2014). Using mark-recapture distance sampling methods on line transect surveys. Methods in Ecology and Evolution, [online] 5(11), pp.1180--1191. [doi:https://doi.org/10.1111/2041-210x.12294](doi:https://doi.org/10.1111/2041-210x.12294){.uri}.
