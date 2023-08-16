@@ -53,7 +53,7 @@ abline(v = 0, col = 'red')
 
 ### Movement after first detection
 
-For the mark recapture methods there are two detection occasions, which could be , for example, two observers on different decks of a boat or , as in the snow leopard prey data, two observers walking the transect at different times. Animal movement is not an issue for the first scenario as the animals move slowly in comparison to the boat, so will not move far enough to have different detection probabilities between the two observers. However, in our snow leopard prey example, there is 30 minutes between the first and second observer walking the transect so the animals could move significantly between the two observers. We consider two types of movement after the first detection: random movement and avoidant movement away from the transect. We based our simulation on Ibex movement data in Johansson *et al*. (2022), which shows that the distance moved follows roughly a log normal distribution with mean log(12) + 1.5 and standard deviation 1.5,
+For the mark recapture methods there are two detection occasions, which could be, for example, two observers on different decks of a boat or, as in the snow leopard prey data, two observers walking the transect at different times. Animal movement is not an issue for the first scenario as the animals move slowly in comparison to the boat, so will not move far enough to have different detection probabilities between the two observers. However, in our snow leopard prey example, there is 30 minutes between the first and second observer walking the transect so the animals could move significantly between the two observers. We consider two types of movement after the first detection: random movement and avoidance movement away from the transect. We based our simulation on Ibex movement data in Johansson *et al*. (2022), which shows that the distance moved follows roughly a log normal distribution with mean $log(12) + 1.5$ and standard deviation 1.5.
 
 ```{r movement, echo = F, fig.asp= 1.25, warning = F}
 library(plotly)
@@ -118,6 +118,7 @@ fig2 <- df2 %>%
     y = ~y,
     size = ~size,
     color = ~level,
+    colors = "lightpink",
     frame = ~obs,
     type = 'scatter',
     mode = 'markers')
@@ -182,7 +183,7 @@ sc4.table <- kable(sc4.out <- result(sc4, n=600),col.names = c("Bias", "Coverage
 kables(list(sc4.table, sc2.table), caption = "With Imperfect Matching")
 ```
 
-After introducing imperfect matching, MRDS estimates seem to be less negatively biased. This is due to some individuals that were seen twice being mistakenly identified as two separate animals, leading to a lower estimate of detection probability and hence a higher estimate of abundance. Whilst it looks like MRDS should be the best estimator in the scenario with avoidance movement and imperfect matching, this is actually because effects of breaking multiple assumptions happen to balance out in this specific situation. This results in very variable estimates, as the variance of the $\hat{N}$ s was `r var(sc2[[3]]$N.hat[sc2[[3]]$N.hat < 3*600])/99` for MRDS, compared to `r var(sc2[[4]]$N.hat[sc2[[4]]$N.hat < 3*600])/99` for 2D Distance.
+After introducing imperfect matching, MRDS estimates seem to be less negatively biased. This is due to some individuals that were seen twice being mistakenly identified as two separate animals, leading to a lower estimate of detection probability and hence a higher estimate of abundance. Whilst it looks like MRDS should be the best estimator in the scenario with avoidance movement and imperfect matching, this is actually because effects of breaking multiple assumptions happen to balance out in this specific situation. This results in very variable estimates, as the variance of the $\hat{N}$ s was `r round(var(sc2[[3]]$N.hat[sc2[[3]]$N.hat < 3*600])/99, 2)` for MRDS, compared to `r round(var(sc2[[4]]$N.hat[sc2[[4]]$N.hat < 3*600])/99, 2)` for 2D Distance.
 
 ### Avoiding Transect
 
@@ -262,7 +263,7 @@ As with the avoidance case, we expect only 2D Distance to be unbiased when anima
 # Initial density: attracted + Movement: avoidance + Matching: perfect
 #sc9 <- simulation(n=400, b=99, 2, 0, FALSE)
 load("sc9.RData")
-sc9.table <- kable(sc9.out <- result(sc9, n=400), col.names = c("Bias", "Coverage Probability"), caption = "Avoidant Movement")
+sc9.table <- kable(sc9.out <- result(sc9, n=400), col.names = c("Bias", "Coverage Probability"), caption = "Avoidance Movement")
 ```
 
 ```{r  message=FALSE, warning=FALSE, cache = TRUE, echo = FALSE}
@@ -270,7 +271,7 @@ sc9.table <- kable(sc9.out <- result(sc9, n=400), col.names = c("Bias", "Coverag
 # Initial density: attracted + Movement: avoidance + Matching: imperfect
 #sc10 <- simulation(n=400, b=99, 2, 0, TRUE)
 load("sc10.RData")
-sc10.table <- kable(sc10.out <- result(sc10, n=400), col.names = c("Bias", "Coverage Probability"), caption = "Avoidant Movement")
+sc10.table <- kable(sc10.out <- result(sc10, n=400), col.names = c("Bias", "Coverage Probability"), caption = "Avoidance Movement")
 ```
 
 ```{r message=FALSE, warning=FALSE, cache = TRUE, echo = FALSE, fig.cap = "Initially attracted to the line with perfect matching"}
@@ -294,4 +295,4 @@ kables(list(sc12.table,sc10.table), caption = "With Imperfect Matching")
 
 ## Further Reading
 
-Johansson, Ö., Mishra, C., Chapron, G., Samelius, G., Lkhagvajav, P., McCarthy, T. and Low, M. (2022). Seasonal variation in daily activity patterns of snow leopards and their prey. Scientific Reports, [online] 12(1), p.21681. <doi:https://doi.org/10.1038/s41598-022-26358-w>.
+Johansson, Ö., Mishra, C., Chapron, G., Samelius, G., Lkhagvajav, P., McCarthy, T. and Low, M. (2022). Seasonal variation in daily activity patterns of snow leopards and their prey. Scientific Reports, [online] 12(1), p.21681. [https://doi.org/10.1038/s41598-022-26358-w](doi:https://doi.org/10.1038/s41598-022-26358-w){.uri}.

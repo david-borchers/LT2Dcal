@@ -25,7 +25,7 @@ ibex.cm <- chapman(Gobi[Gobi$Sightings == 'ibex',])
 argali.cm <- chapman(Gobi[Gobi$Sightings == 'argali',])
 ```
 
-We start by using the Chapman estimator to estimate the total number of groups. This gives us an estimate of `r round(combined[1])` with a 95% confidence interval of `r combined[2:3]`. Separating the data by species we estimate there are `r round(ibex.cm[1])` (`r ibex.cm[2:3]`) ibex groups and `r round(argali.cm[1])` (`r argali.cm[2:3]`) argali groups. From our previous simulations we expect this to be negatively biased, as there is unmodelled heterogeneity in the population from detectability decreasing with distance. The estimates for the individual species are probably more reliable as it accounts for any difference in detectability between the two species.
+We start by using the Chapman estimator to estimate the total number of groups. This gives us an estimate of `r round(combined[1])` with a 95% confidence interval of ( `r round(combined[2:3]))`. Separating the data by species we estimate there are `r round(ibex.cm[1])` (`r round(ibex.cm[2:3])`) ibex groups and `r round(argali.cm[1])` (`r argali.cm[2:3]`) argali groups. From our previous simulations we expect this to be negatively biased, as there is unmodelled heterogeneity in the population from detectability decreasing with distance. The estimates for the individual species are probably more reliable as it accounts for any difference in detectability between the two species.
 
 ## Conventional Distance Sampling
 
@@ -48,7 +48,7 @@ argali.summary <- summary(hr_argali_block)
 
 The best fitting model according to AIC involved fitting separate hazard rate functions with block as a covariate to the ibex and argali data sets. However, the argali detection function has a large spike at zero, which is not realistic.
 
-```{r plot-separate species, echo = F, fig.cap= "Detection function and QQ-plots for ibex and argali models"}
+```{r , echo = F, fig.cap= "Detection function and QQ-plots for ibex and argali models"}
 par(mfrow = c(2,2))
 plot(hr_ibex_block, main = "Ibex")
 gofi <- gof_ds(hr_ibex_block)

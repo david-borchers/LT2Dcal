@@ -132,4 +132,8 @@ In practice the conditional likelihood $L(\boldsymbol{\beta}|n)$ is used to calc
 
 Borchers, D.L., Buckland, S.T. and Zucchini, W. (2002). Estimating Animal Abundance: Closed Populations. Springer London. <https://doi.org/10.1007/978-1-4471-3708-5>
 
+Borchers, D.L., Laake, J.L., Southwell, C. and Paxton, C.G.M. (2005). Accommodating Unmodeled Heterogeneity in Double-Observer Distance Sampling Surveys. *Biometrics*, [online] 62(2), pp.372--378. doi:<https://doi.org/10.1111/j.1541-0420.2005.00493.x.>
+
 Buckland, S.T., Rexstad, E.A., Marques, T.A. and Oedekoven, C.S. (2015). Distance Sampling: Methods and Applications. Springer International Publish. <https://doi.org/10.1007/978-3-319-19219-2>
+
+Burt, M.L., Borchers, D.L., Jenkins, K.J. and Marques, T.A. (2014). Using mark-recapture distance sampling methods on line transect surveys. Methods in Ecology and Evolution, [online] 5(11), pp.1180--1191. [doi:https://doi.org/10.1111/2041-210x.12294](doi:https://doi.org/10.1111/2041-210x.12294){.uri}.
