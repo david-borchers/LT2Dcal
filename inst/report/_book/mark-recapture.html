@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Page not found | _main.knit</title>
+  <title>Chapter 2 Mark-recapture | _main.knit</title>
   <meta name="description" content="" />
   <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Page not found | _main.knit" />
+  <meta property="og:title" content="Chapter 2 Mark-recapture | _main.knit" />
   <meta property="og:type" content="book" />
   
   
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Page not found | _main.knit" />
+  <meta name="twitter:title" content="Chapter 2 Mark-recapture | _main.knit" />
   
   
   
@@ -28,8 +28,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-
-
+<link rel="prev" href="introduction.html"/>
+<link rel="next" href="distance-sampling.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -143,19 +143,49 @@
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="page-not-found" class="section level1">
-<h1>Page not found</h1>
-<p>The page you requested cannot be found (perhaps it was moved or renamed).</p>
-<p>You may want to try searching to find the page's new location, or use
-the table of contents to find the page you are looking for.</p>
+<div id="cross" class="section level1 hasAnchor" number="2">
+<h1><span class="header-section-number">Chapter 2</span> Mark-recapture<a href="cross.html#cross" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Mark-recapture is a powerful technique used in ecology and wildlife biology to estimate the population size of a specific animal or species within a given area. This method is based on the concept of sampling, marking, and then recapturing individuals from the target population. By utilizing this approach, researchers can extrapolate the population size and gain valuable insights into population dynamics, species abundance, and conservation efforts.</p>
+<p>The fundamental principle behind mark-recapture lies in the idea that the probability of capturing an individual within the population is the same for each capture event. Once an individual is captured, it is marked in some way, making it distinguishable from other members of the population. The marked individuals are then released back into the wild, allowing them to mix freely with the unmarked individuals. Subsequently, during the recapture phase, researchers perform another sampling effort, capturing a new group of individuals from the population. The proportion of marked individuals in the recaptured sample allows scientists to estimate the total population size based on the assumption of a closed population.</p>
+<div id="closed-populations" class="section level2 hasAnchor" number="2.1">
+<h2><span class="header-section-number">2.1</span> Closed populations<a href="cross.html#closed-populations" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The Lincoln-Peterson MR estimator is one of the most classic and widely used methods for estimating the population size of closed populations. Proposed independently by Peterson in the 1890s and by Lincoln in the 1920s, this estimator relies on two sampling events: the initial capture, where a subset of the population is marked, and the subsequent recapture, where the marked individuals are identified among the newly captured individuals.</p>
+<p>The Chapman mark-recapture estimator is a modified version of the traditional Lincoln-Peterson estimator with less bias and is less affected by zeros.</p>
+<p><strong><em>Chapman MR estimator (1951)</em></strong> <span class="math display">\[\hat{N}_{CPM} = \frac{(n_{1} + 1)(n_{2} + 1)}{m_{2}+1}-1\]</span></p>
+<p><em>where:</em></p>
+<ul>
+<li><p><span class="math inline">\(\hat{N}_{CPM}\)</span> <em>is the estimated population size.</em></p></li>
+<li><p><span class="math inline">\(n_{1}\)</span> <em>is the number of individuals captured and marked in the first occasion.</em></p></li>
+<li><p><span class="math inline">\(n_{2}\)</span> <em>is the number of marked individuals recaptured in the second occasion.</em></p></li>
+<li><p><span class="math inline">\(m_{2}\)</span> <em>is the number of recaptured individuals that were already marked in the first occasion.</em></p></li>
+</ul>
+<p>The accuracy of this estimate relies on a number of assumptions being met.</p>
+<blockquote>
+<p><strong>Assumption 1.</strong> The population is closed to additions and deletions;</p>
+</blockquote>
+<p>In other words, no individuals are added to or removed from the population through birth, death, immigration, or emigration during the study period. An exception is when there are equal proportions of additions or deletions for marked and unmarked individuals during the sampling period. In cases where significant movements occur, potential bias might need to be introduced to the results or more advanced models might be needed to account for population dynamics.</p>
+<blockquote>
+<p><strong>Assumption 2.</strong> All animals are equally likely to be captured in each sample;</p>
+</blockquote>
+<p>Sometimes after initial capture, animals may learn to avoid the traps or area where the capture occurred, causing them to be captured less frequently (“trap shy”). The opposite (“trap happy”) may also occur, making them more likely to be captured. Individuals may also inherently different capture probabilities, and if ignored, the resulting abundance estimates are likely to be negatively biased.</p>
+<blockquote>
+<p><strong>Assumption 3.</strong> Marks are not lost and not overlooked by the observer</p>
+</blockquote>
+<p>It is possible that marks may fade, fall off, or be lost over time, making individuals indistinguishable from unmarked ones during recapture events. Ensuring durable and effective marking techniques is essential to maintain the integrity of the mark-recapture process and achieve unbiased estimates.</p>
+</div>
+<div id="further-reading" class="section level2 hasAnchor" number="2.2">
+<h2><span class="header-section-number">2.2</span> Further Reading<a href="cross.html#further-reading" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Borchers, D.L., Buckland, S.T. and Zucchini, W. (2002). Estimating Animal Abundance: Closed Populations. Springer London. <a href="https://doi.org/10.1007/978-1-4471-3708-5" class="uri">https://doi.org/10.1007/978-1-4471-3708-5</a></p>
+
+</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-
-
+<a href="introduction.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="distance-sampling.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

@@ -50,79 +50,8 @@
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
-<script src="libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
-<script src="libs/plotly-binding-4.10.2/plotly.js"></script>
-<script src="libs/typedarray-0.1/typedarray.min.js"></script>
-<link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
-<script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
-<link href="libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet" />
-<script src="libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
 
 
-<style type="text/css">
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { color: #008000; } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { color: #008000; font-weight: bold; } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-</style>
 
 <style type="text/css">
   
@@ -221,46 +150,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2><span class="header-section-number">3.1</span> Line transect sampling<a href="distance-sampling.html#line-transect-sampling" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Usually, observers travel along the transect lines that are strategically placed across the study area to ensure coverage of different habitats and representative sampling of the population. Upon detecting an object, they record the perpendicular distance from the line to the identified object. In some cases, additional information, such as the angle of detection or group size are also recorded for the purpose of multiple-covariate distance sampling (MCDS) analysis.</p>
 <p>Detection function <span class="math inline">\(g(x)\)</span>describes the probability of detecting an animal at different distances from the transect lines. A fundamental assumption is that all objects present on the line are detected, i.e. <span class="math inline">\(g(0)=1\)</span> ; however it is expected that objects become progressively more challenging to detect as their distance from the line increases, leading to a decrease in detection with increasing distance. Commonly used detection functions include uniform, half-normal and hazard rate. Example of adjustment terms include cosine, Hermite polynomial series and simple polynomial series.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="distance-sampling.html#cb1-1" tabindex="-1"></a>detection <span class="ot">&lt;-</span> <span class="cf">function</span>(){</span>
-<span id="cb1-2"><a href="distance-sampling.html#cb1-2" tabindex="-1"></a>  hn.sigma <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.2</span>, <span class="fl">0.3</span>, <span class="fl">0.4</span>)</span>
-<span id="cb1-3"><a href="distance-sampling.html#cb1-3" tabindex="-1"></a>  hr.sigma <span class="ot">&lt;-</span> <span class="fl">0.3</span>; hr.beta <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">5</span>)</span>
-<span id="cb1-4"><a href="distance-sampling.html#cb1-4" tabindex="-1"></a>  </span>
-<span id="cb1-5"><a href="distance-sampling.html#cb1-5" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="fl">0.01</span>)</span>
-<span id="cb1-6"><a href="distance-sampling.html#cb1-6" tabindex="-1"></a>  y.unif <span class="ot">&lt;-</span> x<span class="sc">/</span>x</span>
-<span id="cb1-7"><a href="distance-sampling.html#cb1-7" tabindex="-1"></a>  y.hn1 <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="sc">-</span>x<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>(<span class="dv">2</span><span class="sc">*</span>hn.sigma[<span class="dv">1</span>]<span class="sc">^</span><span class="dv">2</span>)); y.hn2 <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="sc">-</span>x<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>(<span class="dv">2</span><span class="sc">*</span>hn.sigma[<span class="dv">2</span>]<span class="sc">^</span><span class="dv">2</span>)); y.hn3 <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="sc">-</span>x<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>(<span class="dv">2</span><span class="sc">*</span>hn.sigma[<span class="dv">3</span>]<span class="sc">^</span><span class="dv">2</span>))</span>
-<span id="cb1-8"><a href="distance-sampling.html#cb1-8" tabindex="-1"></a>  y.hr1 <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">-</span><span class="fu">exp</span>(<span class="sc">-</span>(x<span class="sc">/</span>hr.sigma)<span class="sc">^</span>(<span class="sc">-</span>hr.beta[<span class="dv">1</span>])); y.hr2 <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">-</span><span class="fu">exp</span>(<span class="sc">-</span>(x<span class="sc">/</span>hr.sigma)<span class="sc">^</span>(<span class="sc">-</span>hr.beta[<span class="dv">2</span>])); y.hr3 <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">-</span><span class="fu">exp</span>(<span class="sc">-</span>(x<span class="sc">/</span>hr.sigma)<span class="sc">^</span>(<span class="sc">-</span>hr.beta[<span class="dv">3</span>]))</span>
-<span id="cb1-9"><a href="distance-sampling.html#cb1-9" tabindex="-1"></a>  </span>
-<span id="cb1-10"><a href="distance-sampling.html#cb1-10" tabindex="-1"></a>  <span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>))</span>
-<span id="cb1-11"><a href="distance-sampling.html#cb1-11" tabindex="-1"></a>  <span class="fu">plot</span>(x, y.unif, <span class="at">type=</span><span class="st">&quot;l&quot;</span>, <span class="at">col=</span><span class="st">&quot;red&quot;</span>, <span class="at">xlab=</span><span class="st">&quot;Distance&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;Detection probability&quot;</span>, <span class="at">main=</span><span class="st">&quot;Uniform&quot;</span>, <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>))</span>
-<span id="cb1-12"><a href="distance-sampling.html#cb1-12" tabindex="-1"></a>  </span>
-<span id="cb1-13"><a href="distance-sampling.html#cb1-13" tabindex="-1"></a>  <span class="fu">plot</span>(x, y.hn1, <span class="at">type=</span><span class="st">&quot;l&quot;</span>, <span class="at">lwd=</span><span class="fl">1.5</span>, <span class="at">col=</span><span class="st">&quot;red&quot;</span>, <span class="at">xlab=</span><span class="st">&quot;Distance&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;Detection probability&quot;</span>, <span class="at">main=</span><span class="st">&quot;Half-normal&quot;</span>, <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>))</span>
-<span id="cb1-14"><a href="distance-sampling.html#cb1-14" tabindex="-1"></a>  <span class="fu">lines</span>(x, y.hn2, <span class="at">col=</span><span class="st">&quot;darkgreen&quot;</span>, <span class="at">lty=</span><span class="dv">2</span>, <span class="at">lwd=</span><span class="fl">1.5</span>)</span>
-<span id="cb1-15"><a href="distance-sampling.html#cb1-15" tabindex="-1"></a>  <span class="fu">lines</span>(x, y.hn3, <span class="at">col=</span><span class="st">&quot;steelblue&quot;</span>, <span class="at">lty=</span><span class="dv">3</span>, <span class="at">lwd=</span><span class="fl">1.5</span>)</span>
-<span id="cb1-16"><a href="distance-sampling.html#cb1-16" tabindex="-1"></a>  <span class="fu">legend</span>(<span class="at">x =</span> <span class="st">&quot;topright&quot;</span>, <span class="at">legend =</span> <span class="fu">c</span>(<span class="st">&quot;sigma = 0.2&quot;</span>, <span class="st">&quot;sigma = 0.3&quot;</span>, <span class="st">&quot;sigma = 0.4&quot;</span>),  </span>
-<span id="cb1-17"><a href="distance-sampling.html#cb1-17" tabindex="-1"></a>         <span class="at">lty =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>), <span class="at">col =</span> <span class="fu">c</span>(<span class="st">&quot;red&quot;</span>, <span class="st">&quot;darkgreen&quot;</span>, <span class="st">&quot;steelblue&quot;</span>), <span class="at">lwd =</span> <span class="fl">1.5</span>, <span class="at">cex=</span><span class="fl">0.5</span>) </span>
-<span id="cb1-18"><a href="distance-sampling.html#cb1-18" tabindex="-1"></a>  </span>
-<span id="cb1-19"><a href="distance-sampling.html#cb1-19" tabindex="-1"></a>  <span class="fu">plot</span>(x, y.hr1, <span class="at">type=</span><span class="st">&quot;l&quot;</span>, <span class="at">lwd=</span><span class="fl">1.5</span>, <span class="at">col=</span><span class="st">&quot;red&quot;</span>, <span class="at">xlab=</span><span class="st">&quot;Distance&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;Detection probability&quot;</span>, <span class="at">main=</span><span class="st">&quot;Hazard rate (sigma = 0.3)&quot;</span>, <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>))</span>
-<span id="cb1-20"><a href="distance-sampling.html#cb1-20" tabindex="-1"></a>  <span class="fu">lines</span>(x, y.hr2, <span class="at">col=</span><span class="st">&quot;darkgreen&quot;</span>, <span class="at">lty=</span><span class="dv">2</span>, <span class="at">lwd=</span><span class="fl">1.5</span>)</span>
-<span id="cb1-21"><a href="distance-sampling.html#cb1-21" tabindex="-1"></a>  <span class="fu">lines</span>(x, y.hr3, <span class="at">col=</span><span class="st">&quot;steelblue&quot;</span>, <span class="at">lty=</span><span class="dv">3</span>, <span class="at">lwd=</span><span class="fl">1.5</span>)</span>
-<span id="cb1-22"><a href="distance-sampling.html#cb1-22" tabindex="-1"></a>  <span class="fu">legend</span>(<span class="at">x =</span> <span class="st">&quot;topright&quot;</span>, <span class="at">legend =</span> <span class="fu">c</span>(<span class="st">&quot;beta = 1&quot;</span>, <span class="st">&quot;beta = 2&quot;</span>, <span class="st">&quot;beta = 5&quot;</span>),  </span>
-<span id="cb1-23"><a href="distance-sampling.html#cb1-23" tabindex="-1"></a>         <span class="at">lty =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>), <span class="at">col =</span> <span class="fu">c</span>(<span class="st">&quot;red&quot;</span>, <span class="st">&quot;darkgreen&quot;</span>, <span class="st">&quot;steelblue&quot;</span>), <span class="at">lwd =</span> <span class="fl">1.5</span>, <span class="at">cex=</span><span class="fl">0.5</span>) </span>
-<span id="cb1-24"><a href="distance-sampling.html#cb1-24" tabindex="-1"></a>  </span>
-<span id="cb1-25"><a href="distance-sampling.html#cb1-25" tabindex="-1"></a>}</span></code></pre></div>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="distance-sampling.html#cb2-1" tabindex="-1"></a><span class="fu">detection</span>()  <span class="co"># plot detection functions</span></span></code></pre></div>
 <p><img src="_main_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
 <p>Once the detection function is fitted, the estimator can calculate animal density and thus abundance by accounting for the area surveyed and the proportion of animals detected at different distances. The obtained abundance estimates can be extrapolated to the entire study area if the survey design is representative of the entire habitat.</p>
-<div class="theorem">
-<p><span id="thm:tri" class="theorem"><strong>Theorem 2.1  </strong></span><strong>Animal density</strong> <span class="math inline">\(D\)</span> <strong>is estimated by:</strong> <span class="math display">\[\hat{D} = \frac{n}{2wL\hat{P}_a}\]</span></p>
+<p><strong><em>Animal density</em></strong> <span class="math inline">\(D\)</span> <strong><em>is estimated by:</em></strong> <span class="math display">\[\hat{D} = \frac{n}{2wL\hat{P}_a}\]</span></p>
 <p><span class="math display">\[\hat{P}_a = \frac{\int_{0}^{w}\hat{g}(x)dx}{w}\]</span></p>
-<p>where:</p>
+<p><em>where:</em></p>
 <ul>
-<li><p><span class="math inline">\(n\)</span> is the number of animals detected.</p></li>
-<li><p><span class="math inline">\(w\)</span> is the half-width of the strip.</p></li>
-<li><p><span class="math inline">\(L\)</span> is the lengths of transect lines.</p></li>
-<li><p><span class="math inline">\(\hat{P}_a\)</span> is the probability that a randomly chosen animal within the surveyed area is detected.</p></li>
-<li><p><span class="math inline">\(\hat{g}(x)\)</span> is the estimate of detection function.</p></li>
+<li><p><span class="math inline">\(n\)</span> <em>is the number of animals detected.</em></p></li>
+<li><p><span class="math inline">\(w\)</span> <em>is the half-width of the strip.</em></p></li>
+<li><p><span class="math inline">\(L\)</span> <em>is the lengths of transect lines.</em></p></li>
+<li><p><span class="math inline">\(\hat{P}_a\)</span> <em>is the probability that a randomly chosen animal within the surveyed area is detected.</em></p></li>
+<li><p><span class="math inline">\(\hat{g}(x)\)</span> <em>is the estimate of detection function.</em></p></li>
 </ul>
-</div>
 </div>
 <div id="further-reading-1" class="section level2 hasAnchor" number="3.2">
 <h2><span class="header-section-number">3.2</span> Further Reading<a href="distance-sampling.html#further-reading-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
