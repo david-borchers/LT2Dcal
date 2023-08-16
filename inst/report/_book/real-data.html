@@ -50,79 +50,17 @@
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
-<script src="libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
+<script src="libs/htmlwidgets-1.6.1/htmlwidgets.js"></script>
 <script src="libs/plotly-binding-4.10.2/plotly.js"></script>
 <script src="libs/typedarray-0.1/typedarray.min.js"></script>
 <link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
 <script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
 <link href="libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet" />
 <script src="libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
 
 
-<style type="text/css">
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { color: #008000; } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { color: #008000; font-weight: bold; } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-</style>
 
 <style type="text/css">
   
@@ -153,7 +91,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="2.2.1" data-path="cross.html"><a href="cross.html#line-transect-sampling"><i class="fa fa-check"></i><b>2.2.1</b> Line transect sampling</a></li>
 </ul></li>
-<li class="chapter" data-level="2.3" data-path="cross.html"><a href="cross.html#further-reading"><i class="fa fa-check"></i><b>2.3</b> Further Reading</a></li>
+<li class="chapter" data-level="2.3" data-path="cross.html"><a href="cross.html#mrds"><i class="fa fa-check"></i><b>2.3</b> MRDS</a></li>
+<li class="chapter" data-level="2.4" data-path="cross.html"><a href="cross.html#d-distance"><i class="fa fa-check"></i><b>2.4</b> 2D Distance</a></li>
+<li class="chapter" data-level="2.5" data-path="cross.html"><a href="cross.html#further-reading"><i class="fa fa-check"></i><b>2.5</b> Further Reading</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="simulation.html"><a href="simulation.html"><i class="fa fa-check"></i><b>3</b> Simulation</a>
 <ul>
@@ -174,7 +114,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4" data-path="real-data.html"><a href="real-data.html"><i class="fa fa-check"></i><b>4</b> Real Data</a>
 <ul>
 <li class="chapter" data-level="4.1" data-path="real-data.html"><a href="real-data.html#mark-recapture-1"><i class="fa fa-check"></i><b>4.1</b> Mark Recapture</a></li>
-<li class="chapter" data-level="4.2" data-path="real-data.html"><a href="real-data.html#summary"><i class="fa fa-check"></i><b>4.2</b> Summary</a></li>
+<li class="chapter" data-level="4.2" data-path="real-data.html"><a href="real-data.html#conventional-distance-sampling"><i class="fa fa-check"></i><b>4.2</b> Conventional Distance Sampling</a></li>
+<li class="chapter" data-level="4.3" data-path="real-data.html"><a href="real-data.html#d-distance-sampling"><i class="fa fa-check"></i><b>4.3</b> 2D Distance Sampling</a></li>
+<li class="chapter" data-level="4.4" data-path="real-data.html"><a href="real-data.html#summary"><i class="fa fa-check"></i><b>4.4</b> Summary</a></li>
 </ul></li>
 </ul>
 
@@ -198,8 +140,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>We will now use these methods to analyse the real snow leopard prey data. The observers surveyed 60 transects in 10 blocks twice, with 30 minutes between the first and second observer starting the survey. The observers had limited rangefinders so only the first observer recorded the radial distance to the group, the bearing of the path and the bearing of the group they saw. This means we cannot use mrds to analyse this data as there are no distances for the second observer. There were 2 species included in the survey: ibex and argali. They saw 242 groups in total, and 193 of them have distance data.</p>
 <div id="mark-recapture-1" class="section level2 hasAnchor" number="4.1">
 <h2><span class="header-section-number">4.1</span> Mark Recapture<a href="real-data.html#mark-recapture-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>We start by using the Chapman estimator to estimate the total number of groups. This gives us an estimate of 425 with a 95% confidence interval of 348.4897014, 517.95112. Separating the data by species we estimate there are 308 (241.2495366, 392.1258668) ibex groups and 115 (84.2854575, 156.1285628) argali groups. From our previous simulations we expect this to be negatively biased, as there is unmodelled heterogeneity in the population from detectability decreasing with distance. The estimates for the individual species are probably more reliable as it accounts for any difference in detectability between the two species. ## Conventional Distance Sampling We now turn to CDS. Upon closer inspection, many detection distances (both perpendicular and forward) appeared to be rounded to zero, likely as a result of the bearings being rounded to the nearest 5 degrees. To prevent this from impacting the model fit we simply added a small random number to each zero observation. We only use the jittered perpendicular distances for conventional distance sampling, but we will use the jittered forward distances in the 2D section.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="real-data.html#cb7-1" tabindex="-1"></a><span class="fu">hist</span>(CDSData<span class="sc">$</span>distance, <span class="at">main =</span> <span class="st">&quot;Perpendicular Distance&quot;</span>, <span class="at">xlab =</span> <span class="st">&quot;Distance&quot;</span>)</span></code></pre></div>
+<p>We start by using the Chapman estimator to estimate the total number of groups. This gives us an estimate of 425 with a 95% confidence interval of 348.4897014, 517.95112. Separating the data by species we estimate there are 308 (241.2495366, 392.1258668) ibex groups and 115 (84.2854575, 156.1285628) argali groups. From our previous simulations we expect this to be negatively biased, as there is unmodelled heterogeneity in the population from detectability decreasing with distance. The estimates for the individual species are probably more reliable as it accounts for any difference in detectability between the two species.</p>
+</div>
+<div id="conventional-distance-sampling" class="section level2 hasAnchor" number="4.2">
+<h2><span class="header-section-number">4.2</span> Conventional Distance Sampling<a href="real-data.html#conventional-distance-sampling" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>We now turn to CDS. Upon closer inspection, many detection distances (both perpendicular and forward) appeared to be rounded to zero, likely as a result of the bearings being rounded to the nearest 5 degrees. To prevent this from impacting the model fit we simply added a small random number to each zero observation. We only use the jittered perpendicular distances for conventional distance sampling, but we will use the jittered forward distances in the 2D section.</p>
 <div class="figure"><span style="display:block;" id="fig:perp-distance-histograms"></span>
 <img src="_main_files/figure-html/perp-distance-histograms-1.png" alt="Histograms of perpendicular distances" width="672" />
 <p class="caption">
@@ -214,15 +159,20 @@ Figure 4.1: Histograms of perpendicular distances
 (#fig:plot-separate species)Detection function and QQ-plots for ibex and argali models
 </p>
 </div>
-<p>Therefore, we choose the combined model as our best model, as the AIC was only slightly higher (2575.8122521 vs 2573.1957975) and it doesn’t have the spike at zero.</p>
+<p>Therefore, we choose the combined model as our best model, as the AIC was only slightly higher (2575.8122528 vs 2572.7354923) and it doesn’t have the spike at zero.</p>
 <div class="figure"><span style="display:block;" id="fig:plot-combined"></span>
 <img src="_main_files/figure-html/plot-combined-1.png" alt="Detection function and QQ-plots for combined model" width="672" />
 <p class="caption">
 Figure 4.2: Detection function and QQ-plots for combined model
 </p>
 </div>
-<p>This gives an estimate of 733 total groups with a 95% confidence interval of 575.5283198, 889.8593569. This is much higher than the MCR estimate, but may be biased if the animal distribution is not uniform. ## 2D Distance Sampling</p>
-<p>We will now use 2D distance sampling to investigate if the animals are uniformly distributed. 61 of the detected groups were behind the observers so did not have a valid “forward” distance. This leaves 132 usable observations. <code>{ forward-hist, echo = F} hist(DistData$forward, main = "Forward Distance", xlab = "Distance (m)")</code></p>
+<p>This gives an estimate of 733 total groups with a 95% confidence interval of 575.5395732, 889.8823527. This is much higher than the MCR estimate, but may be biased if the animal distribution is not uniform.</p>
+</div>
+<div id="d-distance-sampling" class="section level2 hasAnchor" number="4.3">
+<h2><span class="header-section-number">4.3</span> 2D Distance Sampling<a href="real-data.html#d-distance-sampling" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>We will now use 2D distance sampling to investigate if the animals are uniformly distributed. 61 of the detected groups were behind the observers so did not have a valid “forward” distance. This leaves 132 usable observations.</p>
+<p><img src="_main_files/figure-html/forward-hist-1.png" width="672" /></p>
+<p>We truncated the data at y = 1700, excluding one observation at 1770m.</p>
 <p>Our best fitting model used the 2-parameter inverse power hazard detection function and a half normal distribution for the animal density. All of the best fitting models used a half normal animal distribution, which implies that the animals are attracted to the line rather than avoiding it as initially thought. This could be due to the non random line placement, as the observers travel along valleys or ridges that are easier to walk along so the animals could also favour the easier terrain.</p>
 <div class="figure"><span style="display:block;" id="fig:real-results-plot"></span>
 <img src="_main_files/figure-html/real-results-plot-1.png" alt="Detection and distribution functions for best model (h1 and normal)" width="672" />
@@ -230,259 +180,561 @@ Figure 4.2: Detection function and QQ-plots for combined model
 Figure 4.3: Detection and distribution functions for best model (h1 and normal)
 </p>
 </div>
-<p>We tried fitting different models to each species in the survey, but this had a higher AIC than the combined model (3515.1502831 vs 3512.560206 for combined model). Interestingly, the argali appear to be uniformly distributed across the area whereas the ibex exhibit line attraction. However, there are only 39 argali groups with valid distances so further investigation is needed before drawing any conclusions. With more time we would fit a model that had species as a covariate.</p>
-<p>The best combined model estimates there are 402 groups in total.</p>
-<table style="width:100%;">
-<colgroup>
-<col width="5%" />
-<col width="7%" />
-<col width="18%" />
-<col width="13%" />
-<col width="15%" />
-<col width="10%" />
-<col width="6%" />
-<col width="11%" />
-<col width="11%" />
-</colgroup>
+<p>We tried fitting different models to each species in the survey, but this had a higher AIC than the combined model (3515.0524411 vs 3512.1224168 for combined model). Interestingly, the argali appear to be uniformly distributed across the area whereas the ibex exhibit line attraction. However, there are only 39 argali groups with valid distances so further investigation is needed before drawing any conclusions. With more time we would fit a model that had species as a covariate.</p>
+<p>The best combined model estimates there are 401 groups in total.</p>
+<table class="table" style="margin-left: auto; margin-right: auto;">
 <thead>
-<tr class="header">
-<th align="left">Stratum</th>
-<th align="right">Groups Seen</th>
-<th align="right">Total Transect Length (<span class="math inline">\(km\)</span>)</th>
-<th align="right">Stratum Area (<span class="math inline">\(m^2\)</span>)</th>
-<th align="right">Estimated Group Denisty</th>
-<th align="right">Number of Groups</th>
-<th align="right">Mean Size</th>
-<th align="right">Individual Density</th>
-<th align="right">Abundance Estimate</th>
+<tr>
+<th style="text-align:left;">
+Stratum
+</th>
+<th style="text-align:right;">
+Groups Seen
+</th>
+<th style="text-align:right;">
+Total Transect Length (<span class="math inline">\(km\)</span>)
+</th>
+<th style="text-align:right;">
+Stratum Area (<span class="math inline">\(m^2\)</span>)
+</th>
+<th style="text-align:right;">
+Estimated Group Denisty
+</th>
+<th style="text-align:right;">
+Number of Groups
+</th>
+<th style="text-align:right;">
+Mean Size
+</th>
+<th style="text-align:right;">
+Individual Density
+</th>
+<th style="text-align:right;">
+Abundance Estimate
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td align="left">1</td>
-<td align="right">27</td>
-<td align="right">60.68086</td>
-<td align="right">194178.7</td>
-<td align="right">0.000427</td>
-<td align="right">82.8</td>
-<td align="right">6.5</td>
-<td align="right">0.0027644</td>
-<td align="right">536.8</td>
+<tr>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:right;">
+27
+</td>
+<td style="text-align:right;">
+60.68086
+</td>
+<td style="text-align:right;">
+194178.7
+</td>
+<td style="text-align:right;">
+0.000426
+</td>
+<td style="text-align:right;">
+82.6
+</td>
+<td style="text-align:right;">
+6.5
+</td>
+<td style="text-align:right;">
+0.0027584
+</td>
+<td style="text-align:right;">
+535.6
+</td>
 </tr>
-<tr class="even">
-<td align="left">2</td>
-<td align="right">9</td>
-<td align="right">71.47497</td>
-<td align="right">228719.9</td>
-<td align="right">0.000121</td>
-<td align="right">27.6</td>
-<td align="right">6.9</td>
-<td align="right">0.0008315</td>
-<td align="right">190.2</td>
+<tr>
+<td style="text-align:left;">
+2
+</td>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:right;">
+71.47497
+</td>
+<td style="text-align:right;">
+228719.9
+</td>
+<td style="text-align:right;">
+0.000120
+</td>
+<td style="text-align:right;">
+27.5
+</td>
+<td style="text-align:right;">
+6.9
+</td>
+<td style="text-align:right;">
+0.0008297
+</td>
+<td style="text-align:right;">
+189.8
+</td>
 </tr>
-<tr class="odd">
-<td align="left">3</td>
-<td align="right">19</td>
-<td align="right">81.92104</td>
-<td align="right">262147.3</td>
-<td align="right">0.000222</td>
-<td align="right">58.3</td>
-<td align="right">6.8</td>
-<td align="right">0.0015211</td>
-<td align="right">398.8</td>
+<tr>
+<td style="text-align:left;">
+3
+</td>
+<td style="text-align:right;">
+19
+</td>
+<td style="text-align:right;">
+81.92104
+</td>
+<td style="text-align:right;">
+262147.3
+</td>
+<td style="text-align:right;">
+0.000222
+</td>
+<td style="text-align:right;">
+58.2
+</td>
+<td style="text-align:right;">
+6.8
+</td>
+<td style="text-align:right;">
+0.0015178
+</td>
+<td style="text-align:right;">
+397.9
+</td>
 </tr>
-<tr class="even">
-<td align="left">4</td>
-<td align="right">14</td>
-<td align="right">59.59936</td>
-<td align="right">190717.9</td>
-<td align="right">0.000225</td>
-<td align="right">42.9</td>
-<td align="right">4.2</td>
-<td align="right">0.0009489</td>
-<td align="right">181.0</td>
+<tr>
+<td style="text-align:left;">
+4
+</td>
+<td style="text-align:right;">
+14
+</td>
+<td style="text-align:right;">
+59.59936
+</td>
+<td style="text-align:right;">
+190717.9
+</td>
+<td style="text-align:right;">
+0.000225
+</td>
+<td style="text-align:right;">
+42.8
+</td>
+<td style="text-align:right;">
+4.2
+</td>
+<td style="text-align:right;">
+0.0009468
+</td>
+<td style="text-align:right;">
+180.6
+</td>
 </tr>
-<tr class="odd">
-<td align="left">5</td>
-<td align="right">12</td>
-<td align="right">78.34713</td>
-<td align="right">250710.8</td>
-<td align="right">0.000147</td>
-<td align="right">36.8</td>
-<td align="right">4.5</td>
-<td align="right">0.0006607</td>
-<td align="right">165.6</td>
+<tr>
+<td style="text-align:left;">
+5
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+78.34713
+</td>
+<td style="text-align:right;">
+250710.8
+</td>
+<td style="text-align:right;">
+0.000146
+</td>
+<td style="text-align:right;">
+36.7
+</td>
+<td style="text-align:right;">
+4.5
+</td>
+<td style="text-align:right;">
+0.0006592
+</td>
+<td style="text-align:right;">
+165.3
+</td>
 </tr>
-<tr class="even">
-<td align="left">6</td>
-<td align="right">12</td>
-<td align="right">76.74868</td>
-<td align="right">245595.8</td>
-<td align="right">0.000150</td>
-<td align="right">36.8</td>
-<td align="right">9.1</td>
-<td align="right">0.0013614</td>
-<td align="right">334.3</td>
+<tr>
+<td style="text-align:left;">
+6
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+76.74868
+</td>
+<td style="text-align:right;">
+245595.8
+</td>
+<td style="text-align:right;">
+0.000150
+</td>
+<td style="text-align:right;">
+36.7
+</td>
+<td style="text-align:right;">
+9.1
+</td>
+<td style="text-align:right;">
+0.0013584
+</td>
+<td style="text-align:right;">
+333.6
+</td>
 </tr>
-<tr class="odd">
-<td align="left">7</td>
-<td align="right">13</td>
-<td align="right">96.53271</td>
-<td align="right">308904.7</td>
-<td align="right">0.000129</td>
-<td align="right">39.9</td>
-<td align="right">4.4</td>
-<td align="right">0.0005660</td>
-<td align="right">174.8</td>
+<tr>
+<td style="text-align:left;">
+7
+</td>
+<td style="text-align:right;">
+13
+</td>
+<td style="text-align:right;">
+96.53271
+</td>
+<td style="text-align:right;">
+308904.7
+</td>
+<td style="text-align:right;">
+0.000129
+</td>
+<td style="text-align:right;">
+39.8
+</td>
+<td style="text-align:right;">
+4.4
+</td>
+<td style="text-align:right;">
+0.0005648
+</td>
+<td style="text-align:right;">
+174.5
+</td>
 </tr>
-<tr class="even">
-<td align="left">8</td>
-<td align="right">7</td>
-<td align="right">44.55528</td>
-<td align="right">142576.9</td>
-<td align="right">0.000151</td>
-<td align="right">21.5</td>
-<td align="right">4.1</td>
-<td align="right">0.0006239</td>
-<td align="right">89.0</td>
+<tr>
+<td style="text-align:left;">
+8
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+44.55528
+</td>
+<td style="text-align:right;">
+142576.9
+</td>
+<td style="text-align:right;">
+0.000150
+</td>
+<td style="text-align:right;">
+21.4
+</td>
+<td style="text-align:right;">
+4.1
+</td>
+<td style="text-align:right;">
+0.0006226
+</td>
+<td style="text-align:right;">
+88.8
+</td>
 </tr>
-<tr class="odd">
-<td align="left">9</td>
-<td align="right">6</td>
-<td align="right">39.25853</td>
-<td align="right">125627.3</td>
-<td align="right">0.000146</td>
-<td align="right">18.4</td>
-<td align="right">4.0</td>
-<td align="right">0.0005860</td>
-<td align="right">73.6</td>
+<tr>
+<td style="text-align:left;">
+9
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+39.25853
+</td>
+<td style="text-align:right;">
+125627.3
+</td>
+<td style="text-align:right;">
+0.000146
+</td>
+<td style="text-align:right;">
+18.4
+</td>
+<td style="text-align:right;">
+4.0
+</td>
+<td style="text-align:right;">
+0.0005847
+</td>
+<td style="text-align:right;">
+73.5
+</td>
 </tr>
-<tr class="even">
-<td align="left">10</td>
-<td align="right">12</td>
-<td align="right">37.72042</td>
-<td align="right">120705.4</td>
-<td align="right">0.000305</td>
-<td align="right">36.8</td>
-<td align="right">10.1</td>
-<td align="right">0.0030749</td>
-<td align="right">371.2</td>
+<tr>
+<td style="text-align:left;">
+10
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+37.72042
+</td>
+<td style="text-align:right;">
+120705.4
+</td>
+<td style="text-align:right;">
+0.000304
+</td>
+<td style="text-align:right;">
+36.7
+</td>
+<td style="text-align:right;">
+10.1
+</td>
+<td style="text-align:right;">
+0.0030682
+</td>
+<td style="text-align:right;">
+370.3
+</td>
 </tr>
-<tr class="odd">
-<td align="left">Total</td>
-<td align="right">131</td>
-<td align="right">646.83898</td>
-<td align="right">2069884.7</td>
-<td align="right">0.000194</td>
-<td align="right">402.0</td>
-<td align="right">6.3</td>
-<td align="right">0.0012152</td>
-<td align="right">2515.2</td>
+<tr>
+<td style="text-align:left;">
+Total
+</td>
+<td style="text-align:right;">
+131
+</td>
+<td style="text-align:right;">
+646.83898
+</td>
+<td style="text-align:right;">
+2069884.7
+</td>
+<td style="text-align:right;">
+0.000194
+</td>
+<td style="text-align:right;">
+401.0
+</td>
+<td style="text-align:right;">
+6.3
+</td>
+<td style="text-align:right;">
+0.0012125
+</td>
+<td style="text-align:right;">
+2509.8
+</td>
 </tr>
 </tbody>
 </table>
 </div>
-<div id="summary" class="section level2 hasAnchor" number="4.2">
-<h2><span class="header-section-number">4.2</span> Summary<a href="real-data.html#summary" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="summary" class="section level2 hasAnchor" number="4.4">
+<h2><span class="header-section-number">4.4</span> Summary<a href="real-data.html#summary" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The 2D distance analysis suggests that the animals are attracted to the line. This would make the conventional distance estimate positively biased, and so it is reasonable that the 2D estimate would be lower. We would expect the mark recapture estimate to be negatively biased due to the declining detectability with distance, but it is higher. This is likely due to imperfect matching in the data, so we recommend 2D Distance sampling as the most reliable estimate, as it is not impacted by imperfect matching or non uniform animal distribution.</p>
-<table class="kable_wrapper">
+<table>
+<caption>
+<span id="tab:tables">Table 4.1: </span>Combined
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+Point Estimate
+</th>
+<th style="text-align:right;">
+95% Confidence
+</th>
+<th style="text-align:right;">
+Interval
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+2D Distance
+</td>
+<td style="text-align:right;">
+401
+</td>
+<td style="text-align:right;">
+350.5900
+</td>
+<td style="text-align:right;">
+478.9600
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Conventional Distance
+</td>
+<td style="text-align:right;">
+733
+</td>
+<td style="text-align:right;">
+575.5396
+</td>
+<td style="text-align:right;">
+889.8824
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Chapman
+</td>
+<td style="text-align:right;">
+425
+</td>
+<td style="text-align:right;">
+348.4897
+</td>
+<td style="text-align:right;">
+517.9511
+</td>
+</tr>
+</tbody>
+</table>
+<table class="kable_wrapper table" style="margin-left: auto; margin-right: auto;">
 <tbody>
 <tr>
 <td>
 <table>
-<caption><span id="tab:tables">Table 4.1: </span>Combined</caption>
+<caption>
+<span id="tab:tables">Table 4.1: </span>Ibex
+</caption>
 <thead>
-<tr class="header">
-<th align="left"></th>
-<th align="right">Point Estimate</th>
-<th align="right">95% Confidence</th>
-<th align="right">Interval</th>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+Point Estimate
+</th>
+<th style="text-align:right;">
+95% Confidence
+</th>
+<th style="text-align:right;">
+Interval
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td align="left">2D Distance</td>
-<td align="right">402</td>
-<td align="right">354.8800</td>
-<td align="right">483.4500</td>
+<tr>
+<td style="text-align:left;">
+2D Distance
+</td>
+<td style="text-align:right;">
+278
+</td>
+<td style="text-align:right;">
+246.4000
+</td>
+<td style="text-align:right;">
+341.0600
+</td>
 </tr>
-<tr class="even">
-<td align="left">Conventional Distance</td>
-<td align="right">733</td>
-<td align="right">575.5352</td>
-<td align="right">889.8562</td>
+<tr>
+<td style="text-align:left;">
+Conventional Distance
+</td>
+<td style="text-align:right;">
+489
+</td>
+<td style="text-align:right;">
+371.4328
+</td>
+<td style="text-align:right;">
+605.6235
+</td>
 </tr>
-<tr class="odd">
-<td align="left">Chapman</td>
-<td align="right">425</td>
-<td align="right">348.4897</td>
-<td align="right">517.9511</td>
+<tr>
+<td style="text-align:left;">
+Chapman
+</td>
+<td style="text-align:right;">
+308
+</td>
+<td style="text-align:right;">
+241.2495
+</td>
+<td style="text-align:right;">
+392.1259
+</td>
 </tr>
 </tbody>
 </table>
 </td>
 <td>
 <table>
-<caption><span id="tab:tables">Table 4.1: </span>Ibex</caption>
+<caption>
+<span id="tab:tables">Table 4.1: </span>Argali
+</caption>
 <thead>
-<tr class="header">
-<th align="left"></th>
-<th align="right">Point Estimate</th>
-<th align="right">95% Confidence</th>
-<th align="right">Interval</th>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+Point Estimate
+</th>
+<th style="text-align:right;">
+95% Confidence
+</th>
+<th style="text-align:right;">
+Interval
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td align="left">2D Distance</td>
-<td align="right">277</td>
-<td align="right">241.9900</td>
-<td align="right">342.2200</td>
-</tr>
-<tr class="even">
-<td align="left">Conventional Distance</td>
-<td align="right">489</td>
-<td align="right">371.4322</td>
-<td align="right">605.6228</td>
-</tr>
-<tr class="odd">
-<td align="left">Chapman</td>
-<td align="right">308</td>
-<td align="right">241.2495</td>
-<td align="right">392.1259</td>
-</tr>
-</tbody>
-</table>
+<tr>
+<td style="text-align:left;">
+2D Distance
 </td>
-<td>
-<table>
-<caption><span id="tab:tables">Table 4.1: </span>Argali</caption>
-<thead>
-<tr class="header">
-<th align="left"></th>
-<th align="right">Point Estimate</th>
-<th align="right">95% Confidence</th>
-<th align="right">Interval</th>
+<td style="text-align:right;">
+202
+</td>
+<td style="text-align:right;">
+99.77000
+</td>
+<td style="text-align:right;">
+210.3900
+</td>
 </tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">2D Distance</td>
-<td align="right">201</td>
-<td align="right">99.17000</td>
-<td align="right">207.0400</td>
+<tr>
+<td style="text-align:left;">
+Conventional Distance
+</td>
+<td style="text-align:right;">
+673
+</td>
+<td style="text-align:right;">
+35.72440
+</td>
+<td style="text-align:right;">
+1310.4728
+</td>
 </tr>
-<tr class="even">
-<td align="left">Conventional Distance</td>
-<td align="right">619</td>
-<td align="right">45.34850</td>
-<td align="right">1193.5931</td>
-</tr>
-<tr class="odd">
-<td align="left">Chapman</td>
-<td align="right">115</td>
-<td align="right">84.28546</td>
-<td align="right">156.1286</td>
+<tr>
+<td style="text-align:left;">
+Chapman
+</td>
+<td style="text-align:right;">
+115
+</td>
+<td style="text-align:right;">
+84.28546
+</td>
+<td style="text-align:right;">
+156.1286
+</td>
 </tr>
 </tbody>
 </table>

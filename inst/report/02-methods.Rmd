@@ -92,6 +92,42 @@ $$\hat{P}_a = \frac{\int_{0}^{w}\hat{g}(x)dx}{w}$$
 
 -   $\hat{g}(x)$ *is the estimate of detection function.*
 
+## MRDS
+
+Mark Recapture Distance Sampling (MRDS) combines the principles of mark-recapture and standard distance sampling. 2 observers each travel along the same transect and record the animals they see and the perpendicular distance. By including the capture history of each animal we have enough information to allow for non-zero detection probability on the line, but we lose the pooling robustness property, so unmodelled heterogeneity will cause biased estimates.
+
+Point independence models, which assume the two observers' detection probabilities are uncorrelated at a specific distance, are less biased when faced with unmodelled heterogeneity than full independence models, which assume detection probabilities are independent at all distances. However, the estimates are still negatively biased in this situation. Unmodelled heterogeneity is likely to occur in most surveys as the observers are unlikely to be aware of every potential source of difference in detection and it is not feasible to record multitudes of information whilst moving along a transect.
+
+One advantage of MRDS is that the extra data from the capture history means that it can be used for situations where the probability of detection on the line is not one. This can be useful for marine surveys, where animals on the transect line may be below the water and so not visible, or surveys in thickly forested areas where it is possible to not see animals high up in the canopy.
+
+This model also assumes that the observers perfectly match which animals they both saw and which ones only one observer saw. If the animals don't have uniquely identifying features and there is any kind of animal movement between surveys then this assumption will not hold.
+
+MRDS should be used in situations where it is suspected p(0) may be less than one and animals are uniformly distributed and uniquely identifiable. If it is used, the observers should collect as much information as is practical to prevent any unmodelled heterogeneity from causing bias.
+
+From our simulations, MRDS does not perform well in scenarios with non-uniform animal distribution. It is negatively biased when animals initially avoid the line and positively biased when they are attracted to it. Imperfect matching has different effects depending on the type of animal movement but makes the estimates much more variable.
+
+## 2D Distance
+
+2D Distance Sampling builds on standard distance sampling by including the forward distance to the detected animal as well as the perpendicular distance. This removes the assumptions that the animals are uniformly distributed and that p(0) = 1, so this method is useful for situations where the other methods covered previously are not suitable. In particular, 2D distance sampling only requires the transect to be surveyed by one observer. This is not only more efficient but removes the issue of imperfect matching in mark-recapture methods.
+
+Animal movement is also less problematic for 2D distance sampling. Like in standard distance sampling, as long as the movement is slow relative to the speed of the observers it will only cause a small amount of bias. Responsive movement can be accounted for in the animal distribution model so does not cause bias.
+
+The likelihood equation for this model is: $$
+L(N, \boldsymbol{\beta}) = {N\choose n}[1-p.(\boldsymbol{\beta},\boldsymbol{\phi})]^{N-n}\prod_{i = 1}^{n}\pi(x_i; \boldsymbol{\phi})S(t_i, x_i; \boldsymbol{\beta}) h(t_i, x_i; \boldsymbol{\beta}) 
+$$ where:
+
+\- $n$ is the number of animals observed and $N$ is the total in the population
+
+\- $\pi(x_i; \boldsymbol{\phi})$ is the probability animal i is at perpendicular distance $x_i$. We will refer to $\pi(x_i; \boldsymbol{\phi})$ as the animal distribution function.
+
+\- $h(t_i, x_i; \boldsymbol{\beta})$ is the probability animal i is detected at forward distance $y_i$ and perpendicular distance $x_i$. We will refer to $h(t_i, x_i; \boldsymbol{\beta})$ as the detection function.
+
+\- $S(t_i, x_i; \boldsymbol{\beta}) = e^{-\int_{0}^{t_i}h(u,x;\boldsymbol{\beta})du}$ is the survivor function, i.e. the probability that animal i was undetected until time $t_i$
+
+\- $p.(\boldsymbol{\beta},\boldsymbol{\phi})$ is the average probability of being detected in the region
+
+In practice the conditional likelihood $L(\boldsymbol{\beta}|n)$ is used to calculate the maximum likelihood estimators. It is the same as the equation above, but without the leading binomial term, and so avoids considering the unseen animals. $\hat N$ is then estimated using a Horvitz-Thompson like estimator. The forward distance to the detected animal $y_i$ is used instead of the time $t_i$.
+
 ## Further Reading
 
 Borchers, D.L., Buckland, S.T. and Zucchini, W. (2002). Estimating Animal Abundance: Closed Populations. Springer London. <https://doi.org/10.1007/978-1-4471-3708-5>
