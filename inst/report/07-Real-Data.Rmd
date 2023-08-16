@@ -164,7 +164,7 @@ argbootci <- argboot$ci
 
 Our best fitting model used the 2-parameter inverse power hazard detection function and a half normal distribution for the animal density. All of the best fitting models used a half normal animal distribution, which implies that the animals are attracted to the line rather than avoiding it as initially thought. This could be due to the non random line placement, as the observers travel along valleys or ridges that are easier to walk along so the animals could also favour the easier terrain.
 
-```{r real-results-plot,echo = F, fig.cap = "Detection and distribution functions for best model (h1 and normal)", cache = T}
+```{r real-results-plot,echo = F, fig.cap = "Detection and distribution functions for best model (inverse power and half-normal)", cache = T}
 par(mfrow = c(2,2))
 plot(combined.ip0.hnorm)
 test.results <- gof.LT2D(combined.ip0.hnorm, plot = T)

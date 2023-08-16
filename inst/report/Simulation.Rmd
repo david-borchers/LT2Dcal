@@ -15,33 +15,39 @@ library(kableExtra)
 Perpendicular distance refers to the minimum distance to the transect line at which animals are detected. 3 different levels are considered: uniformly distributed, avoiding the line and attracted to the line.
 
 ```{r initial perp. dist. distribution, echo = FALSE}
+library(zoo)
 par(mfrow=c(1,3))
-xs <- seq(0,1,length=100)
+xs <- seq(0,1600,length=100)
 
 # uniformly distributed
-plot(xs, pi.const(x=xs,logphi=NA,w=1),
-     type='l',xlab='Perp. distance, x',ylab=expression(pi(x)))
+y.unif <- pi.const(x=xs,logphi=NA,w=1600)
+plot(xs, y.unif/sum(diff(xs)*rollmean(y.unif,2)),
+     type='l',xlab='Perp. distance, x',ylab=expression(pi(x)),
+     ylim=c(0, 1.5*max(y.unif)))
 
 # avoiding the line
-plot(xs, pi.chnorm(x=xs,logphi=c(0, -0.5),w=1),
-     type='l',xlab='Perp. distance, x',ylab=expression(pi(x)))
+y.avoid <- pi.chnorm(x=xs,logphi=c(0, 6),w=1600)
+plot(xs, y.avoid/sum(diff(xs)*rollmean(y.avoid,2)),
+     type='l',xlab='Perp. distance, x',ylab=expression(pi(x)),
+     ylim=c(0, max(y.avoid)))
 
 # attracted to the line
-plot(xs,pi.norm(x=xs,logphi=c(0, 1),w=1),
-     type='l',xlab='Perp. distance, x',ylab=expression(pi(x)))
-
+y.attracted <- pi.hnorm(x=xs,logphi=6.6,w=1600)
+plot(xs, y.attracted/sum(diff(xs)*rollmean(y.attracted,2)),
+     type='l',xlab='Perp. distance, x',ylab=expression(pi(x)),
+     ylim=c(0, max(y.attracted)))
 ```
 
 ```{r distribution-plots, echo = F, fig.cap = "Potential Animal Distributions"}
 par(mfrow = c(1,3))
 const <- simpop2DLT(600,2000,pi.const, En = 400, fixed.n = T)
-plot(const$x, const$y, xlab = "x", ylab = "y", main = "Uniformly Distributed")
+plot(const$x, const$y, xlab = "x", ylab = "y", main = "Uniformly Distributed", xlim=c(-1600, 1600))
 abline(v = 0, col = 'red')
 avoid <- simpop2DLT(600,2000,pi.chnorm, logphi = c(0,6), En = 400, fixed.n = T)
 plot(avoid$x, avoid$y, xlab = "x", ylab = "y", main = "Avoiding Line")
-abline(v = 0, col = 'red')
+abline(v = 0, col = 'red', xlim=c(-1600, 1600))
 attract <- simpop2DLT(600,2000,pi.hnorm, logphi = 6.5, En = 400, fixed.n = T)
-plot(attract$x, attract$y, xlab = "x", ylab = "y", main = "Attracted to Line")
+plot(attract$x, attract$y, xlab = "x", ylab = "y", main = "Attracted to Line", xlim=c(-1600, 1600))
 abline(v = 0, col = 'red')
 ```
 

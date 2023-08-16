@@ -50,7 +50,7 @@
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
-<script src="libs/htmlwidgets-1.6.1/htmlwidgets.js"></script>
+<script src="libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
 <script src="libs/plotly-binding-4.10.2/plotly.js"></script>
 <script src="libs/typedarray-0.1/typedarray.min.js"></script>
 <link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
@@ -159,14 +159,14 @@ Figure 4.1: Histograms of perpendicular distances
 (#fig:plot-separate species)Detection function and QQ-plots for ibex and argali models
 </p>
 </div>
-<p>Therefore, we choose the combined model as our best model, as the AIC was only slightly higher (2575.8122528 vs 2572.7354923) and it doesn’t have the spike at zero.</p>
+<p>Therefore, we choose the combined model as our best model, as the AIC was only slightly higher (2575.8122528 vs 2573.502628) and it doesn’t have the spike at zero.</p>
 <div class="figure"><span style="display:block;" id="fig:plot-combined"></span>
 <img src="_main_files/figure-html/plot-combined-1.png" alt="Detection function and QQ-plots for combined model" width="672" />
 <p class="caption">
 Figure 4.2: Detection function and QQ-plots for combined model
 </p>
 </div>
-<p>This gives an estimate of 733 total groups with a 95% confidence interval of 575.5395732, 889.8823527. This is much higher than the MCR estimate, but may be biased if the animal distribution is not uniform.</p>
+<p>This gives an estimate of 733 total groups with a 95% confidence interval of 575.539745, 889.8826683. This is much higher than the MCR estimate, but may be biased if the animal distribution is not uniform.</p>
 </div>
 <div id="d-distance-sampling" class="section level2 hasAnchor" number="4.3">
 <h2><span class="header-section-number">4.3</span> 2D Distance Sampling<a href="real-data.html#d-distance-sampling" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -180,7 +180,7 @@ Figure 4.2: Detection function and QQ-plots for combined model
 Figure 4.3: Detection and distribution functions for best model (h1 and normal)
 </p>
 </div>
-<p>We tried fitting different models to each species in the survey, but this had a higher AIC than the combined model (3515.0524411 vs 3512.1224168 for combined model). Interestingly, the argali appear to be uniformly distributed across the area whereas the ibex exhibit line attraction. However, there are only 39 argali groups with valid distances so further investigation is needed before drawing any conclusions. With more time we would fit a model that had species as a covariate.</p>
+<p>We tried fitting different models to each species in the survey, but this had a higher AIC than the combined model (3514.875933 vs 3511.4910574 for combined model). Interestingly, the argali appear to be uniformly distributed across the area whereas the ibex exhibit line attraction. However, there are only 39 argali groups with valid distances so further investigation is needed before drawing any conclusions. With more time we would fit a model that had species as a covariate.</p>
 <p>The best combined model estimates there are 401 groups in total.</p>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <thead>
@@ -229,7 +229,7 @@ Abundance Estimate
 194178.7
 </td>
 <td style="text-align:right;">
-0.000426
+0.000425
 </td>
 <td style="text-align:right;">
 82.6
@@ -238,10 +238,10 @@ Abundance Estimate
 6.5
 </td>
 <td style="text-align:right;">
-0.0027584
+0.0027577
 </td>
 <td style="text-align:right;">
-535.6
+535.5
 </td>
 </tr>
 <tr>
@@ -267,10 +267,10 @@ Abundance Estimate
 6.9
 </td>
 <td style="text-align:right;">
-0.0008297
+0.0008294
 </td>
 <td style="text-align:right;">
-189.8
+189.7
 </td>
 </tr>
 <tr>
@@ -290,16 +290,16 @@ Abundance Estimate
 0.000222
 </td>
 <td style="text-align:right;">
-58.2
+58.1
 </td>
 <td style="text-align:right;">
 6.8
 </td>
 <td style="text-align:right;">
-0.0015178
+0.0015174
 </td>
 <td style="text-align:right;">
-397.9
+397.8
 </td>
 </tr>
 <tr>
@@ -325,10 +325,10 @@ Abundance Estimate
 4.2
 </td>
 <td style="text-align:right;">
-0.0009468
+0.0009466
 </td>
 <td style="text-align:right;">
-180.6
+180.5
 </td>
 </tr>
 <tr>
@@ -354,10 +354,10 @@ Abundance Estimate
 4.5
 </td>
 <td style="text-align:right;">
-0.0006592
+0.0006591
 </td>
 <td style="text-align:right;">
-165.3
+165.2
 </td>
 </tr>
 <tr>
@@ -383,10 +383,10 @@ Abundance Estimate
 9.1
 </td>
 <td style="text-align:right;">
-0.0013584
+0.0013580
 </td>
 <td style="text-align:right;">
-333.6
+333.5
 </td>
 </tr>
 <tr>
@@ -412,10 +412,10 @@ Abundance Estimate
 4.4
 </td>
 <td style="text-align:right;">
-0.0005648
+0.0005646
 </td>
 <td style="text-align:right;">
-174.5
+174.4
 </td>
 </tr>
 <tr>
@@ -441,10 +441,10 @@ Abundance Estimate
 4.1
 </td>
 <td style="text-align:right;">
-0.0006226
+0.0006224
 </td>
 <td style="text-align:right;">
-88.8
+88.7
 </td>
 </tr>
 <tr>
@@ -470,10 +470,10 @@ Abundance Estimate
 4.0
 </td>
 <td style="text-align:right;">
-0.0005847
+0.0005846
 </td>
 <td style="text-align:right;">
-73.5
+73.4
 </td>
 </tr>
 <tr>
@@ -499,10 +499,10 @@ Abundance Estimate
 10.1
 </td>
 <td style="text-align:right;">
-0.0030682
+0.0030673
 </td>
 <td style="text-align:right;">
-370.3
+370.2
 </td>
 </tr>
 <tr>
@@ -528,10 +528,10 @@ Total
 6.3
 </td>
 <td style="text-align:right;">
-0.0012125
+0.0012122
 </td>
 <td style="text-align:right;">
-2509.8
+2509.1
 </td>
 </tr>
 </tbody>
@@ -568,10 +568,10 @@ Interval
 401
 </td>
 <td style="text-align:right;">
-350.5900
+353.2800
 </td>
 <td style="text-align:right;">
-478.9600
+486.4300
 </td>
 </tr>
 <tr>
@@ -582,10 +582,10 @@ Conventional Distance
 733
 </td>
 <td style="text-align:right;">
-575.5396
+575.5397
 </td>
 <td style="text-align:right;">
-889.8824
+889.8827
 </td>
 </tr>
 <tr>
@@ -636,10 +636,10 @@ Interval
 278
 </td>
 <td style="text-align:right;">
-246.4000
+239.1900
 </td>
 <td style="text-align:right;">
-341.0600
+336.1100
 </td>
 </tr>
 <tr>
@@ -650,10 +650,10 @@ Conventional Distance
 489
 </td>
 <td style="text-align:right;">
-371.4328
+371.4326
 </td>
 <td style="text-align:right;">
-605.6235
+605.6231
 </td>
 </tr>
 <tr>
@@ -699,13 +699,13 @@ Interval
 2D Distance
 </td>
 <td style="text-align:right;">
-202
+201
 </td>
 <td style="text-align:right;">
-99.77000
+101.76000
 </td>
 <td style="text-align:right;">
-210.3900
+216.3600
 </td>
 </tr>
 <tr>
@@ -713,13 +713,13 @@ Interval
 Conventional Distance
 </td>
 <td style="text-align:right;">
-673
+492
 </td>
 <td style="text-align:right;">
-35.72440
+86.59656
 </td>
 <td style="text-align:right;">
-1310.4728
+896.5035
 </td>
 </tr>
 <tr>
