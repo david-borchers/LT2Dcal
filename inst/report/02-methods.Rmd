@@ -48,10 +48,30 @@ Usually, observers travel along the transect lines that are strategically placed
 
 Detection function $g(x)$describes the probability of detecting an animal at different distances from the transect lines. A fundamental assumption is that all objects present on the line are detected, i.e. $g(0)=1$ ; however it is expected that objects become progressively more challenging to detect as their distance from the line increases, leading to a decrease in detection with increasing distance. Commonly used detection functions include uniform, half-normal and hazard rate. Example of adjustment terms include cosine, Hermite polynomial series and simple polynomial series.
 
-```{r detection func, echo = FALSE} detection <- function(){   hn.sigma <- c(0.2, 0.3, 0.4)   hr.sigma <- 0.3; hr.beta <- c(1, 2, 5)      x <- seq(0, 1, 0.01)   y.unif <- x/x   y.hn1 <- exp(-x^2/(2*hn.sigma[1]^2)); y.hn2 <- exp(-x^2/(2*hn.sigma[2]^2)); y.hn3 <- exp(-x^2/(2*hn.sigma[3]^2))   y.hr1 <- 1-exp(-(x/hr.sigma)^(-hr.beta[1])); y.hr2 <- 1-exp(-(x/hr.sigma)^(-hr.beta[2])); y.hr3 <- 1-exp(-(x/hr.sigma)^(-hr.beta[3]))      par(mfrow=c(1,3))   plot(x, y.unif, type="l", col="red", xlab="Distance", ylab="Detection probability", main="Uniform", ylim=c(0, 1))      plot(x, y.hn1, type="l", lwd=1.5, col="red", xlab="Distance", ylab="Detection probability", main="Half-normal", ylim=c(0, 1))   lines(x, y.hn2, col="darkgreen", lty=2, lwd=1.5)   lines(x, y.hn3, col="steelblue", lty=3, lwd=1.5)   legend(x = "topright", legend = c("sigma = 0.2", "sigma = 0.3", "sigma = 0.4"),            lty = c(1, 2, 3), col = c("red", "darkgreen", "steelblue"), lwd = 1.5, cex=0.5)       plot(x, y.hr1, type="l", lwd=1.5, col="red", xlab="Distance", ylab="Detection probability", main="Hazard rate (sigma = 0.3)", ylim=c(0, 1))   lines(x, y.hr2, col="darkgreen", lty=2, lwd=1.5)   lines(x, y.hr3, col="steelblue", lty=3, lwd=1.5)   legend(x = "topright", legend = c("beta = 1", "beta = 2", "beta = 5"),            lty = c(1, 2, 3), col = c("red", "darkgreen", "steelblue"), lwd = 1.5, cex=0.5)     }
+```{r detection func, echo = FALSE, cache=TRUE}
+detection <- function(){   
+  hn.sigma <- c(0.2, 0.3, 0.4)   
+  hr.sigma <- 0.3; hr.beta <- c(1, 2, 5)      
+  x <- seq(0, 1, 0.01)   
+  y.unif <- x/x   
+  y.hn1 <- exp(-x^2/(2*hn.sigma[1]^2)); y.hn2 <- exp(-x^2/(2*hn.sigma[2]^2)); y.hn3 <- exp(-x^2/(2*hn.sigma[3]^2))   
+  y.hr1 <- 1-exp(-(x/hr.sigma)^(-hr.beta[1])); y.hr2 <- 1-exp(-(x/hr.sigma)^(-hr.beta[2])); y.hr3 <- 1-exp(-(x/hr.sigma)^(-hr.beta[3]))      
+  par(mfrow=c(1,3))   
+  plot(x, y.unif, type="l", col="red", xlab="Distance", ylab="Detection probability", main="Uniform", ylim=c(0, 1))      
+  
+  plot(x, y.hn1, type="l", lwd=1.5, col="red", xlab="Distance", ylab="Detection probability", main="Half-normal", ylim=c(0, 1))   
+  lines(x, y.hn2, col="darkgreen", lty=2, lwd=1.5)  
+  lines(x, y.hn3, col="steelblue", lty=3, lwd=1.5)   
+  legend(x = "topright", legend = c("sigma = 0.2", "sigma = 0.3", "sigma = 0.4"),            lty = c(1, 2, 3), col = c("red", "darkgreen", "steelblue"), lwd = 1.5, cex=0.5)       
+  
+  plot(x, y.hr1, type="l", lwd=1.5, col="red", xlab="Distance", ylab="Detection probability", main="Hazard rate (sigma = 0.3)", ylim=c(0, 1))   
+  lines(x, y.hr2, col="darkgreen", lty=2, lwd=1.5)   
+  lines(x, y.hr3, col="steelblue", lty=3, lwd=1.5)   
+  legend(x = "topright", legend = c("beta = 1", "beta = 2", "beta = 5"),            lty = c(1, 2, 3), col = c("red", "darkgreen", "steelblue"), lwd = 1.5, cex=0.5) }    
 ```
 
-```{r, echo = FALSE} detection()  # plot detection functions}
+```{r, echo = FALSE}
+detection()  # plot detection functions
 ```
 
 Once the detection function is fitted, the estimator can calculate animal density and thus abundance by accounting for the area surveyed and the proportion of animals detected at different distances. The obtained abundance estimates can be extrapolated to the entire study area if the survey design is representative of the entire habitat.
