@@ -57,8 +57,15 @@
 <script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
 <link href="libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet" />
 <script src="libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
-<script src="libs/kePrint-0.0.1/kePrint.js"></script>
-<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="libs/datatables-binding-0.28/datatables.js"></script>
+<link href="libs/dt-core-1.13.4/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core-1.13.4/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-1.13.4/js/jquery.dataTables.min.js"></script>
+<link href="libs/dt-ext-fixedcolumns-1.13.4/css/fixedColumns.dataTables.min.css" rel="stylesheet" />
+<script src="libs/dt-ext-fixedcolumns-1.13.4/js/dataTables.fixedColumns.min.js"></script>
+<link href="libs/dt-ext-fixedheader-1.13.4/css/fixedHeader.dataTables.min.css" rel="stylesheet" />
+<script src="libs/dt-ext-fixedheader-1.13.4/js/dataTables.fixedHeader.min.js"></script>
 
 
 
@@ -175,367 +182,15 @@ Figure 4.2: Detection function and QQ-plots for combined model
 <p>We truncated the data at y = 1700, excluding one observation at 1770m.</p>
 <p>Our best fitting model used the 2-parameter inverse power hazard detection function and a half normal distribution for the animal density. All of the best fitting models used a half normal animal distribution, which implies that the animals are attracted to the line rather than avoiding it as initially thought. This could be due to the non random line placement, as the observers travel along valleys or ridges that are easier to walk along so the animals could also favour the easier terrain.</p>
 <div class="figure"><span style="display:block;" id="fig:real-results-plot"></span>
-<img src="_main_files/figure-html/real-results-plot-1.png" alt="Detection and distribution functions for best model (h1 and normal)" width="672" />
+<img src="_main_files/figure-html/real-results-plot-1.png" alt="Detection and distribution functions for best model (inverse power and half-normal)" width="672" />
 <p class="caption">
-Figure 4.3: Detection and distribution functions for best model (h1 and normal)
+Figure 4.3: Detection and distribution functions for best model (inverse power and half-normal)
 </p>
 </div>
 <p>We tried fitting different models to each species in the survey, but this had a higher AIC than the combined model (3514.875933 vs 3511.4910574 for combined model). Interestingly, the argali appear to be uniformly distributed across the area whereas the ibex exhibit line attraction. However, there are only 39 argali groups with valid distances so further investigation is needed before drawing any conclusions. With more time we would fit a model that had species as a covariate.</p>
 <p>The best combined model estimates there are 401 groups in total.</p>
-<table class="table" style="margin-left: auto; margin-right: auto;">
-<thead>
-<tr>
-<th style="text-align:left;">
-Stratum
-</th>
-<th style="text-align:right;">
-Groups Seen
-</th>
-<th style="text-align:right;">
-Total Transect Length (<span class="math inline">\(km\)</span>)
-</th>
-<th style="text-align:right;">
-Stratum Area (<span class="math inline">\(m^2\)</span>)
-</th>
-<th style="text-align:right;">
-Estimated Group Denisty
-</th>
-<th style="text-align:right;">
-Number of Groups
-</th>
-<th style="text-align:right;">
-Mean Size
-</th>
-<th style="text-align:right;">
-Individual Density
-</th>
-<th style="text-align:right;">
-Abundance Estimate
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-1
-</td>
-<td style="text-align:right;">
-27
-</td>
-<td style="text-align:right;">
-60.68086
-</td>
-<td style="text-align:right;">
-194178.7
-</td>
-<td style="text-align:right;">
-0.000425
-</td>
-<td style="text-align:right;">
-82.6
-</td>
-<td style="text-align:right;">
-6.5
-</td>
-<td style="text-align:right;">
-0.0027577
-</td>
-<td style="text-align:right;">
-535.5
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-2
-</td>
-<td style="text-align:right;">
-9
-</td>
-<td style="text-align:right;">
-71.47497
-</td>
-<td style="text-align:right;">
-228719.9
-</td>
-<td style="text-align:right;">
-0.000120
-</td>
-<td style="text-align:right;">
-27.5
-</td>
-<td style="text-align:right;">
-6.9
-</td>
-<td style="text-align:right;">
-0.0008294
-</td>
-<td style="text-align:right;">
-189.7
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-3
-</td>
-<td style="text-align:right;">
-19
-</td>
-<td style="text-align:right;">
-81.92104
-</td>
-<td style="text-align:right;">
-262147.3
-</td>
-<td style="text-align:right;">
-0.000222
-</td>
-<td style="text-align:right;">
-58.1
-</td>
-<td style="text-align:right;">
-6.8
-</td>
-<td style="text-align:right;">
-0.0015174
-</td>
-<td style="text-align:right;">
-397.8
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-4
-</td>
-<td style="text-align:right;">
-14
-</td>
-<td style="text-align:right;">
-59.59936
-</td>
-<td style="text-align:right;">
-190717.9
-</td>
-<td style="text-align:right;">
-0.000225
-</td>
-<td style="text-align:right;">
-42.8
-</td>
-<td style="text-align:right;">
-4.2
-</td>
-<td style="text-align:right;">
-0.0009466
-</td>
-<td style="text-align:right;">
-180.5
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-5
-</td>
-<td style="text-align:right;">
-12
-</td>
-<td style="text-align:right;">
-78.34713
-</td>
-<td style="text-align:right;">
-250710.8
-</td>
-<td style="text-align:right;">
-0.000146
-</td>
-<td style="text-align:right;">
-36.7
-</td>
-<td style="text-align:right;">
-4.5
-</td>
-<td style="text-align:right;">
-0.0006591
-</td>
-<td style="text-align:right;">
-165.2
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-6
-</td>
-<td style="text-align:right;">
-12
-</td>
-<td style="text-align:right;">
-76.74868
-</td>
-<td style="text-align:right;">
-245595.8
-</td>
-<td style="text-align:right;">
-0.000150
-</td>
-<td style="text-align:right;">
-36.7
-</td>
-<td style="text-align:right;">
-9.1
-</td>
-<td style="text-align:right;">
-0.0013580
-</td>
-<td style="text-align:right;">
-333.5
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-7
-</td>
-<td style="text-align:right;">
-13
-</td>
-<td style="text-align:right;">
-96.53271
-</td>
-<td style="text-align:right;">
-308904.7
-</td>
-<td style="text-align:right;">
-0.000129
-</td>
-<td style="text-align:right;">
-39.8
-</td>
-<td style="text-align:right;">
-4.4
-</td>
-<td style="text-align:right;">
-0.0005646
-</td>
-<td style="text-align:right;">
-174.4
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-8
-</td>
-<td style="text-align:right;">
-7
-</td>
-<td style="text-align:right;">
-44.55528
-</td>
-<td style="text-align:right;">
-142576.9
-</td>
-<td style="text-align:right;">
-0.000150
-</td>
-<td style="text-align:right;">
-21.4
-</td>
-<td style="text-align:right;">
-4.1
-</td>
-<td style="text-align:right;">
-0.0006224
-</td>
-<td style="text-align:right;">
-88.7
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-9
-</td>
-<td style="text-align:right;">
-6
-</td>
-<td style="text-align:right;">
-39.25853
-</td>
-<td style="text-align:right;">
-125627.3
-</td>
-<td style="text-align:right;">
-0.000146
-</td>
-<td style="text-align:right;">
-18.4
-</td>
-<td style="text-align:right;">
-4.0
-</td>
-<td style="text-align:right;">
-0.0005846
-</td>
-<td style="text-align:right;">
-73.4
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-10
-</td>
-<td style="text-align:right;">
-12
-</td>
-<td style="text-align:right;">
-37.72042
-</td>
-<td style="text-align:right;">
-120705.4
-</td>
-<td style="text-align:right;">
-0.000304
-</td>
-<td style="text-align:right;">
-36.7
-</td>
-<td style="text-align:right;">
-10.1
-</td>
-<td style="text-align:right;">
-0.0030673
-</td>
-<td style="text-align:right;">
-370.2
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Total
-</td>
-<td style="text-align:right;">
-131
-</td>
-<td style="text-align:right;">
-646.83898
-</td>
-<td style="text-align:right;">
-2069884.7
-</td>
-<td style="text-align:right;">
-0.000194
-</td>
-<td style="text-align:right;">
-401.0
-</td>
-<td style="text-align:right;">
-6.3
-</td>
-<td style="text-align:right;">
-0.0012122
-</td>
-<td style="text-align:right;">
-2509.1
-</td>
-</tr>
-</tbody>
-</table>
+<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-ef4b464f917572777bbe" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-ef4b464f917572777bbe">{"x":{"filter":"none","vertical":false,"extensions":["FixedColumns","FixedHeader"],"data":[["1","2","3","4","5","6","7","8","9","10","11"],["1","2","3","4","5","6","7","8","9","10","Total"],[27,9,19,14,12,12,13,7,6,12,131],[60.680856879,71.47497,81.92103862800001,59.59935893400001,78.347129147,76.74868402,96.53270928699999,44.55528006,39.258532809,37.720422797,646.838982561],[194178.7420128,228719.904,262147.3236096,190717.9485888,250710.8132704,245595.788864,308904.6697184,142576.896192,125627.3049888,120705.3529504,2069884.7441952],[0.000425,0.00012,0.000222,0.000225,0.000146,0.00015,0.000129,0.00015,0.000146,0.000304,0.000194],[82.59999999999999,27.5,58.1,42.8,36.7,36.7,39.8,21.4,18.4,36.7,401],[6.5,6.9,6.8,4.2,4.5,9.1,4.4,4.1,4,10.1,6.3],[0.0027577,0.00082945,0.0015174,0.0009466,0.00065906,0.001358,0.0005646200000000001,0.00062238,0.00058456,0.0030673,0.0012122],[535.5,189.7,397.8,180.5,165.2,333.5,174.4,88.7,73.40000000000001,370.2,2509.1]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Stratum<\/th>\n      <th>Groups Seen<\/th>\n      <th>Total Transect Length (km)<\/th>\n      <th>Stratum Area (m^2)<\/th>\n      <th>Estimated Group Denisty<\/th>\n      <th>Number of Groups<\/th>\n      <th>Mean Size<\/th>\n      <th>Individual Density<\/th>\n      <th>Abundance Estimate<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"scrollX":true,"paging":false,"fixedHeader":true,"columnDefs":[{"className":"dt-right","targets":[2,3,4,5,6,7,8,9]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="summary" class="section level2 hasAnchor" number="4.4">
 <h2><span class="header-section-number">4.4</span> Summary<a href="real-data.html#summary" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -604,7 +259,7 @@ Chapman
 </tr>
 </tbody>
 </table>
-<table class="kable_wrapper table" style="margin-left: auto; margin-right: auto;">
+<table class="kable_wrapper">
 <tbody>
 <tr>
 <td>

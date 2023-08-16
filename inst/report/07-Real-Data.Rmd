@@ -174,12 +174,16 @@ We tried fitting different models to each species in the survey, but this had a 
 
 The best combined model estimates there are `r total.N` groups in total.
 
-```{r estimate-by-block, echo = F, cache = T}
+```{r estimate-by-block, echo = F, cache = T, rows.print=11}
+library(DT)
 ests <- combined.ip0.hnorm$ests[,c(1,2,4,6,7:11)]
 rownames(ests) <- NULL
-tab <- kable(ests, col.names = c("Stratum", "Groups Seen", "Total Transect Length ($km$)", "Stratum Area ($m^2$)", "Estimated Group Denisty", "Number of Groups", "Mean Size", "Individual Density", "Abundance Estimate" ), escape = FALSE)
-tab %>%
-  kable_styling(latex_options = "scale_down")
+datatable(ests, colnames =c("Stratum", "Groups Seen", "Total Transect Length (km)", "Stratum Area (m^2)", "Estimated Group Denisty", "Number of Groups", "Mean Size", "Individual Density", "Abundance Estimate" ),
+          extensions = c('FixedColumns',"FixedHeader"),
+          options = list(scrollX = TRUE, 
+                         paging=FALSE,
+                         fixedHeader=TRUE))
+
 ```
 
 ## Summary
@@ -195,7 +199,7 @@ ibtab <- kable(ibexcis, col.names = c("Point Estimate", "95% Confidence", "Inter
 argalicis <- data.frame( "N" = c(round(total.argali), round(argN), round(argali.cm[1])), "L" = c(argbootci[1], argci[1], argali.cm[2]), "U" = c(argbootci[2], argci[2], argali.cm[3]), row.names = c("2D Distance", "Conventional Distance", "Chapman"))
 argtab <- kable(argalicis, col.names = c("Point Estimate", "95% Confidence", "Interval"), caption = "Argali")
 combtab
-kables(list(ibtab, argtab))%>%kable_styling( latex_options = "scale_down")
+kables(list(ibtab, argtab))
 ```
 
 Whilst the combined model was the best fit for the data, we have included our separate estimates for each species as they may be more useful in practice.
