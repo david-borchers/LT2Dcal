@@ -1559,7 +1559,7 @@ fityx = function(y=NULL,x=NULL,b,hr,ystart,pi.x,logphi,w,rmin=0,formulas=NULL,
     stop(DensityWarning)
   }
 
-  rounded.points.count = length(x[sqrt(x**2 + y**2)<=rmin])# save for likelihood
+  rounded.points.count = length(x[sqrt(x**2 + y**2)<rmin])# save for likelihood
   new.x = x[sqrt(x**2 + y**2)>rmin]  # We will Only pass unrounded data and
   new.y = y[sqrt(x**2 + y**2)>rmin]  # the number of rounded points to the nll
 
