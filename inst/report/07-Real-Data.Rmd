@@ -25,7 +25,7 @@ ibex.cm <- chapman(Gobi[Gobi$Sightings == 'ibex',])
 argali.cm <- chapman(Gobi[Gobi$Sightings == 'argali',])
 ```
 
-We start by using the Chapman estimator to estimate the total number of groups. This gives us an estimate of `r round(combined[1])` with a 95% confidence interval of ( `r round(combined[2:3]))`. Separating the data by species we estimate there are `r round(ibex.cm[1])` (`r round(ibex.cm[2:3])`) ibex groups and `r round(argali.cm[1])` (`r argali.cm[2:3]`) argali groups. From our previous simulations we expect this to be negatively biased, as there is unmodelled heterogeneity in the population from detectability decreasing with distance. The estimates for the individual species are probably more reliable as it accounts for any difference in detectability between the two species.
+We start by using the Chapman estimator to estimate the total number of groups. This gives us an estimate of `r round(combined[1])` with a 95% confidence interval of ( `r round(combined[2:3])` ). Separating the data by species we estimate there are `r round(ibex.cm[1])` (`r round(ibex.cm[2:3])`) ibex groups and `r round(argali.cm[1])` (`r argali.cm[2:3]`) argali groups. From our previous simulations we expect this to be negatively biased, as there is unmodelled heterogeneity in the population from detectability decreasing with distance. The estimates for the individual species are probably more reliable as it accounts for any difference in detectability between the two species.
 
 ## Conventional Distance Sampling
 
@@ -199,7 +199,8 @@ ibtab <- kable(ibexcis, col.names = c("Point Estimate", "95% Confidence", "Inter
 argalicis <- data.frame( "N" = c(round(total.argali), round(argN), round(argali.cm[1])), "L" = c(argbootci[1], argci[1], argali.cm[2]), "U" = c(argbootci[2], argci[2], argali.cm[3]), row.names = c("2D Distance", "Conventional Distance", "Chapman"))
 argtab <- kable(argalicis, col.names = c("Point Estimate", "95% Confidence", "Interval"), caption = "Argali")
 combtab
-kables(list(ibtab, argtab))
+tab <- kables(list(ibtab, argtab))
+tab %>% kable_paper(bootstrap_options = "striped",full_width = F)
 ```
 
 Whilst the combined model was the best fit for the data, we have included our separate estimates for each species as they may be more useful in practice.

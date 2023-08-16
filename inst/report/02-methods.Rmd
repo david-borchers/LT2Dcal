@@ -136,4 +136,4 @@ Borchers, D.L., Laake, J.L., Southwell, C. and Paxton, C.G.M. (2005). Accommodat
 
 Buckland, S.T., Rexstad, E.A., Marques, T.A. and Oedekoven, C.S. (2015). Distance Sampling: Methods and Applications. Springer International Publish. <https://doi.org/10.1007/978-3-319-19219-2>
 
-Burt, M.L., Borchers, D.L., Jenkins, K.J. and Marques, T.A. (2014). Using mark-recapture distance sampling methods on line transect surveys. Methods in Ecology and Evolution, [online] 5(11), pp.1180--1191. [doi:https://doi.org/10.1111/2041-210x.12294](doi:https://doi.org/10.1111/2041-210x.12294){.uri}.
+Burt, M.L., Borchers, D.L., Jenkins, K.J. and Marques, T.A. (2014). Using mark-recapture distance sampling methods on line transect surveys. Methods in Ecology and Evolution, [online] 5(11), pp.1180--1191. <doi:https://doi.org/10.1111/2041-210x.12294>.

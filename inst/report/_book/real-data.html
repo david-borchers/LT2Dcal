@@ -50,7 +50,7 @@
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
-<script src="libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
+<script src="libs/htmlwidgets-1.6.1/htmlwidgets.js"></script>
 <script src="libs/plotly-binding-4.10.2/plotly.js"></script>
 <script src="libs/typedarray-0.1/typedarray.min.js"></script>
 <link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
@@ -66,6 +66,8 @@
 <script src="libs/dt-ext-fixedcolumns-1.13.4/js/dataTables.fixedColumns.min.js"></script>
 <link href="libs/dt-ext-fixedheader-1.13.4/css/fixedHeader.dataTables.min.css" rel="stylesheet" />
 <script src="libs/dt-ext-fixedheader-1.13.4/js/dataTables.fixedHeader.min.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
 
 
 
@@ -147,7 +149,7 @@
 <p>We will now use these methods to analyse the real snow leopard prey data. The observers surveyed 60 transects in 10 blocks twice, with 30 minutes between the first and second observer starting the survey. The observers had limited rangefinders so only the first observer recorded the radial distance to the group, the bearing of the path and the bearing of the group they saw. This means we cannot use mrds to analyse this data as there are no distances for the second observer. There were 2 species included in the survey: ibex and argali. They saw 242 groups in total, and 193 of them have distance data.</p>
 <div id="mark-recapture-1" class="section level2 hasAnchor" number="4.1">
 <h2><span class="header-section-number">4.1</span> Mark Recapture<a href="real-data.html#mark-recapture-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>We start by using the Chapman estimator to estimate the total number of groups. This gives us an estimate of 425 with a 95% confidence interval of 348.4897014, 517.95112. Separating the data by species we estimate there are 308 (241.2495366, 392.1258668) ibex groups and 115 (84.2854575, 156.1285628) argali groups. From our previous simulations we expect this to be negatively biased, as there is unmodelled heterogeneity in the population from detectability decreasing with distance. The estimates for the individual species are probably more reliable as it accounts for any difference in detectability between the two species.</p>
+<p>We start by using the Chapman estimator to estimate the total number of groups. This gives us an estimate of 425 with a 95% confidence interval of ( 348, 518 ). Separating the data by species we estimate there are 308 (241, 392) ibex groups and 115 (84.2854575, 156.1285628) argali groups. From our previous simulations we expect this to be negatively biased, as there is unmodelled heterogeneity in the population from detectability decreasing with distance. The estimates for the individual species are probably more reliable as it accounts for any difference in detectability between the two species.</p>
 </div>
 <div id="conventional-distance-sampling" class="section level2 hasAnchor" number="4.2">
 <h2><span class="header-section-number">4.2</span> Conventional Distance Sampling<a href="real-data.html#conventional-distance-sampling" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -160,20 +162,20 @@ Figure 4.1: Histograms of perpendicular distances
 </div>
 <p>We decided to truncate the data at 1600m, which excluded one outlier at 1820m. We then fitted a series of models using both half normal and hazard rate detection functions to the combined data set and to each species individually. We included size, block and observer (and species in the combined model) as covariates, and chose the best model using AIC. (Full analysis can be found in the _CDS analysis file.)</p>
 <p>The best fitting model according to AIC involved fitting separate hazard rate functions with block as a covariate to the ibex and argali data sets. However, the argali detection function has a large spike at zero, which is not realistic.</p>
-<div class="figure">
-<img src="_main_files/figure-html/plot-separate%20species-1.png" alt="Detection function and QQ-plots for ibex and argali models" width="672" />
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-15"></span>
+<img src="_main_files/figure-html/unnamed-chunk-15-1.png" alt="Detection function and QQ-plots for ibex and argali models" width="672" />
 <p class="caption">
-(#fig:plot-separate species)Detection function and QQ-plots for ibex and argali models
+Figure 4.2: Detection function and QQ-plots for ibex and argali models
 </p>
 </div>
-<p>Therefore, we choose the combined model as our best model, as the AIC was only slightly higher (2575.8122528 vs 2573.502628) and it doesn’t have the spike at zero.</p>
+<p>Therefore, we choose the combined model as our best model, as the AIC was only slightly higher (2575.8122528 vs 2572.7354923) and it doesn’t have the spike at zero.</p>
 <div class="figure"><span style="display:block;" id="fig:plot-combined"></span>
 <img src="_main_files/figure-html/plot-combined-1.png" alt="Detection function and QQ-plots for combined model" width="672" />
 <p class="caption">
-Figure 4.2: Detection function and QQ-plots for combined model
+Figure 4.3: Detection function and QQ-plots for combined model
 </p>
 </div>
-<p>This gives an estimate of 733 total groups with a 95% confidence interval of 575.539745, 889.8826683. This is much higher than the MCR estimate, but may be biased if the animal distribution is not uniform.</p>
+<p>This gives an estimate of 733 total groups with a 95% confidence interval of 575.5395732, 889.8823527. This is much higher than the MCR estimate, but may be biased if the animal distribution is not uniform.</p>
 </div>
 <div id="d-distance-sampling" class="section level2 hasAnchor" number="4.3">
 <h2><span class="header-section-number">4.3</span> 2D Distance Sampling<a href="real-data.html#d-distance-sampling" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -184,13 +186,13 @@ Figure 4.2: Detection function and QQ-plots for combined model
 <div class="figure"><span style="display:block;" id="fig:real-results-plot"></span>
 <img src="_main_files/figure-html/real-results-plot-1.png" alt="Detection and distribution functions for best model (inverse power and half-normal)" width="672" />
 <p class="caption">
-Figure 4.3: Detection and distribution functions for best model (inverse power and half-normal)
+Figure 4.4: Detection and distribution functions for best model (inverse power and half-normal)
 </p>
 </div>
-<p>We tried fitting different models to each species in the survey, but this had a higher AIC than the combined model (3514.875933 vs 3511.4910574 for combined model). Interestingly, the argali appear to be uniformly distributed across the area whereas the ibex exhibit line attraction. However, there are only 39 argali groups with valid distances so further investigation is needed before drawing any conclusions. With more time we would fit a model that had species as a covariate.</p>
+<p>We tried fitting different models to each species in the survey, but this had a higher AIC than the combined model (3515.0524411 vs 3512.1224168 for combined model). Interestingly, the argali appear to be uniformly distributed across the area whereas the ibex exhibit line attraction. However, there are only 39 argali groups with valid distances so further investigation is needed before drawing any conclusions. With more time we would fit a model that had species as a covariate.</p>
 <p>The best combined model estimates there are 401 groups in total.</p>
-<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-ef4b464f917572777bbe" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-ef4b464f917572777bbe">{"x":{"filter":"none","vertical":false,"extensions":["FixedColumns","FixedHeader"],"data":[["1","2","3","4","5","6","7","8","9","10","11"],["1","2","3","4","5","6","7","8","9","10","Total"],[27,9,19,14,12,12,13,7,6,12,131],[60.680856879,71.47497,81.92103862800001,59.59935893400001,78.347129147,76.74868402,96.53270928699999,44.55528006,39.258532809,37.720422797,646.838982561],[194178.7420128,228719.904,262147.3236096,190717.9485888,250710.8132704,245595.788864,308904.6697184,142576.896192,125627.3049888,120705.3529504,2069884.7441952],[0.000425,0.00012,0.000222,0.000225,0.000146,0.00015,0.000129,0.00015,0.000146,0.000304,0.000194],[82.59999999999999,27.5,58.1,42.8,36.7,36.7,39.8,21.4,18.4,36.7,401],[6.5,6.9,6.8,4.2,4.5,9.1,4.4,4.1,4,10.1,6.3],[0.0027577,0.00082945,0.0015174,0.0009466,0.00065906,0.001358,0.0005646200000000001,0.00062238,0.00058456,0.0030673,0.0012122],[535.5,189.7,397.8,180.5,165.2,333.5,174.4,88.7,73.40000000000001,370.2,2509.1]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Stratum<\/th>\n      <th>Groups Seen<\/th>\n      <th>Total Transect Length (km)<\/th>\n      <th>Stratum Area (m^2)<\/th>\n      <th>Estimated Group Denisty<\/th>\n      <th>Number of Groups<\/th>\n      <th>Mean Size<\/th>\n      <th>Individual Density<\/th>\n      <th>Abundance Estimate<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"scrollX":true,"paging":false,"fixedHeader":true,"columnDefs":[{"className":"dt-right","targets":[2,3,4,5,6,7,8,9]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-96b9ee0ee4e9ec731c0d" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-96b9ee0ee4e9ec731c0d">{"x":{"filter":"none","vertical":false,"extensions":["FixedColumns","FixedHeader"],"data":[["1","2","3","4","5","6","7","8","9","10","11"],["1","2","3","4","5","6","7","8","9","10","Total"],[27,9,19,14,12,12,13,7,6,12,131],[60.680856879,71.47497,81.921038628,59.599358934,78.347129147,76.74868402,96.532709287,44.55528006,39.258532809,37.720422797,646.838982561],[194178.7420128,228719.904,262147.3236096,190717.9485888,250710.8132704,245595.788864,308904.6697184,142576.896192,125627.3049888,120705.3529504,2069884.7441952],[0.000426,0.00012,0.000222,0.000225,0.000146,0.00015,0.000129,0.00015,0.000146,0.000304,0.000194],[82.6,27.5,58.2,42.8,36.7,36.7,39.8,21.4,18.4,36.7,401],[6.5,6.9,6.8,4.2,4.5,9.1,4.4,4.1,4,10.1,6.3],[0.0027584,0.00082968,0.0015178,0.00094685,0.00065924,0.0013584,0.00056477,0.00062255,0.00058472,0.0030682,0.0012125],[535.6,189.8,397.9,180.6,165.3,333.6,174.5,88.8,73.5,370.3,2509.8]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Stratum<\/th>\n      <th>Groups Seen<\/th>\n      <th>Total Transect Length (km)<\/th>\n      <th>Stratum Area (m^2)<\/th>\n      <th>Estimated Group Denisty<\/th>\n      <th>Number of Groups<\/th>\n      <th>Mean Size<\/th>\n      <th>Individual Density<\/th>\n      <th>Abundance Estimate<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"scrollX":true,"paging":false,"fixedHeader":true,"columnDefs":[{"className":"dt-right","targets":[2,3,4,5,6,7,8,9]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="summary" class="section level2 hasAnchor" number="4.4">
 <h2><span class="header-section-number">4.4</span> Summary<a href="real-data.html#summary" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -223,10 +225,10 @@ Interval
 401
 </td>
 <td style="text-align:right;">
-353.2800
+350.5900
 </td>
 <td style="text-align:right;">
-486.4300
+478.9600
 </td>
 </tr>
 <tr>
@@ -237,10 +239,10 @@ Conventional Distance
 733
 </td>
 <td style="text-align:right;">
-575.5397
+575.5396
 </td>
 <td style="text-align:right;">
-889.8827
+889.8824
 </td>
 </tr>
 <tr>
@@ -259,7 +261,7 @@ Chapman
 </tr>
 </tbody>
 </table>
-<table class="kable_wrapper">
+<table class="kable_wrapper lightable-paper" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
 <tbody>
 <tr>
 <td>
@@ -291,10 +293,10 @@ Interval
 278
 </td>
 <td style="text-align:right;">
-239.1900
+246.4000
 </td>
 <td style="text-align:right;">
-336.1100
+341.0600
 </td>
 </tr>
 <tr>
@@ -305,10 +307,10 @@ Conventional Distance
 489
 </td>
 <td style="text-align:right;">
-371.4326
+371.4328
 </td>
 <td style="text-align:right;">
-605.6231
+605.6235
 </td>
 </tr>
 <tr>
@@ -354,13 +356,13 @@ Interval
 2D Distance
 </td>
 <td style="text-align:right;">
-201
+202
 </td>
 <td style="text-align:right;">
-101.76000
+99.77000
 </td>
 <td style="text-align:right;">
-216.3600
+210.3900
 </td>
 </tr>
 <tr>
@@ -368,13 +370,13 @@ Interval
 Conventional Distance
 </td>
 <td style="text-align:right;">
-492
+673
 </td>
 <td style="text-align:right;">
-86.59656
+35.72440
 </td>
 <td style="text-align:right;">
-896.5035
+1310.4728
 </td>
 </tr>
 <tr>

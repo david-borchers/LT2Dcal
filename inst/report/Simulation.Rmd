@@ -55,7 +55,7 @@ abline(v = 0, col = 'red')
 
 For the mark recapture methods there are two detection occasions, which could be, for example, two observers on different decks of a boat or, as in the snow leopard prey data, two observers walking the transect at different times. Animal movement is not an issue for the first scenario as the animals move slowly in comparison to the boat, so will not move far enough to have different detection probabilities between the two observers. However, in our snow leopard prey example, there is 30 minutes between the first and second observer walking the transect so the animals could move significantly between the two observers. We consider two types of movement after the first detection: random movement and avoidance movement away from the transect. We based our simulation on Ibex movement data in Johansson *et al*. (2022), which shows that the distance moved follows roughly a log normal distribution with mean $log(12) + 1.5$ and standard deviation 1.5.
 
-```{r movement, echo = F, fig.asp= 1.25, warning = F}
+```{r movement, echo = F, warning = F}
 library(plotly)
 par(mfrow = c(1,2))
 sim.dat <- function(n, level){
@@ -169,7 +169,7 @@ sc2.table <- kable(sc2.out <- result(sc2, n=600), col.names = c("Bias", "Coverag
 load("sc3.RData")
 sc3.table <- kable(sc3.out <- result(sc3, n=600), col.names = c("Bias", "Coverage Probability"), caption = "Random Movement")
 
-kables(list(sc3.table, sc1.table))
+kables(list(sc3.table, sc1.table), caption = "Uniform Distribution with Perfect Matching")
 ```
 
 Mark recapture performs poorly in this scenario and all the other scenarios as detectability declines with distance. This means there is unmodelled heterogeneity in the population, so it is negatively biased. MRDS is negatively biased with random animal movement as this violates the assumption that each animal has the same detection probability for each observer. It is less negatively biased with avoidance as second observer will see less animals than the first due to them now being further away. This results in a lower estimated detection probability and therefore a higher estimate.
@@ -180,7 +180,7 @@ Mark recapture performs poorly in this scenario and all the other scenarios as d
 #sc4 <- simulation(n=600, b=99, 0, 1, TRUE)
 load("sc4.RData")
 sc4.table <- kable(sc4.out <- result(sc4, n=600),col.names = c("Bias", "Coverage Probability"), caption = "Random Movement")
-kables(list(sc4.table, sc2.table), caption = "With Imperfect Matching")
+kables(list(sc4.table, sc2.table), caption = "Uniform Distribution with Imperfect Matching")
 ```
 
 After introducing imperfect matching, MRDS estimates seem to be less negatively biased. This is due to some individuals that were seen twice being mistakenly identified as two separate animals, leading to a lower estimate of detection probability and hence a higher estimate of abundance. Whilst it looks like MRDS should be the best estimator in the scenario with avoidance movement and imperfect matching, this is actually because effects of breaking multiple assumptions happen to balance out in this specific situation. This results in very variable estimates, as the variance of the $\hat{N}$ s was `r round(var(sc2[[3]]$N.hat[sc2[[3]]$N.hat < 3*600])/99, 2)` for MRDS, compared to `r round(var(sc2[[4]]$N.hat[sc2[[4]]$N.hat < 3*600])/99, 2)` for 2D Distance.
@@ -223,7 +223,7 @@ index <- which(sapply(sc7[[3]], is.numeric))
 sc7[[3]] <- data.frame(t(sapply(sc7[[3]][index], c)))
 colnames(sc7[[3]]) <- c("N.hat", "lcl", "ucl")
 sc7.table <- kable(sc7.out <- result(sc7, n=1200), col.names = c("Bias", "Coverage Probability"), caption = "Random Movement")
-kables(list(sc7.table,sc5.table))
+kables(list(sc7.table,sc5.table), caption = "Initial Avoidance with Perfect Matching")
 ```
 
 Conventional distance and MRDS are both negatively biased as the fitted detection function decays less quickly than the true detection function to account for the large numbers of detections far away from the transect. However, as these detections are a result of more animals being far from the transect rather than a high detection probability, the models overestimate the detection probability and so underestimate the abundance.
@@ -249,7 +249,7 @@ legend("topleft", legend = c("Fitted", "True"),lty = 1, col = c("black", "red"))
 #sc8 <- simulation(n=1200, b=99, 1, 1, TRUE)
 load("sc8.RData")
 sc8.table <- kable(sc8.out <- result(sc8, n=1200), col.names = c("Bias", "Coverage Probability"), caption = "Random Movement")
-kables(list(sc8.table,sc6.table), caption = "With Imperfect Matching")
+kables(list(sc8.table,sc6.table), caption = "Initial Avoidance with Imperfect Matching")
 ```
 
 As before, all the methods except 2D distance sampling are negatively biased. The imperfect matching does make the MRDS estimates slightly bigger, but not enough to counteract the negative bias from the non uniform distribution.
@@ -274,12 +274,12 @@ load("sc10.RData")
 sc10.table <- kable(sc10.out <- result(sc10, n=400), col.names = c("Bias", "Coverage Probability"), caption = "Avoidance Movement")
 ```
 
-```{r message=FALSE, warning=FALSE, cache = TRUE, echo = FALSE, fig.cap = "Initially attracted to the line with perfect matching"}
+```{r message=FALSE, warning=FALSE, cache = TRUE, echo = FALSE}
 # Scenario 11
 # Initial density: attracted + Movement: random + Matching: perfect
 load("sc11.Rdata")
 sc11.table <- kable(sc11, col.names = c("Bias", "Coverage Probability"), caption = "Random Movement")
-kables(list(sc11.table, sc9.table))
+kables(list(sc11.table, sc9.table), caption = "Initial Attraction with Perfect Matching")
 ```
 
 Conventional distance and MRDS are positively biased this time, as the fitted detection functions now decay quicker than the true function. This gives a lower detection probability and therefore a higher estimate.
@@ -290,7 +290,7 @@ Conventional distance and MRDS are positively biased this time, as the fitted de
 #sc12 <- simulation(n=400, b=99, 2, 1, TRUE)
 load("sc12.Rdata")
 sc12.table <- kable(sc12.out <- result(sc12, n=400), col.names = c("Bias", "Coverage Probability"), caption = "Random Movement")
-kables(list(sc12.table,sc10.table), caption = "With Imperfect Matching")
+kables(list(sc12.table,sc10.table), caption = "Initial Attraction with Imperfect Matching")
 ```
 
 ## Further Reading
