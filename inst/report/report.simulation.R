@@ -126,7 +126,7 @@ ds.analysis <- function(df){
                         distance = abs(df1$x))
     df.ds <- ds(new_df1, truncation=1600, transect="line", key="hr", order=0, monotonicity = "none")
 
-    return(c(df.ds$ddf$Nhat, df.ds$dht$individuals$N$lcl, df.ds$dht$individuals$N$ucl))
+    return(c(df.ds$dht$individuals$N$Estimate, df.ds$dht$individuals$N$lcl, df.ds$dht$individuals$N$ucl))
   })
 }
 
@@ -195,8 +195,7 @@ fit.2d <- function(df, density){
   names(output) = NULL
   return(output)
 }
-test <- sim.data(400,2,0)
-fit.2d(test,2)
+
 
 ###-----------------------------------------------------------------------------
 simulation <- function(n=400, b=99, density, move, mismatch){
@@ -247,30 +246,5 @@ result <- function(list.method, n){
   return(output)
 }
 
-
-estimates <- c()
-for(i in 1:9){
-  ex = simXY(400,'pi.hnorm',6.6, 'ip0', c(4.9, 0.036),1600, 1700)
-  all.1s <- rep(1,length(ex$locs$x))
-  obj <- 1:length(ex$locs$x)
-  sim.df <- data.frame(x = ex$locs$x,
-                       y = ex$locs$y,
-                       stratum = all.1s,
-                       transect = all.1s,
-                       L = 600,
-                       area = 2*2000*600,
-                       object = obj,
-                       size = all.1s)
-  fit <- LT2D.fit(DataFrameInput = sim.df,
-                  hr = 'ip0',
-                  b = c(4.9, 0.036),
-                  ystart = 1700,
-                  pi.x = 'pi.hnorm',
-                  logphi = 6.6,
-                  w = 1600, 
-                  hessian = TRUE)
-  estimates[i] <- fit$ests[nrow(fit$ests), ncol(fit$ests)]
-}
-mean(estimates)
 
 
