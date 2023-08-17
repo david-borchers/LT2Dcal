@@ -229,11 +229,14 @@ result <- function(list.method, n){
     method <- method[!is.infinite(rowSums(method)),]
     method <- na.omit(method)
     
-    method$N.hat <- unlist(method$N.hat)
-    bias <- mean((method$N.hat[method$N.hat < 3*n]-n)/n)  # mean relative bias
+    lo <- quantile(method$N.hat, c(0.025, 0.975))[1]
+    up <- quantile(method$N.hat, c(0.025, 0.975))[2]
+    con <- method$N.hat < up & method$N.hat > lo
     
-    method$lcl <- unlist(method$lcl); method$ucl <- unlist(method$ucl)
-    check <- n > method$lcl[!is.na(method$lcl[method$N.hat < 3*n])] & n < method$ucl[!is.na(method$ucl[method$N.hat < 3*n])]
+    method$N.hat <- unlist(method$N.hat)
+    bias <- mean((method$N.hat[con]-n)/n)  # mean relative bias
+    
+    check <- n > method$lcl[con] & n < method$ucl[con]
     cover.p <- length(check[check==TRUE])/length(check)  # coverage probability
     
     return(c(bias, cover.p))

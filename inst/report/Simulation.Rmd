@@ -2,8 +2,9 @@
 
 Simulation studies have become indispensable in ecology and conservation research, providing a controlled and repeatable approach to evaluate the performance of estimation methods. In this study, we aimed to assess how each method performs using a range of scenarios with varying degrees of assumption compliance and violations. In each scenario, artificial datasets are created with with known population sizes, density patterns, detectability patterns, etc. to test the accuracy and precision of estimators.
 
-```{r echo = FALSE}
+```{r}
 source("report.simulation.R")
+load("simulation.data.RData")
 library(knitr)
 library(kableExtra)
 ```
@@ -150,24 +151,21 @@ With uniform animal distribution we expect conventional distance and 2D distance
 # Scenario 1
 # Initial density: uniform + Movement: avoidance + Matching: perfect
 #sc1 <- simulation(n=600, b=99, 0, 0, FALSE)
-load("sc1.RData")
-sc1.table <- kable(sc1.out <- result(sc1, n=600), col.names = c("Bias", "Coverage Probability"), caption = "Avoidance Movement")
+sc1.table <- kable(sc1.out <- result(sc1, n=600), caption = "Avoidance Movement")
 ```
 
 ```{r message=FALSE, warning=FALSE, cache=TRUE, echo = FALSE, fig.cap = "Uniform animal density, avoidance movement and imperfect matching"}
 # Scenario 2
 # Initial density: uniform + Movement: avoidance + Matching: imperfect
 #sc2 <- simulation(n=600, b=99, 0, 0, TRUE)
-load("sc2.RData")
-sc2.table <- kable(sc2.out <- result(sc2, n=600), col.names = c("Bias", "Coverage Probability"), caption = "Avoidance Movement")
+sc2.table <- kable(sc2.out <- result(sc2, n=600), caption = "Avoidance Movement")
 ```
 
 ```{r message=FALSE, warning=FALSE, cache = TRUE, echo = F, fig.cap = "Uniform distribution and perfect matching"}
 # Scenario 3
 # Initial density: uniform + Movement: random + Matching: perfect
 #sc3 <- simulation(n=600, b=99, 0, 1, FALSE)
-load("sc3.RData")
-sc3.table <- kable(sc3.out <- result(sc3, n=600), col.names = c("Bias", "Coverage Probability"), caption = "Random Movement")
+sc3.table <- kable(sc3.out <- result(sc3, n=600), caption = "Random Movement")
 
 kables(list(sc3.table, sc1.table), caption = "Uniform Distribution with Perfect Matching")
 ```
@@ -178,8 +176,7 @@ Mark recapture performs poorly in this scenario and all the other scenarios as d
 # Scenario 4
 # Initial density: uniform + Movement: random + Matching: imperfect
 #sc4 <- simulation(n=600, b=99, 0, 1, TRUE)
-load("sc4.RData")
-sc4.table <- kable(sc4.out <- result(sc4, n=600),col.names = c("Bias", "Coverage Probability"), caption = "Random Movement")
+sc4.table <- kable(sc4.out <- result(sc4, n=600), caption = "Random Movement")
 kables(list(sc4.table, sc2.table), caption = "Uniform Distribution with Imperfect Matching")
 ```
 
@@ -193,36 +190,33 @@ As expected, only 2D Distance is unbiased when the animals initially avoid the t
 # Scenario 5
 # Initial density: avoiding + Movement: avoidance + Matching: perfect
 #sc5 <- simulation(n=1200, b=99, 1, 0, FALSE)
-load("sc5.RData")
 sc5[[3]] <- unname(apply(sc5[[3]], 1, as.list)[[1]])
 index <- which(sapply(sc5[[3]], is.numeric))
 sc5[[3]] <- data.frame(t(sapply(sc5[[3]][index], c)))
 colnames(sc5[[3]]) <- c("N.hat", "lcl", "ucl")
-sc5.table <- kable(sc5.out <- result(sc5, n=1200), col.names = c("Bias", "Coverage Probability"), caption = "Avoidance Movement")
+sc5.table <- kable(sc5.out <- result(sc5, n=1200), caption = "Avoidance Movement")
 ```
 
 ```{r message=FALSE, warning=FALSE, cache = TRUE, echo = F}
 # Scenario 6
 # Initial density: avoiding + Movement: avoidance + Matching: imperfect
 #sc6 <- simulation(n=1200, b=99, 1, 0, TRUE)
-load("sc6.RData")
 sc6[[3]] <- unname(apply(sc6[[3]], 1, as.list)[[1]])
 index <- which(sapply(sc6[[3]], is.numeric))
 sc6[[3]] <- data.frame(t(sapply(sc6[[3]][index], c)))
 colnames(sc6[[3]]) <- c("N.hat", "lcl", "ucl")
-sc6.table <- kable(sc6.out <- result(sc6, n=1200), col.names = c("Bias", "Coverage Probability"), caption = "Avoidance Movement")
+sc6.table <- kable(sc6.out <- result(sc6, n=1200), caption = "Avoidance Movement")
 ```
 
 ```{r message=FALSE, warning=FALSE, cache = TRUE, echo = F,fig.cap = "Intially avoidant with perfect matching"}
 # Scenario 7
 # Initial density: avoiding + Movement: random + Matching: perfect
 #sc7 <- simulation(n=1200, b=99, 1, 1, FALSE)
-load("sc7.RData")
 sc7[[3]] <- unname(apply(sc7[[3]], 1, as.list)[[1]])
 index <- which(sapply(sc7[[3]], is.numeric))
 sc7[[3]] <- data.frame(t(sapply(sc7[[3]][index], c)))
 colnames(sc7[[3]]) <- c("N.hat", "lcl", "ucl")
-sc7.table <- kable(sc7.out <- result(sc7, n=1200), col.names = c("Bias", "Coverage Probability"), caption = "Random Movement")
+sc7.table <- kable(sc7.out <- result(sc7, n=1200), caption = "Random Movement")
 kables(list(sc7.table,sc5.table), caption = "Initial Avoidance with Perfect Matching")
 ```
 
@@ -247,8 +241,7 @@ legend("topleft", legend = c("Fitted", "True"),lty = 1, col = c("black", "red"))
 # Scenario 8
 # Initial density: avoiding + Movement: random + Matching: imperfect
 #sc8 <- simulation(n=1200, b=99, 1, 1, TRUE)
-load("sc8.RData")
-sc8.table <- kable(sc8.out <- result(sc8, n=1200), col.names = c("Bias", "Coverage Probability"), caption = "Random Movement")
+sc8.table <- kable(sc8.out <- result(sc8, n=1200), caption = "Random Movement")
 kables(list(sc8.table,sc6.table), caption = "Initial Avoidance with Imperfect Matching")
 ```
 
@@ -262,23 +255,20 @@ As with the avoidance case, we expect only 2D Distance to be unbiased when anima
 # Scenario 9
 # Initial density: attracted + Movement: avoidance + Matching: perfect
 #sc9 <- simulation(n=400, b=99, 2, 0, FALSE)
-load("sc9.RData")
-sc9.table <- kable(sc9.out <- result(sc9, n=400), col.names = c("Bias", "Coverage Probability"), caption = "Avoidance Movement")
+sc9.table <- kable(sc9.out <- result(sc9, n=400), caption = "Avoidance Movement")
 ```
 
 ```{r  message=FALSE, warning=FALSE, cache = TRUE, echo = FALSE}
 # Scenario 10
 # Initial density: attracted + Movement: avoidance + Matching: imperfect
 #sc10 <- simulation(n=400, b=99, 2, 0, TRUE)
-load("sc10.RData")
-sc10.table <- kable(sc10.out <- result(sc10, n=400), col.names = c("Bias", "Coverage Probability"), caption = "Avoidance Movement")
+sc10.table <- kable(sc10.out <- result(sc10, n=400), caption = "Avoidance Movement")
 ```
 
 ```{r message=FALSE, warning=FALSE, cache = TRUE, echo = FALSE}
 # Scenario 11
 # Initial density: attracted + Movement: random + Matching: perfect
-load("sc11.Rdata")
-sc11.table <- kable(sc11, col.names = c("Bias", "Coverage Probability"), caption = "Random Movement")
+sc11.table <- kable(sc11, caption = "Random Movement")
 kables(list(sc11.table, sc9.table), caption = "Initial Attraction with Perfect Matching")
 ```
 
@@ -288,8 +278,7 @@ Conventional distance and MRDS are positively biased this time, as the fitted de
 # Scenario 12
 # Initial density: attracted + Movement: random + Matching: imperfect
 #sc12 <- simulation(n=400, b=99, 2, 1, TRUE)
-load("sc12.Rdata")
-sc12.table <- kable(sc12.out <- result(sc12, n=400), col.names = c("Bias", "Coverage Probability"), caption = "Random Movement")
+sc12.table <- kable(sc12.out <- result(sc12, n=400), caption = "Random Movement")
 kables(list(sc12.table,sc10.table), caption = "Initial Attraction with Imperfect Matching")
 ```
 
