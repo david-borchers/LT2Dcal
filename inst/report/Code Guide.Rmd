@@ -1,0 +1,72 @@
+---
+title: "Code Guide"
+author: "Louise and Jiayi"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+## Summary
+
+-   [`simulation(n,b,density,movement,mismatch)`](#simulation) - generates b estimates of abundance with confidence intervals for each of the 4 methods for a scenario with `n` total animals
+-   `result(list.method, n)` calculates the bias and coverage probability for each method from the output of `simulation` , given the true abundance is `n` .
+-   [`sim.data(n,density,move)`](#sim.data) generates detections from a population of n animals with specified density and movement. Change this function if you want a different detection function or different parameters for density or movement. (you will need to update fit.2d if you change the density parameters)
+-   [`sim.mismatch(df)`](#sim.mismatch) simulates imperfect matching on a sim.data data frame. Change this function if you want different matching parameters
+-   `chapman.mr(df,mismatch)` uses the chapman estimator on a sim.data data frame to get an abundance estimate and confidence interval. If `mismatch = TRUE` it runs `mismatch` on the data first.
+-   `ds.analysis(df)` fits a hazard rate detection function to a sim.data data frame to get an abundance estimate and confidence interval.
+-   `fit.mrds(df, mismatch)` uses an independent observer configuration and a hazard rate detection function to get an abundance estimate and confidence interval from a sim.data data frame. If `mismatch = TRUE` it runs `mismatch` on the data first.
+-   `fit.2d(df, density)` fits a 2D model to a sim.data data frame using same density function as used to generate data. Returns a point estimate and confidence interval for abundance. If you change the density parameters in sim.data make sure to update them in fit.2d.
+
+All of our functions use the following inputs:
+
+-   n - True Animal Abundance
+
+-   b - Number of Repetitions
+
+-   density - 0 for uniform distribution, 1 for avoidance, 2 for attraction
+
+-   movement - 0 for avoidance, 1 for random
+
+-   mismatch - FALSE for perfect matching, TRUE for imperfect matching
+
+## Simulation {#simulation}
+
+The `simulation(n,b,density, movement, mismatch)` function is the main function used to simulate the data. It returns a list of data frames of the estimates for N and the lower and upper confidence limits for each of the 4 methods (MR, DS, MRDS, 2DDS).
+
+The output from `simulation` can be parsed to `result(list.method,n)` , which returns the bias and coverage probability given that the true abundance is `n`.
+
+### Simulating the Data using sim.data {#sim.data}
+
+`simulation` starts by calling the `sim.data(n,density,move)` function to generate `b` datasets. `sim.data` returns a data frame of all the seen animals. Each animal has 2 rows, one for each capture occasion. The "x" and "y" columns are the co-ordinates of each animal on each capture occasion, "forw.dist" is the forward distance to detection (only generated for the first occasion) and "detect" is 1 if the animal was detected on that capture occasion and 0 otherwise. Perpendicular distance can be found from the absolute value of x.
+
+#### Initial Positions
+
+`sim.data` generates the initial animal positions within 2000m either side of a 600km transect using the simpop2DLT function.
+
+**Note:** we later truncate perpendicular distances at 1600m but the actual area still has a half-width of 2000m, and confusing this caused us some issues. The area is larger than the perpendicular truncation distance to prevent issues with animals moving outside the boundary.
+
+```{r sim.data-initial-distribution, eval=FALSE}
+# (a) initial animal distribution
+if(density==0){pi.fun.name <- 'pi.const'; logphi <- NA}  # uniform
+else if(density==1){pi.fun.name <- 'pi.chnorm'; logphi <- c(0, 6)}  # avoid
+else if(density==2){pi.fun.name <- 'pi.hnorm'; logphi <- 6.6}  # attracted
+  
+  # simulated positions
+pos <- simpop2DLT(L=600,w = 2000, pi.x = pi.fun.name,logphi = logphi, En = n, fixed.n = T)
+
+```
+
+`sim.data` then uses the `detect2DLT` function to simulate the first obeserver's detections. It uses the `ip0` inverse power detection function with `b=c(4.9, 0.036)` as this is the detection function from our real data.
+
+#### Movement
+
+For random movement, `sim.data` generates an angle from a wrapped Cauchy distribution with $\mu = 0$ and $\rho = 0$ and a distance from a lognormal distribution with $\mu = log(12) + 1.5$ and $\sigma = 1.5$ for each animal. For avoidance movement, the angle is generated from a wrapped Cauchy with $\rho = 0.9$ and $\mu = \pi$ for animals to the left of the transect and $\mu = 0$ for animals right of the transect. The distance is calculated by multiplying a random deviate from a $Uniform(0,0.1)$ distribution by the distance between the maximum distance from the transect and the animal's distance from the transect, so that animals closest to the transect move furthest. This is scaled by 2.5 to make the mean comparable to the random case. The angle and distance moved are used to calculate each animal's new position
+
+The second observer's detections are the simulated using the new positions. `sim.data` returns only the animals that were detected at least once.
+
+### Imperfect Matching {#sim.mismatch}
+
+For the mark recapture methods, if `mismatch = TRUE` then the fitting function will first apply the `sim.mismatch` function before calculating the estimates.
+
+The `sim.mismatch` function starts by calculating the distance between all the animals that were seen on the first occasion and the ones seen on the second occasion. For each animal that was seen on the second occasion, it finds the closest animal seen on the first occasion. If the animals were less than 300m apart, then it records them as the same animal. If they were more than 1000m apart, it records them as different animals. It uses a inverse power function with parameter `b=c(6, 0.000005)`, to generate the probability of matching two animals between 300 and 1000m apart.
+
+If two animals are recorded as the same then it combines their two entries in the dataframe into one. Likewise, if they are recorded as separate animals an entry is added to the dataframe.
