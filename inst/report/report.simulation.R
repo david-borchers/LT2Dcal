@@ -40,7 +40,7 @@ sim.data <- function(n=400, density, move){
     
     dist <- (max(abs(df$x[df$obs==1]))-abs(df$x[df$obs==1]))*runif(n, 0, 0.1)*2.5
     df$x[df$obs==2] <- df$x[df$obs==1] + dist * cos(df$angle[df$obs==1])
-    df$y[df$obs==2] <- df$y[df$obs==1] + dist * sin(df$angle[df$obs==1])/1000
+    df$y[df$obs==2] <- df$y[df$obs==1] + dist * sin(df$angle[df$obs==1])/1000 #divide by 1000 to account for km
     }else if(move==1){ #random
     df$angle <- rwrappedcauchy(n, mu = circular(0), rho = 0, control.circular=list(units="radian"))
     dist <- rlnorm(n,log(12) + 1.5,1.5)
@@ -136,7 +136,7 @@ fit.mrds <- function(df, mismatch){
   if(mismatch){
     df <- sim.mismatch(df)
     names(df) <- c( "x","y","object","observer","detected")
-  }else{
+  }else{ #change names to be in format for ddf
     names(df) <- c("object","observer", "x","y","forw.dist","detected")
     }
   df$distance <- abs(df$x)

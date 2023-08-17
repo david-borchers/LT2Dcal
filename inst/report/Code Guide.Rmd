@@ -9,12 +9,12 @@ output: html_document
 
 -   [`simulation(n,b,density,movement,mismatch)`](#simulation) - generates b estimates of abundance with confidence intervals for each of the 4 methods for a scenario with `n` total animals
 -   `result(list.method, n)` calculates the bias and coverage probability for each method from the output of `simulation` , given the true abundance is `n` .
--   [`sim.data(n,density,move)`](#sim.data) generates detections from a population of n animals with specified density and movement. Change this function if you want a different detection function, initial density or movement (you will need to update fit.2d if you change density)
+-   [`sim.data(n,density,move)`](#sim.data) generates detections from a population of n animals with specified density and movement. Change this function if you want a different detection function or different parameters for density or movement. (you will need to update fit.2d if you change the density parameters)
 -   [`sim.mismatch(df)`](#sim.mismatch) simulates imperfect matching on a sim.data data frame. Change this function if you want different matching parameters
 -   `chapman.mr(df,mismatch)` uses the chapman estimator on a sim.data data frame to get an abundance estimate and confidence interval. If `mismatch = TRUE` it runs `mismatch` on the data first.
 -   `ds.analysis(df)` fits a hazard rate detection function to a sim.data data frame to get an abundance estimate and confidence interval.
 -   `fit.mrds(df, mismatch)` uses an independent observer configuration and a hazard rate detection function to get an abundance estimate and confidence interval from a sim.data data frame. If `mismatch = TRUE` it runs `mismatch` on the data first.
--   `fit.2d(df, density)` fits a 2D model to a sim.data data frame using same density function as used to generate data. Returns a point estimate and confidence interval for abundance. If you change the density settings in sim.data make sure to update the density settings in fit.2d.
+-   `fit.2d(df, density)` fits a 2D model to a sim.data data frame using same density function as used to generate data. Returns a point estimate and confidence interval for abundance. If you change the density parameters in sim.data make sure to update them in fit.2d.
 
 All of our functions use the following inputs:
 
@@ -64,6 +64,8 @@ For random movement, `sim.data` generates an angle from a wrapped Cauchy distrib
 The second observer's detections are the simulated using the new positions. `sim.data` returns only the animals that were detected at least once.
 
 ### Imperfect Matching {#sim.mismatch}
+
+For the mark recapture methods, if `mismatch = TRUE` then the fitting function will first apply the `sim.mismatch` function before calculating the estimates.
 
 The `sim.mismatch` function starts by calculating the distance between all the animals that were seen on the first occasion and the ones seen on the second occasion. For each animal that was seen on the second occasion, it finds the closest animal seen on the first occasion. If the animals were less than 300m apart, then it records them as the same animal. If they were more than 1000m apart, it records them as different animals. It uses a inverse power function with parameter `b=c(6, 0.000005)`, to generate the probability of matching two animals between 300 and 1000m apart.
 
