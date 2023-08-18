@@ -2,10 +2,10 @@
 ## Summary
 
 -   [`simulation(n,b,density,movement,mismatch)`](#simulation) - generates b estimates of abundance with confidence intervals for each of the 4 methods for a scenario with `n` total animals
--   `result(list.method, n)` calculates the bias and coverage probability for each method from the output of `simulation` , given the true abundance is `n` .
--   [`sim.data(n,density,move)`](#sim.data) generates detections from a population of n animals with specified density and movement. Change this function if you want a different detection function or different parameters for density or movement. (you will need to update fit.2d if you change the density parameters)
+-   `result(list.method, n)` calculates the bias and coverage probability for each method from the output of `simulation` (`list.method`), given the true abundance is `n` .
+-   [`sim.data(n,density,move)`](#sim.data) generates detections from a population of `n` animals with specified density and movement. Change this function if you want a different detection function or different parameters for density or movement. (you will need to update fit.2d if you change the density parameters)
 -   [`sim.mismatch(df)`](#sim.mismatch) simulates imperfect matching on a sim.data data frame. Change this function if you want different matching parameters
--   `chapman.mr(df,mismatch)` uses the chapman estimator on a sim.data data frame to get an abundance estimate and confidence interval. If `mismatch = TRUE` it runs `mismatch` on the data first.
+-   `chapman.mr(df,mismatch)` uses the chapman estimator on a sim.data data frame to get an abundance estimate and confidence interval. If `mismatch = TRUE` it runs `sim.mismatch` on the data first.
 -   `ds.analysis(df)` fits a hazard rate detection function to a sim.data data frame to get an abundance estimate and confidence interval.
 -   `fit.mrds(df, mismatch)` uses an independent observer configuration and a hazard rate detection function to get an abundance estimate and confidence interval from a sim.data data frame. If `mismatch = TRUE` it runs `mismatch` on the data first.
 -   `fit.2d(df, density)` fits a 2D model to a sim.data data frame using same density function as used to generate data. Returns a point estimate and confidence interval for abundance. If you change the density parameters in sim.data make sure to update them in fit.2d.
