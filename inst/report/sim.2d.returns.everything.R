@@ -1,5 +1,6 @@
 library(LT2D)
 
+
 sim.2d <- function(n, density){
   #browser()
 
@@ -55,14 +56,13 @@ out <- fit.2d(df, 1)
 
 
 sim.fit.2d <- function(b, n, density){
-  browser()
+  #browser()
   for (i in 1:b){
-    df <- sim.2d(n, density)
-    par <- sim.fit.2d(n, density)
-    write.table(df, file = "df.csv", row.names = FALSE, 
-                append = TRUE, col.names = FALSE, sep = ", ")
-    write.table(as.data.frame(par), file = "par.csv", row.names = FALSE, 
-                append = TRUE, col.names = FALSE, sep = ", ")
+    df <- sim.2d(n, density = density)
+    par <- fit.sim.2d(df, density = density)
+    write.csv(df, file = paste("df",i,".csv"), row.names = FALSE, col.names = FALSE)
+    write.csv(as.data.frame(par), file = paste("par",i,".csv"), row.names = FALSE, col.names = FALSE)
   }
 }
 result <- sim.fit.2d(3, 1200, 1)
+
