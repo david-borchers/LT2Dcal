@@ -25,9 +25,15 @@ ibex.cm <- chapman(Gobi[Gobi$Sightings == 'ibex',])
 argali.cm <- chapman(Gobi[Gobi$Sightings == 'argali',])
 ```
 
-We start by using the Chapman estimator to estimate the total number of groups. This gives us an estimate of `r round(combined[1])` with a 95% confidence interval of `r combined[2:3]`. Separating the data by species we estimate there are `r round(ibex.cm[1])` (`r ibex.cm[2:3]`) ibex groups and `r round(argali.cm[1])` (`r argali.cm[2:3]`) argali groups. From our previous simulations we expect this to be negatively biased, as there is unmodelled heterogeneity in the population from detectability decreasing with distance. The estimates for the individual species are probably more reliable as it accounts for any difference in detectability between the two species. \## Conventional Distance Sampling We now turn to CDS. Upon closer inspection, many detection distances (both perpendicular and forward) appeared to be rounded to zero, likely as a result of the bearings being rounded to the nearest 5 degrees. To prevent this from impacting the model fit we simply added a small random number to each zero observation. We only use the jittered perpendicular distances for conventional distance sampling, but we will use the jittered forward distances in the 2D section.
 
-```{r perp-distance-histograms, fig.cap = "Histograms of perpendicular distances"}
+We start by using the Chapman estimator to estimate the total number of groups. This gives us an estimate of `r round(combined[1])` with a 95% confidence interval of `r round(combined[2:3],2)`. Separating the data by species we estimate there are `r round(ibex.cm[1])` (`r round(ibex.cm[2:3],2)`) ibex groups and `r round(argali.cm[1])` (`r round(argali.cm[2:3],2)`) argali groups. From our previous simulations we expect this to be negatively biased, as there is unmodelled heterogeneity in the population from detectability decreasing with distance. The estimates for the individual species are probably more reliable as it accounts for any difference in detectability between the two species.
+
+
+## Conventional Distance Sampling
+
+We now turn to CDS. Upon closer inspection, many detection distances (both perpendicular and forward) appeared to be rounded to zero, likely as a result of the bearings being rounded to the nearest 5 degrees. To prevent this from impacting the model fit we simply added a small random number to each zero observation. We only use the jittered perpendicular distances for conventional distance sampling, but we will use the jittered forward distances in the 2D section.
+
+```{r perp-distance-histograms, fig.cap = "Histograms of perpendicular distances", echo = FALSE}
 hist(CDSData$distance, main = "Perpendicular Distance", xlab = "Distance")
 ```
 
@@ -44,7 +50,7 @@ argali.summary <- summary(hr_argali_block)
 
 The best fitting model according to AIC involved fitting separate hazard rate functions with block as a covariate to the ibex and argali data sets. However, the argali detection function has a large spike at zero, which is not realistic.
 
-```{r plot-separate species, echo = F, fig.cap= "Detection function and QQ-plots for ibex and argali models"}
+```{r , echo = F, fig.cap= "Detection function and QQ-plots for ibex and argali models"}
 par(mfrow = c(2,2))
 plot(hr_ibex_block, main = "Ibex")
 gofi <- gof_ds(hr_ibex_block)
@@ -52,7 +58,7 @@ plot(hr_argali_block, main = "Argali")
 gofa <- gof_ds(hr_argali_block)
 ```
 
-Therefore, we choose the combined model as our best model, as the AIC was only slightly higher (`r hr_block$ddf$criterion` vs `r hr_ibex_block$ddf$criterion + hr_argali_block$ddf$criterion`) and it doesn't have the spike at zero.
+Therefore, we choose the combined model as our best model, as the AIC was only slightly higher (`r round(hr_block$ddf$criterion,2)` vs `r round(hr_ibex_block$ddf$criterion + hr_argali_block$ddf$criterion,2)`) and it doesn't have the spike at zero.
 
 ```{r plot-combined, echo = F, fig.cap = "Detection function and QQ-plots for combined model"}
 par(mfrow = c(1,2))
@@ -69,9 +75,17 @@ argN <- argali.summary$ds$Nhat
 argci <- argali.summary$ds$Nhat + c(-1,1)*1.96*argali.summary$ds$Nhat.se
 ```
 
-This gives an estimate of `r round(CDSN)` total groups with a 95% confidence interval of `r CDSci`. This is much higher than the MCR estimate, but may be biased if the animal distribution is not uniform. \## 2D Distance Sampling
+This gives an estimate of `r round(CDSN)` total groups with a 95% confidence interval of `r round(CDSci,2)`. This is much higher than the MCR estimate, but may be biased if the animal distribution is not uniform.
 
-We will now use 2D distance sampling to investigate if the animals are uniformly distributed. 61 of the detected groups were behind the observers so did not have a valid "forward" distance. This leaves 132 usable observations. `{ forward-hist, echo = F} hist(DistData$forward, main = "Forward Distance", xlab = "Distance (m)")`
+## 2D Distance Sampling
+
+We will now use 2D distance sampling to investigate if the animals are uniformly distributed. 61 of the detected groups were behind the observers so did not have a valid "forward" distance. This leaves 132 usable observations.
+
+```{r forward-hist, echo = FALSE}
+hist(DistData$forward, main = "Forward Distance", xlab = "Distance (m)")
+```
+
+We truncated the data at y = 1700, excluding one observation at 1770m.
 
 ```{r fit-model, include = FALSE, warning=FALSE, cache = TRUE}
 combined.ip0.hnorm <- LT2D.fit(DataFrameInput = jitterdf,
@@ -152,20 +166,26 @@ argbootci <- argboot$ci
 
 Our best fitting model used the 2-parameter inverse power hazard detection function and a half normal distribution for the animal density. All of the best fitting models used a half normal animal distribution, which implies that the animals are attracted to the line rather than avoiding it as initially thought. This could be due to the non random line placement, as the observers travel along valleys or ridges that are easier to walk along so the animals could also favour the easier terrain.
 
-```{r real-results-plot,echo = F, fig.cap = "Detection and distribution functions for best model (h1 and normal)", cache = T}
+```{r real-results-plot,echo = F, fig.cap = "Detection and distribution functions for best model (inverse power and half-normal)", cache = T}
 par(mfrow = c(2,2))
 plot(combined.ip0.hnorm)
 test.results <- gof.LT2D(combined.ip0.hnorm, plot = T)
 ```
 
-We tried fitting different models to each species in the survey, but this had a higher AIC than the combined model (`r ibex.ip0.hnorm$fit$AIC + argali.ip0$fit$AIC` vs `r combined.ip0.hnorm$fit$AIC` for combined model). Interestingly, the argali appear to be uniformly distributed across the area whereas the ibex exhibit line attraction. However, there are only 39 argali groups with valid distances so further investigation is needed before drawing any conclusions. With more time we would fit a model that had species as a covariate.
+We tried fitting different models to each species in the survey, but this had a higher AIC than the combined model (`r round(ibex.ip0.hnorm$fit$AIC + argali.ip0$fit$AIC,2)` vs `r round(combined.ip0.hnorm$fit$AIC,2)` for combined model). Interestingly, the argali appear to be uniformly distributed across the area whereas the ibex exhibit line attraction. However, there are only 39 argali groups with valid distances so further investigation is needed before drawing any conclusions. With more time we would fit a model that had species as a covariate.
 
 The best combined model estimates there are `r total.N` groups in total.
 
-```{r estimate-by-block, echo = F, cache = T}
+```{r estimate-by-block, echo = F, cache = T, rows.print=11}
+library(DT)
 ests <- combined.ip0.hnorm$ests[,c(1,2,4,6,7:11)]
 rownames(ests) <- NULL
-kable(ests, col.names = c("Stratum", "Groups Seen", "Total Transect Length ($km$)", "Stratum Area ($m^2$)", "Estimated Group Denisty", "Number of Groups", "Mean Size", "Individual Density", "Abundance Estimate" ), escape = FALSE)
+datatable(ests, colnames =c("Stratum", "Groups Seen", "Total Transect Length (km)", "Stratum Area (m^2)", "Estimated Group Denisty", "Number of Groups", "Mean Size", "Individual Density", "Abundance Estimate" ),
+          extensions = c('FixedColumns',"FixedHeader"),
+          options = list(scrollX = TRUE, 
+                         paging=FALSE,
+                         fixedHeader=TRUE))
+
 ```
 
 ## Summary
@@ -177,10 +197,12 @@ combinedcis <- data.frame( "N" = c(round(total.N), round(CDSN), round(combined[1
 combtab <- kable(combinedcis, col.names = c("Point Estimate", "95% Confidence", "Interval"), caption = "Combined")
 
 ibexcis <- data.frame( "N" = c(round(total.ibex), round(ibexN), round(ibex.cm[1])), "L" = c(ibci[1], ibexci[1], ibex.cm[2]), "U" = c(ibci[2], ibexci[2], ibex.cm[3]), row.names = c("2D Distance", "Conventional Distance", "Chapman"))
-ibtab <- kable(ibexcis, col.names = c("Point Estimate", "95% Confidence", "Interval"),  caption = "Ibex")
+ibtab <- kable(ibexcis, col.names = c("Point Estimate", "95% Confidence", "Interval"),  caption = "Ibex", format = "html", table.attr = "style = 'width:50%;'")
 argalicis <- data.frame( "N" = c(round(total.argali), round(argN), round(argali.cm[1])), "L" = c(argbootci[1], argci[1], argali.cm[2]), "U" = c(argbootci[2], argci[2], argali.cm[3]), row.names = c("2D Distance", "Conventional Distance", "Chapman"))
-argtab <- kable(argalicis, col.names = c("Point Estimate", "95% Confidence", "Interval"), caption = "Argali")
-kables(list(combtab, ibtab, argtab))
+argtab <- kable(argalicis, col.names = c("Point Estimate", "95% Confidence", "Interval"), caption = "Argali", format = "html", table.attr = "style = 'width:50%;'")
+combtab
+tab <- kables(list(ibtab, argtab))
+tab %>% kable_paper(bootstrap_options = "striped",full_width = F)
 ```
 
 Whilst the combined model was the best fit for the data, we have included our separate estimates for each species as they may be more useful in practice.

@@ -40,7 +40,7 @@ sim.data <- function(n=400, density, move){
     
     dist <- (max(abs(df$x[df$obs==1]))-abs(df$x[df$obs==1]))*runif(n, 0, 0.1)*2.5
     df$x[df$obs==2] <- df$x[df$obs==1] + dist * cos(df$angle[df$obs==1])
-    df$y[df$obs==2] <- df$y[df$obs==1] + dist * sin(df$angle[df$obs==1])/1000
+    df$y[df$obs==2] <- df$y[df$obs==1] + dist * sin(df$angle[df$obs==1])/1000 #divide by 1000 to account for km
     }else if(move==1){ #random
     df$angle <- rwrappedcauchy(n, mu = circular(0), rho = 0, control.circular=list(units="radian"))
     dist <- rlnorm(n,log(12) + 1.5,1.5)
@@ -126,7 +126,7 @@ ds.analysis <- function(df){
                         distance = abs(df1$x))
     df.ds <- ds(new_df1, truncation=1600, transect="line", key="hr", order=0, monotonicity = "none")
 
-    return(c(df.ds$ddf$Nhat, df.ds$dht$individuals$N$lcl, df.ds$dht$individuals$N$ucl))
+    return(c(df.ds$dht$individuals$N$Estimate, df.ds$dht$individuals$N$lcl, df.ds$dht$individuals$N$ucl))
   })
 }
 
@@ -136,7 +136,7 @@ fit.mrds <- function(df, mismatch){
   if(mismatch){
     df <- sim.mismatch(df)
     names(df) <- c( "x","y","object","observer","detected")
-  }else{
+  }else{ #change names to be in format for ddf
     names(df) <- c("object","observer", "x","y","forw.dist","detected")
     }
   df$distance <- abs(df$x)
@@ -147,7 +147,7 @@ fit.mrds <- function(df, mismatch){
     model <- ddf(method = "io", dsmodel =~cds(key ="hr"),
                mrmodel =~glm(link = "logit", formula = ~distance),
                data = df, meta.data = list(width = 1600), control = list(refit = T, nrefit = 5, debug = T))
-    ests <- dht(model, region.table = data.frame(Region.Label = 1, Area = 600000*1600*2),
+    ests <- dht(model, region.table = data.frame(Region.Label = 1, Area = 600000*2000*2),
               sample.table = data.frame(Region.Label = 1, Sample.Label = 1,Effort = 600000))
   
     N <- ests$individuals$N$Estimate
@@ -183,7 +183,7 @@ fit.2d <- function(df, density){
                   ystart = 1700,
                   pi.x = pi.fun.name,
                   logphi = logphi,
-                  w = 1600,
+                  w = 2000, 
                   hessian = TRUE)
     est <- fit$ests[nrow(fit$ests),ncol(fit$ests)]
   })
@@ -229,11 +229,14 @@ result <- function(list.method, n){
     method <- method[!is.infinite(rowSums(method)),]
     method <- na.omit(method)
     
-    method$N.hat <- unlist(method$N.hat)
-    bias <- mean((method$N.hat[method$N.hat < 3*n]-n)/n)  # mean relative bias
+    lo <- quantile(method$N.hat, c(0.025, 0.975))[1]
+    up <- quantile(method$N.hat, c(0.025, 0.975))[2]
+    con <- method$N.hat < up & method$N.hat > lo
     
-    method$lcl <- unlist(method$lcl); method$ucl <- unlist(method$ucl)
-    check <- n > method$lcl[!is.na(method$lcl[method$N.hat < 3*n])] & n < method$ucl[!is.na(method$ucl[method$N.hat < 3*n])]
+    method$N.hat <- unlist(method$N.hat)
+    bias <- mean((method$N.hat[con]-n)/n)  # mean relative bias
+    
+    check <- n > method$lcl[con] & n < method$ucl[con]
     cover.p <- length(check[check==TRUE])/length(check)  # coverage probability
     
     return(c(bias, cover.p))
@@ -245,5 +248,6 @@ result <- function(list.method, n){
   
   return(output)
 }
+
 
 

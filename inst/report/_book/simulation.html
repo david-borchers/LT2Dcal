@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 6 Simulation | _main.knit</title>
+  <title>Chapter 3 Simulation | _main.knit</title>
   <meta name="description" content="" />
   <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 6 Simulation | _main.knit" />
+  <meta property="og:title" content="Chapter 3 Simulation | _main.knit" />
   <meta property="og:type" content="book" />
   
   
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 6 Simulation | _main.knit" />
+  <meta name="twitter:title" content="Chapter 3 Simulation | _main.knit" />
   
   
   
@@ -28,7 +28,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="d-distance-sampling.html"/>
+<link rel="prev" href="cross.html"/>
 <link rel="next" href="real-data.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
@@ -57,72 +57,19 @@
 <script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
 <link href="libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet" />
 <script src="libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
+<link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="libs/datatables-binding-0.28/datatables.js"></script>
+<link href="libs/dt-core-1.13.4/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core-1.13.4/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-1.13.4/js/jquery.dataTables.min.js"></script>
+<link href="libs/dt-ext-fixedcolumns-1.13.4/css/fixedColumns.dataTables.min.css" rel="stylesheet" />
+<script src="libs/dt-ext-fixedcolumns-1.13.4/js/dataTables.fixedColumns.min.js"></script>
+<link href="libs/dt-ext-fixedheader-1.13.4/css/fixedHeader.dataTables.min.css" rel="stylesheet" />
+<script src="libs/dt-ext-fixedheader-1.13.4/js/dataTables.fixedHeader.min.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
 
 
-<style type="text/css">
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { color: #008000; } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { color: #008000; font-weight: bold; } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-</style>
 
 <style type="text/css">
   
@@ -143,59 +90,43 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <ul class="summary">
 <li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
-<li class="chapter" data-level="2" data-path="cross.html"><a href="cross.html"><i class="fa fa-check"></i><b>2</b> Mark-recapture</a>
+<li class="chapter" data-level="2" data-path="cross.html"><a href="cross.html"><i class="fa fa-check"></i><b>2</b> Methods</a>
 <ul>
-<li class="chapter" data-level="2.1" data-path="cross.html"><a href="cross.html#closed-populations"><i class="fa fa-check"></i><b>2.1</b> Closed populations</a></li>
-<li class="chapter" data-level="2.2" data-path="cross.html"><a href="cross.html#further-reading"><i class="fa fa-check"></i><b>2.2</b> Further Reading</a></li>
+<li class="chapter" data-level="2.1" data-path="cross.html"><a href="cross.html#mark-recapture"><i class="fa fa-check"></i><b>2.1</b> Mark-Recapture</a>
+<ul>
+<li class="chapter" data-level="2.1.1" data-path="cross.html"><a href="cross.html#closed-populations"><i class="fa fa-check"></i><b>2.1.1</b> Closed populations</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="distance-sampling.html"><a href="distance-sampling.html"><i class="fa fa-check"></i><b>3</b> Distance sampling</a>
+<li class="chapter" data-level="2.2" data-path="cross.html"><a href="cross.html#distance-sampling"><i class="fa fa-check"></i><b>2.2</b> Distance Sampling</a>
 <ul>
-<li class="chapter" data-level="3.1" data-path="distance-sampling.html"><a href="distance-sampling.html#line-transect-sampling"><i class="fa fa-check"></i><b>3.1</b> Line transect sampling</a></li>
-<li class="chapter" data-level="3.2" data-path="distance-sampling.html"><a href="distance-sampling.html#further-reading-1"><i class="fa fa-check"></i><b>3.2</b> Further Reading</a></li>
+<li class="chapter" data-level="2.2.1" data-path="cross.html"><a href="cross.html#line-transect-sampling"><i class="fa fa-check"></i><b>2.2.1</b> Line transect sampling</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="mark-recapture-distance-sampling.html"><a href="mark-recapture-distance-sampling.html"><i class="fa fa-check"></i><b>4</b> Mark Recapture Distance Sampling</a>
-<ul>
-<li class="chapter" data-level="4.1" data-path="mark-recapture-distance-sampling.html"><a href="mark-recapture-distance-sampling.html#introduction-1"><i class="fa fa-check"></i><b>4.1</b> Introduction</a></li>
-<li class="chapter" data-level="4.2" data-path="mark-recapture-distance-sampling.html"><a href="mark-recapture-distance-sampling.html#simulation---p0-1-and-animal-movement"><i class="fa fa-check"></i><b>4.2</b> Simulation - p(0) &lt; 1 and animal movement</a>
-<ul>
-<li class="chapter" data-level="4.2.1" data-path="mark-recapture-distance-sampling.html"><a href="mark-recapture-distance-sampling.html#methods"><i class="fa fa-check"></i><b>4.2.1</b> Methods</a></li>
-<li class="chapter" data-level="4.2.2" data-path="mark-recapture-distance-sampling.html"><a href="mark-recapture-distance-sampling.html#results"><i class="fa fa-check"></i><b>4.2.2</b> Results</a></li>
+<li class="chapter" data-level="2.3" data-path="cross.html"><a href="cross.html#mrds"><i class="fa fa-check"></i><b>2.3</b> MRDS</a></li>
+<li class="chapter" data-level="2.4" data-path="cross.html"><a href="cross.html#d-distance"><i class="fa fa-check"></i><b>2.4</b> 2D Distance</a></li>
+<li class="chapter" data-level="2.5" data-path="cross.html"><a href="cross.html#further-reading"><i class="fa fa-check"></i><b>2.5</b> Further Reading</a></li>
 </ul></li>
-<li class="chapter" data-level="4.3" data-path="mark-recapture-distance-sampling.html"><a href="mark-recapture-distance-sampling.html#simulation---imperfect-matching"><i class="fa fa-check"></i><b>4.3</b> Simulation - Imperfect Matching</a>
+<li class="chapter" data-level="3" data-path="simulation.html"><a href="simulation.html"><i class="fa fa-check"></i><b>3</b> Simulation</a>
 <ul>
-<li class="chapter" data-level="4.3.1" data-path="mark-recapture-distance-sampling.html"><a href="mark-recapture-distance-sampling.html#methods-1"><i class="fa fa-check"></i><b>4.3.1</b> Methods</a></li>
-<li class="chapter" data-level="4.3.2" data-path="mark-recapture-distance-sampling.html"><a href="mark-recapture-distance-sampling.html#results-1"><i class="fa fa-check"></i><b>4.3.2</b> Results</a></li>
-</ul></li>
-<li class="chapter" data-level="4.4" data-path="mark-recapture-distance-sampling.html"><a href="mark-recapture-distance-sampling.html#conclusion"><i class="fa fa-check"></i><b>4.4</b> Conclusion</a></li>
-<li class="chapter" data-level="4.5" data-path="mark-recapture-distance-sampling.html"><a href="mark-recapture-distance-sampling.html#futher-reading"><i class="fa fa-check"></i><b>4.5</b> Futher Reading</a></li>
-</ul></li>
-<li class="chapter" data-level="5" data-path="d-distance-sampling.html"><a href="d-distance-sampling.html"><i class="fa fa-check"></i><b>5</b> 2D Distance Sampling</a>
+<li class="chapter" data-level="3.1" data-path="simulation.html"><a href="simulation.html#simulation-scenarios"><i class="fa fa-check"></i><b>3.1</b> Simulation scenarios</a>
 <ul>
-<li class="chapter" data-level="5.1" data-path="d-distance-sampling.html"><a href="d-distance-sampling.html#introduction-2"><i class="fa fa-check"></i><b>5.1</b> Introduction</a></li>
-<li class="chapter" data-level="5.2" data-path="d-distance-sampling.html"><a href="d-distance-sampling.html#simulation-non-uniform-distribution"><i class="fa fa-check"></i><b>5.2</b> Simulation: Non Uniform Distribution</a></li>
-<li class="chapter" data-level="5.3" data-path="d-distance-sampling.html"><a href="d-distance-sampling.html#simulation-comparison-to-mark-recapture"><i class="fa fa-check"></i><b>5.3</b> Simulation: Comparison to Mark Recapture</a></li>
-<li class="chapter" data-level="5.4" data-path="d-distance-sampling.html"><a href="d-distance-sampling.html#further-reading-2"><i class="fa fa-check"></i><b>5.4</b> Further Reading</a></li>
+<li class="chapter" data-level="3.1.1" data-path="simulation.html"><a href="simulation.html#initial-perpendicular-distance-distribution"><i class="fa fa-check"></i><b>3.1.1</b> Initial perpendicular distance distribution</a></li>
+<li class="chapter" data-level="3.1.2" data-path="simulation.html"><a href="simulation.html#movement-after-first-detection"><i class="fa fa-check"></i><b>3.1.2</b> Movement after first detection</a></li>
+<li class="chapter" data-level="3.1.3" data-path="simulation.html"><a href="simulation.html#imperfect-matching"><i class="fa fa-check"></i><b>3.1.3</b> Imperfect Matching</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="simulation.html"><a href="simulation.html"><i class="fa fa-check"></i><b>6</b> Simulation</a>
+<li class="chapter" data-level="3.2" data-path="simulation.html"><a href="simulation.html#simulation-results"><i class="fa fa-check"></i><b>3.2</b> Simulation Results</a>
 <ul>
-<li class="chapter" data-level="6.1" data-path="simulation.html"><a href="simulation.html#simulation-scenarios"><i class="fa fa-check"></i><b>6.1</b> Simulation scenarios</a>
-<ul>
-<li class="chapter" data-level="6.1.1" data-path="simulation.html"><a href="simulation.html#initial-perpendicular-distance-distribution"><i class="fa fa-check"></i><b>6.1.1</b> Initial perpendicular distance distribution</a></li>
-<li class="chapter" data-level="6.1.2" data-path="simulation.html"><a href="simulation.html#movement-after-first-detection"><i class="fa fa-check"></i><b>6.1.2</b> Movement after first detection</a></li>
-<li class="chapter" data-level="6.1.3" data-path="simulation.html"><a href="simulation.html#imperfect-matching"><i class="fa fa-check"></i><b>6.1.3</b> Imperfect Matching</a></li>
+<li class="chapter" data-level="3.2.1" data-path="simulation.html"><a href="simulation.html#uniform-animal-distribution"><i class="fa fa-check"></i><b>3.2.1</b> Uniform Animal Distribution</a></li>
+<li class="chapter" data-level="3.2.2" data-path="simulation.html"><a href="simulation.html#avoiding-transect"><i class="fa fa-check"></i><b>3.2.2</b> Avoiding Transect</a></li>
+<li class="chapter" data-level="3.2.3" data-path="simulation.html"><a href="simulation.html#attracted-to-transect"><i class="fa fa-check"></i><b>3.2.3</b> Attracted to Transect</a></li>
 </ul></li>
-<li class="chapter" data-level="6.2" data-path="simulation.html"><a href="simulation.html#simulation-results"><i class="fa fa-check"></i><b>6.2</b> Simulation Results</a>
-<ul>
-<li class="chapter" data-level="6.2.1" data-path="simulation.html"><a href="simulation.html#uniform-animal-distribution"><i class="fa fa-check"></i><b>6.2.1</b> Uniform Animal Distribution</a></li>
-<li class="chapter" data-level="6.2.2" data-path="simulation.html"><a href="simulation.html#avoiding-transect"><i class="fa fa-check"></i><b>6.2.2</b> Avoiding Transect</a></li>
-<li class="chapter" data-level="6.2.3" data-path="simulation.html"><a href="simulation.html#attracted-to-transect"><i class="fa fa-check"></i><b>6.2.3</b> Attracted to Transect</a></li>
+<li class="chapter" data-level="3.3" data-path="simulation.html"><a href="simulation.html#conclusions"><i class="fa fa-check"></i><b>3.3</b> Conclusions</a></li>
+<li class="chapter" data-level="3.4" data-path="simulation.html"><a href="simulation.html#further-reading-1"><i class="fa fa-check"></i><b>3.4</b> Further Reading</a></li>
 </ul></li>
-<li class="chapter" data-level="6.3" data-path="simulation.html"><a href="simulation.html#further-reading-3"><i class="fa fa-check"></i><b>6.3</b> Further Reading</a></li>
-</ul></li>
-<li class="chapter" data-level="7" data-path="real-data.html"><a href="real-data.html"><i class="fa fa-check"></i><b>7</b> Real Data</a>
+<li class="chapter" data-level="4" data-path="real-data.html"><a href="real-data.html"><i class="fa fa-check"></i><b>4</b> Real Data</a>
 <ul>
-<li class="chapter" data-level="7.1" data-path="real-data.html"><a href="real-data.html#mark-recapture"><i class="fa fa-check"></i><b>7.1</b> Mark Recapture</a></li>
-<li class="chapter" data-level="7.2" data-path="real-data.html"><a href="real-data.html#summary"><i class="fa fa-check"></i><b>7.2</b> Summary</a></li>
+<li class="chapter" data-level="4.1" data-path="real-data.html"><a href="real-data.html#mark-recapture-1"><i class="fa fa-check"></i><b>4.1</b> Mark Recapture</a></li>
+<li class="chapter" data-level="4.2" data-path="real-data.html"><a href="real-data.html#conventional-distance-sampling"><i class="fa fa-check"></i><b>4.2</b> Conventional Distance Sampling</a></li>
+<li class="chapter" data-level="4.3" data-path="real-data.html"><a href="real-data.html#d-distance-sampling"><i class="fa fa-check"></i><b>4.3</b> 2D Distance Sampling</a></li>
+<li class="chapter" data-level="4.4" data-path="real-data.html"><a href="real-data.html#summary"><i class="fa fa-check"></i><b>4.4</b> Summary</a></li>
 </ul></li>
 </ul>
 
@@ -214,142 +145,175 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="simulation" class="section level1 hasAnchor" number="6">
-<h1><span class="header-section-number">Chapter 6</span> Simulation<a href="simulation.html#simulation" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="simulation" class="section level1 hasAnchor" number="3">
+<h1><span class="header-section-number">Chapter 3</span> Simulation<a href="simulation.html#simulation" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>Simulation studies have become indispensable in ecology and conservation research, providing a controlled and repeatable approach to evaluate the performance of estimation methods. In this study, we aimed to assess how each method performs using a range of scenarios with varying degrees of assumption compliance and violations. In each scenario, artificial datasets are created with with known population sizes, density patterns, detectability patterns, etc. to test the accuracy and precision of estimators.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="simulation.html#cb3-1" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;report.simulation.R&quot;</span>)</span>
-<span id="cb3-2"><a href="simulation.html#cb3-2" tabindex="-1"></a><span class="fu">library</span>(knitr)</span></code></pre></div>
-<div id="simulation-scenarios" class="section level2 hasAnchor" number="6.1">
-<h2><span class="header-section-number">6.1</span> Simulation scenarios<a href="simulation.html#simulation-scenarios" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div id="initial-perpendicular-distance-distribution" class="section level3 hasAnchor" number="6.1.1">
-<h3><span class="header-section-number">6.1.1</span> Initial perpendicular distance distribution<a href="simulation.html#initial-perpendicular-distance-distribution" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="simulation-scenarios" class="section level2 hasAnchor" number="3.1">
+<h2><span class="header-section-number">3.1</span> Simulation scenarios<a href="simulation.html#simulation-scenarios" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="initial-perpendicular-distance-distribution" class="section level3 hasAnchor" number="3.1.1">
+<h3><span class="header-section-number">3.1.1</span> Initial perpendicular distance distribution<a href="simulation.html#initial-perpendicular-distance-distribution" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Perpendicular distance refers to the minimum distance to the transect line at which animals are detected. 3 different levels are considered: uniformly distributed, avoiding the line and attracted to the line.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="simulation.html#cb4-1" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>))</span>
-<span id="cb4-2"><a href="simulation.html#cb4-2" tabindex="-1"></a>xs <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="at">length=</span><span class="dv">100</span>)</span>
-<span id="cb4-3"><a href="simulation.html#cb4-3" tabindex="-1"></a></span>
-<span id="cb4-4"><a href="simulation.html#cb4-4" tabindex="-1"></a><span class="co"># uniformly distributed</span></span>
-<span id="cb4-5"><a href="simulation.html#cb4-5" tabindex="-1"></a><span class="fu">plot</span>(xs, <span class="fu">pi.const</span>(<span class="at">x=</span>xs,<span class="at">logphi=</span><span class="cn">NA</span>,<span class="at">w=</span><span class="dv">1</span>),</span>
-<span id="cb4-6"><a href="simulation.html#cb4-6" tabindex="-1"></a>     <span class="at">type=</span><span class="st">&#39;l&#39;</span>,<span class="at">xlab=</span><span class="st">&#39;Perp. distance, x&#39;</span>,<span class="at">ylab=</span><span class="fu">expression</span>(<span class="fu">pi</span>(x)))</span>
-<span id="cb4-7"><a href="simulation.html#cb4-7" tabindex="-1"></a></span>
-<span id="cb4-8"><a href="simulation.html#cb4-8" tabindex="-1"></a><span class="co"># avoiding the line</span></span>
-<span id="cb4-9"><a href="simulation.html#cb4-9" tabindex="-1"></a><span class="fu">plot</span>(xs, <span class="fu">pi.chnorm</span>(<span class="at">x=</span>xs,<span class="at">logphi=</span><span class="fu">c</span>(<span class="dv">0</span>, <span class="sc">-</span><span class="fl">0.5</span>),<span class="at">w=</span><span class="dv">1</span>),</span>
-<span id="cb4-10"><a href="simulation.html#cb4-10" tabindex="-1"></a>     <span class="at">type=</span><span class="st">&#39;l&#39;</span>,<span class="at">xlab=</span><span class="st">&#39;Perp. distance, x&#39;</span>,<span class="at">ylab=</span><span class="fu">expression</span>(<span class="fu">pi</span>(x)))</span>
-<span id="cb4-11"><a href="simulation.html#cb4-11" tabindex="-1"></a></span>
-<span id="cb4-12"><a href="simulation.html#cb4-12" tabindex="-1"></a><span class="co"># attracted to the line</span></span>
-<span id="cb4-13"><a href="simulation.html#cb4-13" tabindex="-1"></a><span class="fu">plot</span>(xs,<span class="fu">pi.norm</span>(<span class="at">x=</span>xs,<span class="at">logphi=</span><span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>),<span class="at">w=</span><span class="dv">1</span>),</span>
-<span id="cb4-14"><a href="simulation.html#cb4-14" tabindex="-1"></a>     <span class="at">type=</span><span class="st">&#39;l&#39;</span>,<span class="at">xlab=</span><span class="st">&#39;Perp. distance, x&#39;</span>,<span class="at">ylab=</span><span class="fu">expression</span>(<span class="fu">pi</span>(x)))</span></code></pre></div>
 <p><img src="_main_files/figure-html/initial%20perp.%20dist.%20distribution-1.png" width="672" /></p>
 <div class="figure"><span style="display:block;" id="fig:distribution-plots"></span>
 <img src="_main_files/figure-html/distribution-plots-1.png" alt="Potential Animal Distributions" width="672" />
 <p class="caption">
-Figure 6.1: Potential Animal Distributions
+Figure 3.1: Potential Animal Distributions
 </p>
 </div>
 </div>
-<div id="movement-after-first-detection" class="section level3 hasAnchor" number="6.1.2">
-<h3><span class="header-section-number">6.1.2</span> Movement after first detection<a href="simulation.html#movement-after-first-detection" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>For the mark recapture methods there are two detection occasions, which could be , for example, two observers on different decks of a boat or , as in the snow leopard prey data, two observers walking the transect at different times. Animal movement is not an issue for the first scenario as the animals move slowly in comparison to the boat, so will not move far enough to have different detection probabilities between the two observers. However, in our snow leopard prey example, there is 30 minutes between the first and second observer walking the transect so the animals could move significantly between the two observers. We consider two types of movement after the first detection: random movement and avoidant movement away from the transect. We based our simulation on Ibex movement data in Johansson <em>et al</em>. (2022), which shows that the distance moved follows roughly a log normal distribution with mean log(12) + 1.5 and standard deviation 1.5,</p>
-<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-97add1ec6db40ac9770e" style="width:672px;height:840px;"></div>
-<script type="application/json" data-for="htmlwidget-97add1ec6db40ac9770e">{"x":{"visdat":{"217c26f84de0":["function () ","plotlyVisDat"]},"cur_data":"217c26f84de0","attrs":{"217c26f84de0":{"x":{},"y":{},"mode":"markers","color":{},"size":{},"frame":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"xaxis":{"domain":[0,1],"automargin":true,"title":"x","range":[-2020.5673451987063,1837.0034366479124]},"yaxis":{"domain":[0,1],"automargin":true,"title":"y","range":[-26.988341536922949,629.27059181572133]},"hovermode":"closest","showlegend":true,"sliders":[{"currentvalue":{"prefix":"obs: ","xanchor":"right","font":{"size":16,"color":"rgba(204,204,204,1)"}},"steps":[{"method":"animate","args":[["1"],{"transition":{"duration":500,"easing":"linear"},"frame":{"duration":500,"redraw":false},"mode":"immediate"}],"label":"1","value":"1"},{"method":"animate","args":[["2"],{"transition":{"duration":500,"easing":"linear"},"frame":{"duration":500,"redraw":false},"mode":"immediate"}],"label":"2","value":"2"}],"visible":true,"pad":{"t":40}}],"updatemenus":[{"type":"buttons","direction":"right","showactive":false,"y":0,"x":0,"yanchor":"top","xanchor":"right","pad":{"t":60,"r":5},"buttons":[{"label":"Play","method":"animate","args":[null,{"fromcurrent":true,"mode":"immediate","transition":{"duration":500,"easing":"linear"},"frame":{"duration":500,"redraw":false}}]}]}]},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[-808.15842151641846,967.95737445354462,1519.8689647018909,-886.79280504584312,-345.83014696836472,1096.4770637452602,-1362.8487810492516,-228.72893437743187,657.84311220049858,1589.4198305904865,1466.1336302757263,958.441012352705,-311.27290427684784,782.08595290780067,301.3556219637394,-1011.1107364296913,1385.689140111208,1120.1148264110088,1119.4598734378815,-1466.1553956568241,-1151.2772783637047,599.05508235096931,883.51601809263229,-1403.4801930189133,554.58228215575218,193.71341690421104,1250.0841215252876,926.5937440097332,548.14291894435883,802.26260498166084,471.62691727280617,-744.83900293707848,1450.4199258983135,-1420.6064373254776,-368.66823732852936,-1013.7849830091,-1001.8443167209625,165.30479192733765,1148.8171480596066,1539.2481625080109,-1541.3144692778587,768.84934231638908,999.31140914559364,968.76662075519562,797.2115658223629,-1192.8501330316067,-853.48387286067009,-47.285603731870651,605.94257786870003,1199.087331444025],"y":[329.16637812741101,240.7505142968148,299.18292732909322,163.6554965749383,205.46194994822145,391.0428932402283,153.72489178553224,254.00931746698916,341.63878303952515,211.25989593565464,4.2195845860987902,108.95044156350195,542.80155021697283,203.54080433025956,234.91469314321876,170.84204577840865,393.78930917009711,61.77607630379498,2.8848416637629271,599.32739557698369,240.90597415342927,4.3014806695282459,252.19442672096193,340.21640690043569,144.45084845647216,546.7578143812716,205.56943472474813,283.04890799336135,231.92912796512246,498.50088427774608,262.84891348332167,163.33863115869462,265.98796569742262,70.334998704493046,137.47451989911497,212.03925730660558,247.88268939591944,10.813348973169923,113.33317011594772,333.90004746615887,235.40363037027419,355.90134956873953,439.74166279658675,333.75075180083513,497.40406824275851,78.497031843289733,553.84047660045326,357.55159794352949,476.11727225594223,6.3318539410829544],"mode":"markers","frame":"1","type":"scatter","name":"Random","marker":{"color":"rgba(252,141,98,1)","size":[55,25,55,70,25,100,70,25,25,10,70,40,55,25,40,55,70,55,40,25,100,70,10,100,70,85,100,55,25,55,55,70,85,10,70,55,10,40,10,100,40,100,25,25,55,55,40,10,100,70],"sizemode":"area","line":{"color":"rgba(252,141,98,1)"}},"textfont":{"color":"rgba(252,141,98,1)","size":[55,25,55,70,25,100,70,25,25,10,70,40,55,25,40,55,70,55,40,25,100,70,10,100,70,85,100,55,25,55,55,70,85,10,70,55,10,40,10,100,40,100,25,25,55,55,40,10,100,70]},"error_y":{"color":"rgba(252,141,98,1)","width":[]},"error_x":{"color":"rgba(252,141,98,1)","width":[]},"line":{"color":"rgba(252,141,98,1)"},"xaxis":"x","yaxis":"y","visible":true}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"frames":[{"name":"1","data":[{"x":[-808.15842151641846,967.95737445354462,1519.8689647018909,-886.79280504584312,-345.83014696836472,1096.4770637452602,-1362.8487810492516,-228.72893437743187,657.84311220049858,1589.4198305904865,1466.1336302757263,958.441012352705,-311.27290427684784,782.08595290780067,301.3556219637394,-1011.1107364296913,1385.689140111208,1120.1148264110088,1119.4598734378815,-1466.1553956568241,-1151.2772783637047,599.05508235096931,883.51601809263229,-1403.4801930189133,554.58228215575218,193.71341690421104,1250.0841215252876,926.5937440097332,548.14291894435883,802.26260498166084,471.62691727280617,-744.83900293707848,1450.4199258983135,-1420.6064373254776,-368.66823732852936,-1013.7849830091,-1001.8443167209625,165.30479192733765,1148.8171480596066,1539.2481625080109,-1541.3144692778587,768.84934231638908,999.31140914559364,968.76662075519562,797.2115658223629,-1192.8501330316067,-853.48387286067009,-47.285603731870651,605.94257786870003,1199.087331444025],"y":[329.16637812741101,240.7505142968148,299.18292732909322,163.6554965749383,205.46194994822145,391.0428932402283,153.72489178553224,254.00931746698916,341.63878303952515,211.25989593565464,4.2195845860987902,108.95044156350195,542.80155021697283,203.54080433025956,234.91469314321876,170.84204577840865,393.78930917009711,61.77607630379498,2.8848416637629271,599.32739557698369,240.90597415342927,4.3014806695282459,252.19442672096193,340.21640690043569,144.45084845647216,546.7578143812716,205.56943472474813,283.04890799336135,231.92912796512246,498.50088427774608,262.84891348332167,163.33863115869462,265.98796569742262,70.334998704493046,137.47451989911497,212.03925730660558,247.88268939591944,10.813348973169923,113.33317011594772,333.90004746615887,235.40363037027419,355.90134956873953,439.74166279658675,333.75075180083513,497.40406824275851,78.497031843289733,553.84047660045326,357.55159794352949,476.11727225594223,6.3318539410829544],"mode":"markers","frame":"1","type":"scatter","name":"Random","marker":{"color":"rgba(252,141,98,1)","size":[55,25,55,70,25,100,70,25,25,10,70,40,55,25,40,55,70,55,40,25,100,70,10,100,70,85,100,55,25,55,55,70,85,10,70,55,10,40,10,100,40,100,25,25,55,55,40,10,100,70],"sizemode":"area","line":{"color":"rgba(252,141,98,1)"}},"textfont":{"color":"rgba(252,141,98,1)","size":[55,25,55,70,25,100,70,25,25,10,70,40,55,25,40,55,70,55,40,25,100,70,10,100,70,85,100,55,25,55,55,70,85,10,70,55,10,40,10,100,40,100,25,25,55,55,40,10,100,70]},"error_y":{"color":"rgba(252,141,98,1)","width":[]},"error_x":{"color":"rgba(252,141,98,1)","width":[]},"line":{"color":"rgba(252,141,98,1)"},"xaxis":"x","yaxis":"y","visible":true}],"traces":[0]},{"name":"2","data":[{"x":[-903.8327252905292,967.62982684621227,1523.1156111878238,-887.91550400087351,-369.55486896344195,571.75478318665023,-1357.883278130595,-226.80978597977696,680.92207992388046,1661.6593102003387,1483.8784756255991,934.14330103537884,-316.71784585025296,715.28412169808882,338.91441587422014,-991.30779122690319,1436.3038844305427,1086.8754680720983,1032.2798003257603,-1845.2232187511327,-1138.6752702949143,459.11719904362138,1406.4474945090349,-1400.45496013292,551.67625980435071,73.951617133804717,1292.9963297854981,909.45090215755499,494.03803753825099,414.04973180299856,613.48809962081612,-770.09619753148309,1226.4516142232337,-1452.227836129556,-398.57337864453109,-1017.4538436455576,-1032.1946711421358,148.68567710439964,1154.8485492282448,1478.459681160484,-1551.5095729441762,774.04085509627862,1050.6734541130597,510.10002353297068,787.15696757541536,-1193.423621736086,-843.47316921955724,-53.784912104886359,613.76887287280533,1158.4051979314797],"y":[329.09642535899837,240.75178910841998,299.1768220535439,163.65664413256303,205.43720152400732,391.49360171481709,153.73268644061753,254.01452432252546,341.66773866971204,211.04199054430026,4.2129065545343298,108.93113068772844,542.80215022936432,203.457970260303,234.93901796925184,170.83847909951149,393.81706137758323,61.686248942174082,2.8416099791063383,599.44064029969206,240.89597288003267,4.2882172676419668,252.02089273854435,340.21813591542241,144.44894459216533,546.78181266652973,205.67635432254639,283.00950506100065,231.94737465626918,498.28101834963968,263.58537489096148,163.51552166140175,266.70374373240651,70.546867974767238,137.48449461456539,212.04528413294554,247.92759307186097,10.801090913789791,113.31103792793488,333.901366901583,235.44466575761669,355.90196353187929,439.72683733190723,333.80225783301921,497.38510948369151,78.498558044579227,553.82776560469063,357.55522906656637,476.12414152569141,6.2157636075479932],"mode":"markers","frame":"2","type":"scatter","name":"Random","marker":{"color":"rgba(252,141,98,1)","size":[55,25,55,70,25,100,70,25,25,10,70,40,55,25,40,55,70,55,40,25,100,70,10,100,70,85,100,55,25,55,55,70,85,10,70,55,10,40,10,100,40,100,25,25,55,55,40,10,100,70],"sizemode":"area","line":{"color":"rgba(252,141,98,1)"}},"textfont":{"color":"rgba(252,141,98,1)","size":[55,25,55,70,25,100,70,25,25,10,70,40,55,25,40,55,70,55,40,25,100,70,10,100,70,85,100,55,25,55,55,70,85,10,70,55,10,40,10,100,40,100,25,25,55,55,40,10,100,70]},"error_y":{"color":"rgba(252,141,98,1)","width":[]},"error_x":{"color":"rgba(252,141,98,1)","width":[]},"line":{"color":"rgba(252,141,98,1)"},"xaxis":"x","yaxis":"y","visible":true}],"traces":[0]}],"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="simulation.html#cb5-1" tabindex="-1"></a>df2 <span class="ot">&lt;-</span> <span class="fu">sim.dat</span>(<span class="dv">50</span>,<span class="dv">2</span>)</span>
-<span id="cb5-2"><a href="simulation.html#cb5-2" tabindex="-1"></a>fig2 <span class="ot">&lt;-</span> df2 <span class="sc">%&gt;%</span></span>
-<span id="cb5-3"><a href="simulation.html#cb5-3" tabindex="-1"></a>  <span class="fu">plot_ly</span>(</span>
-<span id="cb5-4"><a href="simulation.html#cb5-4" tabindex="-1"></a>    <span class="at">x =</span> <span class="sc">~</span>x,</span>
-<span id="cb5-5"><a href="simulation.html#cb5-5" tabindex="-1"></a>    <span class="at">y =</span> <span class="sc">~</span>y,</span>
-<span id="cb5-6"><a href="simulation.html#cb5-6" tabindex="-1"></a>    <span class="at">size =</span> <span class="sc">~</span>size,</span>
-<span id="cb5-7"><a href="simulation.html#cb5-7" tabindex="-1"></a>    <span class="at">color =</span> <span class="sc">~</span>level,</span>
-<span id="cb5-8"><a href="simulation.html#cb5-8" tabindex="-1"></a>    <span class="at">frame =</span> <span class="sc">~</span>obs,</span>
-<span id="cb5-9"><a href="simulation.html#cb5-9" tabindex="-1"></a>    <span class="at">type =</span> <span class="st">&#39;scatter&#39;</span>,</span>
-<span id="cb5-10"><a href="simulation.html#cb5-10" tabindex="-1"></a>    <span class="at">mode =</span> <span class="st">&#39;markers&#39;</span>)</span>
-<span id="cb5-11"><a href="simulation.html#cb5-11" tabindex="-1"></a>fig2</span></code></pre></div>
-<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-030d8b8c3a0407be6b66" style="width:672px;height:480px;"></div>
-<script type="application/json" data-for="htmlwidget-030d8b8c3a0407be6b66">{"x":{"visdat":{"217c4176fca":["function () ","plotlyVisDat"]},"cur_data":"217c4176fca","attrs":{"217c4176fca":{"x":{},"y":{},"mode":"markers","color":{},"size":{},"frame":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"xaxis":{"domain":[0,1],"automargin":true,"title":"x","range":[-1722.6271292823785,1687.7116527580101]},"yaxis":{"domain":[0,1],"automargin":true,"title":"y","range":[-29.305963853839785,625.22513999836519]},"hovermode":"closest","showlegend":true,"sliders":[{"currentvalue":{"prefix":"obs: ","xanchor":"right","font":{"size":16,"color":"rgba(204,204,204,1)"}},"steps":[{"method":"animate","args":[["1"],{"transition":{"duration":500,"easing":"linear"},"frame":{"duration":500,"redraw":false},"mode":"immediate"}],"label":"1","value":"1"},{"method":"animate","args":[["2"],{"transition":{"duration":500,"easing":"linear"},"frame":{"duration":500,"redraw":false},"mode":"immediate"}],"label":"2","value":"2"}],"visible":true,"pad":{"t":40}}],"updatemenus":[{"type":"buttons","direction":"right","showactive":false,"y":0,"x":0,"yanchor":"top","xanchor":"right","pad":{"t":60,"r":5},"buttons":[{"label":"Play","method":"animate","args":[null,{"fromcurrent":true,"mode":"immediate","transition":{"duration":500,"easing":"linear"},"frame":{"duration":500,"redraw":false}}]}]}]},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[-1567.6117300987244,1508.457912504673,1072.7531090378761,1024.0570120513439,742.86314472556114,1521.3327892124653,-724.47848841547966,-1165.1581913232803,443.33470016717911,-211.78363338112831,700.15113279223442,1075.6805010139942,94.329256564378738,981.85470029711723,402.85046324133873,425.24305433034897,-974.61613491177559,546.8189999461174,-544.73524764180183,-144.97425481677055,1260.293360054493,-887.09156736731529,713.60753923654556,-1321.8883730471134,-596.00587114691734,396.52329087257385,1308.1509068608284,786.14526391029358,1015.4129572212696,726.32604464888573,629.56670448184013,93.491394817829132,-281.34990856051445,1394.8965042829514,-395.03566026687622,336.68600618839264,-1050.6930656731129,419.76957321166992,1466.0028241574764,-226.08236148953438,500.73259249329567,732.21059739589691,-1058.1517934799194,143.00404340028763,27.530034631490707,-129.96213510632515,1153.5882078111172,1274.0799136459827,-1063.05857822299,176.19717419147491],"y":[72.610101336613297,116.94535436108708,399.4036752730608,445.4297520685941,324.56284300424159,168.58796956948936,151.05197452940047,330.54315461777151,121.94127864204347,339.44355938583612,216.56774114817381,571.98437978513539,84.13854232057929,498.2600839342922,357.0181283634156,424.48305767029524,268.55802931822836,439.87036566250026,15.529067907482386,537.3940366320312,104.06734189018607,109.77940717712045,316.67684451676905,332.9093299806118,524.94661579839885,252.96906977891922,156.49127229116857,116.6628135368228,345.7981217186898,157.73517242632806,100.23861606605351,376.16462409496307,200.12207510881126,312.71900706924498,525.84193325601518,595.47372618690133,0.4454499576240778,35.221384093165398,174.96614679694176,405.2180914208293,349.13762365467846,568.74185535125434,544.61158490739763,91.51715780608356,387.10756958462298,260.50562909804285,558.27882802113891,426.23074413277209,383.11022040434182,526.65384085848927],"mode":"markers","frame":"1","type":"scatter","name":"Avoidance","marker":{"color":"rgba(252,141,98,1)","size":[40,40,55,70,25,85,25,25,70,10,25,25,55,100,25,25,100,55,55,70,85,25,40,10,40,100,70,10,100,40,70,100,40,100,25,85,70,70,70,25,100,25,40,25,10,70,55,85,40,25],"sizemode":"area","line":{"color":"rgba(252,141,98,1)"}},"textfont":{"color":"rgba(252,141,98,1)","size":[40,40,55,70,25,85,25,25,70,10,25,25,55,100,25,25,100,55,55,70,85,25,40,10,40,100,70,10,100,40,70,100,40,100,25,85,70,70,70,25,100,25,40,25,10,70,55,85,40,25]},"error_y":{"color":"rgba(252,141,98,1)","width":[]},"error_x":{"color":"rgba(252,141,98,1)","width":[]},"line":{"color":"rgba(252,141,98,1)"},"xaxis":"x","yaxis":"y","visible":true}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"frames":[{"name":"1","data":[{"x":[-1567.6117300987244,1508.457912504673,1072.7531090378761,1024.0570120513439,742.86314472556114,1521.3327892124653,-724.47848841547966,-1165.1581913232803,443.33470016717911,-211.78363338112831,700.15113279223442,1075.6805010139942,94.329256564378738,981.85470029711723,402.85046324133873,425.24305433034897,-974.61613491177559,546.8189999461174,-544.73524764180183,-144.97425481677055,1260.293360054493,-887.09156736731529,713.60753923654556,-1321.8883730471134,-596.00587114691734,396.52329087257385,1308.1509068608284,786.14526391029358,1015.4129572212696,726.32604464888573,629.56670448184013,93.491394817829132,-281.34990856051445,1394.8965042829514,-395.03566026687622,336.68600618839264,-1050.6930656731129,419.76957321166992,1466.0028241574764,-226.08236148953438,500.73259249329567,732.21059739589691,-1058.1517934799194,143.00404340028763,27.530034631490707,-129.96213510632515,1153.5882078111172,1274.0799136459827,-1063.05857822299,176.19717419147491],"y":[72.610101336613297,116.94535436108708,399.4036752730608,445.4297520685941,324.56284300424159,168.58796956948936,151.05197452940047,330.54315461777151,121.94127864204347,339.44355938583612,216.56774114817381,571.98437978513539,84.13854232057929,498.2600839342922,357.0181283634156,424.48305767029524,268.55802931822836,439.87036566250026,15.529067907482386,537.3940366320312,104.06734189018607,109.77940717712045,316.67684451676905,332.9093299806118,524.94661579839885,252.96906977891922,156.49127229116857,116.6628135368228,345.7981217186898,157.73517242632806,100.23861606605351,376.16462409496307,200.12207510881126,312.71900706924498,525.84193325601518,595.47372618690133,0.4454499576240778,35.221384093165398,174.96614679694176,405.2180914208293,349.13762365467846,568.74185535125434,544.61158490739763,91.51715780608356,387.10756958462298,260.50562909804285,558.27882802113891,426.23074413277209,383.11022040434182,526.65384085848927],"mode":"markers","frame":"1","type":"scatter","name":"Avoidance","marker":{"color":"rgba(252,141,98,1)","size":[40,40,55,70,25,85,25,25,70,10,25,25,55,100,25,25,100,55,55,70,85,25,40,10,40,100,70,10,100,40,70,100,40,100,25,85,70,70,70,25,100,25,40,25,10,70,55,85,40,25],"sizemode":"area","line":{"color":"rgba(252,141,98,1)"}},"textfont":{"color":"rgba(252,141,98,1)","size":[40,40,55,70,25,85,25,25,70,10,25,25,55,100,25,25,100,55,55,70,85,25,40,10,40,100,70,10,100,40,70,100,40,100,25,85,70,70,70,25,100,25,40,25,10,70,55,85,40,25]},"error_y":{"color":"rgba(252,141,98,1)","width":[]},"error_x":{"color":"rgba(252,141,98,1)","width":[]},"line":{"color":"rgba(252,141,98,1)"},"xaxis":"x","yaxis":"y","visible":true}],"traces":[0]},{"name":"2","data":[{"x":[-1567.6117300987244,1518.6261948808715,1129.8770452511694,1107.3131468046092,941.87031287108721,1532.6962535743562,-855.74298015455793,-1203.0625904283406,643.12262745813553,-370.92664738260362,858.43435381437314,1012.613330292746,-75.85438779072382,1051.999200032782,469.91094929893535,567.60507477747194,-1056.8679717004115,731.78357312857861,-709.41244144318364,-358.07822088074215,1306.7308418090536,-985.05022170515099,759.66506660131381,-1336.3905642653851,-709.05165501071735,502.1654451042757,1352.5911369190865,901.39996849483464,1042.2840828421738,911.98283035623069,640.99282653631485,191.7358629611773,-580.72059451788732,1432.8267013452789,-566.83322058400881,356.45159220508782,-1135.5169965508273,459.70227110522399,1486.5975327450681,-380.21427385580091,580.0595357191844,885.56553570776282,-1113.9109889258953,298.63915467585514,377.20933204168273,-395.10747122208488,1191.1507038969055,1293.0926773596252,-1077.2883031699444,425.20811861524123],"y":[72.610101336613297,116.94992439301038,399.43554231565173,445.43807819067814,324.58016099889522,168.58759689835756,151.05840598113832,330.54231332165295,121.9224112524435,339.43253411474439,216.55850920037855,571.95817771062661,84.386425769547387,498.26394785785897,356.97477154896114,424.48563078727807,268.57442212504486,439.95898224621391,15.5290575460238,537.30131283009439,104.06666378354581,109.80061677094922,316.68499724685921,332.91008271971515,524.90794534785505,252.95546973046126,156.50442179909794,116.75982895081663,345.7958182132943,157.73156287116234,100.24261002340585,376.24692390770957,200.02218532952216,312.72365332401574,525.85264968838908,595.46955286457205,0.44992356566201541,35.218809807486664,174.96652245396928,405.21032847240338,349.09019946728739,568.75343251075742,544.613058423447,91.565933792606529,387.05489354443131,260.45922183524306,558.27879982034619,426.2315674901962,383.11140151980078,526.67429339958665],"mode":"markers","frame":"2","type":"scatter","name":"Avoidance","marker":{"color":"rgba(252,141,98,1)","size":[40,40,55,70,25,85,25,25,70,10,25,25,55,100,25,25,100,55,55,70,85,25,40,10,40,100,70,10,100,40,70,100,40,100,25,85,70,70,70,25,100,25,40,25,10,70,55,85,40,25],"sizemode":"area","line":{"color":"rgba(252,141,98,1)"}},"textfont":{"color":"rgba(252,141,98,1)","size":[40,40,55,70,25,85,25,25,70,10,25,25,55,100,25,25,100,55,55,70,85,25,40,10,40,100,70,10,100,40,70,100,40,100,25,85,70,70,70,25,100,25,40,25,10,70,55,85,40,25]},"error_y":{"color":"rgba(252,141,98,1)","width":[]},"error_x":{"color":"rgba(252,141,98,1)","width":[]},"line":{"color":"rgba(252,141,98,1)"},"xaxis":"x","yaxis":"y","visible":true}],"traces":[0]}],"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<div id="movement-after-first-detection" class="section level3 hasAnchor" number="3.1.2">
+<h3><span class="header-section-number">3.1.2</span> Movement after first detection<a href="simulation.html#movement-after-first-detection" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>For the mark recapture methods there are two detection occasions, which could be, for example, two observers on different decks of a boat or, as in the snow leopard prey data, two observers walking the transect at different times. Animal movement is not an issue for the first scenario as the animals move slowly in comparison to the boat, so will not move far enough to have different detection probabilities between the two observers. However, in our snow leopard prey example, there is 30 minutes between the first and second observer walking the transect so the animals could move significantly between the two observers. We consider two types of movement after the first detection: random movement and avoidance movement away from the transect. We based our simulation on Ibex movement data in Johansson <em>et al</em>. (2022), which shows that the distance moved follows roughly a log normal distribution with mean <span class="math inline">\(log(12) + 1.5\)</span> and standard deviation 1.5.</p>
+<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-dee942f3afa3c3d13d10" style="width:672px;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-dee942f3afa3c3d13d10">{"x":{"visdat":{"5d7476bc3ce8":["function () ","plotlyVisDat"]},"cur_data":"5d7476bc3ce8","attrs":{"5d7476bc3ce8":{"x":{},"y":{},"mode":"markers","color":{},"size":{},"frame":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"xaxis":{"domain":[0,1],"automargin":true,"title":"x","range":[-1740.6624537788027,1748.2807628280477]},"yaxis":{"domain":[0,1],"automargin":true,"title":"y","range":[-25.814148501958698,615.81835835007951]},"hovermode":"closest","showlegend":true,"sliders":[{"currentvalue":{"prefix":"obs: ","xanchor":"right","font":{"size":16,"color":"rgba(204,204,204,1)"}},"steps":[{"method":"animate","args":[["1"],{"transition":{"duration":500,"easing":"linear"},"frame":{"duration":500,"redraw":false},"mode":"immediate"}],"label":"1","value":"1"},{"method":"animate","args":[["2"],{"transition":{"duration":500,"easing":"linear"},"frame":{"duration":500,"redraw":false},"mode":"immediate"}],"label":"2","value":"2"}],"visible":true,"pad":{"t":40}}],"updatemenus":[{"type":"buttons","direction":"right","showactive":false,"y":0,"x":0,"yanchor":"top","xanchor":"right","pad":{"t":60,"r":5},"buttons":[{"label":"Play","method":"animate","args":[null,{"fromcurrent":true,"mode":"immediate","transition":{"duration":500,"easing":"linear"},"frame":{"duration":500,"redraw":false}}]}]}]},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[1182.3993183672428,1348.8784223794937,627.20020040869713,961.35529205203056,659.3003898859024,405.54981306195259,-1243.0031657218933,-934.55677777528763,1123.324378579855,308.78505408763885,-875.28712227940559,215.0844432413578,-1000.2370223402977,-1253.6211185157299,168.95696222782135,-990.92339277267456,1449.3618868291378,1061.846948415041,1467.5788924098015,-346.45099565386772,-359.92850288748741,-442.030318826437,-71.489296108484268,886.07132285833359,-28.88612225651741,901.79743841290474,-791.78131818771362,662.20538914203644,-1577.8231345117092,-193.34516078233719,367.84472167491913,-767.92485043406487,161.50800287723541,-1250.6280310451984,1584.3332603573799,144.02001798152924,-1481.3834920525551,948.60342666506767,448.25532287359238,737.20974922180176,-121.83722853660583,-806.48339912295341,-986.43431439995766,-1420.2433831989765,-1331.4583219587803,80.411037057638168,716.39907732605934,1094.1375009715557,810.9888419508934,609.63616371154785],"y":[33.021851303055882,503.35698151029646,389.21703044325113,123.30797533504665,166.93166848272085,534.58923124708235,22.381346393376589,83.077057963237166,19.03736237436533,581.26883707009256,20.51566494628787,524.17641025967896,367.21081389114261,494.45321308448911,282.59224975481629,424.50138204731047,343.34596409462392,154.06793025322258,340.472611784935,139.99174679629505,3.3509654458612204,169.07595377415419,176.8619698472321,260.05266183055937,199.95242427103221,451.0961935389787,301.27466283738613,130.789755564183,96.292540105059743,468.19565668702126,422.09854326210916,53.289343183860183,495.0469683855772,315.92987948097289,102.35385722480714,583.47136080265045,296.218057628721,263.33119003102183,491.17664163932204,391.6014508344233,458.34871139377356,243.5835103970021,410.15143655240536,185.79846513457596,260.99973558448255,69.168885843828321,586.65324440225959,537.1830859221518,396.60814027301967,46.260031219571829],"mode":"markers","frame":"1","type":"scatter","name":"Random","marker":{"color":"rgba(252,141,98,1)","size":[70,40,100,85,85,40,25,100,10,100,100,10,100,25,55,40,100,10,10,70,10,85,25,70,10,10,25,85,85,10,55,100,10,10,25,70,100,10,100,40,10,70,40,85,85,85,85,70,25,25],"sizemode":"area","line":{"color":"rgba(252,141,98,1)"}},"textfont":{"color":"rgba(252,141,98,1)","size":[70,40,100,85,85,40,25,100,10,100,100,10,100,25,55,40,100,10,10,70,10,85,25,70,10,10,25,85,85,10,55,100,10,10,25,70,100,10,100,40,10,70,40,85,85,85,85,70,25,25]},"error_y":{"color":"rgba(252,141,98,1)","width":[]},"error_x":{"color":"rgba(252,141,98,1)","width":[]},"line":{"color":"rgba(252,141,98,1)"},"xaxis":"x","yaxis":"y","visible":true}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"frames":[{"name":"1","data":[{"x":[1182.3993183672428,1348.8784223794937,627.20020040869713,961.35529205203056,659.3003898859024,405.54981306195259,-1243.0031657218933,-934.55677777528763,1123.324378579855,308.78505408763885,-875.28712227940559,215.0844432413578,-1000.2370223402977,-1253.6211185157299,168.95696222782135,-990.92339277267456,1449.3618868291378,1061.846948415041,1467.5788924098015,-346.45099565386772,-359.92850288748741,-442.030318826437,-71.489296108484268,886.07132285833359,-28.88612225651741,901.79743841290474,-791.78131818771362,662.20538914203644,-1577.8231345117092,-193.34516078233719,367.84472167491913,-767.92485043406487,161.50800287723541,-1250.6280310451984,1584.3332603573799,144.02001798152924,-1481.3834920525551,948.60342666506767,448.25532287359238,737.20974922180176,-121.83722853660583,-806.48339912295341,-986.43431439995766,-1420.2433831989765,-1331.4583219587803,80.411037057638168,716.39907732605934,1094.1375009715557,810.9888419508934,609.63616371154785],"y":[33.021851303055882,503.35698151029646,389.21703044325113,123.30797533504665,166.93166848272085,534.58923124708235,22.381346393376589,83.077057963237166,19.03736237436533,581.26883707009256,20.51566494628787,524.17641025967896,367.21081389114261,494.45321308448911,282.59224975481629,424.50138204731047,343.34596409462392,154.06793025322258,340.472611784935,139.99174679629505,3.3509654458612204,169.07595377415419,176.8619698472321,260.05266183055937,199.95242427103221,451.0961935389787,301.27466283738613,130.789755564183,96.292540105059743,468.19565668702126,422.09854326210916,53.289343183860183,495.0469683855772,315.92987948097289,102.35385722480714,583.47136080265045,296.218057628721,263.33119003102183,491.17664163932204,391.6014508344233,458.34871139377356,243.5835103970021,410.15143655240536,185.79846513457596,260.99973558448255,69.168885843828321,586.65324440225959,537.1830859221518,396.60814027301967,46.260031219571829],"mode":"markers","frame":"1","type":"scatter","name":"Random","marker":{"color":"rgba(252,141,98,1)","size":[70,40,100,85,85,40,25,100,10,100,100,10,100,25,55,40,100,10,10,70,10,85,25,70,10,10,25,85,85,10,55,100,10,10,25,70,100,10,100,40,10,70,40,85,85,85,85,70,25,25],"sizemode":"area","line":{"color":"rgba(252,141,98,1)"}},"textfont":{"color":"rgba(252,141,98,1)","size":[70,40,100,85,85,40,25,100,10,100,100,10,100,25,55,40,100,10,10,70,10,85,25,70,10,10,25,85,85,10,55,100,10,10,25,70,100,10,100,40,10,70,40,85,85,85,85,70,25,25]},"error_y":{"color":"rgba(252,141,98,1)","width":[]},"error_x":{"color":"rgba(252,141,98,1)","width":[]},"line":{"color":"rgba(252,141,98,1)"},"xaxis":"x","yaxis":"y","visible":true}],"traces":[0]},{"name":"2","data":[{"x":[1181.7409660521564,1306.5722965059758,749.69205576462878,950.07544385616018,653.82914905196424,409.43581102939208,-1238.4394922908839,-980.67917270939927,1068.5307370531939,281.59996576774506,-804.08292499164236,215.14578945417804,-902.39681708993817,-1283.6345412373271,254.14262043607326,-635.86554220149935,1487.8766888871216,1292.4603423865697,1474.2238374905035,-337.36855295622416,93.621467019688396,-446.05203891294821,-36.042321469556114,1003.8735162777193,-16.886948263328982,900.84728055995686,-817.93079004299807,276.6520590297942,-1582.0741257512186,-202.8355459109012,360.01523558395087,-700.49508139255977,76.396177059265327,-1225.0565981999011,1589.6924348004636,126.9509526055011,-1506.5082864669882,947.58720443942229,438.85195042563214,812.08316324427346,117.85659047087697,-764.75708099927522,-822.59047243663963,-1397.0176050269856,-1470.3867049130706,72.159680470915205,719.7886457145031,976.47983627472604,827.79235890448842,383.14877321229869],"y":[33.007654069570322,503.30759912883985,389.07685214014828,123.33116467923382,166.9315735554251,534.55881270931786,22.383425799372478,83.044843527512853,18.94427709219525,581.24210000781284,20.40555109333269,524.31460152057014,367.20600056990565,494.44568492379955,282.59956637309267,424.42834126874737,343.35711809503459,154.09454080187274,340.47108539026658,139.9883425563178,3.4551889733644736,169.07526502623938,176.87998349204099,260.07409959019952,200.02561351733851,451.10120731255836,301.2579523014241,130.74691590380624,96.186208692519955,468.21439862797797,422.09063248995585,53.375563760169456,495.00900105937569,315.93199568914849,102.5117510435491,583.52801630540341,295.93382419300644,263.33715473766574,491.17322198967912,391.54413046880245,458.03646520320814,243.57539680725478,410.06771085139928,185.77505460179179,260.97334723248986,69.16313258933711,586.53296935873425,537.09649148355243,396.56388149467136,46.203581375245726],"mode":"markers","frame":"2","type":"scatter","name":"Random","marker":{"color":"rgba(252,141,98,1)","size":[70,40,100,85,85,40,25,100,10,100,100,10,100,25,55,40,100,10,10,70,10,85,25,70,10,10,25,85,85,10,55,100,10,10,25,70,100,10,100,40,10,70,40,85,85,85,85,70,25,25],"sizemode":"area","line":{"color":"rgba(252,141,98,1)"}},"textfont":{"color":"rgba(252,141,98,1)","size":[70,40,100,85,85,40,25,100,10,100,100,10,100,25,55,40,100,10,10,70,10,85,25,70,10,10,25,85,85,10,55,100,10,10,25,70,100,10,100,40,10,70,40,85,85,85,85,70,25,25]},"error_y":{"color":"rgba(252,141,98,1)","width":[]},"error_x":{"color":"rgba(252,141,98,1)","width":[]},"line":{"color":"rgba(252,141,98,1)"},"xaxis":"x","yaxis":"y","visible":true}],"traces":[0]}],"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-a851a178fc5d1412be3b" style="width:672px;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-a851a178fc5d1412be3b">{"x":{"visdat":{"5d7416382397":["function () ","plotlyVisDat"]},"cur_data":"5d7416382397","attrs":{"5d7416382397":{"x":{},"y":{},"mode":"markers","color":{},"size":{},"frame":{},"colors":"lightpink","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"xaxis":{"domain":[0,1],"automargin":true,"title":"x","range":[-1673.7800578752567,1721.0410932485993]},"yaxis":{"domain":[0,1],"automargin":true,"title":"y","range":[-20.131868946477198,613.12202028411832]},"hovermode":"closest","showlegend":true,"sliders":[{"currentvalue":{"prefix":"obs: ","xanchor":"right","font":{"size":16,"color":"rgba(204,204,204,1)"}},"steps":[{"method":"animate","args":[["1"],{"transition":{"duration":500,"easing":"linear"},"frame":{"duration":500,"redraw":false},"mode":"immediate"}],"label":"1","value":"1"},{"method":"animate","args":[["2"],{"transition":{"duration":500,"easing":"linear"},"frame":{"duration":500,"redraw":false},"mode":"immediate"}],"label":"2","value":"2"}],"visible":true,"pad":{"t":40}}],"updatemenus":[{"type":"buttons","direction":"right","showactive":false,"y":0,"x":0,"yanchor":"top","xanchor":"right","pad":{"t":60,"r":5},"buttons":[{"label":"Play","method":"animate","args":[null,{"fromcurrent":true,"mode":"immediate","transition":{"duration":500,"easing":"linear"},"frame":{"duration":500,"redraw":false}}]}]}]},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[-1114.1274176537991,-601.09370201826096,-696.73907905817032,949.41224902868271,1308.5623972117901,-892.00625196099281,-1290.4399916529655,1560.2400906383991,440.51835015416145,-986.69429048895836,-1216.7881600558758,-846.02500796318054,57.869526743888855,743.38745847344398,1049.8207338154316,-795.42191401124001,-661.48445606231689,-1074.091038107872,-578.22060883045197,-1222.0841251313686,-290.77079445123672,221.8003086745739,-957.88378119468689,1031.4359717071056,-1038.0628116428852,-1192.9346323013306,1021.7540197074413,1234.7960658371449,-1211.2065240740776,-472.66946136951447,-463.82605209946632,-422.57780954241753,848.62542226910591,1372.8888988494873,1047.2559727728367,-55.449283123016357,1154.5777559280396,134.00579318404198,1566.7310409247875,-25.491175055503845,-1515.4299154877663,-653.71683016419411,1280.0187289714813,1388.7241251766682,-486.27822324633598,1040.4969811439514,366.84963405132294,192.41952896118164,-256.10971450805664,224.22270104289055],"y":[105.69777209311724,584.33775259181857,397.48225333169103,363.30530438572168,424.95984868146479,32.593031041324139,8.6589334532618523,555.46606904827058,524.87563057802618,125.09333440102637,210.63221278600395,199.84864820726216,171.73364488407969,79.837790876626968,203.85571871884167,385.33148411661386,497.68621679395437,410.62176888808608,163.48534966818988,340.58889448642731,468.44474645331502,212.12495542131364,389.51461426913738,40.212942380458117,425.09208214469254,406.5382172819227,513.9100429136306,347.37709150649607,121.54987491667271,545.61051246710122,491.44912865012884,105.86119489744306,281.38405010104179,467.65577299520373,411.04518114589155,295.58293106965721,163.05348635651171,377.58095562458038,421.36406223289669,309.96034601703286,318.23378275148571,556.1913266312331,228.53532247245312,324.55388233065605,94.605104299262166,162.61082799173892,70.69064830429852,322.89695972576737,159.5299243927002,489.15874091908336],"mode":"markers","frame":"1","type":"scatter","name":"Avoidance","marker":{"color":"rgba(255,182,193,1)","size":[100,55,25,55,70,70,85,55,10,10,100,40,40,25,55,40,25,55,70,10,100,55,10,85,25,10,10,55,10,25,70,100,40,85,55,55,85,25,40,70,55,10,85,70,85,100,100,40,55,25],"sizemode":"area","line":{"color":"rgba(255,182,193,1)"}},"textfont":{"color":"rgba(255,182,193,1)","size":[100,55,25,55,70,70,85,55,10,10,100,40,40,25,55,40,25,55,70,10,100,55,10,85,25,10,10,55,10,25,70,100,40,85,55,55,85,25,40,70,55,10,85,70,85,100,100,40,55,25]},"error_y":{"color":"rgba(255,182,193,1)","width":[]},"error_x":{"color":"rgba(255,182,193,1)","width":[]},"line":{"color":"rgba(255,182,193,1)"},"xaxis":"x","yaxis":"y","visible":true}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"frames":[{"name":"1","data":[{"x":[-1114.1274176537991,-601.09370201826096,-696.73907905817032,949.41224902868271,1308.5623972117901,-892.00625196099281,-1290.4399916529655,1560.2400906383991,440.51835015416145,-986.69429048895836,-1216.7881600558758,-846.02500796318054,57.869526743888855,743.38745847344398,1049.8207338154316,-795.42191401124001,-661.48445606231689,-1074.091038107872,-578.22060883045197,-1222.0841251313686,-290.77079445123672,221.8003086745739,-957.88378119468689,1031.4359717071056,-1038.0628116428852,-1192.9346323013306,1021.7540197074413,1234.7960658371449,-1211.2065240740776,-472.66946136951447,-463.82605209946632,-422.57780954241753,848.62542226910591,1372.8888988494873,1047.2559727728367,-55.449283123016357,1154.5777559280396,134.00579318404198,1566.7310409247875,-25.491175055503845,-1515.4299154877663,-653.71683016419411,1280.0187289714813,1388.7241251766682,-486.27822324633598,1040.4969811439514,366.84963405132294,192.41952896118164,-256.10971450805664,224.22270104289055],"y":[105.69777209311724,584.33775259181857,397.48225333169103,363.30530438572168,424.95984868146479,32.593031041324139,8.6589334532618523,555.46606904827058,524.87563057802618,125.09333440102637,210.63221278600395,199.84864820726216,171.73364488407969,79.837790876626968,203.85571871884167,385.33148411661386,497.68621679395437,410.62176888808608,163.48534966818988,340.58889448642731,468.44474645331502,212.12495542131364,389.51461426913738,40.212942380458117,425.09208214469254,406.5382172819227,513.9100429136306,347.37709150649607,121.54987491667271,545.61051246710122,491.44912865012884,105.86119489744306,281.38405010104179,467.65577299520373,411.04518114589155,295.58293106965721,163.05348635651171,377.58095562458038,421.36406223289669,309.96034601703286,318.23378275148571,556.1913266312331,228.53532247245312,324.55388233065605,94.605104299262166,162.61082799173892,70.69064830429852,322.89695972576737,159.5299243927002,489.15874091908336],"mode":"markers","frame":"1","type":"scatter","name":"Avoidance","marker":{"color":"rgba(255,182,193,1)","size":[100,55,25,55,70,70,85,55,10,10,100,40,40,25,55,40,25,55,70,10,100,55,10,85,25,10,10,55,10,25,70,100,40,85,55,55,85,25,40,70,55,10,85,70,85,100,100,40,55,25],"sizemode":"area","line":{"color":"rgba(255,182,193,1)"}},"textfont":{"color":"rgba(255,182,193,1)","size":[100,55,25,55,70,70,85,55,10,10,100,40,40,25,55,40,25,55,70,10,100,55,10,85,25,10,10,55,10,25,70,100,40,85,55,55,85,25,40,70,55,10,85,70,85,100,100,40,55,25]},"error_y":{"color":"rgba(255,182,193,1)","width":[]},"error_x":{"color":"rgba(255,182,193,1)","width":[]},"line":{"color":"rgba(255,182,193,1)"},"xaxis":"x","yaxis":"y","visible":true}],"traces":[0]},{"name":"2","data":[{"x":[-1135.0525485983642,-670.46722116605417,-766.14934668660658,1100.651659179106,1324.5752003708758,-911.66391339673191,-1318.235876497195,1561.304486230046,604.10531252438693,-1024.2237175281987,-1295.3401219835857,-897.31967649235401,65.872595969545443,873.00399989139726,1150.6288415032202,-920.65935245181777,-681.47584614700247,-1124.7971436875964,-791.2791257161241,-1300.6591982556058,-525.46950220205042,261.42196949283164,-1009.1773738097319,1135.1600901022168,-1091.5178306436021,-1249.381085825255,1147.5583186896481,1316.3620196071104,-1299.4871336409938,-717.91433121501154,-633.09385995721607,-532.62312221571494,865.79182160248445,1390.6068434244705,1104.6353208488599,-233.24160834607116,1214.8693267069516,345.54368089575269,1566.7310409247875,-361.67022897723899,-1519.470005551445,-750.06527352569481,1311.0156715369797,1425.4483553283974,-555.88687142770459,1089.3635212512697,415.2037902157478,429.67194329862565,-374.80022410514255,430.43171590869002],"y":[105.72031058831335,584.33692140792436,397.4589092583476,363.3041528672972,424.95823104671757,32.601075301929313,8.652398745822607,555.46611237008733,524.88254480588751,125.08853454127913,210.64849534743257,199.85219362627109,171.73387195706403,79.827262985039681,203.86318243332474,385.32593544382553,497.66933063385756,410.62488551083834,163.45881196872506,340.60206646242517,468.43242189058913,212.1514119962296,389.42039100058793,40.212814848847906,425.08468591396695,406.57529646207695,513.94886914539416,347.38292189160188,121.55388008601719,545.55640390459621,491.45089229777784,106.02427878491535,281.38445039272113,467.65531770562171,411.04747095618228,295.61537915148017,163.05437110149859,377.63133795360312,421.36406223289669,309.95988605032579,318.2331233101018,556.18908632569867,228.52353988079133,324.56024396418383,94.625363914797674,162.61705716968879,70.676656320836003,322.9284835341424,159.58566459743756,489.18215886341039],"mode":"markers","frame":"2","type":"scatter","name":"Avoidance","marker":{"color":"rgba(255,182,193,1)","size":[100,55,25,55,70,70,85,55,10,10,100,40,40,25,55,40,25,55,70,10,100,55,10,85,25,10,10,55,10,25,70,100,40,85,55,55,85,25,40,70,55,10,85,70,85,100,100,40,55,25],"sizemode":"area","line":{"color":"rgba(255,182,193,1)"}},"textfont":{"color":"rgba(255,182,193,1)","size":[100,55,25,55,70,70,85,55,10,10,100,40,40,25,55,40,25,55,70,10,100,55,10,85,25,10,10,55,10,25,70,100,40,85,55,55,85,25,40,70,55,10,85,70,85,100,100,40,55,25]},"error_y":{"color":"rgba(255,182,193,1)","width":[]},"error_x":{"color":"rgba(255,182,193,1)","width":[]},"line":{"color":"rgba(255,182,193,1)"},"xaxis":"x","yaxis":"y","visible":true}],"traces":[0]}],"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 </div>
-<div id="imperfect-matching" class="section level3 hasAnchor" number="6.1.3">
-<h3><span class="header-section-number">6.1.3</span> Imperfect Matching<a href="simulation.html#imperfect-matching" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="imperfect-matching" class="section level3 hasAnchor" number="3.1.3">
+<h3><span class="header-section-number">3.1.3</span> Imperfect Matching<a href="simulation.html#imperfect-matching" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Mark recapture methods also assume that the observers can perfectly identify which animals were seen by both observers and which animals were seen by just one observer. This becomes problematic for animals without unique identifying markings in surveys where they could move between detection occasions.</p>
 <p>We simulated imperfect matching by setting any animals detected on the second occasion within 300m of an animal detected on the first animal were recorded as the same animal, taking the closest as the match if there were multiple within this range. Any animals further than 1000m were recorded as different, and the probability of matching animals within the range was generated using a inverse power function with parameters <span class="math inline">\(\beta_1\)</span> = 6, <span class="math inline">\(\beta_2\)</span> = 0.000005. (Thanks to the snow leopard prey team for suggesting these limits)</p>
 <p><img src="_main_files/figure-html/imperfect-matching%20plot-1.png" width="672" /></p>
 </div>
 </div>
-<div id="simulation-results" class="section level2 hasAnchor" number="6.2">
-<h2><span class="header-section-number">6.2</span> Simulation Results<a href="simulation.html#simulation-results" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="simulation-results" class="section level2 hasAnchor" number="3.2">
+<h2><span class="header-section-number">3.2</span> Simulation Results<a href="simulation.html#simulation-results" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>For each of the 12 scenarios we calculated the bias and coverage probability of the 4 methods. Due to time constraints we only fitted a hazard-rate detection function with no adjustments for conventional distance sampling and only used the independent observer configuration with a hazard rate distance model for MRDS. This means the models for these methods may not be the best fit, and it could be possible to achieve a smaller bias or larger coverage probability. With more time we would fit multiple models to each set of simulated data and choose the best using AIC. We also only fit one 2D model, but as it was the model used the generate the data it should be the best model regardless.</p>
-<div id="uniform-animal-distribution" class="section level3 hasAnchor" number="6.2.1">
-<h3><span class="header-section-number">6.2.1</span> Uniform Animal Distribution<a href="simulation.html#uniform-animal-distribution" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="uniform-animal-distribution" class="section level3 hasAnchor" number="3.2.1">
+<h3><span class="header-section-number">3.2.1</span> Uniform Animal Distribution<a href="simulation.html#uniform-animal-distribution" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>With uniform animal distribution we expect conventional distance and 2D distance sampling to perform similarly, as all the assumptions for both methods are met. Our results show that they both have similar coverage probabilities, and whilst conventional distance may appear to be more biased, this is more likely a result of only fitting one model rather than performing model selection. As these methods involve walking the transect just once, they are not affected by movement between observers.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="simulation.html#cb6-1" tabindex="-1"></a><span class="co"># Scenario 2</span></span>
-<span id="cb6-2"><a href="simulation.html#cb6-2" tabindex="-1"></a><span class="co"># Initial density: uniform + Movement: avoidance + Matching: imperfect</span></span>
-<span id="cb6-3"><a href="simulation.html#cb6-3" tabindex="-1"></a><span class="co">#sc2 &lt;- simulation(n=600, b=99, 0, 0, TRUE)</span></span>
-<span id="cb6-4"><a href="simulation.html#cb6-4" tabindex="-1"></a><span class="fu">load</span>(<span class="st">&quot;sc2.RData&quot;</span>)</span>
-<span id="cb6-5"><a href="simulation.html#cb6-5" tabindex="-1"></a>sc2.table <span class="ot">&lt;-</span> <span class="fu">kable</span>(sc2.out <span class="ot">&lt;-</span> <span class="fu">result</span>(sc2, <span class="at">n=</span><span class="dv">600</span>), <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">&quot;Bias&quot;</span>, <span class="st">&quot;Coverage Probability&quot;</span>), <span class="at">caption =</span> <span class="st">&quot;Avoidance Movement&quot;</span>)</span></code></pre></div>
 <table class="kable_wrapper">
+<caption>
+<span id="tab:unnamed-chunk-5">Table 3.1: </span>Uniform Distribution with Perfect Matching
+</caption>
 <tbody>
 <tr>
 <td>
 <table>
-<caption>(#tab:Sc.3)Random Movement</caption>
+<caption>
+<span id="tab:unnamed-chunk-5">Table 3.1: </span>Random Movement
+</caption>
 <thead>
-<tr class="header">
-<th align="left"></th>
-<th align="right">Bias</th>
-<th align="right">Coverage Probability</th>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+Bias
+</th>
+<th style="text-align:right;">
+Coverage Probability
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td align="left">MR</td>
-<td align="right">-0.5712948</td>
-<td align="right">0.0000000</td>
+<tr>
+<td style="text-align:left;">
+MR
+</td>
+<td style="text-align:right;">
+-0.5712948
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
 </tr>
-<tr class="even">
-<td align="left">DS</td>
-<td align="right">-0.2426987</td>
-<td align="right">0.8686869</td>
+<tr>
+<td style="text-align:left;">
+DS
+</td>
+<td style="text-align:right;">
+-0.2426987
+</td>
+<td style="text-align:right;">
+0.8686869
+</td>
 </tr>
-<tr class="odd">
-<td align="left">MRDS</td>
-<td align="right">-0.2327096</td>
-<td align="right">0.5050505</td>
+<tr>
+<td style="text-align:left;">
+MRDS
+</td>
+<td style="text-align:right;">
+-0.2327096
+</td>
+<td style="text-align:right;">
+0.5050505
+</td>
 </tr>
-<tr class="even">
-<td align="left">2D</td>
-<td align="right">-0.0241737</td>
-<td align="right">0.8315789</td>
+<tr>
+<td style="text-align:left;">
+2D
+</td>
+<td style="text-align:right;">
+-0.0241737
+</td>
+<td style="text-align:right;">
+0.8315789
+</td>
 </tr>
 </tbody>
 </table>
 </td>
 <td>
 <table>
-<caption>(#tab:Sc.1)Avoidance Movement</caption>
+<caption>
+<span id="tab:unnamed-chunk-3">Table 3.2: </span>Avoidance Movement
+</caption>
 <thead>
-<tr class="header">
-<th align="left"></th>
-<th align="right">Bias</th>
-<th align="right">Coverage Probability</th>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+Bias
+</th>
+<th style="text-align:right;">
+Coverage Probability
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td align="left">MR</td>
-<td align="right">-0.5371078</td>
-<td align="right">0.0000000</td>
+<tr>
+<td style="text-align:left;">
+MR
+</td>
+<td style="text-align:right;">
+-0.5371078
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
 </tr>
-<tr class="even">
-<td align="left">DS</td>
-<td align="right">-0.1746048</td>
-<td align="right">0.9090909</td>
+<tr>
+<td style="text-align:left;">
+DS
+</td>
+<td style="text-align:right;">
+-0.1746048
+</td>
+<td style="text-align:right;">
+0.9090909
+</td>
 </tr>
-<tr class="odd">
-<td align="left">MRDS</td>
-<td align="right">-0.1492886</td>
-<td align="right">0.7979798</td>
+<tr>
+<td style="text-align:left;">
+MRDS
+</td>
+<td style="text-align:right;">
+-0.1492886
+</td>
+<td style="text-align:right;">
+0.7979798
+</td>
 </tr>
-<tr class="even">
-<td align="left">2D</td>
-<td align="right">0.0442049</td>
-<td align="right">0.8541667</td>
+<tr>
+<td style="text-align:left;">
+2D
+</td>
+<td style="text-align:right;">
+0.0442049
+</td>
+<td style="text-align:right;">
+0.8541667
+</td>
 </tr>
 </tbody>
 </table>
@@ -360,74 +324,136 @@ Figure 6.1: Potential Animal Distributions
 <p>Mark recapture performs poorly in this scenario and all the other scenarios as detectability declines with distance. This means there is unmodelled heterogeneity in the population, so it is negatively biased. MRDS is negatively biased with random animal movement as this violates the assumption that each animal has the same detection probability for each observer. It is less negatively biased with avoidance as second observer will see less animals than the first due to them now being further away. This results in a lower estimated detection probability and therefore a higher estimate.</p>
 <table class="kable_wrapper">
 <caption>
-(#tab:Sc.4)With Imperfect Matching
+<span id="tab:unnamed-chunk-6">Table 3.3: </span>Uniform Distribution with Imperfect Matching
 </caption>
 <tbody>
 <tr>
 <td>
 <table>
-<caption>(#tab:Sc.4)Random Movement</caption>
+<caption>
+<span id="tab:unnamed-chunk-6">Table 3.3: </span>Random Movement
+</caption>
 <thead>
-<tr class="header">
-<th align="left"></th>
-<th align="right">Bias</th>
-<th align="right">Coverage Probability</th>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+Bias
+</th>
+<th style="text-align:right;">
+Coverage Probability
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td align="left">MR</td>
-<td align="right">-0.7921806</td>
-<td align="right">0.0000000</td>
+<tr>
+<td style="text-align:left;">
+MR
+</td>
+<td style="text-align:right;">
+-0.7921806
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
 </tr>
-<tr class="even">
-<td align="left">DS</td>
-<td align="right">-0.1992975</td>
-<td align="right">0.8585859</td>
+<tr>
+<td style="text-align:left;">
+DS
+</td>
+<td style="text-align:right;">
+-0.1992975
+</td>
+<td style="text-align:right;">
+0.8585859
+</td>
 </tr>
-<tr class="odd">
-<td align="left">MRDS</td>
-<td align="right">-0.1449946</td>
-<td align="right">0.7474747</td>
+<tr>
+<td style="text-align:left;">
+MRDS
+</td>
+<td style="text-align:right;">
+-0.1449946
+</td>
+<td style="text-align:right;">
+0.7474747
+</td>
 </tr>
-<tr class="even">
-<td align="left">2D</td>
-<td align="right">0.0114371</td>
-<td align="right">0.8163265</td>
+<tr>
+<td style="text-align:left;">
+2D
+</td>
+<td style="text-align:right;">
+0.0114371
+</td>
+<td style="text-align:right;">
+0.8163265
+</td>
 </tr>
 </tbody>
 </table>
 </td>
 <td>
 <table>
-<caption>(#tab:Sc.2)Avoidance Movement</caption>
+<caption>
+<span id="tab:unnamed-chunk-4">Table 3.4: </span>Avoidance Movement
+</caption>
 <thead>
-<tr class="header">
-<th align="left"></th>
-<th align="right">Bias</th>
-<th align="right">Coverage Probability</th>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+Bias
+</th>
+<th style="text-align:right;">
+Coverage Probability
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td align="left">MR</td>
-<td align="right">-0.7960944</td>
-<td align="right">0.0000000</td>
+<tr>
+<td style="text-align:left;">
+MR
+</td>
+<td style="text-align:right;">
+-0.7960944
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
 </tr>
-<tr class="even">
-<td align="left">DS</td>
-<td align="right">-0.2301179</td>
-<td align="right">0.9090909</td>
+<tr>
+<td style="text-align:left;">
+DS
+</td>
+<td style="text-align:right;">
+-0.2301179
+</td>
+<td style="text-align:right;">
+0.9090909
+</td>
 </tr>
-<tr class="odd">
-<td align="left">MRDS</td>
-<td align="right">0.0069158</td>
-<td align="right">0.9494949</td>
+<tr>
+<td style="text-align:left;">
+MRDS
+</td>
+<td style="text-align:right;">
+0.0069158
+</td>
+<td style="text-align:right;">
+0.9494949
+</td>
 </tr>
-<tr class="even">
-<td align="left">2D</td>
-<td align="right">0.0007698</td>
-<td align="right">0.8453608</td>
+<tr>
+<td style="text-align:left;">
+2D
+</td>
+<td style="text-align:right;">
+0.0007698
+</td>
+<td style="text-align:right;">
+0.8453608
+</td>
 </tr>
 </tbody>
 </table>
@@ -435,78 +461,143 @@ Figure 6.1: Potential Animal Distributions
 </tr>
 </tbody>
 </table>
-<p>After introducing imperfect matching, MRDS estimates seem to be less negatively biased. This is due to some individuals that were seen twice being mistakenly identified as two separate animals, leading to a lower estimate of detection probability and hence a higher estimate of abundance. Whilst it looks like MRDS should be the best estimator in the scenario with avoidance movement and imperfect matching, this is actually because effects of breaking multiple assumptions happen to balance out in this specific situation. This results in very variable estimates, as the variance of the <span class="math inline">\(N\hat\)</span>s was <code>{r var(sc2[[3]]$N.hat[sc2[[3]]$N.hat &lt; 3*600])/99}</code> for MRDS, compared to <code>{r var(sc2[[4]]$N.hat[sc2[[4]]$N.hat &lt; 3*600])/99}</code> for 2D Distance.</p>
+<p>After introducing imperfect matching, MRDS estimates seem to be less negatively biased. This is due to some individuals that were seen twice being mistakenly identified as two separate animals, leading to a lower estimate of detection probability and hence a higher estimate of abundance. Whilst it looks like MRDS should be the best estimator in the scenario with avoidance movement and imperfect matching, this is actually because effects of breaking multiple assumptions happen to balance out in this specific situation. This results in very variable estimates, as the variance of the <span class="math inline">\(\hat{N}\)</span> s was 210.5 for MRDS, compared to 53.12 for 2D Distance.</p>
 </div>
-<div id="avoiding-transect" class="section level3 hasAnchor" number="6.2.2">
-<h3><span class="header-section-number">6.2.2</span> Avoiding Transect<a href="simulation.html#avoiding-transect" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="avoiding-transect" class="section level3 hasAnchor" number="3.2.2">
+<h3><span class="header-section-number">3.2.2</span> Avoiding Transect<a href="simulation.html#avoiding-transect" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>As expected, only 2D Distance is unbiased when the animals initially avoid the transect.</p>
 <table class="kable_wrapper">
+<caption>
+<span id="tab:unnamed-chunk-9">Table 3.5: </span>Initial Avoidance with Perfect Matching
+</caption>
 <tbody>
 <tr>
 <td>
 <table>
-<caption>(#tab:Sc.7)Random Movement</caption>
+<caption>
+<span id="tab:unnamed-chunk-9">Table 3.5: </span>Random Movement
+</caption>
 <thead>
-<tr class="header">
-<th align="left"></th>
-<th align="right">Bias</th>
-<th align="right">Coverage Probability</th>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+Bias
+</th>
+<th style="text-align:right;">
+Coverage Probability
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td align="left">MR</td>
-<td align="right">-0.5236447</td>
-<td align="right">0.0202020</td>
+<tr>
+<td style="text-align:left;">
+MR
+</td>
+<td style="text-align:right;">
+-0.5236447
+</td>
+<td style="text-align:right;">
+0.0202020
+</td>
 </tr>
-<tr class="even">
-<td align="left">DS</td>
-<td align="right">-0.8951007</td>
-<td align="right">0.0000000</td>
+<tr>
+<td style="text-align:left;">
+DS
+</td>
+<td style="text-align:right;">
+-0.8951007
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
 </tr>
-<tr class="odd">
-<td align="left">MRDS</td>
-<td align="right">-0.7777289</td>
-<td align="right">0.0000000</td>
+<tr>
+<td style="text-align:left;">
+MRDS
+</td>
+<td style="text-align:right;">
+-0.7777289
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
 </tr>
-<tr class="even">
-<td align="left">2D</td>
-<td align="right">-0.0242510</td>
-<td align="right">0.9325843</td>
+<tr>
+<td style="text-align:left;">
+2D
+</td>
+<td style="text-align:right;">
+-0.0242510
+</td>
+<td style="text-align:right;">
+0.9325843
+</td>
 </tr>
 </tbody>
 </table>
 </td>
 <td>
 <table>
-<caption>(#tab:Sc.5)Avoidance Movement</caption>
+<caption>
+<span id="tab:unnamed-chunk-7">Table 3.6: </span>Avoidance Movement
+</caption>
 <thead>
-<tr class="header">
-<th align="left"></th>
-<th align="right">Bias</th>
-<th align="right">Coverage Probability</th>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+Bias
+</th>
+<th style="text-align:right;">
+Coverage Probability
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td align="left">MR</td>
-<td align="right">-0.4813794</td>
-<td align="right">0.1818182</td>
+<tr>
+<td style="text-align:left;">
+MR
+</td>
+<td style="text-align:right;">
+-0.4813794
+</td>
+<td style="text-align:right;">
+0.1818182
+</td>
 </tr>
-<tr class="even">
-<td align="left">DS</td>
-<td align="right">-0.8971265</td>
-<td align="right">0.0000000</td>
+<tr>
+<td style="text-align:left;">
+DS
+</td>
+<td style="text-align:right;">
+-0.8971265
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
 </tr>
-<tr class="odd">
-<td align="left">MRDS</td>
-<td align="right">-0.7722739</td>
-<td align="right">0.0102041</td>
+<tr>
+<td style="text-align:left;">
+MRDS
+</td>
+<td style="text-align:right;">
+-0.7722739
+</td>
+<td style="text-align:right;">
+0.0102041
+</td>
 </tr>
-<tr class="even">
-<td align="left">2D</td>
-<td align="right">-0.0100226</td>
-<td align="right">0.9625000</td>
+<tr>
+<td style="text-align:left;">
+2D
+</td>
+<td style="text-align:right;">
+-0.0100226
+</td>
+<td style="text-align:right;">
+0.9625000
+</td>
 </tr>
 </tbody>
 </table>
@@ -518,85 +609,141 @@ Figure 6.1: Potential Animal Distributions
 <div class="figure"><span style="display:block;" id="fig:avoidance-df-hist"></span>
 <img src="_main_files/figure-html/avoidance-df-hist-1.png" alt="Fitted detection function vs True detection function" width="672" />
 <p class="caption">
-Figure 6.2: Fitted detection function vs True detection function
+Figure 3.2: Fitted detection function vs True detection function
 </p>
 </div>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="simulation.html#cb7-1" tabindex="-1"></a><span class="co"># Scenario 8</span></span>
-<span id="cb7-2"><a href="simulation.html#cb7-2" tabindex="-1"></a><span class="co"># Initial density: avoiding + Movement: random + Matching: imperfect</span></span>
-<span id="cb7-3"><a href="simulation.html#cb7-3" tabindex="-1"></a><span class="co">#sc8 &lt;- simulation(n=1200, b=99, 1, 1, TRUE)</span></span>
-<span id="cb7-4"><a href="simulation.html#cb7-4" tabindex="-1"></a><span class="fu">load</span>(<span class="st">&quot;sc8.RData&quot;</span>)</span>
-<span id="cb7-5"><a href="simulation.html#cb7-5" tabindex="-1"></a>sc8.table <span class="ot">&lt;-</span> <span class="fu">kable</span>(sc8.out <span class="ot">&lt;-</span> <span class="fu">result</span>(sc8, <span class="at">n=</span><span class="dv">1200</span>), <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">&quot;Bias&quot;</span>, <span class="st">&quot;Coverage Probability&quot;</span>), <span class="at">caption =</span> <span class="st">&quot;Random Movement&quot;</span>)</span>
-<span id="cb7-6"><a href="simulation.html#cb7-6" tabindex="-1"></a><span class="fu">kables</span>(<span class="fu">list</span>(sc8.table,sc6.table), <span class="at">caption =</span> <span class="st">&quot;With Imperfect Matching&quot;</span>)</span></code></pre></div>
 <table class="kable_wrapper">
 <caption>
-(#tab:Sc.8)With Imperfect Matching
+<span id="tab:unnamed-chunk-10">Table 3.7: </span>Initial Avoidance with Imperfect Matching
 </caption>
 <tbody>
 <tr>
 <td>
 <table>
-<caption>(#tab:Sc.8)Random Movement</caption>
+<caption>
+<span id="tab:unnamed-chunk-10">Table 3.7: </span>Random Movement
+</caption>
 <thead>
-<tr class="header">
-<th align="left"></th>
-<th align="right">Bias</th>
-<th align="right">Coverage Probability</th>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+Bias
+</th>
+<th style="text-align:right;">
+Coverage Probability
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td align="left">MR</td>
-<td align="right">-0.8963410</td>
-<td align="right">0.0000000</td>
+<tr>
+<td style="text-align:left;">
+MR
+</td>
+<td style="text-align:right;">
+-0.8963410
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
 </tr>
-<tr class="even">
-<td align="left">DS</td>
-<td align="right">-0.8946835</td>
-<td align="right">0.0000000</td>
+<tr>
+<td style="text-align:left;">
+DS
+</td>
+<td style="text-align:right;">
+-0.8946835
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
 </tr>
-<tr class="odd">
-<td align="left">MRDS</td>
-<td align="right">-0.8838497</td>
-<td align="right">0.0000000</td>
+<tr>
+<td style="text-align:left;">
+MRDS
+</td>
+<td style="text-align:right;">
+-0.8838497
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
 </tr>
-<tr class="even">
-<td align="left">2D</td>
-<td align="right">-0.0489940</td>
-<td align="right">0.9550562</td>
+<tr>
+<td style="text-align:left;">
+2D
+</td>
+<td style="text-align:right;">
+-0.0489940
+</td>
+<td style="text-align:right;">
+0.9550562
+</td>
 </tr>
 </tbody>
 </table>
 </td>
 <td>
 <table>
-<caption>(#tab:Sc.6)Avoidance Movement</caption>
+<caption>
+<span id="tab:unnamed-chunk-8">Table 3.8: </span>Avoidance Movement
+</caption>
 <thead>
-<tr class="header">
-<th align="left"></th>
-<th align="right">Bias</th>
-<th align="right">Coverage Probability</th>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+Bias
+</th>
+<th style="text-align:right;">
+Coverage Probability
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td align="left">MR</td>
-<td align="right">-0.9036200</td>
-<td align="right">0.0000000</td>
+<tr>
+<td style="text-align:left;">
+MR
+</td>
+<td style="text-align:right;">
+-0.9036200
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
 </tr>
-<tr class="even">
-<td align="left">DS</td>
-<td align="right">-0.8972843</td>
-<td align="right">0.0000000</td>
+<tr>
+<td style="text-align:left;">
+DS
+</td>
+<td style="text-align:right;">
+-0.8972843
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
 </tr>
-<tr class="odd">
-<td align="left">MRDS</td>
-<td align="right">-0.8280747</td>
-<td align="right">0.0425532</td>
+<tr>
+<td style="text-align:left;">
+MRDS
+</td>
+<td style="text-align:right;">
+-0.8280747
+</td>
+<td style="text-align:right;">
+0.0425532
+</td>
 </tr>
-<tr class="even">
-<td align="left">2D</td>
-<td align="right">-0.1057635</td>
-<td align="right">0.9638554</td>
+<tr>
+<td style="text-align:left;">
+2D
+</td>
+<td style="text-align:right;">
+-0.1057635
+</td>
+<td style="text-align:right;">
+0.9638554
+</td>
 </tr>
 </tbody>
 </table>
@@ -606,76 +753,141 @@ Figure 6.2: Fitted detection function vs True detection function
 </table>
 <p>As before, all the methods except 2D distance sampling are negatively biased. The imperfect matching does make the MRDS estimates slightly bigger, but not enough to counteract the negative bias from the non uniform distribution.</p>
 </div>
-<div id="attracted-to-transect" class="section level3 hasAnchor" number="6.2.3">
-<h3><span class="header-section-number">6.2.3</span> Attracted to Transect<a href="simulation.html#attracted-to-transect" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="attracted-to-transect" class="section level3 hasAnchor" number="3.2.3">
+<h3><span class="header-section-number">3.2.3</span> Attracted to Transect<a href="simulation.html#attracted-to-transect" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>As with the avoidance case, we expect only 2D Distance to be unbiased when animals are initially attracted to the line.</p>
 <table class="kable_wrapper">
+<caption>
+<span id="tab:unnamed-chunk-13">Table 3.9: </span>Initial Attraction with Perfect Matching
+</caption>
 <tbody>
 <tr>
 <td>
 <table>
-<caption>(#tab:Sc.11)Random Movement</caption>
+<caption>
+<span id="tab:unnamed-chunk-13">Table 3.9: </span>Random Movement
+</caption>
 <thead>
-<tr class="header">
-<th align="left"></th>
-<th align="right">Bias</th>
-<th align="right">Coverage Probability</th>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+Bias
+</th>
+<th style="text-align:right;">
+Coverage Probability
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td align="left">MR</td>
-<td align="right">-0.3703866</td>
-<td align="right">0.0000000</td>
+<tr>
+<td style="text-align:left;">
+MR
+</td>
+<td style="text-align:right;">
+-0.3703866
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
 </tr>
-<tr class="even">
-<td align="left">DS</td>
-<td align="right">0.5170905</td>
-<td align="right">0.0202020</td>
+<tr>
+<td style="text-align:left;">
+DS
+</td>
+<td style="text-align:right;">
+0.5170905
+</td>
+<td style="text-align:right;">
+0.0202020
+</td>
 </tr>
-<tr class="odd">
-<td align="left">MRDS</td>
-<td align="right">0.5902227</td>
-<td align="right">0.0202020</td>
+<tr>
+<td style="text-align:left;">
+MRDS
+</td>
+<td style="text-align:right;">
+0.5902227
+</td>
+<td style="text-align:right;">
+0.0202020
+</td>
 </tr>
-<tr class="even">
-<td align="left">2D</td>
-<td align="right">0.2672576</td>
-<td align="right">0.2828283</td>
+<tr>
+<td style="text-align:left;">
+2D
+</td>
+<td style="text-align:right;">
+0.2672576
+</td>
+<td style="text-align:right;">
+0.2828283
+</td>
 </tr>
 </tbody>
 </table>
 </td>
 <td>
 <table>
-<caption>(#tab:Sc.9)Avoidant Movement</caption>
+<caption>
+<span id="tab:unnamed-chunk-11">Table 3.10: </span>Avoidance Movement
+</caption>
 <thead>
-<tr class="header">
-<th align="left"></th>
-<th align="right">Bias</th>
-<th align="right">Coverage Probability</th>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+Bias
+</th>
+<th style="text-align:right;">
+Coverage Probability
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td align="left">MR</td>
-<td align="right">-0.3494140</td>
-<td align="right">0.0101010</td>
+<tr>
+<td style="text-align:left;">
+MR
+</td>
+<td style="text-align:right;">
+-0.3494140
+</td>
+<td style="text-align:right;">
+0.0101010
+</td>
 </tr>
-<tr class="even">
-<td align="left">DS</td>
-<td align="right">0.5820032</td>
-<td align="right">0.0000000</td>
+<tr>
+<td style="text-align:left;">
+DS
+</td>
+<td style="text-align:right;">
+0.5820032
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
 </tr>
-<tr class="odd">
-<td align="left">MRDS</td>
-<td align="right">0.6244091</td>
-<td align="right">0.0000000</td>
+<tr>
+<td style="text-align:left;">
+MRDS
+</td>
+<td style="text-align:right;">
+0.6244091
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
 </tr>
-<tr class="even">
-<td align="left">2D</td>
-<td align="right">0.2470833</td>
-<td align="right">0.3131313</td>
+<tr>
+<td style="text-align:left;">
+2D
+</td>
+<td style="text-align:right;">
+0.2470833
+</td>
+<td style="text-align:right;">
+0.3131313
+</td>
 </tr>
 </tbody>
 </table>
@@ -684,82 +896,138 @@ Figure 6.2: Fitted detection function vs True detection function
 </tbody>
 </table>
 <p>Conventional distance and MRDS are positively biased this time, as the fitted detection functions now decay quicker than the true function. This gives a lower detection probability and therefore a higher estimate.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="simulation.html#cb8-1" tabindex="-1"></a><span class="co"># Scenario 12</span></span>
-<span id="cb8-2"><a href="simulation.html#cb8-2" tabindex="-1"></a><span class="co"># Initial density: attracted + Movement: random + Matching: imperfect</span></span>
-<span id="cb8-3"><a href="simulation.html#cb8-3" tabindex="-1"></a><span class="co">#sc12 &lt;- simulation(n=400, b=99, 2, 1, TRUE)</span></span>
-<span id="cb8-4"><a href="simulation.html#cb8-4" tabindex="-1"></a><span class="fu">load</span>(<span class="st">&quot;sc12.Rdata&quot;</span>)</span>
-<span id="cb8-5"><a href="simulation.html#cb8-5" tabindex="-1"></a>sc12.table <span class="ot">&lt;-</span> <span class="fu">kable</span>(sc12.out <span class="ot">&lt;-</span> <span class="fu">result</span>(sc12, <span class="at">n=</span><span class="dv">400</span>), <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">&quot;Bias&quot;</span>, <span class="st">&quot;Coverage Probability&quot;</span>), <span class="at">caption =</span> <span class="st">&quot;Random Movement&quot;</span>)</span>
-<span id="cb8-6"><a href="simulation.html#cb8-6" tabindex="-1"></a><span class="fu">kables</span>(<span class="fu">list</span>(sc12.table,sc10.table), <span class="at">caption =</span> <span class="st">&quot;With Imperfect Matching&quot;</span>)</span></code></pre></div>
 <table class="kable_wrapper">
 <caption>
-(#tab:Sc.12)With Imperfect Matching
+<span id="tab:unnamed-chunk-14">Table 3.11: </span>Initial Attraction with Imperfect Matching
 </caption>
 <tbody>
 <tr>
 <td>
 <table>
-<caption>(#tab:Sc.12)Random Movement</caption>
+<caption>
+<span id="tab:unnamed-chunk-14">Table 3.11: </span>Random Movement
+</caption>
 <thead>
-<tr class="header">
-<th align="left"></th>
-<th align="right">Bias</th>
-<th align="right">Coverage Probability</th>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+Bias
+</th>
+<th style="text-align:right;">
+Coverage Probability
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td align="left">MR</td>
-<td align="right">-0.6407544</td>
-<td align="right">0.0000000</td>
+<tr>
+<td style="text-align:left;">
+MR
+</td>
+<td style="text-align:right;">
+-0.6407544
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
 </tr>
-<tr class="even">
-<td align="left">DS</td>
-<td align="right">0.5726782</td>
-<td align="right">0.0101010</td>
+<tr>
+<td style="text-align:left;">
+DS
+</td>
+<td style="text-align:right;">
+0.5726782
+</td>
+<td style="text-align:right;">
+0.0101010
+</td>
 </tr>
-<tr class="odd">
-<td align="left">MRDS</td>
-<td align="right">0.6222090</td>
-<td align="right">0.1212121</td>
+<tr>
+<td style="text-align:left;">
+MRDS
+</td>
+<td style="text-align:right;">
+0.6222090
+</td>
+<td style="text-align:right;">
+0.1212121
+</td>
 </tr>
-<tr class="even">
-<td align="left">2D</td>
-<td align="right">0.2494046</td>
-<td align="right">0.2783505</td>
+<tr>
+<td style="text-align:left;">
+2D
+</td>
+<td style="text-align:right;">
+0.2494046
+</td>
+<td style="text-align:right;">
+0.2783505
+</td>
 </tr>
 </tbody>
 </table>
 </td>
 <td>
 <table>
-<caption>(#tab:Sc.10)Avoidant Movement</caption>
+<caption>
+<span id="tab:unnamed-chunk-12">Table 3.12: </span>Avoidance Movement
+</caption>
 <thead>
-<tr class="header">
-<th align="left"></th>
-<th align="right">Bias</th>
-<th align="right">Coverage Probability</th>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+Bias
+</th>
+<th style="text-align:right;">
+Coverage Probability
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td align="left">MR</td>
-<td align="right">-0.6362617</td>
-<td align="right">0.0000000</td>
+<tr>
+<td style="text-align:left;">
+MR
+</td>
+<td style="text-align:right;">
+-0.6362617
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
 </tr>
-<tr class="even">
-<td align="left">DS</td>
-<td align="right">0.5949428</td>
-<td align="right">0.0202020</td>
+<tr>
+<td style="text-align:left;">
+DS
+</td>
+<td style="text-align:right;">
+0.5949428
+</td>
+<td style="text-align:right;">
+0.0202020
+</td>
 </tr>
-<tr class="odd">
-<td align="left">MRDS</td>
-<td align="right">1.1271412</td>
-<td align="right">0.0202020</td>
+<tr>
+<td style="text-align:left;">
+MRDS
+</td>
+<td style="text-align:right;">
+1.1271412
+</td>
+<td style="text-align:right;">
+0.0202020
+</td>
 </tr>
-<tr class="even">
-<td align="left">2D</td>
-<td align="right">0.2617803</td>
-<td align="right">0.3131313</td>
+<tr>
+<td style="text-align:left;">
+2D
+</td>
+<td style="text-align:right;">
+0.2617803
+</td>
+<td style="text-align:right;">
+0.3131313
+</td>
 </tr>
 </tbody>
 </table>
@@ -769,9 +1037,15 @@ Figure 6.2: Fitted detection function vs True detection function
 </table>
 </div>
 </div>
-<div id="further-reading-3" class="section level2 hasAnchor" number="6.3">
-<h2><span class="header-section-number">6.3</span> Further Reading<a href="simulation.html#further-reading-3" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Johansson, Ö., Mishra, C., Chapron, G., Samelius, G., Lkhagvajav, P., McCarthy, T. and Low, M. (2022). Seasonal variation in daily activity patterns of snow leopards and their prey. Scientific Reports, [online] 12(1), p.21681. <a href="doi:https://doi.org/10.1038/s41598-022-26358-w" class="uri">doi:https://doi.org/10.1038/s41598-022-26358-w</a>.</p>
+<div id="conclusions" class="section level2 hasAnchor" number="3.3">
+<h2><span class="header-section-number">3.3</span> Conclusions<a href="simulation.html#conclusions" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Mark recapture is the current standard for estimating snow leopard prey abundance, but our simulations have shown that it performs poorly in every scenario. It should not be used in situations where the detection probability declines with distance, which will be most line transect surveys.</p>
+<p>Distance sampling and mark recapture distance sampling performed well with uniform animal distribution but not with attraction or avoidance. Mark recapture also faces the issue of imperfect matching increasing the variance of the estimate.</p>
+<p>2D Distance sampling produced good estimates in all the scenarios. In practice it may not be known if the animal distribution is non uniform; the scientists who collected the prey data did not expect line attraction. Therefore, as 2D does not require more resources than conventional distance sampling we recommend more surveys adopt it.</p>
+</div>
+<div id="further-reading-1" class="section level2 hasAnchor" number="3.4">
+<h2><span class="header-section-number">3.4</span> Further Reading<a href="simulation.html#further-reading-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Johansson, Ö., Mishra, C., Chapron, G., Samelius, G., Lkhagvajav, P., McCarthy, T. and Low, M. (2022). Seasonal variation in daily activity patterns of snow leopards and their prey. Scientific Reports, [online] 12(1), p.21681. <a href="doi:https://doi.org/10.1038/s41598-022-26358-w" class="uri">https://doi.org/10.1038/s41598-022-26358-w</a>.</p>
 
 </div>
 </div>
@@ -780,7 +1054,7 @@ Figure 6.2: Fitted detection function vs True detection function
           </div>
         </div>
       </div>
-<a href="d-distance-sampling.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="cross.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 <a href="real-data.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
