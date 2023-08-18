@@ -592,7 +592,8 @@ pi.hr1=function(x,logphi,w)
     stop("logphi must be vector of length 2.")
   }
   if(any(x>w)) stop("x can't be greater than w")
-  f=hr1.to.p(x,b=logphi)/integrate(hr1.to.p,lower=0,upper=w,b=logphi)$value
+#  f=hr1.to.p(x,b=logphi)/integrate(hr1.to.p,lower=0,upper=w,b=logphi)$value
+  f=hr1.to.p(x,b=logphi)/simpson(hr1.to.p,lower=0,upper=w,b=logphi)
   return(f)
 }
 
@@ -660,7 +661,8 @@ pi.hr2=function(x,logphi,w)
     stop("logphi must be vector of length 2.")
   }
   if(any(x>w)) stop("x can't be greater than w")
-  f=hr2.to.p(x,b=logphi)/integrate(hr2.to.p,lower=0,upper=w,b=logphi)$value
+#  f=hr2.to.p(x,b=logphi)/integrate(hr2.to.p,lower=0,upper=w,b=logphi)$value
+  f=hr2.to.p(x,b=logphi)/simpson(hr2.to.p,lower=0,upper=w,b=logphi)
   return(f)
 }
 
@@ -955,9 +957,12 @@ round.survival.prod.pi = function(x,pi.x,logphi,rmin,ymax,hr,b,w){
 #'@return numeric
 #'@export
 round.lik.num = function(pi.x,logphi,rmin,ymax,hr,b,w){
-  int=integrate(f=round.survival.prod.pi,
-    lower=0,upper=rmin,pi.x=pi.x,logphi=logphi,rmin=rmin,
-    ymax=ymax,b=b,hr=hr,w=w)
+#  int=integrate(f=round.survival.prod.pi,
+#                lower=0,upper=rmin,pi.x=pi.x,logphi=logphi,rmin=rmin,
+#                ymax=ymax,b=b,hr=hr,w=w)
+  int=simpson(f=round.survival.prod.pi,
+                lower=0,upper=rmin,pi.x=pi.x,logphi=logphi,rmin=rmin,
+                ymax=ymax,b=b,hr=hr,w=w)
   return(int$value)
 }
 
@@ -978,9 +983,11 @@ round.lik.denom = function(pi.x,logphi,rmin,w){
   pi.x = match.fun(pi.x)
 
   # We need pi.x to be able to accept a vector of x values:
-  output = integrate(f=pi.x.vector.input, lower=0, upper=rmin,
-    pi.x.Function = pi.x,logphi=logphi,w=w)$value
-
+#  output = integrate(f=pi.x.vector.input, lower=0, upper=rmin,
+#                     pi.x.Function = pi.x,logphi=logphi,w=w)$value
+  output = simpson(f=pi.x.vector.input, lower=0, upper=rmin,
+                     pi.x.Function = pi.x,logphi=logphi,w=w)
+  
   return(output)
 }
 
@@ -1006,11 +1013,15 @@ round.lik = function(rounded,pi.x,logphi,rmin,ymax,hr,b,w){
   if (class(hr)!='character'){stop('round.lik: hr must be a character')}
   if (class(pi.x)!='character'){stop('round.lik: pi.x must be a character')}
 
-  int=integrate(f=p.pi.x,lower=0,   # We divide by the same
-    upper=w,b=b,hr=hr,              # integral as the original
-    ystart=ystart,pi.x=pi.x,        # likelihood. This is the 1/
-    logphi=logphi,w=w)$value         # term in the paper
-
+#  int=integrate(f=p.pi.x,lower=0,   # We divide by the same
+#                upper=w,b=b,hr=hr,              # integral as the original
+#                ystart=ystart,pi.x=pi.x,        # likelihood. This is the 1/
+#                logphi=logphi,w=w)$value         # term in the paper
+  int=simpson(f=p.pi.x,lower=0,   # We divide by the same
+                upper=w,b=b,hr=hr,              # integral as the original
+                ystart=ystart,pi.x=pi.x,        # likelihood. This is the 1/
+                logphi=logphi,w=w)         # term in the paper
+  
   TLN = round.lik.num(pi.x,logphi,rmin,ymax,hr,b,w)   # num
   #TLD = round.lik.denom(pi.x,logphi,rmin,w)           # denom
 
@@ -1375,10 +1386,12 @@ negloglik.yx2=function(y,x,ps,hr,b,ys,pi.x,logphi,w)
   # caluclate numerator:
   num=sum(log(fyx(y,x,b,hr,ystart)) + log(pi.x(x,logphi,w)))
   # calculate denominator:
-  int=integrate(f=p.pi.x,lower=0,upper=w,b=b,hr=hr,ystart=ystart,pi.x=pi.x,logphi=logphi,w=w)
+#  int=integrate(f=p.pi.x,lower=0,upper=w,b=b,hr=hr,ystart=ystart,pi.x=pi.x,logphi=logphi,w=w)
+#  denom=log(int$value)
+  int=simpson(f=p.pi.x,lower=0,upper=w,b=b,hr=hr,ystart=ystart,pi.x=pi.x,logphi=logphi,w=w)
+  denom = log(int)
   #  F.x=function(x,b,hr,ystart,pi.x,logphi,w) return((1-px(x,b,hr,ystart))*pi.x(x,logphi,w))
   #  int=integrate(f=F.x,lower=0,upper=w,b=b,hr=hr,ystart=ystart,pi.x=pi.x,logphi=logphi,w=w)
-  denom=log(int$value)
   # likelihood:
   llik=num-n*denom
   #message(-llik)
@@ -2106,10 +2119,12 @@ negloglik.yx=function(pars,y,x,hr,ystart,pi.x,w,rounded.points=0,
   if (is.null(DesignMatrices)){                 # Easy with no covariates:
     b.normal <- as.list(sapply(b, '[[', 1))     # Extract the 'normal' b
     lower = almostzero*ystart
-    int=integrate(f=p.pi.x,lower=lower,upper=w,b=b.normal,hr=hrname,
+#    int=integrate(f=p.pi.x,lower=lower,upper=w,b=b.normal,hr=hrname,
+#                  ystart=ystart,pi.x=piname,logphi=logphi,w=w)
+#    denom=n*log(int$value)
+    int=simpson(f=p.pi.x,lower=lower,upper=w,b=b.normal,hr=hrname,
                   ystart=ystart,pi.x=piname,logphi=logphi,w=w)
-
-    denom=n*log(int$value)
+    denom=n*log(int)
   }
 
   else{ # We must work out the integral individually for each (x,y) point:
@@ -2122,9 +2137,12 @@ negloglik.yx=function(pars,y,x,hr,ystart,pi.x,w,rounded.points=0,
       for (column.num in (1:j)){
         integration.b[[column.num]] = b[[column.num]][i]
       }
-      integrals[i] = integrate(f=p.pi.x,lower=0,upper=w,b=integration.b,
+#      integrals[i] = integrate(f=p.pi.x,lower=0,upper=w,b=integration.b,
+#                               hr=hrname, ystart=ystart, pi.x=piname,
+#                               logphi=logphi, w=w)$value
+      integrals[i] = simpson(f=p.pi.x,lower=0,upper=w,b=integration.b,
                                hr=hrname, ystart=ystart, pi.x=piname,
-                               logphi=logphi, w=w)$value
+                               logphi=logphi, w=w)
     }
     denom=sum(log(integrals))
   }
@@ -2171,10 +2189,12 @@ negloglik.x=function(x,pars,hr,ystart,pi.x,logphi,w,nint=100)
   # caluclate numerator:
   num=sum(log(px(x,b,hr,ystart,nint)) + log(pi.x(x,logphi,w)))
   # calculate denominator:
-  int=integrate(f=p.pi.x,lower=0,upper=w,b=b,hr=hr,ystart=ystart,pi.x=pi.x,logphi=logphi,w=w)
+#  int=integrate(f=p.pi.x,lower=0,upper=w,b=b,hr=hr,ystart=ystart,pi.x=pi.x,logphi=logphi,w=w)
+#  denom=log(int$value)
+  int=simpson(f=p.pi.x,lower=0,upper=w,b=b,hr=hr,ystart=ystart,pi.x=pi.x,logphi=logphi,w=w)
+  denom=log(int)
   #  F.x=function(x,b,hr,ystart,pi.x,logphi,w) return((1-px(x,b,hr,ystart))*pi.x(x,logphi,w))
   #  int=integrate(f=F.x,lower=0,upper=w,b=b,hr=hr,ystart=ystart,pi.x=pi.x,logphi=logphi,w=w)
-  denom=log(int$value)
   # likelihood:
   llik=num-n*denom
 
@@ -2223,7 +2243,8 @@ Eyx=function(y,x,b,hr,ystart)
     #    dy=(ystart-y0)/nint/2                           # for crude integration
     #    yy=seq(y0,ystart,length=(nint+1))[-(nint+1)]+dy # for crude integration
     #    int[i]=sum(hr(yy,rep(x[i],nint),b)*dy*2)  # crude integration
-    int[i]=integrate(f=hr,lower=max(y[i],ylo),upper=ystart,x=x[i],b=b)$value
+#    int[i]=integrate(f=hr,lower=max(y[i],ylo),upper=ystart,x=x[i],b=b)$value
+    int[i]=simpson(f=hr,lower=max(y[i],ylo),upper=ystart,x=x[i],b=b)
   }
   return(int)
 }
@@ -2391,13 +2412,17 @@ plotfit.x=function(est,nclass=10,nint=100,    # est is a fitted LT2D model
   p.xpifit=p.pi.x(gridx,b,hr=hrname,ystart,pi.x=piname,logphi,w,
                   args=mix.args)
 
-  mufit=integrate(f=p.pi.x,lower=0,upper=w,b=b,hr=hrname,
+#  mufit=integrate(f=p.pi.x,lower=0,upper=w,b=b,hr=hrname,
+#                  ystart=ystart,pi.x=piname,logphi=logphi,w=w,
+#                  args=mix.args)$value
+  mufit=simpson(f=p.pi.x,lower=0,upper=w,b=b,hr=hrname,
                   ystart=ystart,pi.x=piname,logphi=logphi,w=w,
-                  args=mix.args)$value
-
+                  args=mix.args)
+  
   f.xfit=p.xpifit/mufit
   p.xfit=px(gridx,b,hr=hrname,ystart)
-  ptot=integrate(f=px,lower=0,upper=w,b=b,hr=hrname,ystart=ystart)$value
+#  ptot=integrate(f=px,lower=0,upper=w,b=b,hr=hrname,ystart=ystart)$value
+  ptot=simpson(f=px,lower=0,upper=w,b=b,hr=hrname,ystart=ystart)
   p.xfit.std=p.xfit/ptot
 
   ifelse(is.null(est$mixture),
@@ -2410,7 +2435,8 @@ plotfit.x=function(est,nclass=10,nint=100,    # est is a fitted LT2D model
     if(!is.null(true.hr)) hr=true.hr
     if(!is.null(true.b)) b=true.b
     p.xpi=p.pi.x(gridx,b,hr,ystart,pi.x,logphi,w)
-    mu=integrate(f=p.pi.x,lower=0,upper=w,b=b,hr=hr,ystart=ystart,pi.x=pi.x,logphi=logphi,w=w)$value
+#    mu=integrate(f=p.pi.x,lower=0,upper=w,b=b,hr=hr,ystart=ystart,pi.x=pi.x,logphi=logphi,w=w)$value
+    mu=simpson(f=p.pi.x,lower=0,upper=w,b=b,hr=hr,ystart=ystart,pi.x=pi.x,logphi=logphi,w=w)
     f.x=p.xpi/mu
     adbnTRUE=pi.x(gridx,logphi,w)
   }
@@ -2437,7 +2463,8 @@ plotfit.x=function(est,nclass=10,nint=100,    # est is a fitted LT2D model
     if(addTruth){
       lines(gridx,f.x,col="grey",lwd=2)
       p.x=px(gridx,b,hr,ystart)
-      ptot=integrate(f=px,lower=0,upper=w,b=b,hr=hr,ystart=ystart)$value
+ #     ptot=integrate(f=px,lower=0,upper=w,b=b,hr=hr,ystart=ystart)$value
+      ptot=simpson(f=px,lower=0,upper=w,b=b,hr=hr,ystart=ystart)
       #      p.x.std=p.xfit.std=p.xfit/ptot
       #      lines(gridx,p.x*p.x.std,col="grey",lty=2,lwd=2)
       p.x.std=p.x/ptot
@@ -2812,9 +2839,12 @@ phat = function (w = NULL, hr = NULL, b = NULL, ystart = NULL,
     }
     piname = pi.x
   }
-  int = integrate(f = p.pi.x, lower = 0, upper = w, b = b,
+#  int = integrate(f = p.pi.x, lower = 0, upper = w, b = b,
+#                  hr = hr, ystart = ystart, pi.x = piname, logphi = logphi,
+#                  w = w, args = args)$value
+  int = simpson(f = p.pi.x, lower = 0, upper = w, b = b,
                   hr = hr, ystart = ystart, pi.x = piname, logphi = logphi,
-                  w = w, args = args)$value
+                  w = w, args = args)
   return(int)
 }
 
@@ -3076,8 +3106,10 @@ Sy=function(x,y,ymax,b,hr,notInf=10000) {
         # divergent for large hmax
         pS[i]=1-HBhr(x[i],h1.to.HB(b))
       } else {
-        pS[i]=exp(-integrate(match.fun(hr),y[i],ymax,x=x[i],b=b,
-                             subdivisions = 1000L)$value)
+#        pS[i]=exp(-integrate(match.fun(hr),y[i],ymax,x=x[i],b=b,
+#                             subdivisions = 1000L)$value)
+        pS[i]=exp(-simpson(match.fun(hr),y[i],ymax,x=x[i],b=b,
+                             subdivisions = 1000L))
         pS<<-pS[i]
       }
     }
@@ -3089,8 +3121,10 @@ Sy=function(x,y,ymax,b,hr,notInf=10000) {
     if (class(b)!='list') b = list(b,NULL)
     for(i in 1:n){
       if(match.fun(hr)(y=y[i],x=x[i],b=b)>notInf) pS[i] = 0
-      else pS[i]=exp(-integrate(match.fun(hr),y[i],ymax,x=x[i],b=b,
-                                subdivisions = 1000L)$value)
+#      else pS[i]=exp(-integrate(match.fun(hr),y[i],ymax,x=x[i],b=b,
+#                                subdivisions = 1000L)$value)
+      else pS[i]=exp(-simpson(match.fun(hr),y[i],ymax,x=x[i],b=b,
+                                subdivisions = 1000L))
     }
   }
   return(pS)
@@ -4147,14 +4181,17 @@ mixture.nll <- function(pars, y, x, hr, ystart, pi.x, w, DesignMatrices=NULL,
 
     b.normal <- as.list(sapply(b, '[[', 1))
 
-    int1 <- integrate(f=p.pi.x,lower=0,upper=w,b=b.normal,hr=hrname,
+#    int1 <- integrate(f=p.pi.x,lower=0,upper=w,b=b.normal,hr=hrname,
+#                      ystart=ystart,pi.x=piname,logphi=logphi1,w=w)
+#    int2 <- integrate(f=p.pi.x,lower=0,upper=w,b=b.normal,hr=hrname,
+#                      ystart=ystart,pi.x=piname,logphi=logphi2,w=w)
+#    denom1 <- int1$value
+#    denom2 <- int2$value
+    denom1 <- simpson(f=p.pi.x,lower=0,upper=w,b=b.normal,hr=hrname,
                       ystart=ystart,pi.x=piname,logphi=logphi1,w=w)
-
-    int2 <- integrate(f=p.pi.x,lower=0,upper=w,b=b.normal,hr=hrname,
+    denom2 <- simpson(f=p.pi.x,lower=0,upper=w,b=b.normal,hr=hrname,
                       ystart=ystart,pi.x=piname,logphi=logphi2,w=w)
 
-    denom1 <- int1$value
-    denom2 <- int2$value
   }
 
   # Covariates:
@@ -4172,13 +4209,18 @@ mixture.nll <- function(pars, y, x, hr, ystart, pi.x, w, DesignMatrices=NULL,
         integration.b[[column.num]] = b[[column.num]][i]
       }
 
-      integrals1[i] <- integrate(f=p.pi.x,lower=0,upper=w,b=integration.b,
+#      integrals1[i] <- integrate(f=p.pi.x,lower=0,upper=w,b=integration.b,
+#                                 hr=hrname, ystart=ystart, pi.x=piname,
+#                                 logphi=logphi1, w=w)$value
+#      integrals2[i] <- integrate(f=p.pi.x,lower=0,upper=w,b=integration.b,
+#                                 hr=hrname, ystart=ystart, pi.x=piname,
+#                                 logphi=logphi2, w=w)$value
+      integrals1[i] <- simpson(f=p.pi.x,lower=0,upper=w,b=integration.b,
                                  hr=hrname, ystart=ystart, pi.x=piname,
-                                 logphi=logphi1, w=w)$value
-
-      integrals2[i] <- integrate(f=p.pi.x,lower=0,upper=w,b=integration.b,
+                                 logphi=logphi1, w=w)
+      integrals2[i] <- simpson(f=p.pi.x,lower=0,upper=w,b=integration.b,
                                  hr=hrname, ystart=ystart, pi.x=piname,
-                                 logphi=logphi2, w=w)$value
+                                 logphi=logphi2, w=w)
     }
     
     denom1 <- integrals1
@@ -4257,11 +4299,46 @@ hessianCalcs <- function(par, hessian, corrFlag=0.8, output){
 }
 
 
-
-#'@title Calculates perp. dist. detection function approximation
+#'@title Integration using Simpson's 1/3 rule
 #'
 #'@description  Uses Simpsons 1/3 rule to integrate the specified hazard function \code{} from
 #'\code{ystart} to 0, at every x-value in \code{xs}, using the y-values in \code{ys} as the 
+#'integration points. Then calculates detection probability at each x as 1 - exp(-h.int), 
+#'where h.int is this integral at each of the given x-values.
+#'
+#'@param lower Forward distance integration points
+#'@param upper perpendicular distances at which detection probability is to be calculated
+#'@param fun The  function to integrate (either a function or a character variable of the function name)
+#'@param b parameter vector for function \code{fun}.
+#'@param ... Other arguments required by \code{fun}.
+#'@examples
+#'ystart = 1300
+#'hr = "h1"
+#'b = c(5,0.7)
+#'simpson(hr,0,ystart,x=0,b=b)
+#'simpson(hr,0,ystart,x=10,b=b)
+#'
+#'@export
+simpson = function(f,lower,upper,...,subdivisions=50) {
+  
+  simp = function(y1,y2,f,...) (f(y1,...)+4*f((y1+y2)/2,...)+f(y1,...))*(y2-y1)/6
+  
+  fun = match.fun(f)
+  y = seq(lower,upper,length=(subdivisions+1))
+  
+  if(is.infinite(upper)) fun.int = Inf
+  else {
+    fun.int = 0
+    for(j in (subdivisions-1):1) fun.int = fun.int + simp(y[j],y[j+1],fun,...)
+  }
+  return(fun.int)
+}
+
+
+#'@title Calculates perp. dist. detection function approximation
+#'
+#'@description  Uses Simpsons 1/3 rule to integrate the specified hazard function \code{h.fun} 
+#'from \code{ystart} to 0, at every x-value in \code{xs}, using the y-values in \code{ys} as the 
 #'integration points. Then calculates detection probability at each x as 1 - exp(-h.int), 
 #'where h.int is this integral at each of the given x-values.
 #'
@@ -4288,22 +4365,24 @@ hessianCalcs <- function(par, hessian, corrFlag=0.8, output){
 #'plot(ys,p.vals,type='l',xlab='Perp. distance, x',ylab=expression(p(x)))
 #'
 #'@export
-p.approx = function(y,x,h.fun,b,what="p") {
-  
-  simpson = function(y1,y2,h.fun,x,b) (h.fun(y1,x,b)+4*h.fun((y1+y2)/2,x,b)+h.fun(y1,x,b))*(y2-y1)/6
+p.approx = function(y,x,h.fun,b,what="px") {
+
+  simp = function(y1,y2,h.fun,x,b) 
+    (h.fun(y1,x,b)+4*h.fun((y1+y2)/2,x,b)+h.fun(y1,x,b))*(y2-y1)/6
   
   almostInf = 1000 # value of hazard at which detection probability is effectively 1
   h.fun = match.fun(h.fun)
   nx = length(x)
   ny = length(y)
   fxy = h.int.mat = matrix(rep(0,nx*ny),nrow=nx,
-                           dimnames=list(x=as.character(signif(x,5)),y=as.character(signif(y,5))))
+                           dimnames=list(x=as.character(signif(x,5)),
+                                         y=as.character(signif(y,5))))
   h.int = rep(0,nx)
   for(i in 1:length(x)) {
-    h.int.mat[i,ny] = simpson(y[ny],y[ny]+(y[ny]-y[ny-1]),h.fun,x[i],b)
+    h.int.mat[i,ny] = simp(y[ny],y[ny]+(y[ny]-y[ny-1]),h.fun,x[i],b)
     fxy[i,ny] = exp(-h.int.mat[i,ny]) *  h.fun(y[ny],x[i],b)
     for(j in (ny-1):1){
-      h.int.mat[i,j] = h.int.mat[i,(j+1)] + simpson(y[j],y[j+1],h.fun,x[i],b)
+      h.int.mat[i,j] = h.int.mat[i,(j+1)] + simp(y[j],y[j+1],h.fun,x[i],b)
       if(h.int.mat[i,j]>almostInf) fxy[i,j] = 0
       else fxy[i,j] = exp(-h.int.mat[i,j]) *  h.fun(y[j],x[i],b)
     }

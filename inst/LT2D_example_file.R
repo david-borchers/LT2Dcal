@@ -25,11 +25,11 @@ par(mfrow=c(1,3))
 p.vals = p.approx(ys,xs,h.fun,b) # detection function values to plot
 plot(xs,p.vals,type='l',ylim=range(0,p.vals),xlab='Perp. distance, x',ylab=expression(p(x)))
 # and now the 2D detection function:
-pmat = p.approx(ys,xs,h.fun,b,xy=TRUE)
+pmat = p.approx(ys,xs,h.fun,b,what="pxy")
 persp(x=xs,y=ys,z=pmat,theta=120,phi=25, xlab="Perp dist (x)", ylab="Forward dist (y)",
       zlab="p(det by y)")
 # and now the 2D pdf:
-pdfmat = p.approx(ys,xs,h.fun,b,pdf=TRUE)
+pdfmat = p.approx(ys,xs,h.fun,b,what="fxy")
 persp(x=xs,y=ys,z=pdfmat,theta=45,phi=25, xlab="Perp dist (x)", ylab="Forward dist (y)",
       zlab="f(y|x)")
 
@@ -72,7 +72,8 @@ fit <- LT2D.fit(DataFrameInput = sim.df,
                 # start values for logphi:
                 logphi = logphi,
                 w = w,
-                hessian = TRUE)
+                hessian = TRUE,
+                control=list(trace=5))
 
 # plot fitted functions
 par(mfrow=c(1,2))
