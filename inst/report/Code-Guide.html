@@ -170,12 +170,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li><a href="#simulation"><code>simulation(n,b,density,movement,mismatch)</code></a> - generates b estimates of abundance with confidence intervals for each of the 4 methods for a scenario with <code>n</code> total animals</li>
 <li><code>result(list.method, n)</code> calculates the bias and coverage probability for each method from the output of <code>simulation</code> , given the true abundance is <code>n</code> .</li>
-<li><a href="#sim.data"><code>sim.data(n,density,move)</code></a> generates detections from a population of n animals with specified density and movement. Change this function if you want a different detection function, initial density or movement (you will need to update fit.2d if you change density)</li>
+<li><a href="#sim.data"><code>sim.data(n,density,move)</code></a> generates detections from a population of n animals with specified density and movement. Change this function if you want a different detection function or different parameters for density or movement. (you will need to update fit.2d if you change the density parameters)</li>
 <li><a href="#sim.mismatch"><code>sim.mismatch(df)</code></a> simulates imperfect matching on a sim.data data frame. Change this function if you want different matching parameters</li>
 <li><code>chapman.mr(df,mismatch)</code> uses the chapman estimator on a sim.data data frame to get an abundance estimate and confidence interval. If <code>mismatch = TRUE</code> it runs <code>mismatch</code> on the data first.</li>
 <li><code>ds.analysis(df)</code> fits a hazard rate detection function to a sim.data data frame to get an abundance estimate and confidence interval.</li>
 <li><code>fit.mrds(df, mismatch)</code> uses an independent observer configuration and a hazard rate detection function to get an abundance estimate and confidence interval from a sim.data data frame. If <code>mismatch = TRUE</code> it runs <code>mismatch</code> on the data first.</li>
-<li><code>fit.2d(df, density)</code> fits a 2D model to a sim.data data frame using same density function as used to generate data. Returns a point estimate and confidence interval for abundance. If you change the density settings in sim.data make sure to update the density settings in fit.2d.</li>
+<li><code>fit.2d(df, density)</code> fits a 2D model to a sim.data data frame using same density function as used to generate data. Returns a point estimate and confidence interval for abundance. If you change the density parameters in sim.data make sure to update them in fit.2d.</li>
 </ul>
 <p>All of our functions use the following inputs:</p>
 <ul>
@@ -214,6 +214,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="sim.mismatch" class="section level3 hasAnchor" number="0.2.2">
 <h3><span class="header-section-number">0.2.2</span> Imperfect Matching<a href="#sim.mismatch" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>For the mark recapture methods, if <code>mismatch = TRUE</code> then the fitting function will first apply the <code>sim.mismatch</code> function before calculating the estimates.</p>
 <p>The <code>sim.mismatch</code> function starts by calculating the distance between all the animals that were seen on the first occasion and the ones seen on the second occasion. For each animal that was seen on the second occasion, it finds the closest animal seen on the first occasion. If the animals were less than 300m apart, then it records them as the same animal. If they were more than 1000m apart, it records them as different animals. It uses a inverse power function with parameter <code>b=c(6, 0.000005)</code>, to generate the probability of matching two animals between 300 and 1000m apart.</p>
 <p>If two animals are recorded as the same then it combines their two entries in the dataframe into one. Likewise, if they are recorded as separate animals an entry is added to the dataframe.</p>
 </div>

@@ -145,7 +145,7 @@ For each of the 12 scenarios we calculated the bias and coverage probability of 
 
 ### Uniform Animal Distribution
 
-With uniform animal distribution we expect conventional distance and 2D distance sampling to perform similarly, as all the assumptions for both methods are met. Our results show that they both have similar coverage probabilities, and whilst conventional distance may appear to be more biased, this is more likely a result of only fitting one model rather than performing model selection. As these methods involve walking the transect just once, they are not affected by movement between observers.
+With uniform animal distribution we expect conventional distance and 2D distance sampling to perform similarly, as all the assumptions for both methods are met. Our results show that they are both unbiased and have similar coverage probabilities. As these methods involve walking the transect just once, they are not affected by movement between observers.
 
 ```{r message=FALSE, warning=FALSE, cache=TRUE, echo = F}
 # Scenario 1
@@ -170,7 +170,7 @@ sc3.table <- kable(sc3.out <- result(sc3, n=600), caption = "Random Movement")
 kables(list(sc3.table, sc1.table), caption = "Uniform Distribution with Perfect Matching")
 ```
 
-Mark recapture performs poorly in this scenario and all the other scenarios as detectability declines with distance. This means there is unmodelled heterogeneity in the population, so it is negatively biased. MRDS is negatively biased with random animal movement as this violates the assumption that each animal has the same detection probability for each observer. It is less negatively biased with avoidance as second observer will see less animals than the first due to them now being further away. This results in a lower estimated detection probability and therefore a higher estimate.
+Mark recapture performs poorly in this scenario and all the other scenarios as detectability declines with distance. This means there is unmodelled heterogeneity in the population, so it is negatively biased. MRDS is marginally more biased than the distance methods due to the effect of animal movement. However, as the animals only moved around 100m on average it only had a small impact. If the animals moved more it may have been more biased.
 
 ```{r message=FALSE, warning=FALSE, cache = TRUE, echo = F, fig.cap = "Uniform Distribution and Imperfect Matching"}
 # Scenario 4
@@ -180,7 +180,7 @@ sc4.table <- kable(sc4.out <- result(sc4, n=600), caption = "Random Movement")
 kables(list(sc4.table, sc2.table), caption = "Uniform Distribution with Imperfect Matching")
 ```
 
-After introducing imperfect matching, MRDS estimates seem to be less negatively biased. This is due to some individuals that were seen twice being mistakenly identified as two separate animals, leading to a lower estimate of detection probability and hence a higher estimate of abundance. Whilst it looks like MRDS should be the best estimator in the scenario with avoidance movement and imperfect matching, this is actually because effects of breaking multiple assumptions happen to balance out in this specific situation. This results in very variable estimates, as the variance of the $\hat{N}$ s was `r round(var(sc2[[3]]$N.hat[sc2[[3]]$N.hat < 3*600])/99, 2)` for MRDS, compared to `r round(var(sc2[[4]]$N.hat[sc2[[4]]$N.hat < 3*600])/99, 2)` for 2D Distance.
+After introducing imperfect matching, MRDS estimates become more positively biased with avoidance movement. This is due to some individuals that were seen twice being mistakenly identified as two separate animals, leading to a lower estimate of detection probability and hence a higher estimate of abundance. The random movement scenario is less biased, however MRDS produces very variable estimates, as the variance of the $\hat{N}$ s was `r round(var(sc4[[3]]$N.hat[sc4[[3]]$N.hat < 3*600])/99, 2)` for MRDS, compared to `r round(var(sc4[[4]]$N.hat[sc4[[4]]$N.hat < 3*600])/99, 2)` for 2D Distance.
 
 ### Avoiding Transect
 
@@ -268,7 +268,7 @@ sc10.table <- kable(sc10.out <- result(sc10, n=400), caption = "Avoidance Moveme
 ```{r message=FALSE, warning=FALSE, cache = TRUE, echo = FALSE}
 # Scenario 11
 # Initial density: attracted + Movement: random + Matching: perfect
-sc11.table <- kable(sc11, caption = "Random Movement")
+sc11.table <- kable(sc11.out <- result(sc11, n=400), caption = "Random Movement")
 kables(list(sc11.table, sc9.table), caption = "Initial Attraction with Perfect Matching")
 ```
 
