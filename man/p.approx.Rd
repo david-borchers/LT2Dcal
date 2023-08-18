@@ -4,7 +4,7 @@
 \alias{p.approx}
 \title{Calculates perp. dist. detection function approximation}
 \usage{
-p.approx(y, x, h.fun, b, what = "p")
+p.approx(y, x, h.fun, b, what = "px")
 }
 \arguments{
 \item{y}{Forward distance integration points}
@@ -28,8 +28,8 @@ returned. Anything else results in a list with all three of these being returned
 \code{$fmat}, \code{$pmat}, and \code{p}, respectively .
 }
 \description{
-Uses Simpsons 1/3 rule to integrate the specified hazard function \code{} from
-\code{ystart} to 0, at every x-value in \code{xs}, using the y-values in \code{ys} as the 
+Uses Simpsons 1/3 rule to integrate the specified hazard function \code{h.fun} 
+from \code{ystart} to 0, at every x-value in \code{xs}, using the y-values in \code{ys} as the 
 integration points. Then calculates detection probability at each x as 1 - exp(-h.int), 
 where h.int is this integral at each of the given x-values.
 }
