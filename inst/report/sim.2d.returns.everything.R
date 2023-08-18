@@ -1,3 +1,5 @@
+library(LT2D)
+
 sim.2d <- function(n, density){
   #browser()
 
@@ -47,15 +49,20 @@ fit.sim.2d <- function(df, density){
                     hessian = TRUE)
   })
   
-  return(fit)
+  return(fit$fit$par)
 }
 out <- fit.2d(df, 1)
 
 
 sim.fit.2d <- function(b, n, density){
-  input <- rep(n, b)
-  df <- lapply(input, sim.2d, density)
-  ests.2d <- lapply(df, tryCatch(fit.sim.2d,error=function(e) NULL), density)
-  return(ests.2d)
+  browser()
+  for (i in 1:b){
+    df <- sim.2d(n, density)
+    par <- sim.fit.2d(n, density)
+    write.table(df, file = "df.csv", row.names = FALSE, 
+                append = TRUE, col.names = FALSE, sep = ", ")
+    write.table(as.data.frame(par), file = "par.csv", row.names = FALSE, 
+                append = TRUE, col.names = FALSE, sep = ", ")
+  }
 }
 result <- sim.fit.2d(3, 1200, 1)
