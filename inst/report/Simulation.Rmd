@@ -143,6 +143,30 @@ abline(v = 300)
 
 For each of the 12 scenarios we calculated the bias and coverage probability of the 4 methods. Due to time constraints we only fitted a hazard-rate detection function with no adjustments for conventional distance sampling and only used the independent observer configuration with a hazard rate distance model for MRDS. This means the models for these methods may not be the best fit, and it could be possible to achieve a smaller bias or larger coverage probability. With more time we would fit multiple models to each set of simulated data and choose the best using AIC. We also only fit one 2D model, but as it was the model used the generate the data it should be the best model regardless.
 
+After simulating the data we noticed the some methods occasionally produced unreasonably large or small estimates, particularly 2D and for uniform animal distribution. In reality, these results would be discarded due to poor model fit so to account for this we calculated the bias using only the middle 95% of estimates.
+
+```{r uniform-boxplots, echo = FALSE, fig.cap = "Accounting for outliers in 2D models"}
+par(mfrow = c(3,2))
+unif <- rbind(sc1[[4]],sc2[[4]],sc3[[4]],sc4[[4]])
+boxplot(unif, main ="Uniform Animal Distribution", sub = "Before removing outliers")
+
+out <- boxplot.stats(unif$N.hat)$out
+
+unif.outliers <- unif[!(unif$N.hat %in% out),]
+boxplot(unif.outliers, main = "Uniform Animal Distribution", sub ="After removing outliers")
+avoid <- rbind(sc5[[4]],sc6[[4]],sc7[[4]],sc8[[4]])
+boxplot(avoid$N.hat, main = "Initially Avoiding Transect", sub ="Without removing outliers")
+
+avoid.outliers <- avoid[avoid$N.hat < quantile(avoid$N.hat, 0.975) & avoid$N.hat > quantile(avoid$N.hat, 0.025),]
+boxplot(avoid.outliers$N.hat, main = "Initially Avoiding Transect", sub ="After removing outliers")
+
+attract <- rbind(sc9[[4]],sc10[[4]],sc11[[4]],sc12[[4]])
+boxplot(attract$N.hat,main = "Initially Attracted to Transect", sub ="Without removing outliers")
+
+attract.outliers <- attract[attract$N.hat < quantile(attract$N.hat, 0.975) & attract$N.hat > quantile(attract$N.hat, 0.025),]
+boxplot(attract.outliers$N.hat, main = "Initially Attracted to Transect", sub ="After removing outliers")
+```
+
 ### Uniform Animal Distribution
 
 With uniform animal distribution we expect conventional distance and 2D distance sampling to perform similarly, as all the assumptions for both methods are met. Our results show that they are both unbiased and have similar coverage probabilities. As these methods involve walking the transect just once, they are not affected by movement between observers.
