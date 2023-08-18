@@ -1,4 +1,4 @@
-#Appendix: Code Guide
+# Appendix: Code Guide
 
 ## Summary
 
@@ -22,6 +22,8 @@ All of our functions use the following inputs:
 -   movement - 0 for avoidance, 1 for random
 
 -   mismatch - FALSE for perfect matching, TRUE for imperfect matching
+
+-   df - the output from [`simulation(n,b,density,movement,mismatch)`](#simulation) function
 
 ## Simulation {#simulation}
 
@@ -67,5 +69,16 @@ The `sim.mismatch` function starts by calculating the distance between all the a
 If two animals are recorded as the same then it combines their two entries in the dataframe into one. Likewise, if they are recorded as separate animals an entry is added to the dataframe.
 
 ### Getting the results {#result}
+
+In some scenarios, the output from [`simulation(n,b,density,movement,mismatch)`](#simulation) is not in a nice format (contains the error message) such that it cannot be passed directly into the `result` function. We need to reformat in the following way:
+
+```{r}
+# FOR EXAMPLE,
+# sc5 <- simulation(n=1200, b=99, 1, 0, FALSE)
+sc5[[3]] <- unname(apply(sc5[[3]], 1, as.list)[[1]])
+index <- which(sapply(sc5[[3]], is.numeric))
+sc5[[3]] <- data.frame(t(sapply(sc5[[3]][index], c)))
+colnames(sc5[[3]]) <- c("N.hat", "lcl", "ucl")
+```
 
 The `result` function first removes the outliers by considering only the middle 95% of estimates. Some simulations produce unrealistically high or low estimates that in practice would be ignored. It then calculates the bias and coverage probability for each method.
