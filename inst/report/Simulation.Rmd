@@ -138,12 +138,16 @@ p <- p.approx(ys <- seq(0, 1300, length.out=100),x , ip0, b=c(6, 0.000005), what
 plot(x,p,ylim = c(0,1), type = "l", xlab = "Distance", ylab = "Probability")
 abline(v = 300)
 ```
+
 ## Simulation Results
 
 For each of the 12 scenarios we calculated the bias and coverage probability of the 4 methods. Due to time constraints we only fitted a hazard-rate detection function with no adjustments for conventional distance sampling and only used the independent observer configuration with a hazard rate distance model for MRDS. This means the models for these methods may not be the best fit, and it could be possible to achieve a smaller bias or larger coverage probability. With more time we would fit multiple models to each set of simulated data and choose the best using AIC. We also only fit one 2D model, but as it was the model used the generate the data it should be the best model regardless.
 
-After simulating the data we noticed the some methods occasionally produced unreasonably large or small estimates, particularly 2D and for uniform animal distribution. In reality, these results would be discarded due to poor model fit so to account for this we calculated the bias using only the middle 95% of estimates. 
-```{r uniform-boxplots, echo = FALSE, fig-cap = "Accounting for outliers in 2D models"}
+For a few scenarios some models failed to converge, and so the number of successful repetitions is less than 99. Where this is the case we have noted it next to the table of results.
+
+After simulating the data we noticed the some methods occasionally produced unreasonably large or small estimates, particularly 2D and for uniform animal distribution. In reality, these results would be discarded due to poor model fit so to account for this we calculated the bias using only the middle 95% of estimates.
+
+```{r uniform-boxplots, echo = FALSE, fig.cap = "Accounting for outliers in 2D models", fig.asp = 1.33}
 par(mfrow = c(3,2))
 unif <- rbind(sc1[[4]],sc2[[4]],sc3[[4]],sc4[[4]])
 boxplot(unif, main ="Uniform Animal Distribution", sub = "Before removing outliers")
@@ -204,8 +208,6 @@ kables(list(sc4.table, sc2.table), caption = "Uniform Distribution with Imperfec
 
 After introducing imperfect matching, MRDS estimates become more positively biased with avoidance movement. This is due to some individuals that were seen twice being mistakenly identified as two separate animals, leading to a lower estimate of detection probability and hence a higher estimate of abundance. The random movement scenario is less biased, however MRDS produces very variable estimates, as the variance of the $\hat{N}$ s was `r round(var(sc4[[3]]$N.hat[sc4[[3]]$N.hat < 3*600])/99, 2)` for MRDS, compared to `r round(var(sc4[[4]]$N.hat[sc4[[4]]$N.hat < 3*600])/99, 2)` for 2D Distance.
 
-
-
 ### Avoiding Transect
 
 As expected, only 2D Distance is unbiased when the animals initially avoid the transect.
@@ -244,6 +246,8 @@ sc7.table <- kable(sc7.out <- result(sc7, n=1200), caption = "Random Movement")
 kables(list(sc7.table,sc5.table), caption = "Initial Avoidance with Perfect Matching")
 ```
 
+*Note: MRDS only had `r dim(sc7[[3]])[1]` successful repetitions for the random movement case and`r dim(sc5[[3]])[1]` for the avoidance movement case.*
+
 Conventional distance and MRDS are both negatively biased as the fitted detection function decays less quickly than the true detection function to account for the large numbers of detections far away from the transect. However, as these detections are a result of more animals being far from the transect rather than a high detection probability, the models overestimate the detection probability and so underestimate the abundance.
 
 ```{r avoidance-df-hist, echo = F, cache = TRUE, fig.cap = "Fitted detection function vs True detection function"}
@@ -270,7 +274,6 @@ kables(list(sc8.table,sc6.table), caption = "Initial Avoidance with Imperfect Ma
 ```
 
 As before, all the methods except 2D distance sampling are negatively biased. The imperfect matching does make the MRDS estimates slightly bigger, but not enough to counteract the negative bias from the non uniform distribution.
-
 
 ### Attracted to Transect
 
