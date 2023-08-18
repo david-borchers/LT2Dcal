@@ -1,8 +1,6 @@
-<<<<<<<< HEAD:inst/report/Code-Guide.Rmd
-# Code Guide
-========
+
 # Appendix: Code Guide
->>>>>>>> 711b20b513ac136a39d750d5aeafdf9f34b82b58:inst/report/Code.Guide.Rmd
+
 
 ## Summary
 
