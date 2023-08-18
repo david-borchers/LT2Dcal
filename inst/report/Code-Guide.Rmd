@@ -1,11 +1,4 @@
----
-title: "Code Guide"
-author: "Louise and Jiayi"
-date: "`r Sys.Date()`"
-output:
-  pdf_document: default
-  html_document: default
----
+# Code Guide
 
 ## Summary
 

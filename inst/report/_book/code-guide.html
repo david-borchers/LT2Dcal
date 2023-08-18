@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 4 Real Data | Report</title>
-  <meta name="description" content="Chapter 4 Real Data | Report" />
+  <title>Chapter 5 Code Guide | Report</title>
+  <meta name="description" content="Chapter 5 Code Guide | Report" />
   <meta name="generator" content="bookdown 0.35 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 4 Real Data | Report" />
+  <meta property="og:title" content="Chapter 5 Code Guide | Report" />
   <meta property="og:type" content="book" />
   
   
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 4 Real Data | Report" />
+  <meta name="twitter:title" content="Chapter 5 Code Guide | Report" />
   
   
   
@@ -29,8 +29,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="simulation.html"/>
-<link rel="next" href="code-guide.html"/>
+<link rel="prev" href="real-data.html"/>
+
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -220,263 +220,66 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="real-data" class="section level1 hasAnchor" number="4">
-<h1><span class="header-section-number">Chapter 4</span> Real Data<a href="real-data.html#real-data" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>We will now use these methods to analyse the real snow leopard prey data. The observers surveyed 60 transects in 10 blocks twice, with 30 minutes between the first and second observer starting the survey. The observers had limited rangefinders so only the first observer recorded the radial distance to the group, the bearing of the path and the bearing of the group they saw. This means we cannot use mrds to analyse this data as there are no distances for the second observer. There were 2 species included in the survey: ibex and argali. They saw 242 groups in total, and 193 of them have distance data.</p>
-<div id="mark-recapture-1" class="section level2 hasAnchor" number="4.1">
-<h2><span class="header-section-number">4.1</span> Mark Recapture<a href="real-data.html#mark-recapture-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>We start by using the Chapman estimator to estimate the total number of groups. This gives us an estimate of 425 with a 95% confidence interval of 348.49, 517.95. Separating the data by species we estimate there are 308 (241.25, 392.13) ibex groups and 115 (84.29, 156.13) argali groups. From our previous simulations we expect this to be negatively biased, as there is unmodelled heterogeneity in the population from detectability decreasing with distance. The estimates for the individual species are probably more reliable as it accounts for any difference in detectability between the two species.</p>
+<div id="code-guide" class="section level1 hasAnchor" number="5">
+<h1><span class="header-section-number">Chapter 5</span> Code Guide<a href="code-guide.html#code-guide" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="summary-1" class="section level2 hasAnchor" number="5.1">
+<h2><span class="header-section-number">5.1</span> Summary<a href="code-guide.html#summary-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ul>
+<li><a href="simulation.html#simulation"><code>simulation(n,b,density,movement,mismatch)</code></a> - generates b estimates of abundance with confidence intervals for each of the 4 methods for a scenario with <code>n</code> total animals</li>
+<li><code>result(list.method, n)</code> calculates the bias and coverage probability for each method from the output of <code>simulation</code> , given the true abundance is <code>n</code> .</li>
+<li><a href="code-guide.html#sim.data"><code>sim.data(n,density,move)</code></a> generates detections from a population of n animals with specified density and movement. Change this function if you want a different detection function or different parameters for density or movement. (you will need to update fit.2d if you change the density parameters)</li>
+<li><a href="code-guide.html#sim.mismatch"><code>sim.mismatch(df)</code></a> simulates imperfect matching on a sim.data data frame. Change this function if you want different matching parameters</li>
+<li><code>chapman.mr(df,mismatch)</code> uses the chapman estimator on a sim.data data frame to get an abundance estimate and confidence interval. If <code>mismatch = TRUE</code> it runs <code>mismatch</code> on the data first.</li>
+<li><code>ds.analysis(df)</code> fits a hazard rate detection function to a sim.data data frame to get an abundance estimate and confidence interval.</li>
+<li><code>fit.mrds(df, mismatch)</code> uses an independent observer configuration and a hazard rate detection function to get an abundance estimate and confidence interval from a sim.data data frame. If <code>mismatch = TRUE</code> it runs <code>mismatch</code> on the data first.</li>
+<li><code>fit.2d(df, density)</code> fits a 2D model to a sim.data data frame using same density function as used to generate data. Returns a point estimate and confidence interval for abundance. If you change the density parameters in sim.data make sure to update them in fit.2d.</li>
+</ul>
+<p>All of our functions use the following inputs:</p>
+<ul>
+<li><p>n - True Animal Abundance</p></li>
+<li><p>b - Number of Repetitions</p></li>
+<li><p>density - 0 for uniform distribution, 1 for avoidance, 2 for attraction</p></li>
+<li><p>movement - 0 for avoidance, 1 for random</p></li>
+<li><p>mismatch - FALSE for perfect matching, TRUE for imperfect matching</p></li>
+</ul>
 </div>
-<div id="conventional-distance-sampling" class="section level2 hasAnchor" number="4.2">
-<h2><span class="header-section-number">4.2</span> Conventional Distance Sampling<a href="real-data.html#conventional-distance-sampling" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>We now turn to CDS. Upon closer inspection, many detection distances (both perpendicular and forward) appeared to be rounded to zero, likely as a result of the bearings being rounded to the nearest 5 degrees. To prevent this from impacting the model fit we simply added a small random number to each zero observation. We only use the jittered perpendicular distances for conventional distance sampling, but we will use the jittered forward distances in the 2D section.</p>
-<div class="figure"><span style="display:block;" id="fig:perp-distance-histograms"></span>
-<img src="_main_files/figure-html/perp-distance-histograms-1.png" alt="Histograms of perpendicular distances" width="672" />
-<p class="caption">
-Figure 4.1: Histograms of perpendicular distances
-</p>
+<div id="simulation" class="section level2 hasAnchor" number="5.2">
+<h2><span class="header-section-number">5.2</span> Simulation<a href="simulation.html#simulation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The <code>simulation(n,b,density, movement, mismatch)</code> function is the main function used to simulate the data. It returns a list of data frames of the estimates for N and the lower and upper confidence limits for each of the 4 methods (MR, DS, MRDS, 2DDS).</p>
+<p>The output from <code>simulation</code> can be parsed to <code>result(list.method,n)</code> , which returns the bias and coverage probability given that the true abundance is <code>n</code>.</p>
+<div id="sim.data" class="section level3 hasAnchor" number="5.2.1">
+<h3><span class="header-section-number">5.2.1</span> Simulating the Data using sim.data<a href="code-guide.html#sim.data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><code>simulation</code> starts by calling the <code>sim.data(n,density,move)</code> function to generate <code>b</code> datasets. <code>sim.data</code> returns a data frame of all the seen animals. Each animal has 2 rows, one for each capture occasion. The “x” and “y” columns are the co-ordinates of each animal on each capture occasion, “forw.dist” is the forward distance to detection (only generated for the first occasion) and “detect” is 1 if the animal was detected on that capture occasion and 0 otherwise. Perpendicular distance can be found from the absolute value of x.</p>
+<div id="initial-positions" class="section level4 hasAnchor" number="5.2.1.1">
+<h4><span class="header-section-number">5.2.1.1</span> Initial Positions<a href="code-guide.html#initial-positions" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p><code>sim.data</code> generates the initial animal positions within 2000m either side of a 600km transect using the simpop2DLT function.</p>
+<p><strong>Note:</strong> we later truncate perpendicular distances at 1600m but the actual area still has a half-width of 2000m, and confusing this caused us some issues. The area is larger than the perpendicular truncation distance to prevent issues with animals moving outside the boundary.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="code-guide.html#cb2-1" tabindex="-1"></a><span class="co"># (a) initial animal distribution</span></span>
+<span id="cb2-2"><a href="code-guide.html#cb2-2" tabindex="-1"></a><span class="cf">if</span>(density<span class="sc">==</span><span class="dv">0</span>){pi.fun.name <span class="ot">&lt;-</span> <span class="st">&#39;pi.const&#39;</span>; logphi <span class="ot">&lt;-</span> <span class="cn">NA</span>}  <span class="co"># uniform</span></span>
+<span id="cb2-3"><a href="code-guide.html#cb2-3" tabindex="-1"></a><span class="cf">else</span> <span class="cf">if</span>(density<span class="sc">==</span><span class="dv">1</span>){pi.fun.name <span class="ot">&lt;-</span> <span class="st">&#39;pi.chnorm&#39;</span>; logphi <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">6</span>)}  <span class="co"># avoid</span></span>
+<span id="cb2-4"><a href="code-guide.html#cb2-4" tabindex="-1"></a><span class="cf">else</span> <span class="cf">if</span>(density<span class="sc">==</span><span class="dv">2</span>){pi.fun.name <span class="ot">&lt;-</span> <span class="st">&#39;pi.hnorm&#39;</span>; logphi <span class="ot">&lt;-</span> <span class="fl">6.6</span>}  <span class="co"># attracted</span></span>
+<span id="cb2-5"><a href="code-guide.html#cb2-5" tabindex="-1"></a>  </span>
+<span id="cb2-6"><a href="code-guide.html#cb2-6" tabindex="-1"></a>  <span class="co"># simulated positions</span></span>
+<span id="cb2-7"><a href="code-guide.html#cb2-7" tabindex="-1"></a>pos <span class="ot">&lt;-</span> <span class="fu">simpop2DLT</span>(<span class="at">L=</span><span class="dv">600</span>,<span class="at">w =</span> <span class="dv">2000</span>, <span class="at">pi.x =</span> pi.fun.name,<span class="at">logphi =</span> logphi, <span class="at">En =</span> n, <span class="at">fixed.n =</span> T)</span></code></pre></div>
+<p><code>sim.data</code> then uses the <code>detect2DLT</code> function to simulate the first obeserver’s detections. It uses the <code>ip0</code> inverse power detection function with <code>b=c(4.9, 0.036)</code> as this is the detection function from our real data.</p>
 </div>
-<p>We decided to truncate the data at 1600m, which excluded one outlier at 1820m. We then fitted a series of models using both half normal and hazard rate detection functions to the combined data set and to each species individually. We included size, block and observer (and species in the combined model) as covariates, and chose the best model using AIC. (Full analysis can be found in the _CDS analysis file.)</p>
-<p>The best fitting model according to AIC involved fitting separate hazard rate functions with block as a covariate to the ibex and argali data sets. However, the argali detection function has a large spike at zero, which is not realistic.</p>
-<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-15"></span>
-<img src="_main_files/figure-html/unnamed-chunk-15-1.png" alt="Detection function and QQ-plots for ibex and argali models" width="672" />
-<p class="caption">
-Figure 4.2: Detection function and QQ-plots for ibex and argali models
-</p>
+<div id="movement" class="section level4 hasAnchor" number="5.2.1.2">
+<h4><span class="header-section-number">5.2.1.2</span> Movement<a href="code-guide.html#movement" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>For random movement, <code>sim.data</code> generates an angle from a wrapped Cauchy distribution with <span class="math inline">\(\mu = 0\)</span> and <span class="math inline">\(\rho = 0\)</span> and a distance from a lognormal distribution with <span class="math inline">\(\mu = log(12) + 1.5\)</span> and <span class="math inline">\(\sigma = 1.5\)</span> for each animal. For avoidance movement, the angle is generated from a wrapped Cauchy with <span class="math inline">\(\rho = 0.9\)</span> and <span class="math inline">\(\mu = \pi\)</span> for animals to the left of the transect and <span class="math inline">\(\mu = 0\)</span> for animals right of the transect. The distance is calculated by multiplying a random deviate from a <span class="math inline">\(Uniform(0,0.1)\)</span> distribution by the distance between the maximum distance from the transect and the animal’s distance from the transect, so that animals closest to the transect move furthest. This is scaled by 2.5 to make the mean comparable to the random case. The angle and distance moved are used to calculate each animal’s new position</p>
+<p>The second observer’s detections are the simulated using the new positions. <code>sim.data</code> returns only the animals that were detected at least once.</p>
 </div>
-<p>Therefore, we choose the combined model as our best model, as the AIC was only slightly higher (2575.81 vs 2574.67) and it doesn’t have the spike at zero.</p>
-<div class="figure"><span style="display:block;" id="fig:plot-combined"></span>
-<img src="_main_files/figure-html/plot-combined-1.png" alt="Detection function and QQ-plots for combined model" width="672" />
-<p class="caption">
-Figure 4.3: Detection function and QQ-plots for combined model
-</p>
 </div>
-<p>This gives an estimate of 733 total groups with a 95% confidence interval of 575.54, 889.87. This is much higher than the MCR estimate, but may be biased if the animal distribution is not uniform.</p>
+<div id="sim.mismatch" class="section level3 hasAnchor" number="5.2.2">
+<h3><span class="header-section-number">5.2.2</span> Imperfect Matching<a href="code-guide.html#sim.mismatch" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>For the mark recapture methods, if <code>mismatch = TRUE</code> then the fitting function will first apply the <code>sim.mismatch</code> function before calculating the estimates.</p>
+<p>The <code>sim.mismatch</code> function starts by calculating the distance between all the animals that were seen on the first occasion and the ones seen on the second occasion. For each animal that was seen on the second occasion, it finds the closest animal seen on the first occasion. If the animals were less than 300m apart, then it records them as the same animal. If they were more than 1000m apart, it records them as different animals. It uses a inverse power function with parameter <code>b=c(6, 0.000005)</code>, to generate the probability of matching two animals between 300 and 1000m apart.</p>
+<p>If two animals are recorded as the same then it combines their two entries in the dataframe into one. Likewise, if they are recorded as separate animals an entry is added to the dataframe.</p>
 </div>
-<div id="d-distance-sampling" class="section level2 hasAnchor" number="4.3">
-<h2><span class="header-section-number">4.3</span> 2D Distance Sampling<a href="real-data.html#d-distance-sampling" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>We will now use 2D distance sampling to investigate if the animals are uniformly distributed. 61 of the detected groups were behind the observers so did not have a valid “forward” distance. This leaves 132 usable observations.</p>
-<p><img src="_main_files/figure-html/forward-hist-1.png" width="672" /></p>
-<p>We truncated the data at y = 1700, excluding one observation at 1770m.</p>
-<p>Our best fitting model used the 2-parameter inverse power hazard detection function and a half normal distribution for the animal density. All of the best fitting models used a half normal animal distribution, which implies that the animals are attracted to the line rather than avoiding it as initially thought. This could be due to the non random line placement, as the observers travel along valleys or ridges that are easier to walk along so the animals could also favour the easier terrain.</p>
-<div class="figure"><span style="display:block;" id="fig:real-results-plot"></span>
-<img src="_main_files/figure-html/real-results-plot-1.png" alt="Detection and distribution functions for best model (inverse power and half-normal)" width="672" />
-<p class="caption">
-Figure 4.4: Detection and distribution functions for best model (inverse power and half-normal)
-</p>
-</div>
-<p>We tried fitting different models to each species in the survey, but this had a higher AIC than the combined model (3515.29 vs 3512.16 for combined model). Interestingly, the argali appear to be uniformly distributed across the area whereas the ibex exhibit line attraction. However, there are only 39 argali groups with valid distances so further investigation is needed before drawing any conclusions. With more time we would fit a model that had species as a covariate.</p>
-<p>The best combined model estimates there are 402 groups in total.</p>
-<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-c941645a75c981eba333" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-c941645a75c981eba333">{"x":{"filter":"none","vertical":false,"extensions":["FixedColumns","FixedHeader"],"data":[["1","2","3","4","5","6","7","8","9","10","11"],["1","2","3","4","5","6","7","8","9","10","Total"],[27,9,19,14,12,12,13,7,6,12,131],[60.680856879,71.47497,81.92103862800001,59.59935893400001,78.347129147,76.74868402,96.53270928699999,44.55528006,39.258532809,37.720422797,646.838982561],[194178.7420128,228719.904,262147.3236096,190717.9485888,250710.8132704,245595.788864,308904.6697184,142576.896192,125627.3049888,120705.3529504,2069884.7441952],[0.000426,0.000121,0.000222,0.000225,0.000147,0.00015,0.000129,0.000151,0.000146,0.000305,0.000194],[82.8,27.6,58.3,42.9,36.8,36.8,39.9,21.5,18.4,36.8,402],[6.5,6.9,6.8,4.2,4.5,9.1,4.4,4.1,4,10.1,6.3],[0.0027641,0.0008314,0.001521,0.00094881,0.0006606,0.0013612,0.00056594,0.00062383,0.00058593,0.0030745,0.001215],[536.7,190.2,398.7,181,165.6,334.3,174.8,88.90000000000001,73.59999999999999,371.1,2515]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Stratum<\/th>\n      <th>Groups Seen<\/th>\n      <th>Total Transect Length (km)<\/th>\n      <th>Stratum Area (m^2)<\/th>\n      <th>Estimated Group Denisty<\/th>\n      <th>Number of Groups<\/th>\n      <th>Mean Size<\/th>\n      <th>Individual Density<\/th>\n      <th>Abundance Estimate<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"scrollX":true,"paging":false,"fixedHeader":true,"columnDefs":[{"className":"dt-right","targets":[2,3,4,5,6,7,8,9]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
-</div>
-<div id="summary" class="section level2 hasAnchor" number="4.4">
-<h2><span class="header-section-number">4.4</span> Summary<a href="real-data.html#summary" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>The 2D distance analysis suggests that the animals are attracted to the line. This would make the conventional distance estimate positively biased, and so it is reasonable that the 2D estimate would be lower. We would expect the mark recapture estimate to be negatively biased due to the declining detectability with distance, but it is higher. This is likely due to imperfect matching in the data, so we recommend 2D Distance sampling as the most reliable estimate, as it is not impacted by imperfect matching or non uniform animal distribution.</p>
-<table>
-<caption>
-<span id="tab:tables">Table 4.1: </span>Combined
-</caption>
-<thead>
-<tr>
-<th style="text-align:left;">
-</th>
-<th style="text-align:right;">
-Point Estimate
-</th>
-<th style="text-align:right;">
-95% Confidence
-</th>
-<th style="text-align:right;">
-Interval
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-2D Distance
-</td>
-<td style="text-align:right;">
-402
-</td>
-<td style="text-align:right;">
-355.1000
-</td>
-<td style="text-align:right;">
-483.1100
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Conventional Distance
-</td>
-<td style="text-align:right;">
-733
-</td>
-<td style="text-align:right;">
-575.5399
-</td>
-<td style="text-align:right;">
-889.8711
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Chapman
-</td>
-<td style="text-align:right;">
-425
-</td>
-<td style="text-align:right;">
-348.4897
-</td>
-<td style="text-align:right;">
-517.9511
-</td>
-</tr>
-</tbody>
-</table>
-<table class="kable_wrapper lightable-paper" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
-<tbody>
-<tr>
-<td>
-<table style="width:50%;">
-<caption>
-<span id="tab:tables">Table 4.1: </span>Ibex
-</caption>
-<thead>
-<tr>
-<th style="text-align:left;">
-</th>
-<th style="text-align:right;">
-Point Estimate
-</th>
-<th style="text-align:right;">
-95% Confidence
-</th>
-<th style="text-align:right;">
-Interval
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-2D Distance
-</td>
-<td style="text-align:right;">
-278
-</td>
-<td style="text-align:right;">
-243.5800
-</td>
-<td style="text-align:right;">
-339.4000
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Conventional Distance
-</td>
-<td style="text-align:right;">
-489
-</td>
-<td style="text-align:right;">
-371.4325
-</td>
-<td style="text-align:right;">
-605.6230
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Chapman
-</td>
-<td style="text-align:right;">
-308
-</td>
-<td style="text-align:right;">
-241.2495
-</td>
-<td style="text-align:right;">
-392.1259
-</td>
-</tr>
-</tbody>
-</table>
-</td>
-<td>
-<table style="width:50%;">
-<caption>
-<span id="tab:tables">Table 4.1: </span>Argali
-</caption>
-<thead>
-<tr>
-<th style="text-align:left;">
-</th>
-<th style="text-align:right;">
-Point Estimate
-</th>
-<th style="text-align:right;">
-95% Confidence
-</th>
-<th style="text-align:right;">
-Interval
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-2D Distance
-</td>
-<td style="text-align:right;">
-201
-</td>
-<td style="text-align:right;">
-101.65000
-</td>
-<td style="text-align:right;">
-213.1400
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Conventional Distance
-</td>
-<td style="text-align:right;">
-415
-</td>
-<td style="text-align:right;">
-106.77880
-</td>
-<td style="text-align:right;">
-723.2777
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Chapman
-</td>
-<td style="text-align:right;">
-115
-</td>
-<td style="text-align:right;">
-84.28546
-</td>
-<td style="text-align:right;">
-156.1286
-</td>
-</tr>
-</tbody>
-</table>
-</td>
-</tr>
-</tbody>
-</table>
-<p>Whilst the combined model was the best fit for the data, we have included our separate estimates for each species as they may be more useful in practice.</p>
+<div id="result" class="section level3 hasAnchor" number="5.2.3">
+<h3><span class="header-section-number">5.2.3</span> Getting the results<a href="code-guide.html#result" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The <code>result</code> function first removes the outliers by considering only the middle 95% of estimates. Some simulations produce unrealistically high or low estimates that in practice would be ignored. It then calculates the bias and coverage probability for each method.</p>
 
+</div>
 </div>
 </div>
             </section>
@@ -484,8 +287,8 @@ Chapman
           </div>
         </div>
       </div>
-<a href="simulation.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="code-guide.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="real-data.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
