@@ -15,9 +15,9 @@
 
 All of our functions use the following inputs:
 
--   n - True Animal Abundance
+-   n - integer: True animal abundance
 
--   b - Number of Repetitions
+-   b - integer: Number of repetitions
 
 -   density - 0 for uniform distribution, 1 for avoidance, 2 for attraction
 
