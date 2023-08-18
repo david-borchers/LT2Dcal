@@ -1,4 +1,5 @@
 fig:distribution-plots
+fig:uniform-boxplots
 tab:unnamed-chunk-5
 tab:unnamed-chunk-3
 tab:unnamed-chunk-6
@@ -42,3 +43,10 @@ mark-recapture-1
 conventional-distance-sampling
 d-distance-sampling
 summary
+appendix-code-guide
+summary-1
+sim.data
+initial-positions
+movement
+sim.mismatch
+result
