@@ -1,7 +1,4 @@
-
 # Appendix: Code Guide
-
-
 ## Summary
 
 -   [`simulation(n,b,density,movement,mismatch)`](#simulation) - generates b estimates of abundance with confidence intervals for each of the 4 methods for a scenario with `n` total animals
