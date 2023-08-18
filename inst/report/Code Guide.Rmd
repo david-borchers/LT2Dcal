@@ -1,11 +1,4 @@
----
-title: "Code Guide"
-author: "Louise and Jiayi"
-date: "`r Sys.Date()`"
-output:
-  pdf_document: default
-  html_document: default
----
+#Appendix: Code Guide
 
 ## Summary
 
@@ -75,4 +68,4 @@ If two animals are recorded as the same then it combines their two entries in th
 
 ### Getting the results {#result}
 
-The `result` function first removes the outliers by considering only the middle 95% of estimates. Some simulations produce unrealistically high or low estimates that in practice would be ignored. It then calculates the bias and coverage probability for each method. 
+The `result` function first removes the outliers by considering only the middle 95% of estimates. Some simulations produce unrealistically high or low estimates that in practice would be ignored. It then calculates the bias and coverage probability for each method.
