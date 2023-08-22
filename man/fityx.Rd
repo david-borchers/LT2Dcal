@@ -22,6 +22,7 @@ fityx(
   debug = FALSE,
   DataFrameInput = NULL,
   returnDM = FALSE,
+  warnings = FALSE,
   ...
 )
 }
@@ -45,6 +46,8 @@ fityx(
 \item{control}{see \code{\link{optim}} control}
 
 \item{hessian}{return hessian.  See also \code{\link{optim}}.}
+
+\item{warnings}{If FALSE function-specific warnings are not printed, else they are.}
 
 \item{...}{arguments to be passed into \code{\link{optim}}}
 

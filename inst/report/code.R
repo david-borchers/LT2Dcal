@@ -6,7 +6,7 @@ library(Distance)
 library(knitr)
 library(LT2D)
 # Gobi Analysis -----------------------------------------------------------
-Gobi <- read.csv("Gobi.csv")
+Gobi <- read.csv("./inst/report/Gobi.csv")
 ystart = 1700; w = 1600
 DistData <- Gobi[Gobi$Obs1 == 1,]
 DistData$AngleDiff <- DistData$Obs1.AngleDetection-DistData$Obs1.AnglePath 
@@ -216,4 +216,4 @@ argalijitter <- data.frame(x = append(xjitter,missed$distance), y = append(yjitt
                          area = Aa,
                          object = argali$id,
                          size = argali$Group.size)
-
+saveRDS(list(argalijitter=argalijitter, ibexjitter=ibexjitter, jitterdf=jitterdf), file="./inst/gobidf.Rds")

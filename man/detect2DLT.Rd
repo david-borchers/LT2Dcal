@@ -4,7 +4,7 @@
 \alias{detect2DLT}
 \title{2D line transect survey simulator}
 \usage{
-detect2DLT(x, hr, b, ystart, ny = 1000)
+detect2DLT(x, hr, b, ystart, ny = 1000, getIDs = FALSE)
 }
 \arguments{
 \item{x}{perpendicular distances at which detection probability is to be calculated}
@@ -18,10 +18,13 @@ assumed to be zero.}
 
 \item{ny}{Number of equally-spaced points in the interval (0,\code{ystart}) to use to 
 specify the hazard function. Defaults to 1000.}
+
+\item{getIDs}{If TRUE, returns the row index of \code{x} of the detected objects.}
 }
 \value{
 A data frame with elements \code{$x} and  \code{$y} being the perpendicular and 
-forward distances to detections.
+forward distances to detections. If \code{getIDs}=TRUE, also returns the row index of \code{x} 
+of the detected objects in an additional element \code{$seenID}.
 }
 \description{
 Generates detections and associated forward distances (\code{y}) for a population

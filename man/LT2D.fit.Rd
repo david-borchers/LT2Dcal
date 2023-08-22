@@ -19,7 +19,7 @@ LT2D.fit(
   rmin = 0,
   control = list(),
   hessian = FALSE,
-  corrFlag = 0.7,
+  corrFlag = 0.999,
   debug = FALSE
 )
 }

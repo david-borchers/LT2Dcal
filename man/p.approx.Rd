@@ -34,7 +34,7 @@ integration points. Then calculates detection probability at each x as 1 - exp(-
 where h.int is this integral at each of the given x-values.
 }
 \examples{
-xs = seq(0,w,length=100)
+#'xs = seq(0,w,length=100)
 ys = seq(0,ystart,length=100)
 h.fun.name = "h1"
 b=c(-7.3287948, 0.9945317)
