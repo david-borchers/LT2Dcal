@@ -19,6 +19,47 @@ h1=function(y,x,b){
   return(theta1*(y^2+x^2)^(-theta2/2)) # return evaluated hazard
 }
 
+#'@title Detection hazard function \code{h1.2} prob(detect | available at x,y)
+#'
+#'@description  This hazard function has the form k(r,y)=a*r^(-b) from Hayes and Buckland (1983)
+#' p36, with the constraing that b>2, to ensure the detecton function p(x) has a shoulder. 
+# Note: This function uses x for perp. dist., they use y.
+#'
+#'@references Hayes, R. J., and S. T. Buckland. "Radial-distance models for the line-transect method." Biometrics (1983): 29-42.
+#'@param y Forward distance
+#'@param x perpendicular distance
+#'@param b parameter vector, where \code{b[2]} is log(theta), and the function returns
+#'theta[1]*(y^2+x^2)^(-(2+theta[2])/2).
+#'@return probability of detection given that an animal is availabe at location x,y
+#'@examples
+#'h1(0.5,0.5,b=log(c(0.001,1)))
+#'@seealso \code{\link{h2}}, \code{\link{ghy}}, \code{\link{ghy2}}
+#'@export
+h1.2=function(y,x,b){
+  theta1 = exp(b[[1]])         # Log link functions for parameters.
+  theta2 = exp(b[[2]])
+  return(theta1*(y^2+x^2)^(-(2+theta2)/2)) # return evaluated hazard
+}
+
+#'@title Detection hazard function \code{h1b2} prob(detect | available at x,y)
+#'
+#'@description  This hazard function has the form k(r,y)=a*r^(-b) from Hayes and Buckland (1983)
+#' p36, with b fixed equal to 2. Note: This function uses x for perp. dist., they use y.
+#'
+#'@references Hayes, R. J., and S. T. Buckland. "Radial-distance models for the line-transect method." Biometrics (1983): 29-42.
+#'@param y Forward distance
+#'@param x perpendicular distance
+#'theta[1]*(y^2+x^2)^(-theta[2]/2).
+#'@return probability of detection given that an animal is availabe at location x,y
+#'@examples
+#'h1(0.5,0.5,b=log(c(0.001,1)))
+#'@seealso \code{\link{h2}}, \code{\link{ghy}}, \code{\link{ghy2}}
+#'@export
+h1.2b=function(y,x,b){
+  theta1 = exp(b[[1]])         # Log link functions for parameters.
+  return(theta1*(y^2+x^2)^(-2/2)) # return evaluated hazard
+}
+
 #'@title Detection hazard function \code{ghy} prob(detect | available at x,y)
 #'
 #'@description  This hazard function is a generalization of the form k(r,y)=a*r^(-b) from
@@ -1486,6 +1527,7 @@ LT2D.FitObjectMaker = function(par,value,counts,convergence,message,hessian,
 #'@param control see \code{\link{optim}} control
 #'@param hessian return hessian.  See also \code{\link{optim}}.
 #'@param corrFlag=0.7 Absolute parameter correlation value above which a warning is issued.
+#'@param warnings If FALSE function-specific warnings are not printed, else they are.
 #'@param ... arguments to be passed into \code{\link{optim}}
 #'@return
 #'\code{\link{optim}} fit object and \cr
@@ -1522,7 +1564,7 @@ LT2D.FitObjectMaker = function(par,value,counts,convergence,message,hessian,
 #'@export
 fityx = function(y=NULL,x=NULL,b,hr,ystart,pi.x,logphi,w,rmin=0,formulas=NULL,
                  covarPars=NULL,control = list(),hessian = FALSE,corrFlag = 0.7,
-                 debug = FALSE, DataFrameInput=NULL, returnDM=FALSE,...){
+                 debug = FALSE, DataFrameInput=NULL, returnDM=FALSE, warnings=FALSE, ...){
 
   hrname = hr                             # These lines keep the variable names
   piname = pi.x                           # consistent with previous code
@@ -1558,7 +1600,7 @@ fityx = function(y=NULL,x=NULL,b,hr,ystart,pi.x,logphi,w,rmin=0,formulas=NULL,
     }
     else{stop('No data supplied')} # Shouldn't ever reach this line
 
-    warning('data truncated according to user\'s chosen perpendicular truncation
+    if(warnings) warning('data truncated according to user\'s chosen perpendicular truncation
             distance. Data in model object may be a different dimension to the
             supplied data')
   }
@@ -1689,7 +1731,7 @@ fityx = function(y=NULL,x=NULL,b,hr,ystart,pi.x,logphi,w,rmin=0,formulas=NULL,
 
   error = FALSE
   if (fit$convergence != 0) {
-    warning('Convergence issue (code = ',
+    if(warnings) warning('Convergence issue (code = ',
             fit$convergence,') . Check optim() help.')
     error = TRUE
   }
@@ -1993,7 +2035,7 @@ invp1_replacement = function(LT2D.df, LT2D.fit.obj){
 #' @export
 LT2D.fit = function(DataFrameInput,hr,b,ystart,pi.x,logphi,w,formulas=NULL,
                     ipars=NULL,xpars=NULL,ypars=NULL,rmin=0,
-                    control = list(),hessian=FALSE,corrFlag = 0.7,
+                    control = list(),hessian=FALSE,corrFlag = 0.999,
                     debug = FALSE){
 
   # Basic type-checking of inputs:
@@ -2711,6 +2753,7 @@ plot.LT2D.fit.object = function(fit,
     plotfit.y(fit,nclass=ybins)
     Y = if (addrug){rug(x=y[x<=w])}
   }
+  invisible(list(x=X,y=Y))
 }
 
 #'@title Plot LT2D fit
@@ -3518,10 +3561,10 @@ HazardNumberLookup = function(HazardName){
   if (class(HazardName)!='character'){
     stop('HazardName must be a character')
   }
-  if      (HazardName %in% c('h1','h2','ip0','h.okamura')){return(2)}
+  if      (HazardName %in% c('h1','h1.2','h2','ip0','h.okamura')){return(2)}
   else if (HazardName %in% c('ghy','h21','ip1','ep1' )){return(3)}
   else if (HazardName %in% c('gh2','ip2','ep2')){return(4)}
-  else if (HazardName=='h.const'){return(1)}
+  else if (HazardName %in% c('h.const','h1.2b')){return(1)}
   else{stop('Hazard function not found')}
 }
 
@@ -4355,8 +4398,9 @@ simpson = function(f,lower,upper,...,subdivisions=50) {
 #'is returned. If 'px' a vector comprising the probability of detection at all for each x is 
 #'returned. Anything else results in a list with all three of these being returned, in elements 
 #'\code{$fmat}, \code{$pmat}, and \code{p}, respectively .
+#'
 #'@examples
-#'xs = seq(0,w,length=100)
+#'#'xs = seq(0,w,length=100)
 #'ys = seq(0,ystart,length=100)
 #'h.fun.name = "h1"
 #'b=c(-7.3287948, 0.9945317)
@@ -4393,4 +4437,105 @@ p.approx = function(y,x,h.fun,b,what="px") {
   else if(what=="pxy") return(p.mat)
   else if(what=="px") return(p)
   else return(list(p=p,fmat=fxy,pmat=p.mat))
+}
+
+
+
+
+#'@title Plot hazard and/or detection function model
+#'
+#'@description  Depending on what is specified in the argument \code{what}, plots hazard and/or detection 
+#'function model. Invisibly returns data to make plots.
+#'
+#'@param h.fun Detection hazard function
+#'@param pars parameters of hazard function
+#'@param ystart maximum forward distance (y) at which objects could be detected
+#'@param xlim range of perpendicular distances (x) to plot, comprising a vector of length 2: (xmin, xmax)
+#'@param what Determines what is plotted: 'fxy' results in the pdf of forward detection distances, y, 
+#' for the given x; 'pxy' results in the probability of detection BY each y being plotted; 
+#' 'px' results in the probability of detection at all, being plotted (over the whole specified perpendicular
+#' distance range). Anything else results in all three of these being plotted.
+#'@param nx number of x-values at which to evaluate the hazard function (ignored if xmin=xmax)
+#'@param ny number of y-values at which to evaluate the hazard function
+#'
+#'@return If \code{what} is 'fxy', a matrix containing the pdf of y, for each x (matrix row) is 
+#'returned. If 'pxy' a matrix with the probability of detection by each y for each x (matrix row) 
+#'is returned. If 'px' a vector comprising the probability of detection at all for each x is 
+#'returned. Anything else results in a list with all three of these being returned, in elements 
+#'\code{$fmat}, \code{$pmat}, and \code{p}, respectively.
+#'
+#'@examples
+#'ystart = 2
+#'h.fun = "h1"
+#'pars=c(-2, 1)
+#'xlim = c(1/10000,1)
+#' plot.detmodel(h.fun,pars,ystart,xlim,what="all")
+#' plot.detmodel(h.fun,pars,ystart,xlim,what="fxy")
+#' plot.detmodel(h.fun,pars,ystart,xlim,what="pxy")
+#' plot.detmodel(h.fun,pars,ystart,xlim,what="px")
+#' 
+#'@export
+plotdetmodel = function(h,pars,ystart,xlim,what="px",nx=101,ny=101) {
+
+  h.fun = match.fun(h) 
+  
+  if(xlim[1]==0) xlim[1] = max(c(xlim[2]/10000,0.000001)) # to avoid plotting infinities at x=0
+  if(xlim[1]==xlim[2]) xs = xlim[1]
+  else xs = seq(xlim[1],xlim[2],length=nx)
+  ys = seq(0,ystart,length=ny)
+  
+  if(what=="px") {
+    p = p.approx(ys,xs,h.fun,pars,what="px") 
+    plot(xs,p,type="l",xlab="Perp. dist. (x)",ylab="p(see|x)",ylim=c(0,1))
+    invisible(p)
+  }else if(what=="fxy") {
+    fxy = p.approx(ys,xs,h.fun,pars,what="fxy") 
+    persp(fxy,xlab="x",ylab="y",zlab="f(x,y)",theta=25,phi=45)
+    invisible(fxy)
+  }else if(what=="pxy") {
+    pxy = p.approx(ys,xs,h.fun,pars,what="pxy") 
+    persp(pxy,xlab="x",ylab="y",zlab="p(see by y | x)",theta=25,phi=45)
+    invisible(pxy)
+  }else {
+    fplist = p.approx(ys,xs,h.fun,pars,what="all") 
+    layout(matrix(c(1,1,2,3),nrow=2))
+    plot(xs,fplist$p,type="l",xlab="Perp. dist. (x)")
+    persp(fplist$fmat,xlab="x",ylab="y",zlab="f(x,y)",theta=25,phi=45)
+    persp(fplist$pmat,xlab="x",ylab="y",zlab="p(see by y | x)",theta=25,phi=45)
+    invisible(fplist)
+  }
+}
+
+
+
+#'@title Plot perpendicular distance distribution model
+#'
+#'@description  Plot perpendicular distance distribution model. Invisibly returns data to make the plot.
+#'
+#'@param pi.fun Perpendicular distance distribution function
+#'@param logphi Log of the parameters of perpendicular distance distribution function
+#'@param ystart maximum forward distance (y) at which objects could be detected
+#'@param w Perpendicular distance truncation distance
+#'@param nx number of x-values at which to evaluate the function
+#'
+#'@return If \code{what} is 'fxy', a matrix containing the pdf of y, for each x (matrix row) is 
+#'returned. If 'pxy' a matrix with the probability of detection by each y for each x (matrix row) 
+#'is returned. If 'px' a vector comprising the probability of detection at all for each x is 
+#'returned. Anything else results in a list with all three of these being returned, in elements 
+#'\code{$fmat}, \code{$pmat}, and \code{p}, respectively.
+#'
+#'@examples
+#'pi.fun.name = 'pi.hnorm'
+#'logphi <- log(c(700))
+#'w=1000
+#'plotpimodel(pi.fun.name,logphi,w)
+#' 
+#'@export
+plotpimodel = function(pi.fun,logphi,w,nx=101) {
+  pi.fun = match.fun(pi.fun)
+  xs = seq(0,w,length=nx)
+  f = pi.fun(xs,logphi,w)
+  f = f/sum(f)
+  plot(xs, f,type="l",ylim=c(0,max(f)),xlab="Perp. dist. (x)",ylab=expression(pi(x)))
+  invisible(list(x=xs,f=f))
 }

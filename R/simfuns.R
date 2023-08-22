@@ -12,9 +12,12 @@
 #'assumed to be zero.
 #'@param ny Number of equally-spaced points in the interval (0,\code{ystart}) to use to 
 #'specify the hazard function. Defaults to 1000.
+#'@param getIDs If TRUE, returns the row index of \code{x} of the detected objects.
 #'
 #'@return A data frame with elements \code{$x} and  \code{$y} being the perpendicular and 
-#'forward distances to detections.
+#'forward distances to detections. If \code{getIDs}=TRUE, also returns the row index of \code{x} 
+#'of the detected objects in an additional element \code{$seenID}.
+#'
 #'@examples
 #'ystart = 1300
 #'w = 1500
@@ -38,7 +41,7 @@
 #'hist(seen$y,breaks=seq(0,ystart,length=21),xlab="Forward distance",main="")
 #'
 #'@export
-detect2DLT = function(x,hr,b,ystart,ny=1000) {
+detect2DLT = function(x,hr,b,ystart,ny=1000, getIDs=FALSE) {
   require(spatstat)
   ys = seq(0,ystart,length=ny) # possible y values (discrete approx of continuous possibles)
   # calculate detection probabilities for all y's for every x:
@@ -49,7 +52,7 @@ detect2DLT = function(x,hr,b,ystart,ny=1000) {
   seen = which(p>=runif(nx,0,1)) # these are indices of detected animals
   n = length(seen)
   if(length(seen)>0) {
-    fmat = fmat[seen,] # only keep f(y|x,seen) for detected animals
+    fmat = fmat[seen,,drop=FALSE] # only keep f(y|x,seen) for detected animals
     x = x[seen] # only keep x for detected animals
     y = rep(NA,n) # to hold the sampled forward distances
     for(i in 1:n) {
@@ -67,7 +70,9 @@ detect2DLT = function(x,hr,b,ystart,ny=1000) {
         }
       }
     }
-    return(data.frame(x,y))
+    if(getIDs) df = data.frame(x,y,seenID=seen)
+    else df = data.frame(x,y)
+    return(df)
   } else {
     return(NA)
   }
