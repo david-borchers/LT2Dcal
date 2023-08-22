@@ -4,22 +4,23 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 4 Real Data | _main.knit</title>
-  <meta name="description" content="" />
+  <title>Chapter 4 Real Data | Report</title>
+  <meta name="description" content="Chapter 4 Real Data | Report" />
   <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 4 Real Data | _main.knit" />
+  <meta property="og:title" content="Chapter 4 Real Data | Report" />
   <meta property="og:type" content="book" />
   
   
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 4 Real Data | _main.knit" />
+  <meta name="twitter:title" content="Chapter 4 Real Data | Report" />
   
   
   
 
+<meta name="author" content="Jiayi and Louise" />
 
 
 
@@ -29,7 +30,7 @@
   
   
 <link rel="prev" href="simulation.html"/>
-
+<link rel="next" href="appendix-code-guide.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -70,6 +71,70 @@
 <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
 
 
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
 
 <style type="text/css">
   
@@ -128,6 +193,16 @@
 <li class="chapter" data-level="4.3" data-path="real-data.html"><a href="real-data.html#d-distance-sampling"><i class="fa fa-check"></i><b>4.3</b> 2D Distance Sampling</a></li>
 <li class="chapter" data-level="4.4" data-path="real-data.html"><a href="real-data.html#summary"><i class="fa fa-check"></i><b>4.4</b> Summary</a></li>
 </ul></li>
+<li class="chapter" data-level="5" data-path="appendix-code-guide.html"><a href="appendix-code-guide.html"><i class="fa fa-check"></i><b>5</b> Appendix: Code Guide</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="appendix-code-guide.html"><a href="appendix-code-guide.html#summary-1"><i class="fa fa-check"></i><b>5.1</b> Summary</a></li>
+<li class="chapter" data-level="5.2" data-path="simulation.html"><a href="simulation.html#simulation"><i class="fa fa-check"></i><b>5.2</b> Simulation</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="appendix-code-guide.html"><a href="appendix-code-guide.html#sim.data"><i class="fa fa-check"></i><b>5.2.1</b> Simulating the Data using sim.data</a></li>
+<li class="chapter" data-level="5.2.2" data-path="appendix-code-guide.html"><a href="appendix-code-guide.html#sim.mismatch"><i class="fa fa-check"></i><b>5.2.2</b> Imperfect Matching</a></li>
+<li class="chapter" data-level="5.2.3" data-path="appendix-code-guide.html"><a href="appendix-code-guide.html#result"><i class="fa fa-check"></i><b>5.2.3</b> Getting the results</a></li>
+</ul></li>
+</ul></li>
 </ul>
 
       </nav>
@@ -137,7 +212,7 @@
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./"></a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Report</a>
           </h1>
         </div>
 
@@ -169,14 +244,14 @@ Figure 4.1: Histograms of perpendicular distances
 Figure 4.2: Detection function and QQ-plots for ibex and argali models
 </p>
 </div>
-<p>Therefore, we choose the combined model as our best model, as the AIC was only slightly higher (2575.81 vs 2572.17) and it doesn’t have the spike at zero.</p>
+<p>Therefore, we choose the combined model as our best model, as the AIC was only slightly higher (2575.81 vs 2574.47) and it doesn’t have the spike at zero.</p>
 <div class="figure"><span style="display:block;" id="fig:plot-combined"></span>
 <img src="_main_files/figure-html/plot-combined-1.png" alt="Detection function and QQ-plots for combined model" width="672" />
 <p class="caption">
 Figure 4.3: Detection function and QQ-plots for combined model
 </p>
 </div>
-<p>This gives an estimate of 733 total groups with a 95% confidence interval of 575.52, 889.84. This is much higher than the MCR estimate, but may be biased if the animal distribution is not uniform.</p>
+<p>This gives an estimate of 733 total groups with a 95% confidence interval of 575.53, 889.85. This is much higher than the MCR estimate, but may be biased if the animal distribution is not uniform.</p>
 </div>
 <div id="d-distance-sampling" class="section level2 hasAnchor" number="4.3">
 <h2><span class="header-section-number">4.3</span> 2D Distance Sampling<a href="real-data.html#d-distance-sampling" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -190,10 +265,10 @@ Figure 4.3: Detection function and QQ-plots for combined model
 Figure 4.4: Detection and distribution functions for best model (inverse power and half-normal)
 </p>
 </div>
-<p>We tried fitting different models to each species in the survey, but this had a higher AIC than the combined model (3514.99 vs 3511.98 for combined model). Interestingly, the argali appear to be uniformly distributed across the area whereas the ibex exhibit line attraction. However, there are only 39 argali groups with valid distances so further investigation is needed before drawing any conclusions. With more time we would fit a model that had species as a covariate.</p>
-<p>The best combined model estimates there are 402 groups in total.</p>
-<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-bdbe5e83f490bdc81a2f" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-bdbe5e83f490bdc81a2f">{"x":{"filter":"none","vertical":false,"extensions":["FixedColumns","FixedHeader"],"data":[["1","2","3","4","5","6","7","8","9","10","11"],["1","2","3","4","5","6","7","8","9","10","Total"],[27,9,19,14,12,12,13,7,6,12,131],[60.680856879,71.47497,81.92103862800001,59.59935893400001,78.347129147,76.74868402,96.53270928699999,44.55528006,39.258532809,37.720422797,646.838982561],[194178.7420128,228719.904,262147.3236096,190717.9485888,250710.8132704,245595.788864,308904.6697184,142576.896192,125627.3049888,120705.3529504,2069884.7441952],[0.000427,0.000121,0.000222,0.000225,0.000147,0.00015,0.000129,0.000151,0.000147,0.000305,0.000194],[82.90000000000001,27.6,58.3,43,36.8,36.8,39.9,21.5,18.4,36.8,402],[6.5,6.9,6.8,4.2,4.5,9.1,4.4,4.1,4,10.1,6.3],[0.0027661,0.00083199,0.0015221,0.00094949,0.00066108,0.0013622,0.00056635,0.00062428,0.00058635,0.0030767,0.0012159],[537.1,190.3,399,181.1,165.7,334.5,174.9,89,73.7,371.4,2516.8]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Stratum<\/th>\n      <th>Groups Seen<\/th>\n      <th>Total Transect Length (km)<\/th>\n      <th>Stratum Area (m^2)<\/th>\n      <th>Estimated Group Denisty<\/th>\n      <th>Number of Groups<\/th>\n      <th>Mean Size<\/th>\n      <th>Individual Density<\/th>\n      <th>Abundance Estimate<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"scrollX":true,"paging":false,"fixedHeader":true,"columnDefs":[{"className":"dt-right","targets":[2,3,4,5,6,7,8,9]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<p>We tried fitting different models to each species in the survey, but this had a higher AIC than the combined model (3515.59 vs 3511.98 for combined model). Interestingly, the argali appear to be uniformly distributed across the area whereas the ibex exhibit line attraction. However, there are only 39 argali groups with valid distances so further investigation is needed before drawing any conclusions. With more time we would fit a model that had species as a covariate.</p>
+<p>The best combined model estimates there are 401 groups in total.</p>
+<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-fddd89a3d596406d9231" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-fddd89a3d596406d9231">{"x":{"filter":"none","vertical":false,"extensions":["FixedColumns","FixedHeader"],"data":[["1","2","3","4","5","6","7","8","9","10","11"],["1","2","3","4","5","6","7","8","9","10","Total"],[27,9,19,14,12,12,13,7,6,12,131],[60.680856879,71.47497,81.92103862800001,59.59935893400001,78.347129147,76.74868402,96.53270928699999,44.55528006,39.258532809,37.720422797,646.838982561],[194178.7420128,228719.904,262147.3236096,190717.9485888,250710.8132704,245595.788864,308904.6697184,142576.896192,125627.3049888,120705.3529504,2069884.7441952],[0.000426,0.000121,0.000222,0.000225,0.000147,0.00015,0.000129,0.00015,0.000146,0.000305,0.000194],[82.7,27.6,58.2,42.9,36.8,36.8,39.8,21.5,18.4,36.8,401],[6.5,6.9,6.8,4.2,4.5,9.1,4.4,4.1,4,10.1,6.3],[0.0027619,0.00083074,0.0015198,0.00094807,0.00066008,0.0013601,0.0005655,0.00062334,0.00058547,0.0030721,0.0012141],[536.3,190,398.4,180.8,165.5,334,174.7,88.90000000000001,73.59999999999999,370.8,2513]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Stratum<\/th>\n      <th>Groups Seen<\/th>\n      <th>Total Transect Length (km)<\/th>\n      <th>Stratum Area (m^2)<\/th>\n      <th>Estimated Group Denisty<\/th>\n      <th>Number of Groups<\/th>\n      <th>Mean Size<\/th>\n      <th>Individual Density<\/th>\n      <th>Abundance Estimate<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"scrollX":true,"paging":false,"fixedHeader":true,"columnDefs":[{"className":"dt-right","targets":[2,3,4,5,6,7,8,9]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="summary" class="section level2 hasAnchor" number="4.4">
 <h2><span class="header-section-number">4.4</span> Summary<a href="real-data.html#summary" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -223,13 +298,13 @@ Interval
 2D Distance
 </td>
 <td style="text-align:right;">
-402
+401
 </td>
 <td style="text-align:right;">
-356.7600
+350.5000
 </td>
 <td style="text-align:right;">
-486.5400
+481.5300
 </td>
 </tr>
 <tr>
@@ -240,10 +315,10 @@ Conventional Distance
 733
 </td>
 <td style="text-align:right;">
-575.5197
+575.5256
 </td>
 <td style="text-align:right;">
-889.8357
+889.8490
 </td>
 </tr>
 <tr>
@@ -291,13 +366,13 @@ Interval
 2D Distance
 </td>
 <td style="text-align:right;">
-277
+278
 </td>
 <td style="text-align:right;">
-240.6600
+242.9200
 </td>
 <td style="text-align:right;">
-342.5600
+347.1600
 </td>
 </tr>
 <tr>
@@ -308,10 +383,10 @@ Conventional Distance
 489
 </td>
 <td style="text-align:right;">
-371.4325
+371.4328
 </td>
 <td style="text-align:right;">
-605.6229
+605.6234
 </td>
 </tr>
 <tr>
@@ -357,13 +432,13 @@ Interval
 2D Distance
 </td>
 <td style="text-align:right;">
-200
+202
 </td>
 <td style="text-align:right;">
-102.00000
+98.67000
 </td>
 <td style="text-align:right;">
-202.5100
+208.6200
 </td>
 </tr>
 <tr>
@@ -371,13 +446,13 @@ Interval
 Conventional Distance
 </td>
 <td style="text-align:right;">
-761
+423
 </td>
 <td style="text-align:right;">
-27.51751
+103.77524
 </td>
 <td style="text-align:right;">
-1494.4320
+741.6695
 </td>
 </tr>
 <tr>
@@ -409,8 +484,8 @@ Chapman
           </div>
         </div>
       </div>
-<a href="simulation.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-
+<a href="simulation.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="appendix-code-guide.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -452,7 +527,7 @@ gitbook.start({
 "link": null,
 "text": null
 },
-"download": ["_main.pdf", "_main.epub"],
+"download": null,
 "search": {
 "engine": "fuse",
 "options": null

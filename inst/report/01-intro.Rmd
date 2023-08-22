@@ -1,8 +1,16 @@
+--- 
+title: "Report"
+author: "Jiayi and Louise"
+output: html_document
+---
+
 # Introduction
+
 ```{r initial-setup, include = FALSE, warning=FALSE}
 knitr::opts_chunk$set(warning = FALSE, message = FALSE)
 source("code.R")
 ```
+
 Accurate estimation of animal abundance is a fundamental aspect of ecological research and wildlife conservation. Since total enumeration are rarely possible for natural populations of animals, robust estimation methods have to be used. Commonly used approaches for estimating animal abundance include mark-recapture, distance sampling, and mark-recapture distance sampling (MRDS). Each of these methods relies on different principles and assumptions to estimate population sizes.
 
 The mark-recapture method is based on capturing and marking individuals, followed by subsequent recapture efforts to estimate the total population size. Distance sampling, on the other hand, involves estimating the detection probability of individuals at different distances from the observer, allowing for the extrapolation of population size based on detection functions. MRDS is an extension that accounts for both the detection probabilities of individuals at different distances and the potential for recapture of marked individuals, providing more precise estimates, even when assumptions of closed populations and uniform detection probabilities are not fully met.

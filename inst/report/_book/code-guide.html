@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Report</title>
-  <meta name="description" content="Report" />
-  <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
+  <title>Chapter 5 Code Guide | Report</title>
+  <meta name="description" content="Chapter 5 Code Guide | Report" />
+  <meta name="generator" content="bookdown 0.35 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Report" />
+  <meta property="og:title" content="Chapter 5 Code Guide | Report" />
   <meta property="og:type" content="book" />
   
   
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Report" />
+  <meta name="twitter:title" content="Chapter 5 Code Guide | Report" />
   
   
   
@@ -29,8 +29,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
+<link rel="prev" href="real-data.html"/>
 
-<link rel="next" href="cross.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -193,14 +193,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4.3" data-path="real-data.html"><a href="real-data.html#d-distance-sampling"><i class="fa fa-check"></i><b>4.3</b> 2D Distance Sampling</a></li>
 <li class="chapter" data-level="4.4" data-path="real-data.html"><a href="real-data.html#summary"><i class="fa fa-check"></i><b>4.4</b> Summary</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="appendix-code-guide.html"><a href="appendix-code-guide.html"><i class="fa fa-check"></i><b>5</b> Appendix: Code Guide</a>
+<li class="chapter" data-level="5" data-path="code-guide.html"><a href="code-guide.html"><i class="fa fa-check"></i><b>5</b> Code Guide</a>
 <ul>
-<li class="chapter" data-level="5.1" data-path="appendix-code-guide.html"><a href="appendix-code-guide.html#summary-1"><i class="fa fa-check"></i><b>5.1</b> Summary</a></li>
+<li class="chapter" data-level="5.1" data-path="code-guide.html"><a href="code-guide.html#summary-1"><i class="fa fa-check"></i><b>5.1</b> Summary</a></li>
 <li class="chapter" data-level="5.2" data-path="simulation.html"><a href="simulation.html#simulation"><i class="fa fa-check"></i><b>5.2</b> Simulation</a>
 <ul>
-<li class="chapter" data-level="5.2.1" data-path="appendix-code-guide.html"><a href="appendix-code-guide.html#sim.data"><i class="fa fa-check"></i><b>5.2.1</b> Simulating the Data using sim.data</a></li>
-<li class="chapter" data-level="5.2.2" data-path="appendix-code-guide.html"><a href="appendix-code-guide.html#sim.mismatch"><i class="fa fa-check"></i><b>5.2.2</b> Imperfect Matching</a></li>
-<li class="chapter" data-level="5.2.3" data-path="appendix-code-guide.html"><a href="appendix-code-guide.html#result"><i class="fa fa-check"></i><b>5.2.3</b> Getting the results</a></li>
+<li class="chapter" data-level="5.2.1" data-path="code-guide.html"><a href="code-guide.html#sim.data"><i class="fa fa-check"></i><b>5.2.1</b> Simulating the Data using sim.data</a></li>
+<li class="chapter" data-level="5.2.2" data-path="code-guide.html"><a href="code-guide.html#sim.mismatch"><i class="fa fa-check"></i><b>5.2.2</b> Imperfect Matching</a></li>
+<li class="chapter" data-level="5.2.3" data-path="code-guide.html"><a href="code-guide.html#result"><i class="fa fa-check"></i><b>5.2.3</b> Getting the results</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -220,26 +220,75 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="header">
-<h1 class="title">Report</h1>
-<p class="author"><em>Jiayi and Louise</em></p>
+<div id="code-guide" class="section level1 hasAnchor" number="5">
+<h1><span class="header-section-number">Chapter 5</span> Code Guide<a href="code-guide.html#code-guide" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="summary-1" class="section level2 hasAnchor" number="5.1">
+<h2><span class="header-section-number">5.1</span> Summary<a href="code-guide.html#summary-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ul>
+<li><a href="simulation.html#simulation"><code>simulation(n,b,density,movement,mismatch)</code></a> - generates b estimates of abundance with confidence intervals for each of the 4 methods for a scenario with <code>n</code> total animals</li>
+<li><code>result(list.method, n)</code> calculates the bias and coverage probability for each method from the output of <code>simulation</code> , given the true abundance is <code>n</code> .</li>
+<li><a href="code-guide.html#sim.data"><code>sim.data(n,density,move)</code></a> generates detections from a population of n animals with specified density and movement. Change this function if you want a different detection function or different parameters for density or movement. (you will need to update fit.2d if you change the density parameters)</li>
+<li><a href="code-guide.html#sim.mismatch"><code>sim.mismatch(df)</code></a> simulates imperfect matching on a sim.data data frame. Change this function if you want different matching parameters</li>
+<li><code>chapman.mr(df,mismatch)</code> uses the chapman estimator on a sim.data data frame to get an abundance estimate and confidence interval. If <code>mismatch = TRUE</code> it runs <code>mismatch</code> on the data first.</li>
+<li><code>ds.analysis(df)</code> fits a hazard rate detection function to a sim.data data frame to get an abundance estimate and confidence interval.</li>
+<li><code>fit.mrds(df, mismatch)</code> uses an independent observer configuration and a hazard rate detection function to get an abundance estimate and confidence interval from a sim.data data frame. If <code>mismatch = TRUE</code> it runs <code>mismatch</code> on the data first.</li>
+<li><code>fit.2d(df, density)</code> fits a 2D model to a sim.data data frame using same density function as used to generate data. Returns a point estimate and confidence interval for abundance. If you change the density parameters in sim.data make sure to update them in fit.2d.</li>
+</ul>
+<p>All of our functions use the following inputs:</p>
+<ul>
+<li><p>n - True Animal Abundance</p></li>
+<li><p>b - Number of Repetitions</p></li>
+<li><p>density - 0 for uniform distribution, 1 for avoidance, 2 for attraction</p></li>
+<li><p>movement - 0 for avoidance, 1 for random</p></li>
+<li><p>mismatch - FALSE for perfect matching, TRUE for imperfect matching</p></li>
+</ul>
 </div>
-<div id="introduction" class="section level1 hasAnchor" number="1">
-<h1><span class="header-section-number">Chapter 1</span> Introduction<a href="introduction.html#introduction" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>Accurate estimation of animal abundance is a fundamental aspect of ecological research and wildlife conservation. Since total enumeration are rarely possible for natural populations of animals, robust estimation methods have to be used. Commonly used approaches for estimating animal abundance include mark-recapture, distance sampling, and mark-recapture distance sampling (MRDS). Each of these methods relies on different principles and assumptions to estimate population sizes.</p>
-<p>The mark-recapture method is based on capturing and marking individuals, followed by subsequent recapture efforts to estimate the total population size. Distance sampling, on the other hand, involves estimating the detection probability of individuals at different distances from the observer, allowing for the extrapolation of population size based on detection functions. MRDS is an extension that accounts for both the detection probabilities of individuals at different distances and the potential for recapture of marked individuals, providing more precise estimates, even when assumptions of closed populations and uniform detection probabilities are not fully met.</p>
-<p>However, the accuracy and reliability of these estimation methods depend heavily on how well their underlying assumptions are met. Assumptions such as closed population, random sampling, and homogeneous detection probabilities play a crucial role in determining the performance of the models. When these assumptions are violated, the estimates obtained from the methods can be biased and lead to misleading conclusions.</p>
-<p>2D Distance sampling is a new method that has the potential to work when these other methods fail. It uses a similar principle to distance sampling but the observers collect the forward distance as well as the perpendicular distance to the animal. This additional data allows the model to be flexible when dealing with different animal distributions and detection functions.</p>
-<p>In this study, we systematically tested the four methods using a range of scenarios with varying degrees of assumption compliance and violations. By simulating populations with known abundance and detectability patterns, we aimed to assess how each method performed under different conditions. We have based our populations on snow leopard prey data from Gobi Gurvansaikhan National Park. In the following sections of this report, we will present the methodology of our simulation study and the results obtained from the simulations. We will then use 2D distance sampling to analyse the snow leopard prey data.</p>
+<div id="simulation" class="section level2 hasAnchor" number="5.2">
+<h2><span class="header-section-number">5.2</span> Simulation<a href="simulation.html#simulation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The <code>simulation(n,b,density, movement, mismatch)</code> function is the main function used to simulate the data. It returns a list of data frames of the estimates for N and the lower and upper confidence limits for each of the 4 methods (MR, DS, MRDS, 2DDS).</p>
+<p>The output from <code>simulation</code> can be parsed to <code>result(list.method,n)</code> , which returns the bias and coverage probability given that the true abundance is <code>n</code>.</p>
+<div id="sim.data" class="section level3 hasAnchor" number="5.2.1">
+<h3><span class="header-section-number">5.2.1</span> Simulating the Data using sim.data<a href="code-guide.html#sim.data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><code>simulation</code> starts by calling the <code>sim.data(n,density,move)</code> function to generate <code>b</code> datasets. <code>sim.data</code> returns a data frame of all the seen animals. Each animal has 2 rows, one for each capture occasion. The “x” and “y” columns are the co-ordinates of each animal on each capture occasion, “forw.dist” is the forward distance to detection (only generated for the first occasion) and “detect” is 1 if the animal was detected on that capture occasion and 0 otherwise. Perpendicular distance can be found from the absolute value of x.</p>
+<div id="initial-positions" class="section level4 hasAnchor" number="5.2.1.1">
+<h4><span class="header-section-number">5.2.1.1</span> Initial Positions<a href="code-guide.html#initial-positions" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p><code>sim.data</code> generates the initial animal positions within 2000m either side of a 600km transect using the simpop2DLT function.</p>
+<p><strong>Note:</strong> we later truncate perpendicular distances at 1600m but the actual area still has a half-width of 2000m, and confusing this caused us some issues. The area is larger than the perpendicular truncation distance to prevent issues with animals moving outside the boundary.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="code-guide.html#cb2-1" tabindex="-1"></a><span class="co"># (a) initial animal distribution</span></span>
+<span id="cb2-2"><a href="code-guide.html#cb2-2" tabindex="-1"></a><span class="cf">if</span>(density<span class="sc">==</span><span class="dv">0</span>){pi.fun.name <span class="ot">&lt;-</span> <span class="st">&#39;pi.const&#39;</span>; logphi <span class="ot">&lt;-</span> <span class="cn">NA</span>}  <span class="co"># uniform</span></span>
+<span id="cb2-3"><a href="code-guide.html#cb2-3" tabindex="-1"></a><span class="cf">else</span> <span class="cf">if</span>(density<span class="sc">==</span><span class="dv">1</span>){pi.fun.name <span class="ot">&lt;-</span> <span class="st">&#39;pi.chnorm&#39;</span>; logphi <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">6</span>)}  <span class="co"># avoid</span></span>
+<span id="cb2-4"><a href="code-guide.html#cb2-4" tabindex="-1"></a><span class="cf">else</span> <span class="cf">if</span>(density<span class="sc">==</span><span class="dv">2</span>){pi.fun.name <span class="ot">&lt;-</span> <span class="st">&#39;pi.hnorm&#39;</span>; logphi <span class="ot">&lt;-</span> <span class="fl">6.6</span>}  <span class="co"># attracted</span></span>
+<span id="cb2-5"><a href="code-guide.html#cb2-5" tabindex="-1"></a>  </span>
+<span id="cb2-6"><a href="code-guide.html#cb2-6" tabindex="-1"></a>  <span class="co"># simulated positions</span></span>
+<span id="cb2-7"><a href="code-guide.html#cb2-7" tabindex="-1"></a>pos <span class="ot">&lt;-</span> <span class="fu">simpop2DLT</span>(<span class="at">L=</span><span class="dv">600</span>,<span class="at">w =</span> <span class="dv">2000</span>, <span class="at">pi.x =</span> pi.fun.name,<span class="at">logphi =</span> logphi, <span class="at">En =</span> n, <span class="at">fixed.n =</span> T)</span></code></pre></div>
+<p><code>sim.data</code> then uses the <code>detect2DLT</code> function to simulate the first obeserver’s detections. It uses the <code>ip0</code> inverse power detection function with <code>b=c(4.9, 0.036)</code> as this is the detection function from our real data.</p>
+</div>
+<div id="movement" class="section level4 hasAnchor" number="5.2.1.2">
+<h4><span class="header-section-number">5.2.1.2</span> Movement<a href="code-guide.html#movement" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>For random movement, <code>sim.data</code> generates an angle from a wrapped Cauchy distribution with <span class="math inline">\(\mu = 0\)</span> and <span class="math inline">\(\rho = 0\)</span> and a distance from a lognormal distribution with <span class="math inline">\(\mu = log(12) + 1.5\)</span> and <span class="math inline">\(\sigma = 1.5\)</span> for each animal. For avoidance movement, the angle is generated from a wrapped Cauchy with <span class="math inline">\(\rho = 0.9\)</span> and <span class="math inline">\(\mu = \pi\)</span> for animals to the left of the transect and <span class="math inline">\(\mu = 0\)</span> for animals right of the transect. The distance is calculated by multiplying a random deviate from a <span class="math inline">\(Uniform(0,0.1)\)</span> distribution by the distance between the maximum distance from the transect and the animal’s distance from the transect, so that animals closest to the transect move furthest. This is scaled by 2.5 to make the mean comparable to the random case. The angle and distance moved are used to calculate each animal’s new position</p>
+<p>The second observer’s detections are the simulated using the new positions. <code>sim.data</code> returns only the animals that were detected at least once.</p>
+</div>
+</div>
+<div id="sim.mismatch" class="section level3 hasAnchor" number="5.2.2">
+<h3><span class="header-section-number">5.2.2</span> Imperfect Matching<a href="code-guide.html#sim.mismatch" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>For the mark recapture methods, if <code>mismatch = TRUE</code> then the fitting function will first apply the <code>sim.mismatch</code> function before calculating the estimates.</p>
+<p>The <code>sim.mismatch</code> function starts by calculating the distance between all the animals that were seen on the first occasion and the ones seen on the second occasion. For each animal that was seen on the second occasion, it finds the closest animal seen on the first occasion. If the animals were less than 300m apart, then it records them as the same animal. If they were more than 1000m apart, it records them as different animals. It uses a inverse power function with parameter <code>b=c(6, 0.000005)</code>, to generate the probability of matching two animals between 300 and 1000m apart.</p>
+<p>If two animals are recorded as the same then it combines their two entries in the dataframe into one. Likewise, if they are recorded as separate animals an entry is added to the dataframe.</p>
+</div>
+<div id="result" class="section level3 hasAnchor" number="5.2.3">
+<h3><span class="header-section-number">5.2.3</span> Getting the results<a href="code-guide.html#result" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The <code>result</code> function first removes the outliers by considering only the middle 95% of estimates. Some simulations produce unrealistically high or low estimates that in practice would be ignored. It then calculates the bias and coverage probability for each method.</p>
 
+</div>
+</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
+<a href="real-data.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 
-<a href="cross.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

@@ -143,9 +143,35 @@ abline(v = 300)
 
 For each of the 12 scenarios we calculated the bias and coverage probability of the 4 methods. Due to time constraints we only fitted a hazard-rate detection function with no adjustments for conventional distance sampling and only used the independent observer configuration with a hazard rate distance model for MRDS. This means the models for these methods may not be the best fit, and it could be possible to achieve a smaller bias or larger coverage probability. With more time we would fit multiple models to each set of simulated data and choose the best using AIC. We also only fit one 2D model, but as it was the model used the generate the data it should be the best model regardless.
 
+For a few scenarios some models failed to converge, and so the number of successful repetitions is less than 99. Where this is the case we have noted it next to the table of results.
+
+After simulating the data we noticed the some methods occasionally produced unreasonably large or small estimates, particularly 2D and for uniform animal distribution. In reality, these results would be discarded due to poor model fit so to account for this we calculated the bias using only the middle 95% of estimates.
+
+```{r uniform-boxplots, echo = FALSE, fig.cap = "Accounting for outliers in 2D models", fig.asp = 1.33}
+par(mfrow = c(3,2))
+unif <- rbind(sc1[[4]],sc2[[4]],sc3[[4]],sc4[[4]])
+boxplot(unif, main ="Uniform Animal Distribution", sub = "Before removing outliers")
+
+out <- boxplot.stats(unif$N.hat)$out
+
+unif.outliers <- unif[!(unif$N.hat %in% out),]
+boxplot(unif.outliers, main = "Uniform Animal Distribution", sub ="After removing outliers")
+avoid <- rbind(sc5[[4]],sc6[[4]],sc7[[4]],sc8[[4]])
+boxplot(avoid$N.hat, main = "Initially Avoiding Transect", sub ="Without removing outliers")
+
+avoid.outliers <- avoid[avoid$N.hat < quantile(avoid$N.hat, 0.975) & avoid$N.hat > quantile(avoid$N.hat, 0.025),]
+boxplot(avoid.outliers$N.hat, main = "Initially Avoiding Transect", sub ="After removing outliers")
+
+attract <- rbind(sc9[[4]],sc10[[4]],sc11[[4]],sc12[[4]])
+boxplot(attract$N.hat,main = "Initially Attracted to Transect", sub ="Without removing outliers")
+
+attract.outliers <- attract[attract$N.hat < quantile(attract$N.hat, 0.975) & attract$N.hat > quantile(attract$N.hat, 0.025),]
+boxplot(attract.outliers$N.hat, main = "Initially Attracted to Transect", sub ="After removing outliers")
+```
+
 ### Uniform Animal Distribution
 
-With uniform animal distribution we expect conventional distance and 2D distance sampling to perform similarly, as all the assumptions for both methods are met. Our results show that they both have similar coverage probabilities, and whilst conventional distance may appear to be more biased, this is more likely a result of only fitting one model rather than performing model selection. As these methods involve walking the transect just once, they are not affected by movement between observers.
+With uniform animal distribution we expect conventional distance and 2D distance sampling to perform similarly, as all the assumptions for both methods are met. Our results show that they are both unbiased and have similar coverage probabilities. As these methods involve walking the transect just once, they are not affected by movement between observers.
 
 ```{r message=FALSE, warning=FALSE, cache=TRUE, echo = F}
 # Scenario 1
@@ -170,7 +196,7 @@ sc3.table <- kable(sc3.out <- result(sc3, n=600), caption = "Random Movement")
 kables(list(sc3.table, sc1.table), caption = "Uniform Distribution with Perfect Matching")
 ```
 
-Mark recapture performs poorly in this scenario and all the other scenarios as detectability declines with distance. This means there is unmodelled heterogeneity in the population, so it is negatively biased. MRDS is negatively biased with random animal movement as this violates the assumption that each animal has the same detection probability for each observer. It is less negatively biased with avoidance as second observer will see less animals than the first due to them now being further away. This results in a lower estimated detection probability and therefore a higher estimate.
+Mark recapture performs poorly in this scenario and all the other scenarios as detectability declines with distance. This means there is unmodelled heterogeneity in the population, so it is negatively biased. MRDS is marginally more biased than the distance methods due to the effect of animal movement. However, as the animals only moved around 100m on average it only had a small impact. If the animals moved more it may have been more biased.
 
 ```{r message=FALSE, warning=FALSE, cache = TRUE, echo = F, fig.cap = "Uniform Distribution and Imperfect Matching"}
 # Scenario 4
@@ -180,7 +206,7 @@ sc4.table <- kable(sc4.out <- result(sc4, n=600), caption = "Random Movement")
 kables(list(sc4.table, sc2.table), caption = "Uniform Distribution with Imperfect Matching")
 ```
 
-After introducing imperfect matching, MRDS estimates seem to be less negatively biased. This is due to some individuals that were seen twice being mistakenly identified as two separate animals, leading to a lower estimate of detection probability and hence a higher estimate of abundance. Whilst it looks like MRDS should be the best estimator in the scenario with avoidance movement and imperfect matching, this is actually because effects of breaking multiple assumptions happen to balance out in this specific situation. This results in very variable estimates, as the variance of the $\hat{N}$ s was `r round(var(sc2[[3]]$N.hat[sc2[[3]]$N.hat < 3*600])/99, 2)` for MRDS, compared to `r round(var(sc2[[4]]$N.hat[sc2[[4]]$N.hat < 3*600])/99, 2)` for 2D Distance.
+After introducing imperfect matching, MRDS estimates become more positively biased with avoidance movement. This is due to some individuals that were seen twice being mistakenly identified as two separate animals, leading to a lower estimate of detection probability and hence a higher estimate of abundance. The random movement scenario is less biased, however MRDS produces very variable estimates, as the variance of the $\hat{N}$ s was `r round(var(sc4[[3]]$N.hat[sc4[[3]]$N.hat < 3*600])/99, 2)` for MRDS, compared to `r round(var(sc4[[4]]$N.hat[sc4[[4]]$N.hat < 3*600])/99, 2)` for 2D Distance.
 
 ### Avoiding Transect
 
@@ -219,6 +245,8 @@ colnames(sc7[[3]]) <- c("N.hat", "lcl", "ucl")
 sc7.table <- kable(sc7.out <- result(sc7, n=1200), caption = "Random Movement")
 kables(list(sc7.table,sc5.table), caption = "Initial Avoidance with Perfect Matching")
 ```
+
+*Note: MRDS only had `r dim(sc7[[3]])[1]` successful repetitions for the random movement case and`r dim(sc5[[3]])[1]` for the avoidance movement case.*
 
 Conventional distance and MRDS are both negatively biased as the fitted detection function decays less quickly than the true detection function to account for the large numbers of detections far away from the transect. However, as these detections are a result of more animals being far from the transect rather than a high detection probability, the models overestimate the detection probability and so underestimate the abundance.
 
@@ -268,7 +296,7 @@ sc10.table <- kable(sc10.out <- result(sc10, n=400), caption = "Avoidance Moveme
 ```{r message=FALSE, warning=FALSE, cache = TRUE, echo = FALSE}
 # Scenario 11
 # Initial density: attracted + Movement: random + Matching: perfect
-sc11.table <- kable(sc11, caption = "Random Movement")
+sc11.table <- kable(sc11.out <- result(sc11, n=400), caption = "Random Movement")
 kables(list(sc11.table, sc9.table), caption = "Initial Attraction with Perfect Matching")
 ```
 
