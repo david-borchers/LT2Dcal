@@ -148,6 +148,8 @@ gof.LT2D = function(fit, plot=FALSE){
   for(i in 1:n){
     f0V[i]=integrate(p.pi.x,0,x[i],as.list(B[[i]]),hrname,
                      ystart,piname,logphi,w,args=mix.args)$value
+#    f0V[i]=simpson(p.pi.x,0,x[i],as.list(B[[i]]),hrname,
+#                     ystart,piname,logphi,w,args=mix.args)
   }
   
   if (fit$covariates==T){
@@ -155,12 +157,16 @@ gof.LT2D = function(fit, plot=FALSE){
     for (i in 1:n){
       Af0[i]=integrate(p.pi.x,0,w,as.list(B[[i]]),hrname,
                        ystart,piname,logphi,w,args=mix.args)$value
+#      Af0[i]=simpson(p.pi.x,0,w,as.list(B[[i]]),hrname,
+#                       ystart,piname,logphi,w,args=mix.args)
     }
   }
   
   else{
     Af0=integrate(p.pi.x,0,w,as.list(B[[1]]),hrname,
                   ystart,piname,logphi,w,args=mix.args)$value
+#    Af0=simpson(p.pi.x,0,w,as.list(B[[1]]),hrname,
+#                  ystart,piname,logphi,w,args=mix.args)
   }
   
   
