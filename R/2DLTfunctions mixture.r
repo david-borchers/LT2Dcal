@@ -4539,3 +4539,42 @@ plotpimodel = function(pi.fun,logphi,w,nx=101) {
   plot(xs, f,type="l",ylim=c(0,max(f)),xlab="Perp. dist. (x)",ylab=expression(pi(x)))
   invisible(list(x=xs,f=f))
 }
+
+
+
+
+#'@title Numerical derivative of detection function
+#'
+#'@description  Calculates the numerical derivative of perpendicular distance detection function arising 
+#'from a specified hazard function. Derivatives are approximated by simple finite differences.
+#' h.fun,pars,ystart,w,nx=101,ny=101
+#'@param h.fun Perpendicular distance distribution function
+#'@param ystart maximum forward distance (y) at which objects could be detected
+#'@param w Perpendicular distance truncation distance
+#'@param nx number of x-values at which to evaluate the perpendicular distance detection function 
+#'(which will give \code{(nx-1)}) numerical derivatives).
+#'@param ny number of y-values at which to evaluate the hazard function.
+#'
+#'@return A vector of length \code{(nx-1)} containing the finite differences.
+#'
+#'@examples
+#'ystart = 1000
+#'w=1000
+#'hr.name = "ip0"; hr.pars=c(7, 0.25)
+#'nx=101
+#'deriv.x = dpdx(hr.name,hr.pars,ystart,w,nx=nx)
+#'par(mfrow=c(1,2))
+#'plotdetmodel(hr.name,hr.pars,ystart,xlim=c(0,w),what="px")
+#'plot(seq(0,w,length=(nx-1)),deriv.x,type="l",xlab="x",ylab="Derivative")
+#'abline(0,0,lty=2)
+#' 
+#'@export
+dpdx = function(h.fun,pars,ystart,w,nx=101,ny=101) {
+  hr = match.fun(h.fun)
+  xs = seq(0,w,length=nx)
+  dx = diff(xs)[1]
+  ys = seq(0,ystart,length=ny)
+  p = p.approx(ys,xs,hr,pars,what="px")
+  dp.dx = diff(p)/dx
+  return(dp.dx)
+}
