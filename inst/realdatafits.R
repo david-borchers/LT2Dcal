@@ -232,8 +232,9 @@ comb.ip0_chnorm.deriv.x[1]<0
 plot(seq(0,w,length=(nx-1)),comb.ip0_chnorm.deriv.x,type="l")
 abline(0,0,lty=2)
 
-evaldf = data.frame(dfdx =c(comb.h1.2_chnorm.deriv.x[1], comb.ip0_chnorm.deriv.x[1]),
+evaldf = data.frame(dfdx.10 =c(comb.h1.2_chnorm.deriv.x[10], comb.ip0_chnorm.deriv.x[10]),
                     Hessian = c(!is.null(comb.h1.2_chnorm$fit$hessian), !is.null(comb.ip0_chnorm$fit$hessian)),
                     AIC = c(comb.h1.2_chnorm$fit$AIC, comb.ip0_chnorm$fit$AIC))
 row.names(evaldf) = c("h1.2","ip0")
 evaldf
+
