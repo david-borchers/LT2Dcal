@@ -213,7 +213,6 @@ comb.h1.2_chnorm.unif <- LT2D.fit(DataFrameInput = combdf,
 # Fit with model ip0
 ystart = 2000
 w=1000
-pi.const
 hr.name = "ip0"; hr.pars=c(7, 0.25)
 nx=101
 deriv.x = dpdx(hr.name,hr.pars,ystart,w,nx=nx)
@@ -286,6 +285,16 @@ evaldf.2D = data.frame(dfdx.10 =c(comb.h1.2_chnorm.deriv.x[10],
 row.names(evaldf.2D) = c("h1.2","h1.2.unif","ip0")
 evaldf.2D
 
+# plot 95\% envelope for pi.hnorm:
+xs = seq(0,w,length=100)
+pivals = pi.hnorm(xs,comb.ip0_chnorm$fit$par[3],w=w)
+logci = comb.ip0_chnorm$fit$par[3] + c(-1,1)*1.96*sqrt(comb.ip0_chnorm$fit$vcov[3,3])
+lcl = pi.hnorm(xs,logci[1],w=w)
+ucl = pi.hnorm(xs,logci[2],w=w)
+plot(xs,pivals/max(pivals),type="l",ylim=c(0,1))
+lines(xs,lcl/max(lcl),lty=2)
+lines(xs,ucl/max(ucl),lty=2)
+
 # Before moving on, just try best model (ip0) with w = 800:
 ystart = 2000
 w=800
@@ -318,6 +327,13 @@ comb.ip0_chnorm.800.deriv.x = dpdx(h1.2,comb.ip0_chnorm.800$fit$par[1:2],ystart,
 comb.ip0_chnorm.800.deriv.x[1]<0
 plot(seq(0,w,length=(nx-1)),comb.ip0_chnorm.800.deriv.x,type="l")
 abline(0,0,lty=2)
+
+saveRDS(list(comb.h1.2_chnorm=comb.h1.2_chnorm,
+             comb.h1.2_chnorm.unif=comb.h1.2_chnorm.unif,
+             comb.ip0_chnorm=comb.ip0_chnorm,
+             comb.ip0_chnorm.800=comb.ip0_chnorm.800),
+        file="./inst/comb_chnorm_fits.Rda")
+
 
 
 #=========================================
