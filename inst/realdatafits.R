@@ -167,12 +167,11 @@ ib.h1.2_chnorm$fit$AIC; ib.ip0_chnorm$fit$AIC
 
 
 # ========
-# Combined
+# Combined w  1000
 # ========
 
 # Fit with hazard rate, constrained to have a shoulder
 pi.fun.name <- 'pi.hnorm'; logphi <- log(c(700))
-hr.name = "h1.2"; hr.pars=c(12, 0.25)
 ystart = 2000
 w=1000
 par(mfrow=c(1,2))
@@ -180,6 +179,7 @@ plotdetmodel(hr.name,hr.pars,ystart,xlim=c(0,w),what="px")
 plotpimodel(pi.fun.name,logphi,w)
 #dev.off()
 
+hr.name = "h1.2"; hr.pars=c(12, 0.25)
 comb.h1.2_chnorm <- LT2D.fit(DataFrameInput = combdf,
                            hr = "h1.2",
                            b = hr.pars,
@@ -192,14 +192,6 @@ comb.h1.2_chnorm <- LT2D.fit(DataFrameInput = combdf,
 
 # Fit with hazard rate, constrained to have a shoulder and UNIFORM x
 pi.fun.name <- 'pi.const'; logphi <- NULL
-hr.name = "h1.2"; hr.pars=c(12, 0.25)
-ystart = 2000
-w=1000
-par(mfrow=c(1,2))
-plotdetmodel(hr.name,hr.pars,ystart,xlim=c(0,w),what="px")
-plotpimodel("pi.const",logphi,w)
-#dev.off()
-
 comb.h1.2_chnorm.unif <- LT2D.fit(DataFrameInput = combdf,
                              hr = hr.name,
                              b = hr.pars,
@@ -211,18 +203,7 @@ comb.h1.2_chnorm.unif <- LT2D.fit(DataFrameInput = combdf,
                              control=list(trace=5))
 
 # Fit with model ip0
-ystart = 2000
-w=1000
 hr.name = "ip0"; hr.pars=c(7, 0.25)
-nx=101
-deriv.x = dpdx(hr.name,hr.pars,ystart,w,nx=nx)
-par(mfrow=c(1,3))
-plotdetmodel(hr.name,hr.pars,ystart,xlim=c(0,w),what="px")
-plot(seq(0,w,length=(nx-1)),deriv.x,type="l",xlab="x",ylab="Derivative")
-abline(0,0,lty=2)
-plotpimodel(pi.fun.name,logphi,w)
-#dev.off()
-
 comb.ip0_chnorm <- LT2D.fit(DataFrameInput = combdf,
                           hr = "ip0",
                           b = hr.pars,
@@ -233,39 +214,44 @@ comb.ip0_chnorm <- LT2D.fit(DataFrameInput = combdf,
                           hessian = TRUE,
                           control=list(trace=5))
 
-
+pdf("comb.h1.2_chnorm.pdf")
 par(mfrow=c(2,2))
 plot(comb.h1.2_chnorm)
 comb.h1.2_chnorm.gof = gof.LT2D(comb.h1.2_chnorm,plot=TRUE)
-comb.h1.2_chnorm$ests
+dev.off()
+#comb.h1.2_chnorm$ests
 comb.h1.2_chnorm.deriv.x = dpdx(h1.2,comb.h1.2_chnorm$fit$par[1:2],ystart,w,nx=nx)
-comb.h1.2_chnorm.deriv.x[1]<0
-plot(seq(0,w,length=(nx-1)),comb.h1.2_chnorm.deriv.x,type="l")
-abline(0,0,lty=2)
+#comb.h1.2_chnorm.deriv.x[1]<0
+#plot(seq(0,w,length=(nx-1)),comb.h1.2_chnorm.deriv.x,type="l")
+#abline(0,0,lty=2)
 
 
+pdf("comb.h1.2_chnorm.unif.pdf")
 par(mfrow=c(2,2))
 plot(comb.h1.2_chnorm.unif)
 comb.h1.2_chnorm.unif.gof = gof.LT2D(comb.h1.2_chnorm.unif,plot=TRUE)
-comb.h1.2_chnorm.unif$ests
+dev.off()
+#comb.h1.2_chnorm.unif$ests
 comb.h1.2_chnorm.unif.deriv.x = dpdx(h1.2,comb.h1.2_chnorm.unif$fit$par[1:2],ystart,w,nx=nx)
-comb.h1.2_chnorm.unif.deriv.x[1]<0
-plot(seq(0,w,length=(nx-1)),comb.h1.2_chnorm.unif.deriv.x,type="l")
-abline(0,0,lty=2)
+#comb.h1.2_chnorm.unif.deriv.x[1]<0
+#plot(seq(0,w,length=(nx-1)),comb.h1.2_chnorm.unif.deriv.x,type="l")
+#abline(0,0,lty=2)
 
 
+pdf("comb.ip0_chnorm.pdf")
 par(mfrow=c(2,2))
 plot(comb.ip0_chnorm)
 comb.ip0_chnorm.gof = gof.LT2D(comb.ip0_chnorm,plot=TRUE)
-comb.ip0_chnorm$ests
+dev.off()
+#comb.ip0_chnorm$ests
 comb.ip0_chnorm.deriv.x = dpdx(ip0,comb.ip0_chnorm$fit$par[1:2],ystart,w,nx=nx)
-comb.ip0_chnorm.deriv.x[1]<0
-plot(seq(0,w,length=(nx-1)),comb.ip0_chnorm.deriv.x,type="l")
-abline(0,0,lty=2)
+#comb.ip0_chnorm.deriv.x[1]<0
+#plot(seq(0,w,length=(nx-1)),comb.ip0_chnorm.deriv.x,type="l")
+#abline(0,0,lty=2)
 
-evaldf.2D = data.frame(dfdx.10 =c(comb.h1.2_chnorm.deriv.x[10], 
-                                  comb.h1.2_chnorm.unif.deriv.x[10],
-                                  comb.ip0_chnorm.deriv.x[10]),
+evaldf.2D = data.frame(dfdx.3 =c(comb.h1.2_chnorm.deriv.x[3], 
+                                  comb.h1.2_chnorm.unif.deriv.x[3],
+                                  comb.ip0_chnorm.deriv.x[3]),
                     Hessian = c(!is.null(comb.h1.2_chnorm$fit$hessian), 
                                 !is.null(comb.h1.2_chnorm.unif$fit$hessian), 
                                 !is.null(comb.ip0_chnorm$fit$hessian)),
@@ -295,21 +281,54 @@ plot(xs,pivals/max(pivals),type="l",ylim=c(0,1))
 lines(xs,lcl/max(lcl),lty=2)
 lines(xs,ucl/max(ucl),lty=2)
 
-# Before moving on, just try best model (ip0) with w = 800:
+
+
+saveRDS(list(comb.h1.2_chnorm=comb.h1.2_chnorm,
+             comb.h1.2_chnorm.unif=comb.h1.2_chnorm.unif,
+             comb.ip0_chnorm=comb.ip0_chnorm),
+        file="./inst/comb_chnorm_fits.Rda")
+
+
+# Before moving on, all his with w = 800:
+
+# ========
+# Combined w  800
+# ========
+
+# Fit with hazard rate, constrained to have a shoulder
 ystart = 2000
 w=800
-hr.name = "ip0"; hr.pars=comb.ip0_chnorm$fit$par[1:2]
-logphi = comb.ip0_chnorm$fit$par[3]
-nx=101
-deriv.x = dpdx(hr.name,hr.pars,ystart,w,nx=nx)
-par(mfrow=c(1,3))
-plotdetmodel(hr.name,hr.pars,ystart,xlim=c(0,w),what="px")
-plot(seq(0,w,length=(nx-1)),deriv.x,type="l",xlab="x",ylab="Derivative")
-abline(0,0,lty=2)
-plotpimodel(pi.fun.name,logphi,w)
 #dev.off()
 
-comb.ip0_chnorm.800 <- LT2D.fit(DataFrameInput = combdf,
+hr.name = "h1.2"; hr.pars=c(12, 0.25)
+pi.fun.name <- 'pi.hnorm'; logphi <- log(c(700))
+comb.h1.2_chnorm_w800 <- LT2D.fit(DataFrameInput = combdf,
+                             hr = "h1.2",
+                             b = hr.pars,
+                             ystart = ystart,
+                             pi.x = pi.fun.name,
+                             logphi = logphi,
+                             w = w, 
+                             hessian = TRUE,
+                             control=list(trace=5))
+
+# Fit with hazard rate, constrained to have a shoulder and UNIFORM x
+hr.name = "h1.2"; hr.pars=c(12, 0.25)
+pi.fun.name <- 'pi.const'; logphi <- NULL
+comb.h1.2_chnorm_w800.unif <- LT2D.fit(DataFrameInput = combdf,
+                                  hr = "h1.2",
+                                  b = hr.pars,
+                                  ystart = ystart,
+                                  pi.x =  "pi.const",
+                                  logphi = NULL,
+                                  w = w, 
+                                  hessian = TRUE,
+                                  control=list(trace=5))
+
+# Fit with model ip0
+hr.name = "ip0"; hr.pars=c(7, 0.25)
+pi.fun.name <- 'pi.hnorm'; logphi <- log(c(700))
+comb.ip0_chnorm_w800 <- LT2D.fit(DataFrameInput = combdf,
                             hr = "ip0",
                             b = hr.pars,
                             ystart = ystart,
@@ -319,21 +338,68 @@ comb.ip0_chnorm.800 <- LT2D.fit(DataFrameInput = combdf,
                             hessian = TRUE,
                             control=list(trace=5))
 
+pdf("comb.h1.2_chnorm_w800.pdf")
 par(mfrow=c(2,2))
-plot(comb.ip0_chnorm.800)
-comb.ip0_chnorm.800.gof = gof.LT2D(comb.ip0_chnorm.800,plot=TRUE)
-comb.ip0_chnorm.800$ests
-comb.ip0_chnorm.800.deriv.x = dpdx(h1.2,comb.ip0_chnorm.800$fit$par[1:2],ystart,w,nx=nx)
-comb.ip0_chnorm.800.deriv.x[1]<0
-plot(seq(0,w,length=(nx-1)),comb.ip0_chnorm.800.deriv.x,type="l")
-abline(0,0,lty=2)
+plot(comb.h1.2_chnorm_w800)
+comb.h1.2_chnorm_w800.gof = gof.LT2D(comb.h1.2_chnorm_w800,plot=TRUE)
+dev.off()
+#comb.h1.2_chnorm_w800$ests
+comb.h1.2_chnorm_w800.deriv.x = dpdx(h1.2,comb.h1.2_chnorm_w800$fit$par[1:2],ystart,w,nx=nx)
+#comb.h1.2_chnorm_w800.deriv.x[1]<0
+#plot(seq(0,w,length=(nx-1)),comb.h1.2_chnorm_w800.deriv.x,type="l")
+#abline(0,0,lty=2)
 
-saveRDS(list(comb.h1.2_chnorm=comb.h1.2_chnorm,
-             comb.h1.2_chnorm.unif=comb.h1.2_chnorm.unif,
-             comb.ip0_chnorm=comb.ip0_chnorm,
-             comb.ip0_chnorm.800=comb.ip0_chnorm.800),
+
+pdf("comb.h1.2_chnorm_w800.unif.pdf")
+par(mfrow=c(2,2))
+plot(comb.h1.2_chnorm_w800.unif)
+comb.h1.2_chnorm_w800.unif.gof = gof.LT2D(comb.h1.2_chnorm_w800.unif,plot=TRUE)
+dev.off()
+#comb.h1.2_chnorm_w800.unif$ests
+comb.h1.2_chnorm_w800.unif.deriv.x = dpdx(h1.2,comb.h1.2_chnorm_w800.unif$fit$par[1:2],ystart,w,nx=nx)
+#comb.h1.2_chnorm_w800.unif.deriv.x[1]<0
+#plot(seq(0,w,length=(nx-1)),comb.h1.2_chnorm_w800.unif.deriv.x,type="l")
+#abline(0,0,lty=2)
+
+
+pdf("comb.ip0_chnorm_w800.pdf")
+par(mfrow=c(2,2))
+plot(comb.ip0_chnorm_w800)
+comb.ip0_chnorm_w800.gof = gof.LT2D(comb.ip0_chnorm_w800,plot=TRUE)
+dev.off()
+#comb.ip0_chnorm_w800$ests
+comb.ip0_chnorm_w800.deriv.x = dpdx(ip0,comb.ip0_chnorm_w800$fit$par[1:2],ystart,w,nx=nx)
+#comb.ip0_chnorm_w800.deriv.x[1]<0
+#plot(seq(0,w,length=(nx-1)),comb.ip0_chnorm_w800.deriv.x,type="l")
+#abline(0,0,lty=2)
+
+evaldf.2D.w800 = data.frame(dfdx.3 =c(comb.h1.2_chnorm_w800.deriv.x[3], 
+                                 comb.h1.2_chnorm_w800.unif.deriv.x[3],
+                                 comb.ip0_chnorm_w800.deriv.x[3]),
+                       Hessian = c(!is.null(comb.h1.2_chnorm_w800$fit$hessian), 
+                                   !is.null(comb.h1.2_chnorm_w800.unif$fit$hessian), 
+                                   !is.null(comb.ip0_chnorm_w800$fit$hessian)),
+                       AIC = c(comb.h1.2_chnorm_w800$fit$AIC, 
+                               comb.h1.2_chnorm_w800.unif$fit$AIC, 
+                               comb.ip0_chnorm_w800$fit$AIC),
+                       N = c(comb.h1.2_chnorm_w800$ests[nrow(comb.h1.2_chnorm_w800$ests),8],
+                             comb.h1.2_chnorm_w800.unif$ests[nrow(comb.h1.2_chnorm_w800.unif$ests),8],
+                             comb.ip0_chnorm_w800$ests[nrow(comb.ip0_chnorm_w800$ests),8]),
+                       CvM.x = c(comb.h1.2_chnorm_w800.gof$X[2],
+                                 comb.h1.2_chnorm_w800.unif.gof$X[2],
+                                 comb.ip0_chnorm_w800.gof$X[2]),
+                       CvM.y = c(comb.h1.2_chnorm_w800.gof$Y[2],
+                                 comb.h1.2_chnorm_w800.unif.gof$Y[2],
+                                 comb.ip0_chnorm_w800.gof$Y[2])
+)
+row.names(evaldf.2D.w800) = c("h1.2","h1.2.unif","ip0")
+evaldf.2D.w800
+
+
+saveRDS(list(comb.h1.2_chnorm_w800=comb.h1.2_chnorm_w800,
+             comb.h1.2_chnorm_w800.unif=comb.h1.2_chnorm_w800.unif,
+             comb.ip0_chnorm_w800=comb.ip0_chnorm_w800),
         file="./inst/comb_chnorm_fits.Rda")
-
 
 
 #=========================================
